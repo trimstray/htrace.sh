@@ -50,8 +50,6 @@ readonly _rel="${_init_directory}/.."
 # shellcheck disable=SC2154
 readonly _src="${_rel}/src"
 readonly _lib="${_rel}/lib"
-readonly _etc="${_rel}/etc"
-readonly _tml="${_rel}/templates"
 
 # shellcheck disable=SC1090,SC1091
 source "${_src}/settings"
