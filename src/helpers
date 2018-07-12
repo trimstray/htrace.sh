@@ -1,0 +1,647 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+################################################################################
+####################### Definitions of global functions ########################
+################################################################################
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: _exit_()
+#
+# Description:
+#   Covers the default exit command.
+#
+# Usage:
+#   _exit_ value
+#
+# Examples:
+#   _exit_ 0
+#
+
+function _exit_() {
+
+  local _FUNCTION_ID="_exit_"
+  local _STATE="0"
+
+  _STATUS="$1"
+
+  # Remember that for it a trap is executed that intercepts
+  # the exit command (at the end of this function).
+  if [[ "$_STATUS" -eq 0 ]] ; then
+
+    # Add tasks when exiting the code is equal 0.
+    true
+
+  else
+
+    # Add tasks when exiting the code is non equal 0.
+    false
+
+  fi
+
+  exit "$_STATUS"
+
+}
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: _get_trap_SIG()
+#
+# Description:
+#   Ensuring they always perform necessary cleanup operations,
+#   even when something unexpected goes wrong. It can handle
+#   all output signals.
+#
+# Usage:
+#   trap _get_trap_SIG SIGNAL
+#
+# Examples:
+#   trap _get_trap_SIG EXIT
+#   trap "_get_trap_SIG SIGS" SIGHUP SIGTERM
+#
+
+function _get_trap_SIG() {
+
+  local _FUNCTION_ID="_get_trap_SIG"
+  local _STATE="${_STATUS:-}"
+
+  local _SIG_type="$1"
+
+  # Remember not to duplicate tasks in the _exit_() and _get_trap_SIG()
+  # functions. Tasks for the _exit_() function only work within it
+  # and refer to the exit mechanism. Tasks in the _get_trap_SIG() function
+  # can refer to specific signal or all signals.
+
+  if [ -z "$_STATE" ] ; then _STATE=254
+
+  # Performs specific actions for the EXIT signal.
+  elif [[ "$_SIG_type" == "EXIT" ]] ; then
+
+    # Unset variables (e.g. global):
+    #   - local _to_unset=("$IFS_ORIG" "$IFS_HACK" "$IFS" "$PATH")
+    local _to_unset=("$PATH")
+
+    # Running tasks before the end of the script.
+    _after_init
+
+    # shellcheck disable=SC2034
+    for i in "${_to_unset[@]}" ; do unset i ; done
+
+    # You can cover the code supplied from the _exit_() function
+    # (in this case) or set a new one.
+    _STATE="${_STATUS:-}"
+
+  # Performs specific actions fot the other signals.
+  # In this example, using the SIGS string, we mark several output signals
+  # (see the second example in the description of the function).
+  elif [[ "$_SIG_type" == "SIGS" ]] ; then
+
+    # You can cover the code supplied from the function
+    # or set a new one.
+    _STATE="${_STATUS:-}"
+
+  else
+
+    # In this block the kill command was originally used,
+    # however, it suspended the operation of dracnmap.
+    # The lack of this command terminates the process
+    # and does not cause the above problems.
+    _STATE="255"
+
+  fi
+
+  _logger "exit" \
+    "$_FUNCTION_ID > ${_SIG_type} (${_STATE})"
+
+  return "$_STATE"
+
+}
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: _logger()
+#
+# Description:
+#   Saving selected operation states to a log file
+#   and allows you to terminate the script with 'stop' signal.
+#
+#   Four states of message type:
+#     info - normal information
+#     head - normal information (header)
+#     warn - warning information
+#     stop - interrupts script execution
+#
+# Usage:
+#   _logger "type" "message"
+#
+# Examples:
+#   _logger "info" "load config file properly"
+#   _logger "stop" "not connected"
+#
+
+function _logger() {
+
+  local _FUNCTION_ID="_logger"
+  local _STATE="0"
+
+  local _type="$1"
+  local _to_log=""
+  local _conv_type=""
+
+  _to_log=$(shift ; echo "$@")
+  _conv_type=$(echo "$_type" | tr '[:lower:]' '[:upper:]')
+
+  # shellcheck disable=SC2154
+  if [[ ! -d "$_log_directory" && ! -L "$_log_directory" ]] ; then
+    mkdir -p "$_log_directory" ; fi
+
+  # Normal debug mode (output the same as the contents of the log file).
+  # shellcheck disable=SC2154
+  if [[ "$stdout_mode" == "debug" ]] ; then
+
+    printf "%s  %s:  [%s] %s\\n" \
+           "$(date +"%d/%m/%y %X")" \
+           "$_init_name" \
+           "$_conv_type" \
+           "$_to_log" \
+           | tee -a "$_log_path"
+
+  # The decision whether an INFO is to be only log to a file
+  # or to a file and to standard output.
+  else
+
+    printf "%s  %s:  [%s] %s\\n" \
+           "$(date +"%d/%m/%y %X")" \
+           "$_init_name" \
+           "$_conv_type" \
+           "$_to_log" \
+           >>"$_log_path"
+
+  fi
+
+  # By means of this construction, we can terminate the operation
+  # of the script with the action of logging into the log file.
+  # This do not have to remember to place the _exit_ <value> function
+  # in 'exit' script points. If you prefer to have more control,
+  # do not use the _logger function with the 'stop' parameter.
+  if [[ "$_type" == "stop" ]] ; then _exit_ 255 ; fi
+
+  return "$_STATE"
+
+}
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: _sprintf()
+#
+# Description:
+#   Function designed to output to the screen in a clear format.
+#
+# Usage:
+#   _sprintf "type" "message"
+#
+# Examples:
+#   _sprintf "head" "correct certificate: $_ssl_cert_file"
+#
+
+function _sprintf() {
+
+  local _FUNCTION_ID="_sprintf"
+  local _STATE="0"
+
+  local _s_type="$1"
+  local _s_info="$2"
+
+  # Determine the type of character and color for each type
+  # of output information.
+  if [[ "$_s_type" == "head" ]] ; then
+
+    s_char="+"
+    s_trgb="1;32"
+
+  elif [[ "$_s_type" == "info" ]] ; then
+
+    s_char="-"
+    s_trgb="0;33"
+
+  elif [[ "$_s_type" == "warn" ]] ; then
+
+    s_char="!"
+    s_trgb="1;37"
+
+  elif [[ "$_s_type" == "stop" ]] ; then
+
+    s_char="!"
+    s_trgb="1;31"
+
+  else
+
+    s_char="-"
+    s_trgb="0;37"
+
+  fi
+
+  # If you run the tool in verbose mode do not display output using _sprintf.
+  if [[ "$stdout_mode" != "debug" ]] ; then
+
+    if [[ "$_s_type" == "spin" ]] && [[ ! -z "$_s_info" ]] ; then
+
+      # Process id of the previous running command.
+      local _pid="$_s_info"
+
+      local _sc='-\|/'
+
+      # Verify that the process is still running.
+      local _n="0"
+
+      # shellcheck disable=SC2143
+      while [[ $(ps a | awk '{print $1}' | grep -w "$_pid") ]] ; do
+
+        _n=$(( ( _n + 1 ) % 4 ))
+        printf "\\r[%s]" "${_sc:_n:1}"
+        sleep 0.1
+
+      done
+
+      # If the end, we clean.
+      printf "\\r"
+
+    else
+
+      # Normal execution if:
+      # - spinner has not been called
+      # - spinner completed
+
+      # If verbose mode is enabled, display info message.
+      # shellcheck disable=SC2154
+      if [[ "$printf_mode" == "verbose" ]] && [[ "$_s_type" == "info" ]] ; then
+
+        printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
+
+      else
+
+        # If not, just display only the head, warn or stop string.
+        # shellcheck disable=SC2154
+        if [[ "$_s_type" == "head" ]] ; then
+
+          if [[ "$s_color" == "true" ]] ; then
+
+            c_trgb="1;39"
+
+            printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
+
+          else
+
+            printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
+
+          fi
+
+        elif [[ "$_s_type" == "warn" ]] ; then
+
+          if [[ "$s_color" == "true" ]] ; then
+
+            c_trgb="1;43"
+
+            printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
+
+          else
+
+            printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
+
+          fi
+
+        elif [[ "$_s_type" == "stop" ]] ; then
+
+          if [[ "$s_color" == "true" ]] ; then
+
+            c_trgb="1;41"
+
+            printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
+
+          else
+
+            printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
+
+          fi
+
+        fi
+
+      fi
+
+    fi
+
+  fi
+
+  return "$_STATE"
+
+}
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: _init_cmd()
+#
+# Description:
+#   Function executing given as a command parameter.
+#
+# Usage:
+#   _init_cmd "parameter"
+#
+# Examples:
+#   _init_cmd "eval cd /etc/init.d && ls"
+#
+
+function _init_cmd() {
+
+  local _FUNCTION_ID="_init_cmd"
+  local _STATE="0"
+
+  local _cmd="$1"
+
+  # Uncomment if you want to display executed commands.
+  # _sprintf "info" "init: \"$_cmd\""
+
+  _logger "info" \
+    "${_FUNCTION_ID}()" \
+    "init: $_cmd"
+
+  # Execute command and exit save to file.
+  # shellcheck disable=SC2154
+  $_cmd >>"$_log_stdout" 2>&1 &
+
+  # We keep pid of the last command.
+  _pid="$!"
+
+  # When the '(command) &' command is performed.
+  _sprintf "spin" "$_pid"
+
+  # Very important line:
+  # We define the state of the output job from the background.
+  wait "$_pid" &>/dev/null && _state="0" || _state="1"
+
+  if [[ "$_state" -eq 0 ]] ; then
+
+    _logger "info" \
+      "${_FUNCTION_ID}()" \
+      "result: pass"
+
+  else
+
+    _sprintf "stop" "result: fail"
+
+    _logger "stop" \
+      "${_FUNCTION_ID}()" \
+      "result: fail"
+
+  fi
+
+  _STATE="$_state"
+
+  return "$_STATE"
+
+}
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: _init_function()
+#
+# Description:
+#   It deals with launching functions:
+#     - creates a simple environment for the functions you perform
+#     - operates on message to display and command to execute
+#
+# Usage:
+#   _init_function function_name params
+#
+# Examples:
+#   _init_function "CheckConn 172.20.20.50 22"
+#
+
+function _init_function() {
+
+  local _FUNCTION_ID="_init_function"
+  local _STATE="0"
+
+  local _args=("$@")
+
+  local _cmd_begtime="0"
+  local _cmd_endtime="0"
+  local _cmd_totaltime="0"
+
+  _logger "info" \
+    "${_FUNCTION_ID}()" \
+    "init function: '${_args[*]}'"
+
+  # In these two variables we store the message to display
+  # and the command to execute.
+  export _msg_args=()
+  export _cmd_args=()
+
+  eval "${_args[@]}" ; if [ ! $? ] ; then _exit_ 255 ; fi
+
+  _num="${#_msg_args[@]}"
+  for (( _xa="0" ; _xa<=((_num - 1)) ; _xa++ )) ; do
+
+    _msg="${_msg_args[$_xa]}"
+    _full_command="${_cmd_args[$_xa]}"
+
+    _sprintf "info" "$_msg"
+
+    _logger "info" \
+      "${_FUNCTION_ID}()" \
+      "$_msg"
+
+    _cmd_begtime=$(date +%s)
+
+    _init_cmd "$_full_command" ; if [ ! "$?" ] ; then _exit_ 255 ; fi
+
+    _cmd_endtime=$(date +%s)
+
+    # shellcheck disable=SC2154
+    if [[ "$time_mode" -eq 1 ]] && [[ "$_cmdtime_state" -eq 1 ]] ; then
+
+      _cmd_totaltime=$((_cmd_endtime - _cmd_begtime))
+
+      _cmd_totaltime_out=$(printf '%dh:%dm:%ds' \
+      $((_cmd_totaltime/3600)) $((_cmd_totaltime%3600/60)) $((_cmd_totaltime%60)))
+
+      _sprintf "info" "time: $_cmd_totaltime_out"
+
+      _logger "info" \
+        "${_FUNCTION_ID}()" \
+        "time: $_cmd_totaltime_out"
+
+    fi
+
+  done
+
+  _cmdtime_state="0"
+
+  return "$_STATE"
+
+}
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: _load()
+#
+# Description:
+#   Responsible for loading the configuration file, $config variable
+#   parameter is defined in the script call.
+#
+# Usage:
+#   _load "type" "path_to_config_file"
+#
+# Examples:
+#   _load "info" "$config"
+#   _load "head" "/tmp/file.cfg"
+#
+
+function _load() {
+
+  local _FUNCTION_ID="_load"
+  local _STATE="0"
+
+  local _type="$1"
+  local _filename="$2"
+
+  if [[ ! -z "$_filename" ]] && [[ -e "$_filename" ]] ; then
+
+    # If we do not want to inform that the file is loaded,
+    # the value is 'null', otherwise:
+    if [[ "$_type" == "head" ]] ; then
+
+      _sprintf "head" "load configuration"
+      _sprintf "info" "file: '$_filename'"
+
+    elif [[ "$_type" == "info" ]] ; then
+
+      _sprintf "info" "load configuration: '$_filename'"
+
+    fi
+
+    # shellcheck disable=SC1090
+    # If the file exists is loaded.
+    . "$_filename" && \
+    _logger "info" \
+      "${_FUNCTION_ID}()" \
+      "configuration file: '$_filename'"
+
+  elif [ -z "$_filename" ] ; then
+
+    _sprintf "stop" "incorrectly loaded '$_filename' file (incorrect filename)"
+
+    _logger "stop" \
+      "${_FUNCTION_ID}()" \
+      "incorrectly loaded '$_filename' file (incorrect filename)"
+
+  else
+
+    _sprintf "stop" "incorrectly loaded '$_filename' file (does not exist?)"
+
+    _logger "stop" \
+      "${_FUNCTION_ID}()" \
+      "incorrectly loaded '$_filename' file (does not exist?)"
+
+  fi
+
+  return "$_STATE"
+
+}
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: _help_()
+#
+# Description:
+#   Help message. Should be consistent with the contents of the file README.md.
+#
+# Usage:
+#   _help_
+#
+# Examples:
+#   _help_
+#
+
+function _help_() {
+
+  local _FUNCTION_ID="_help_"
+  local _STATE=0
+
+  printf "%s" "
+  Usage:
+    $_init_name <option|long-option>
+
+  Examples:
+    $_init_name --verbose
+
+  Options:
+        --help                        show this message
+        --debug                       displays information on the screen (debug mode)
+        --verbose                     displays more information about TOR processes
+
+
+  This program comes with ABSOLUTELY NO WARRANTY.
+  This is free software, and you are welcome to redistribute it
+  under certain conditions; for more details please see
+  <http://www.gnu.org/licenses/>.
+
+"
+
+  return $_STATE
+
+}
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: _before_init()
+#
+# Description:
+#   INFOs performed before calling the __main__ function, e.g.
+#   attaching files, cleaning logs (if you need a function that will deal
+#   with it, put it here).
+#
+# Usage:
+#   _before_init
+#
+# Examples:
+#   _before_init
+#
+
+function _before_init() {
+
+  local _FUNCTION_ID="_before_init"
+  local _STATE=0
+
+  # shellcheck disable=2154
+  cd "$_init_directory" || \
+  _logger "stop" \
+    "${_FUNCTION_ID}()" \
+    "directory change error: '$_init_directory'"
+
+  : >"$_log_stdout"
+
+  return $_STATE
+
+}
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: _after_init()
+#
+# Description:
+#   INFOs performed after calling the __main__ function, e.g.
+#   cleaning logs (if you need a function that will deal with it,
+#   put it here).
+#
+# Usage:
+#   _after_init
+#
+# Examples:
+#   _after_init
+#
+
+function _after_init() {
+
+  local _FUNCTION_ID="_after_init"
+  local _STATE=0
+
+  cd "$_init_directory" || \
+  _logger "stop" \
+    "${_FUNCTION_ID}()" \
+    "directory change error: '$_init_directory'"
+
+  return $_STATE
+
+}

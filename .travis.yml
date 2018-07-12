@@ -1,0 +1,28 @@
+branches:
+  only:
+    - master
+    - testing
+
+language: bash
+
+sudo: required
+dist: trusty
+
+before_install:
+  - sudo apt-add-repository "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse"
+  - sudo apt-get -qq update
+  - sudo apt-get -t trusty-backports install shellcheck
+
+  ### --> https://github.com/travis-ci/travis-ci/issues/9484
+  # - curl -sSL "https://ftp-master.debian.org/keys/archive-key-7.0.asc" | sudo -E apt-key add -
+  # - echo "deb http://ftp.us.debian.org/debian unstable main contrib non-free" | sudo tee -a /etc/apt/sources.list > /dev/null
+  # - sudo apt-get update
+  # - sudo apt-get install shellcheck
+  ### -->
+
+# after_success:
+#   - test $TRAVIS_PULL_REQUEST = false && git push
+
+script:
+  - shellcheck --version
+  - shellcheck -s bash -e 1072,1094 -x src/* -x lib/* bin/htrace.sh

@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+################################################################################
+#################### External variables/functions and libs #####################
+################################################################################
+
+# Set of external files with variables, functions and other. The configuration
+# of each of them is in lib directory. The fd_stack array stores the names of
+# attached files. If you create a new file with some interesting function,
+# name it appropriately and insert to the array.
+# Example:
+#   - lib/kill_process - file with your function
+#   - _fd_stack=("kill_process") - says to include this file in the script
+readonly _fd_stack=()
+
+if [[ "${#_fd_stack[@]}" -ne 0 ]] ; then
+
+  for _fd in "${_fd_stack[@]}" ; do
+
+    # shellcheck disable=SC2154
+    _fd_full_path="${_lib}/${_fd}"
+
+    if [[ ! -z "$_fd_full_path" ]] && [[ -e "$_fd_full_path" ]] ; then
+
+      # If the file exists is loaded.
+      # shellcheck disable=SC1090
+      source "$_fd_full_path"
+
+    elif [[ -z "$_fd_full_path" ]] ; then
+
+      printf "incorrectly loaded '%s' file (incorrect filename)" "$_fd_full_path"
+      _exit_ "1"
+
+    else
+
+      printf "incorrectly loaded '%s' file (does not exist?)" "$_fd_full_path"
+      _exit_ "1"
+
+    fi
+
+  done
+
+fi
