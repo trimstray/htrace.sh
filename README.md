@@ -9,14 +9,10 @@
 
 <h5 align="left">Simple shell script to debugging http/https traffic tracing.</h5>
 
-<br>
-
 <p align="center">
     <img src="https://github.com/trimstray/htrace.sh/blob/master/doc/img/htrace.sh_preview.png"
         alt="Master">
 </p>
-
-<br>
 
 <div align="center">
   <sub>Created by
