@@ -7,7 +7,7 @@
   </a>
 </p>
 
-<h5 align="left">Simple shell script to debugging http/https traffic tracing.</h5>
+<h4 align="left">Simple shell script to debugging http/https traffic tracing.</h4>
 
 <p align="center">
     <img src="https://github.com/trimstray/htrace.sh/blob/master/doc/img/htrace.sh_preview.png"
@@ -29,7 +29,7 @@
 It is useful for:
 
 - redirects analysis, eg. to eliminate redirect loops
-- check properly web server/reverse proxy domain configuration
+- check properly web servers/reverse proxies configuration
 
 ## How To Use
 
