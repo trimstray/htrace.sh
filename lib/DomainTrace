@@ -54,13 +54,18 @@ function DomainTrace() {
     _http_code=$(echo "$_http_output" | cut -d ":" -f8)
     _http_redirect=$(echo "$_http_output" | cut -d ":" -f9-)
 
+    # Set local and remote sockets.
     _local_socket="${_local_ip}:${_local_port}"
     _remote_socket="${_remote_ip}:${_remote_port}"
+
+    # Convert _http_version value.
+    if [[ "$_http_version" == "2" ]] ; then _http_version="2.0" ; fi
 
     # shellcheck disable=SC2034
     _STATE="0"
 
-    printf "\\e[1;1;38m    %-12.10s %-15.12s %-22.22s %-22.22s %-5.10s %-5.10s %s\\e[m\\n" \
+    # shellcheck disable=SC2086,SC2154
+    printf '\e['${s_trgb}'m    %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m\n' \
            "$_time_total" \
            "$_time_connect" \
            "$_local_socket" \
