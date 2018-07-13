@@ -27,7 +27,25 @@ function CheckConn() {
   # shellcheck disable=SC2154
   timeout 1 bash -c "</dev/tcp/${_host}/${_port}" >>"$_log_stdout" 2>&1
 
-  _STATE="$?"
+  if [[ "$?" -eq 1 ]] ; then
+
+    # shellcheck disable=SC2034
+    _STATE="1"
+
+    _logger "stop" \
+      "${_FUNCTION_ID}()" \
+      "not properly connection to socket: ${_host}:${_port}"
+
+  else
+
+    # shellcheck disable=SC2034
+    _STATE="0"
+
+    _logger "info" \
+      "${_FUNCTION_ID}()" \
+      "properly connection to socket: ${_host}:${_port}"
+
+  fi
 
   return $_STATE
 
