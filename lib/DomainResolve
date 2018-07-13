@@ -40,7 +40,7 @@ function DomainResolve() {
   else
 
     # shellcheck disable=SC2034
-    _STATE="1"
+    _STATE="0"
 
     printf "%s" "$_host_ip"
 
