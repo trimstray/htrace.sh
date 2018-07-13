@@ -50,6 +50,10 @@ function __main__() {
   time_tracking="false"
   export _cmdtime_state="0"
 
+  # Default 'domain' variables.
+  local domain_state="0"
+  local domain_type=""
+
   # We place here used commands at script runtime, as strings to anything
   # unnecessarily run.
   readonly commands=(basename dirname stat ps date grep cut sed awk chown \
@@ -105,8 +109,8 @@ function __main__() {
 
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
-  local _short_opt=""
-  local _long_opt="help,debug,verbose"
+  local _short_opt="d:"
+  local _long_opt="help,verbose,domain:"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -136,17 +140,19 @@ function __main__() {
 
         shift ; _exit_ "0" ;;
 
-      --debug)
-
-        export stdout_mode="debug"
-
-        shift ;;
-
       --verbose)
 
         export verbose_mode="true"
 
         shift ;;
+
+      -d|--domain)
+
+        export domain_state=1
+
+        export domain_type="${2}"
+
+        shift 2 ;;
 
       *)
 
@@ -194,7 +200,7 @@ function __main__() {
   # or selected parameters without which the script can not work properly
   # have been used. Do not add the load_state variable to the _opt_values array,
   # which is supported above.
-  _opt_values=()
+  _opt_values=("domain_state" "domain_type")
 
   # Checking the value of the variables (if they are unset or empty):
   #   - variables for call parameters
