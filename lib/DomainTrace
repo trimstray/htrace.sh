@@ -58,6 +58,10 @@ function DomainTrace() {
     _local_socket="${_local_ip}:${_local_port}"
     _remote_socket="${_remote_ip}:${_remote_port}"
 
+    # Convert times.
+    _time_total=$(echo "$_time_total" | tr ',' '.')
+    _time_connect=$(echo "$_time_connect" | tr ',' '.')
+
     # Convert _http_version value.
     if [[ "$_http_version" == "2" ]] ; then _http_version="2.0" ; fi
 
@@ -65,7 +69,8 @@ function DomainTrace() {
     _STATE="0"
 
     # shellcheck disable=SC2086,SC2154
-    printf '\e['${s_trgb}'m    %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m\n' \
+    printf '\e['${s_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m\n' \
+           "$_req_num" \
            "$_time_total" \
            "$_time_connect" \
            "$_local_socket" \
