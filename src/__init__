@@ -258,6 +258,7 @@ function __main__() {
   local d_trgb="4;1;36"
   local c_trgb="1;1;30"
   local h_trgb="1;1;34"
+  local l_trgb="0;0;30"
 
   # shellcheck disable=SC2154
   printf '\n    %s %s\n\n' \
