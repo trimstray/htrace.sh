@@ -254,15 +254,14 @@ function __main__() {
 
   # shellcheck disable=SC2034
   # Set default colors for printf.
-  local v_trgb="1;2;31"
-  local s_trgb="1;1;38"
+  local v_trgb="0;1;33"
   local d_trgb="4;1;36"
-  # local c_trgb="1;1;30"
+  local c_trgb="1;1;30"
   local h_trgb="1;1;34"
-  local l_trgb="0;0;30"
 
   # shellcheck disable=SC2154
-  printf '\n    \e['${s_trgb}'m%s\e[m \e['${v_trgb}'mv%s\e[m\n\n' "$_init_name" "$_version"
+  printf '\n    %s %s\n\n' \
+         "$_init_name" "$_version"
 
   # Show http(s) domain trace.
   printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
@@ -306,11 +305,11 @@ function __main__() {
 
   done
 
-  printf '\e['${l_trgb}'m    %-4.6s %-12.10s\e[m\n' \
+  printf '\e['${c_trgb}'m    %-4.6s %-12.10s\e[m\n' \
          "   " \
          "--------"
 
-  printf '\e['${l_trgb}'m    %-4.6s %-12.10s\e[m\n' \
+  printf '\e['${c_trgb}'m    %-4.6s %-12.10s\e[m\n' \
          "   " \
          "$_full_conn_time"
 
