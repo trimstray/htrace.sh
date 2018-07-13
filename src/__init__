@@ -230,8 +230,8 @@ function __main__() {
   fi
 
   # Set default colors for printf.
-  s_trgb="1;0;30"
-  c_trgb="2;1;34"
+  local s_trgb="1;0;30"
+  local c_trgb="2;1;34"
 
   # Extract the protocol (includes trailing "://").
   _domain_proto=$(echo "$domain_type" | sed -nr 's,^(.*://).*,\1,p')
@@ -248,9 +248,9 @@ function __main__() {
   _domain_name=$(echo "${_domain_url/$_domain_path/}")
 
   # First header - show domain values.
-  printf '\e['${s_trgb}'m%s:\e[m \e['${c_trgb}'m%s\e[m\n' "   url" "$_domain_url"
-  printf '\e['${s_trgb}'m%s:\e[m \e['${c_trgb}'m%s\e[m\n' "domain" "$_domain_name"
+  printf '\e['${s_trgb}'m%s:\e[m \e['${c_trgb}'m%s%s\e[m\n' "   url" "$_domain_proto" "$_domain_url"
   printf '\e['${s_trgb}'m%s:\e[m \e['${c_trgb}'m%s\e[m\n' " proto" "$_domain_proto"
+  printf '\e['${s_trgb}'m%s:\e[m \e['${c_trgb}'m%s\e[m\n' "domain" "$_domain_name"
   printf '\e['${s_trgb}'m%s:\e[m \e['${c_trgb}'m%s\e[m\n' "  path" "$_domain_path"
 
   # shellcheck disable=SC2034
@@ -259,6 +259,41 @@ function __main__() {
 
   # Check connection to domain.
   # CheckConn "$_domain_ip" "443"
+
+  # Start tracing.
+  local _http_code="300"
+
+  # Set -d|--domain value to variable.
+  local _http_redirect="${_domain_proto}${_domain_name}"
+
+  local h_trgb="1;1;34"
+  local l_trgb="1;0;30"
+
+  printf '\n\e['${h_trgb}'m    %-12.10s %-15.12s %-22.22s %-22.22s %-5.10s %-5.10s %s\e[m' \
+         "time_total" \
+         "time_connect" \
+         "local_socket" \
+         "remote_socket" \
+         "ver" \
+         "code" \
+         "next_hop"
+
+  printf '\n\e['${l_trgb}'m    %-12.10s %-15.12s %-22.22s %-22.22s %-5.10s %-5.10s %s\e[m\n' \
+         "----------" \
+         "------------" \
+         "------------" \
+         "-------------" \
+         "---" \
+         "----" \
+         "--------"
+
+  while [[ ${_http_code} =~ ^3[0-9]{2}$ ]] ; do
+
+    DomainTrace "$_http_redirect"
+
+  done
+
+  echo
 
   # ````````````````````````````````````````````````````````````````````````````
 
