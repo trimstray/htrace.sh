@@ -229,6 +229,37 @@ function __main__() {
 
   fi
 
+  # Set default colors for printf.
+  s_trgb="1;0;30"
+  c_trgb="2;1;34"
+
+  # Extract the protocol (includes trailing "://").
+  _domain_proto=$(echo "$domain_type" | sed -nr 's,^(.*://).*,\1,p')
+
+  # shellcheck disable=SC2116
+  # Remove the protocol from the URL.
+  _domain_url=$(echo "${domain_type/$_domain_proto/}")
+
+  # Extract the path (includes leading "/" or ":").
+  _domain_path=$(echo "$_domain_url" | sed -nr 's,[^/:]*([/:].*),\1,p')
+
+  # shellcheck disable=SC2116
+  # Remove the path from the URL.
+  _domain_name=$(echo "${_domain_url/$_domain_path/}")
+
+  # First header - show domain values.
+  printf '\e['${s_trgb}'m%s:\e[m \e['${c_trgb}'m%s\e[m\n' "   url" "$_domain_url"
+  printf '\e['${s_trgb}'m%s:\e[m \e['${c_trgb}'m%s\e[m\n' "domain" "$_domain_name"
+  printf '\e['${s_trgb}'m%s:\e[m \e['${c_trgb}'m%s\e[m\n' " proto" "$_domain_proto"
+  printf '\e['${s_trgb}'m%s:\e[m \e['${c_trgb}'m%s\e[m\n' "  path" "$_domain_path"
+
+  # shellcheck disable=SC2034
+  # Resolve -d|--domain param value - if host.
+  _domain_ip=$(DomainResolve "$_domain_name")
+
+  # Check connection to domain.
+  # CheckConn "$_domain_ip" "443"
+
   # ````````````````````````````````````````````````````````````````````````````
 
   if [[ "$time_tracking" == "true" ]] ; then
