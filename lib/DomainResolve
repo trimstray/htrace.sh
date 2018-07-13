@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainResolve()
+#
+# Description:
+#   Resolve domain name.
+#
+# Usage:
+#   DomainResolve domain
+#
+# Examples:
+#   DomainResolve example.com
+#
+
+function DomainResolve() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainResolve"
+  local _STATE=0
+
+  local _host="$1"
+  local _host_ip=""
+
+  # shellcheck disable=SC2154
+  _host_ip=$(timeout 5 dig "$_host" | \
+             awk '/^;; ANSWER SECTION:$/ { getline ; print $5 }')
+
+  if [[ -z "$_host_ip" ]] ; then
+
+    # shellcheck disable=SC2034
+    _STATE="1"
+
+    _logger "stop" \
+      "${_FUNCTION_ID}()" \
+      "not properly resolve $_host"
+
+  else
+
+    # shellcheck disable=SC2034
+    _STATE="1"
+
+    printf "%s" "$_host_ip"
+
+    _logger "info" \
+      "${_FUNCTION_ID}()" \
+      "properly resolve $_host to $_host_ip"
+
+  fi
+
+}
