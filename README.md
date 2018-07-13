@@ -22,7 +22,6 @@
 
 <p align="center">
    <a href="#description">Description</a>
- • <a href="#introduction">Introduction</a>
  • <a href="#how-to-use">How To Use</a>
  • <a href="#parameters">Parameters</a>
  • <a href="#requirements">Requirements</a>
@@ -40,6 +39,62 @@
 </div>
 
 <br>
+
+## Description
+
+Simple shell script to debugging http(s) traffic tracing. It is useful for redirects analysis, eg. to eliminate redirect loops.
+
+## How To Use
+
+It's simple:
+
+```bash
+# Clone this repository
+git clone https://github.com/trimstray/htrace.sh
+
+# Go into the repository
+cd htrace.sh
+
+# Install
+./setup.sh install
+
+# Run the app
+htrace.sh --domain https://google.com
+```
+
+> * symlink to `bin/htrace.sh` is placed in `/usr/local/bin`
+> * man page is placed in `/usr/local/man/man8`
+
+## Parameters
+
+Provides the following options:
+
+```bash
+  Usage:
+    htrace.sh <option|long-option>
+
+  Examples:
+    htrace.sh --domain https://google.com
+
+  Options:
+        --help                        show this message
+        --domain <domain_name>        set domain name
+```
+
+## Requirements
+
+**<u>htrace.sh</u>** uses external utilities to be installed before running:
+
+- [curl](https://curl.haxx.se/)
+
+This tool working with:
+
+- **GNU/Linux** (testing on Debian and CentOS)
+- **Bash** (testing on 4.4.19)
+
+Also you will need **root access**.
+
+## Other
 
 ### Contributing
 
