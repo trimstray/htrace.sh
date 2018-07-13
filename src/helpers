@@ -570,8 +570,7 @@ function _help_() {
 
   Options:
         --help                        show this message
-        --debug                       displays information on the screen (debug mode)
-        --verbose                     displays more information about TOR processes
+        --domain <domain_name>        set domain name
 
 
   This program comes with ABSOLUTELY NO WARRANTY.
