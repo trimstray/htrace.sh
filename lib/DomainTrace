@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainTrace()
+#
+# Description:
+#   Trace domain.
+#
+# Usage:
+#   DomainTrace domain
+#
+# Examples:
+#   DomainTrace example.com
+#
+
+function DomainTrace() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainTrace"
+  local _STATE=0
+
+  local _host="$1"
+
+  local _timeout="15"
+
+  _http_output=$(curl -ks -m $_timeout \
+    -H 'Connection: keep-alive' \
+    -H 'Upgrade-Insecure-Requests: 1' \
+    -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
+    -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7' \
+    -w '%{time_total}:%{time_connect}:%{http_code}:%{http_version}:%{redirect_url}' \
+    -o /dev/null --compressed "$_host")
+
+  if [[ -z "$_http_output" ]] ; then
+
+    # shellcheck disable=SC2034
+    _STATE="1"
+
+    _logger "stop" \
+      "${_FUNCTION_ID}()" \
+      "get redirect error"
+
+  else
+
+    _time_total=$(echo "$_http_output" | cut -d ":" -f1)
+    _time_connect=$(echo "$_http_output" | cut -d ":" -f2)
+    _http_code=$(echo "$_http_output" | cut -d ":" -f3)
+    _http_version=$(echo "$_http_output" | cut -d ":" -f4)
+    _http_redirect=$(echo "$_http_output" | cut -d ":" -f5-)
+
+    # shellcheck disable=SC2034
+    _STATE="0"
+
+    printf "\\e[1;38m    %-15.15s %-15.15s %-5.15s %-5.15s %s\\n" \
+           "$_time_total" \
+           "$_time_connect" \
+           "$_http_code" \
+           "$_http_version" \
+           "$_http_redirect"
+
+    # printf "%s [%s] -> %s\\n" "$_host" "$_http_code" "$_http_redirect"
+
+    _logger "info" \
+      "${_FUNCTION_ID}()" \
+      "get redirect: $_http_output"
+
+  fi
+
+  return $_STATE
+
+}
