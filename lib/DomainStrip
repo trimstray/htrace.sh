@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainStrip()
+#
+# Description:
+#   Strip domain name (.
+#
+# Usage:
+#   DomainStrip domain
+#
+# Examples:
+#   DomainStrip example.com
+#
+
+function DomainStrip() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainStrip"
+  local _STATE=0
+
+  local _host="$1"
+
+  # Extract the protocol (includes trailing "://").
+  _domain_proto=$(echo "$_host" | sed -nr 's,^(.*://).*,\1,p')
+
+  # shellcheck disable=SC2116
+  # Remove the protocol from the URL.
+  _domain_url=$(echo "${_host/$_domain_proto/}")
+
+  # Extract the path (includes leading "/" or ":").
+  _domain_path=$(echo "$_domain_url" | sed -nr 's,[^/:]*([/:].*),\1,p')
+
+  # shellcheck disable=SC2116
+  # Remove the path from the URL.
+  _domain_name=$(echo "${_domain_url/$_domain_path/}")
+
+  # shellcheck disable=SC2034
+  # Resolve -d|--domain param value - if host.
+  _domain_ip=$(DomainResolve "$_domain_name")
+
+  return $_STATE
+
+}
