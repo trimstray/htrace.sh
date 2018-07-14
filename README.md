@@ -30,7 +30,7 @@ It is useful for:
 
 - redirects analysis, eg. to eliminate redirect loops
 - checking properly web servers/reverse proxies configuration
-- checking headers for each query
+- checking response headers for each query
 
 ## How To Use
 
