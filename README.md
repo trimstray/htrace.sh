@@ -65,7 +65,8 @@ Provides the following options:
 
   Options:
         --help                        show this message
-        --domain <domain_name>        set domain name
+        -d|--domain <domain_name>     set domain name
+        -h|--headers                  show response headers
 ```
 
 ## Contributing
