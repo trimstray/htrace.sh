@@ -119,7 +119,9 @@ function DomainTrace() {
         -H 'Upgrade-Insecure-Requests: 1' \
         -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
         -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7' \
-        --compressed "$_host" | sed -e 's/^[ \t]*/         › /' | sed 's/\r//' | grep "› ."
+        --compressed "$_host" \
+        | sed -e 's/^[ \t]*/         › /' \
+        | sed 's/\r//' | grep "› ."
 
     fi
 
