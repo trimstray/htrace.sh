@@ -111,6 +111,14 @@ function DomainTrace() {
            "$_http_code" \
            "$_http_redirect"
 
+    if [[ "$_http_scheme" == "HTTPS" ]] ; then
+
+      DomainStrip "$_host"
+
+      SslCheck "$_host"
+
+    fi
+
     if [[ "$headers_state" -eq 1 ]] ; then
 
       echo
