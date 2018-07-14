@@ -2,26 +2,20 @@
 .\" Contact trimstray@gmail.com.
 .TH man 8 "12.07.2018" "1.0.0" "htrace.sh man page"
 .SH NAME
-htrace.sh \- simple shell script to debugging http(s) traffic tracing.
+htrace.sh \- simple shell script to debugging http/https traffic tracing.
 .SH SYNOPSIS
 htrace.sh <option|long-option>
 .SH DESCRIPTION
-htrace.sh is a simple shell script to debugging http(s) traffic tracing.
+htrace.sh is a simple shell script to debugging http/https traffic tracing.
 .SH OPTIONS
 --help
         show this message
 
---debug
-        displays information on the screen (debug mode)
+-d|--domain <domain_name>
+        set domain name
 
---verbose
-        displays 'info' messages on the screen (verbose mode)
-
---time
-        displays execution time, occurs only with --verbose
-
--c, --config <file>
-        attach an external config file to the script
+-h|--headers
+        show response headers
 .SH SEE ALSO
 https://github.com/trimstray/htrace.sh
 .SH BUGS

@@ -56,6 +56,9 @@ function __main__() {
   local domain_state="0"
   local domain_type=""
 
+  # Default 'headers' variable.
+  local headers_state="0"
+
   # We place here used commands at script runtime, as strings to anything
   # unnecessarily run.
   readonly commands=(basename dirname stat ps date grep cut sed awk chown \
@@ -111,8 +114,8 @@ function __main__() {
 
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
-  local _short_opt="d:"
-  local _long_opt="help,domain:"
+  local _short_opt="d:h"
+  local _long_opt="help,domain:,headers"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -149,6 +152,12 @@ function __main__() {
         export domain_type="${2}"
 
         shift 2 ;;
+
+      -h|--headers)
+
+        export headers_state=1
+
+        shift ;;
 
       *)
 
@@ -246,9 +255,6 @@ function __main__() {
   # Check connection to domain.
   # CheckConn "$_domain_ip" "443"
 
-  # Start tracing.
-  local _http_code="300"
-
   # Set -d|--domain value to variable.
   local _http_redirect="${_domain_proto}${_domain_name}${_domain_path}"
 
@@ -271,26 +277,34 @@ function __main__() {
   # printf '\n         \e['${c_trgb}'m%s\e[m\n' \
   #        "$_domain_ip"
 
-  printf '\n\e['${h_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m' \
-         "req" \
-         "time_total" \
-         "time_connect" \
-         "local_socket" \
-         "remote_socket" \
-         "http" \
-         "code" \
-         "next_hop"
+  if [[ "$headers_state" -ne 1 ]] ; then
 
-  printf '\n\e['${l_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m\n' \
-         "---" \
-         "----------" \
-         "------------" \
-         "------------" \
-         "-------------" \
-         "----" \
-         "----" \
-         "--------"
+    printf '\n\e['${h_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m' \
+           "req" \
+           "time_total" \
+           "time_connect" \
+           "local_socket" \
+           "remote_socket" \
+           "http" \
+           "code" \
+           "next_hop"
 
+    printf '\n\e['${l_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m\n' \
+           "---" \
+           "----------" \
+           "------------" \
+           "------------" \
+           "-------------" \
+           "----" \
+           "----" \
+           "--------"
+
+  fi
+
+  # Start tracing.
+  local _http_code="300"
+
+  # Temporary variables.
   local _req_num=0
   local _full_conn_time="0.000000"
 
