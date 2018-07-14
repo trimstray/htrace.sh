@@ -6,7 +6,7 @@
 # Function name: DomainStrip()
 #
 # Description:
-#   Strip domain name (.
+#   Strip domain name.
 #
 # Usage:
 #   DomainStrip domain
