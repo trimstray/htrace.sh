@@ -230,9 +230,6 @@ function __main__() {
   # Strip domain name.
   DomainStrip "$domain_type"
 
-  # Check connection to domain.
-  # CheckConn "$_domain_ip" "443"
-
   # shellcheck disable=SC2154
   # Set -d|--domain value to variable.
   local _http_redirect="${_domain_proto}${_domain_name}${_domain_path}"
