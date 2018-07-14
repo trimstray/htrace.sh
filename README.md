@@ -29,7 +29,8 @@
 It is useful for:
 
 - redirects analysis, eg. to eliminate redirect loops
-- check properly web servers/reverse proxies configuration
+- checking properly web servers/reverse proxies configuration
+- checking headers for each query
 
 ## How To Use
 
@@ -61,7 +62,7 @@ Provides the following options:
     htrace.sh <option|long-option>
 
   Examples:
-    htrace.sh --domain https://google.com
+    htrace.sh --domain https://example.com
 
   Options:
         --help                        show this message
