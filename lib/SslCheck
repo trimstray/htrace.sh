@@ -32,8 +32,6 @@ function SslCheck() {
   _ssl_params_cipher=$(echo "$_ssl_params" | grep "Cipher    :" | cut -d ":" -f2- | tr -d "[:space:]")
   # _ssl_params_cn=$(echo "$_ssl_params" | grep -o "/CN=.*" | cut -d "=" -f2- | tr -d "[:space:]")
 
-  local _d_trgb="2;2;34"
-
   if [[ "$_ssl_params_proto" = *"TLSv1"* ]] ; then
 
     local _ssl_trgb="0;0;32"
@@ -45,7 +43,9 @@ function SslCheck() {
   fi
 
   printf '         ssl: \e[1;1;32m%s\e[m, ' "on"
-  printf 'version(\e['${_ssl_trgb}'m%s\e[m), cipher(\e['${_d_trgb}'m%s\e[m)\n' \
+
+  # shellcheck disable=SC2086,SC2154
+  printf 'version(\e['${_ssl_trgb}'m%s\e[m), cipher(\e['${s_trgb}'m%s\e[m)\n' \
          "$_ssl_params_proto" \
          "$_ssl_params_cipher"
 
