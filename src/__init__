@@ -227,27 +227,13 @@ function __main__() {
 
   fi
 
-  # Extract the protocol (includes trailing "://").
-  _domain_proto=$(echo "$domain_type" | sed -nr 's,^(.*://).*,\1,p')
-
-  # shellcheck disable=SC2116
-  # Remove the protocol from the URL.
-  _domain_url=$(echo "${domain_type/$_domain_proto/}")
-
-  # Extract the path (includes leading "/" or ":").
-  _domain_path=$(echo "$_domain_url" | sed -nr 's,[^/:]*([/:].*),\1,p')
-
-  # shellcheck disable=SC2116
-  # Remove the path from the URL.
-  _domain_name=$(echo "${_domain_url/$_domain_path/}")
-
-  # shellcheck disable=SC2034
-  # Resolve -d|--domain param value - if host.
-  _domain_ip=$(DomainResolve "$_domain_name")
+  # Strip domain name.
+  DomainStrip "$domain_type"
 
   # Check connection to domain.
   # CheckConn "$_domain_ip" "443"
 
+  # shellcheck disable=SC2154
   # Set -d|--domain value to variable.
   local _http_redirect="${_domain_proto}${_domain_name}${_domain_path}"
 
