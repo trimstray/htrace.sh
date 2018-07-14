@@ -424,7 +424,7 @@ function _help_() {
     $_init_name <option|long-option>
 
   Examples:
-    $_init_name --verbose
+    $_init_name --domain https://example.com
 
   Options:
         --help                        show this message
