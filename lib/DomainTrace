@@ -68,6 +68,33 @@ function DomainTrace() {
     # shellcheck disable=SC2034
     _STATE="0"
 
+    # shellcheck disable=SC2154
+    if [[ "$headers_state" -eq 1 ]] ; then
+
+      # shellcheck disable=SC2086
+      printf '\n\e['${h_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m' \
+             "req" \
+             "time_total" \
+             "time_connect" \
+             "local_socket" \
+             "remote_socket" \
+             "http" \
+             "code" \
+             "next_hop"
+
+      # shellcheck disable=SC2086
+      printf '\n\e['${l_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m\n' \
+             "---" \
+             "----------" \
+             "------------" \
+             "------------" \
+             "-------------" \
+             "----" \
+             "----" \
+             "--------"
+
+    fi
+
     # shellcheck disable=SC2086,SC2154
     printf '\e['${s_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m\n' \
            "$_req_num" \
@@ -79,7 +106,18 @@ function DomainTrace() {
            "$_http_code" \
            "$_http_redirect"
 
-    # printf "%s [%s] -> %s\\n" "$_host" "$_http_code" "$_http_redirect"
+    if [[ "$headers_state" -eq 1 ]] ; then
+
+      echo
+
+      curl -Iks -m $_timeout \
+        -H 'Connection: keep-alive' \
+        -H 'Upgrade-Insecure-Requests: 1' \
+        -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
+        -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7' \
+        --compressed "$_host" | sed -e 's/^[ \t]*/      › /' | sed 's/\r//'
+
+    fi
 
     _logger "info" \
       "${_FUNCTION_ID}()" \
