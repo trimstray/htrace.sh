@@ -67,6 +67,20 @@ function DomainTrace() {
     # shellcheck disable=SC2154
     _full_conn_time="$( bc <<<"$_full_conn_time + $_time_total" | awk '{printf "%f", $0}')"
 
+    if [[ -z "$_remote_ip" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '\n    \e['${e_trgb}'m%s\e[m (%s)\n\n' "Connection error" "domain not resolved?"
+
+      # shellcheck disable=SC2034
+      _STATE="1"
+
+      _logger "stop" \
+        "${_FUNCTION_ID}()" \
+        "Connection error (domain not resolved?)"
+
+    fi
+
     # Convert _http_version value.
     if [[ "$_http_version" == "2" ]] ; then _http_version="2.0" ; fi
 
@@ -76,27 +90,17 @@ function DomainTrace() {
     # shellcheck disable=SC2154
     if [[ "$headers_state" -eq 1 ]] ; then
 
-      # shellcheck disable=SC2086
-      printf '\n\e['${h_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m' \
-             "req" \
-             "time_total" \
-             "time_connect" \
-             "local_socket" \
-             "remote_socket" \
-             "http" \
-             "code" \
-             "next_hop"
+      PrintfHeaders
 
-      # shellcheck disable=SC2086
-      printf '\n    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m\n' \
-             "---" \
-             "----------" \
-             "------------" \
-             "------------" \
-             "-------------" \
-             "----" \
-             "----" \
-             "--------"
+    else
+
+      if [[ "$_hcounter" -eq 1 ]] ; then
+
+        PrintfHeaders
+
+        _hcounter=0
+
+      fi
 
     fi
 
@@ -119,6 +123,7 @@ function DomainTrace() {
 
     fi
 
+    # shellcheck disable=SC2154
     if [[ "$headers_state" -eq 1 ]] ; then
 
       echo
