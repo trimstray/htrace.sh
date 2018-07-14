@@ -234,9 +234,13 @@ function __main__() {
   # Set -d|--domain value to variable.
   local _http_redirect="${_domain_proto}${_domain_name}${_domain_path}"
 
-  # shellcheck disable=SC2034
   # Set default colors for printf.
+  # shellcheck disable=SC2034
+  local e_trgb="1;1;31"
+  # shellcheck disable=SC2034
   local d_trgb="4;1;33"
+  # shellcheck disable=SC2034
+  local s_trgb="2;2;34"
   # shellcheck disable=SC2034
   local h_trgb="1;2;36"
   # shellcheck disable=SC2034
@@ -258,26 +262,10 @@ function __main__() {
   # shellcheck disable=SC2034
   local _full_conn_time="0.000000"
 
+  # shellcheck disable=SC2034
   local _hcounter=1
 
   while [[ ${_http_code} =~ ^3[0-9]{2}$ ]] ; do
-
-    # shellcheck disable=SC2154
-    if [[ "$headers_state" -eq 1 ]] ; then
-
-      PrintfHeaders
-
-    else
-
-      if [[ "$_hcounter" -eq 1 ]] ; then
-
-        PrintfHeaders
-
-        _hcounter=0
-
-      fi
-
-    fi
 
     # shellcheck disable=SC2034,SC2154
     _req_num=$((_req_num + 1))
