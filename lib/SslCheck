@@ -51,11 +51,11 @@ function SslCheck() {
 
   if [[ "$_ssl_params_verify" == " OK" ]] ; then
 
-    printf '         verification:\e[1;1;32m%s\e[m ' "$_ssl_params_verify"
+    printf '         verification:\e[1;1;32m%s\e[m\n' "$_ssl_params_verify"
 
   else
 
-    printf '         verification:\e[1;1;31m%s\e[m ' "$_ssl_params_verify"
+    printf '         verification:\e[1;1;31m%s\e[m\n' "$_ssl_params_verify"
 
   fi
 
