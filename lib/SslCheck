@@ -25,12 +25,12 @@ function SslCheck() {
   _ssl_domain_name="$_domain_name"
 
   _ssl_params=$(echo | \
-                openssl s_client -servername "$_ssl_domain_name" -connect "$_ssl_domain_name":443 2>/dev/null | \
-                grep "Protocol  :\\|Cipher    :\\|subject=")
+                openssl s_client -servername "$_ssl_domain_name" -connect "$_ssl_domain_name":443 2>/dev/null)
 
   _ssl_params_proto=$(echo "$_ssl_params" | grep "Protocol  :" | cut -d ":" -f2- | tr -d "[:space:]")
   _ssl_params_cipher=$(echo "$_ssl_params" | grep "Cipher    :" | cut -d ":" -f2- | tr -d "[:space:]")
   # _ssl_params_cn=$(echo "$_ssl_params" | grep -o "/CN=.*" | cut -d "=" -f2- | tr -d "[:space:]")
+  _ssl_params_verify=$(echo "$_ssl_params" | grep "Verification: \\|Verification error: " | cut -d ":" -f2-)
 
   if [[ "$_ssl_params_proto" = *"TLSv1"* ]] ; then
 
@@ -49,6 +49,16 @@ function SslCheck() {
          "$_ssl_params_proto" \
          "$_ssl_params_cipher"
 
-    return $_STATE
+  if [[ "$_ssl_params_verify" == " OK" ]] ; then
+
+    printf '         verification:\e[1;1;32m%s\e[m ' "$_ssl_params_verify"
+
+  else
+
+    printf '         verification:\e[1;1;31m%s\e[m ' "$_ssl_params_verify"
+
+  fi
+
+  return $_STATE
 
 }
