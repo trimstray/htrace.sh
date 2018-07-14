@@ -45,7 +45,7 @@ function SslCheck() {
   fi
 
   printf '         ssl: \e[1;1;32m%s\e[m, ' "on"
-  printf 'tls(\e['${_ssl_trgb}'m%s\e[m), cipher(\e['${_d_trgb}'m%s\e[m)\n' \
+  printf 'version(\e['${_ssl_trgb}'m%s\e[m), cipher(\e['${_d_trgb}'m%s\e[m)\n' \
          "$_ssl_params_proto" \
          "$_ssl_params_cipher"
 
