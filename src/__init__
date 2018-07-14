@@ -253,7 +253,6 @@ function __main__() {
 
   # shellcheck disable=SC2034
   # Set default colors for printf.
-  local l_trgb="0;0;30"
   local d_trgb="4;1;33"
   local h_trgb="1;2;36"
   # shellcheck disable=SC2034
@@ -282,7 +281,7 @@ function __main__() {
            "code" \
            "next_hop"
 
-    printf '\n\e['${l_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m\n' \
+    printf '\n    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m\n' \
            "---" \
            "----------" \
            "------------" \
