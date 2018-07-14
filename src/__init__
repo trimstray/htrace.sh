@@ -237,6 +237,7 @@ function __main__() {
   # shellcheck disable=SC2034
   # Set default colors for printf.
   local d_trgb="4;1;33"
+  # shellcheck disable=SC2034
   local h_trgb="1;2;36"
   # shellcheck disable=SC2034
   local c_trgb="1;1;38"
@@ -249,30 +250,6 @@ function __main__() {
   printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
          "$_domain_proto" "$_domain_name" "$_domain_path"
 
-  if [[ "$headers_state" -ne 1 ]] ; then
-
-    printf '\n\e['${h_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m' \
-           "req" \
-           "time_total" \
-           "time_connect" \
-           "local_socket" \
-           "remote_socket" \
-           "http" \
-           "code" \
-           "next_hop"
-
-    printf '\n    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m\n' \
-           "---" \
-           "----------" \
-           "------------" \
-           "------------" \
-           "-------------" \
-           "----" \
-           "----" \
-           "--------"
-
-  fi
-
   # Start tracing.
   local _http_code="300"
 
@@ -281,7 +258,26 @@ function __main__() {
   # shellcheck disable=SC2034
   local _full_conn_time="0.000000"
 
+  local _hcounter=1
+
   while [[ ${_http_code} =~ ^3[0-9]{2}$ ]] ; do
+
+    # shellcheck disable=SC2154
+    if [[ "$headers_state" -eq 1 ]] ; then
+
+      PrintfHeaders
+
+    else
+
+      if [[ "$_hcounter" -eq 1 ]] ; then
+
+        PrintfHeaders
+
+        _hcounter=0
+
+      fi
+
+    fi
 
     # shellcheck disable=SC2034,SC2154
     _req_num=$((_req_num + 1))
