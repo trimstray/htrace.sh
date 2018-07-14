@@ -62,6 +62,10 @@ function DomainTrace() {
     _time_total=$(echo "$_time_total" | tr ',' '.')
     _time_connect=$(echo "$_time_connect" | tr ',' '.')
 
+    # Set properly total time.
+    # shellcheck disable=SC2154
+    _full_conn_time="$( bc <<<"$_full_conn_time + $_time_total" | awk '{printf "%f", $0}')"
+
     # Convert _http_version value.
     if [[ "$_http_version" == "2" ]] ; then _http_version="2.0" ; fi
 
@@ -96,10 +100,10 @@ function DomainTrace() {
     fi
 
     # shellcheck disable=SC2086,SC2154
-    printf '\e['${s_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m\n' \
+    printf '\e['${c_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m\n' \
            "$_req_num" \
+           "$_full_conn_time" \
            "$_time_total" \
-           "$_time_connect" \
            "$_local_socket" \
            "$_remote_socket" \
            "$_http_version" \
@@ -115,7 +119,7 @@ function DomainTrace() {
         -H 'Upgrade-Insecure-Requests: 1' \
         -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
         -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7' \
-        --compressed "$_host" | sed -e 's/^[ \t]*/      › /' | sed 's/\r//'
+        --compressed "$_host" | sed -e 's/^[ \t]*/         › /' | sed 's/\r//' | grep "› ."
 
     fi
 
