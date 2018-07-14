@@ -335,148 +335,6 @@ function _sprintf() {
 }
 
 # ``````````````````````````````````````````````````````````````````````````````
-# Function name: _init_cmd()
-#
-# Description:
-#   Function executing given as a command parameter.
-#
-# Usage:
-#   _init_cmd "parameter"
-#
-# Examples:
-#   _init_cmd "eval cd /etc/init.d && ls"
-#
-
-function _init_cmd() {
-
-  local _FUNCTION_ID="_init_cmd"
-  local _STATE="0"
-
-  local _cmd="$1"
-
-  # Uncomment if you want to display executed commands.
-  # _sprintf "info" "init: \"$_cmd\""
-
-  _logger "info" \
-    "${_FUNCTION_ID}()" \
-    "init: $_cmd"
-
-  # Execute command and exit save to file.
-  # shellcheck disable=SC2154
-  $_cmd >>"$_log_stdout" 2>&1 &
-
-  # We keep pid of the last command.
-  _pid="$!"
-
-  # When the '(command) &' command is performed.
-  _sprintf "spin" "$_pid"
-
-  # Very important line:
-  # We define the state of the output job from the background.
-  wait "$_pid" &>/dev/null && _state="0" || _state="1"
-
-  if [[ "$_state" -eq 0 ]] ; then
-
-    _logger "info" \
-      "${_FUNCTION_ID}()" \
-      "result: pass"
-
-  else
-
-    _sprintf "stop" "result: fail"
-
-    _logger "stop" \
-      "${_FUNCTION_ID}()" \
-      "result: fail"
-
-  fi
-
-  _STATE="$_state"
-
-  return "$_STATE"
-
-}
-
-# ``````````````````````````````````````````````````````````````````````````````
-# Function name: _init_function()
-#
-# Description:
-#   It deals with launching functions:
-#     - creates a simple environment for the functions you perform
-#     - operates on message to display and command to execute
-#
-# Usage:
-#   _init_function function_name params
-#
-# Examples:
-#   _init_function "CheckConn 172.20.20.50 22"
-#
-
-function _init_function() {
-
-  local _FUNCTION_ID="_init_function"
-  local _STATE="0"
-
-  local _args=("$@")
-
-  local _cmd_begtime="0"
-  local _cmd_endtime="0"
-  local _cmd_totaltime="0"
-
-  _logger "info" \
-    "${_FUNCTION_ID}()" \
-    "init function: '${_args[*]}'"
-
-  # In these two variables we store the message to display
-  # and the command to execute.
-  export _msg_args=()
-  export _cmd_args=()
-
-  eval "${_args[@]}" ; if [ ! $? ] ; then _exit_ 255 ; fi
-
-  _num="${#_msg_args[@]}"
-  for (( _xa="0" ; _xa<=((_num - 1)) ; _xa++ )) ; do
-
-    _msg="${_msg_args[$_xa]}"
-    _full_command="${_cmd_args[$_xa]}"
-
-    _sprintf "info" "$_msg"
-
-    _logger "info" \
-      "${_FUNCTION_ID}()" \
-      "$_msg"
-
-    _cmd_begtime=$(date +%s)
-
-    _init_cmd "$_full_command" ; if [ ! "$?" ] ; then _exit_ 255 ; fi
-
-    _cmd_endtime=$(date +%s)
-
-    # shellcheck disable=SC2154
-    if [[ "$time_mode" -eq 1 ]] && [[ "$_cmdtime_state" -eq 1 ]] ; then
-
-      _cmd_totaltime=$((_cmd_endtime - _cmd_begtime))
-
-      _cmd_totaltime_out=$(printf '%dh:%dm:%ds' \
-      $((_cmd_totaltime/3600)) $((_cmd_totaltime%3600/60)) $((_cmd_totaltime%60)))
-
-      _sprintf "info" "time: $_cmd_totaltime_out"
-
-      _logger "info" \
-        "${_FUNCTION_ID}()" \
-        "time: $_cmd_totaltime_out"
-
-    fi
-
-  done
-
-  _cmdtime_state="0"
-
-  return "$_STATE"
-
-}
-
-# ``````````````````````````````````````````````````````````````````````````````
 # Function name: _load()
 #
 # Description:
@@ -570,7 +428,8 @@ function _help_() {
 
   Options:
         --help                        show this message
-        --domain <domain_name>        set domain name
+        -d|--domain <domain_name>     set domain name
+        -h|--headers                  show response headers
 
 
   This program comes with ABSOLUTELY NO WARRANTY.
@@ -610,6 +469,7 @@ function _before_init() {
     "${_FUNCTION_ID}()" \
     "directory change error: '$_init_directory'"
 
+  # shellcheck disable=SC2154
   : >"$_log_stdout"
 
   return $_STATE
