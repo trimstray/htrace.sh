@@ -249,9 +249,6 @@ function __main__() {
   printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
          "$_domain_proto" "$_domain_name" "$_domain_path"
 
-  # printf '\n         \e['${c_trgb}'m%s\e[m\n' \
-  #        "$_domain_ip"
-
   if [[ "$headers_state" -ne 1 ]] ; then
 
     printf '\n\e['${h_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m' \
