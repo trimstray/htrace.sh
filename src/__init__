@@ -55,6 +55,9 @@ function __main__() {
   # Default 'headers' variable.
   local headers_state="0"
 
+  # Set redirects limit.
+  local _redirects=10
+
   # We place here used commands at script runtime, as strings to anything
   # unnecessarily run.
   readonly commands=(basename dirname stat ps date grep cut sed awk chown \
@@ -263,18 +266,33 @@ function __main__() {
   local _full_conn_time="0.000000"
 
   # shellcheck disable=SC2034
+  local _rcounter=1
+  # shellcheck disable=SC2034
   local _hcounter=1
 
   while [[ ${_http_code} =~ ^3[0-9]{2}$ ]] ; do
 
-    # shellcheck disable=SC2034,SC2154
-    _req_num=$((_req_num + 1))
+    # Prevention of redirection loops.
+    if [[ "$_rcounter" -le "$_redirects" ]] ; then
 
-    DomainTrace "$_http_redirect"
+      # shellcheck disable=SC2034,SC2154
+      _req_num=$((_req_num + 1))
+
+      DomainTrace "$_http_redirect"
+
+    fi
+
+    _rcounter=$((_rcounter + 1))
 
   done
 
   echo
+
+  if [[ "$_rcounter" -ne "$_redirects" ]] ; then
+
+    printf '    Redirects loop prevention: limit is \e['${e_trgb}'m%s\e[m\n\n' "$_redirects"
+
+  fi
 
   # ````````````````````````````````````````````````````````````````````````````
 
