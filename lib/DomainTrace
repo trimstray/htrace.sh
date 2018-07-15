@@ -25,7 +25,7 @@ function DomainTrace() {
 
   local _timeout="15"
 
-  _http_output=$(curl -ks -m $_timeout \
+  _http_output=$(curl -ks -X GET -m $_timeout \
     -H 'Connection: keep-alive' \
     -H 'Upgrade-Insecure-Requests: 1' \
     -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
@@ -128,7 +128,7 @@ function DomainTrace() {
 
       echo
 
-      curl -Iks -m $_timeout \
+      curl -Iks -X GET -m $_timeout \
         -H 'Connection: keep-alive' \
         -H 'Upgrade-Insecure-Requests: 1' \
         -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
