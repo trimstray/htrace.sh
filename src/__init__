@@ -23,6 +23,8 @@ function __main__() {
   readonly _log_stdout="${_log_directory}/stdout.log"
   readonly _log_path="${_log_directory}/${_log_file}"
 
+  readonly _scan_output="${_log_directory}/scan.out"
+
   # We check if we are a root user.
   if [[ "$EUID" -ne 0 ]] ; then
 
@@ -54,6 +56,10 @@ function __main__() {
 
   # Default 'headers' variable.
   local headers_state="0"
+
+  # Default 'domain' variables.
+  local scan_state="0"
+  local scan_type=""
 
   # Set redirects limit.
   local _redirects=10
@@ -110,8 +116,8 @@ function __main__() {
 
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
-  local _short_opt="d:h"
-  local _long_opt="help,domain:,headers"
+  local _short_opt="d:hs:"
+  local _long_opt="help,domain:,headers,scan:"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -154,6 +160,14 @@ function __main__() {
         export headers_state=1
 
         shift ;;
+
+      -s|--scan)
+
+        export scan_state=1
+
+        export scan_type="${2}"
+
+        shift 2 ;;
 
       *)
 
@@ -248,13 +262,23 @@ function __main__() {
   local h_trgb="1;2;36"
   # shellcheck disable=SC2034
   local c_trgb="1;1;38"
+  # shellcheck disable=SC2034
+  local p_trgb="2;2;37"
+  # shellcheck disable=SC2034
+  local p2_trgb="2;0;37"
 
   # shellcheck disable=SC2154
   printf '\n    %s %s\n\n' \
          "$_init_name" "$_version"
 
+  # Get external IP.
+  # shellcheck disable=SC2155
+  local _external_ip=$(curl -ks -X GET http://ipinfo.io/ip)
+
+  printf '\n    External IP: \e['${c_trgb}'m%s\e[m\n\n' "$_external_ip"
+
   # Show http(s) domain trace.
-  printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
+  printf '\n    SCAN URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
          "$_domain_proto" "$_domain_name" "$_domain_path"
 
   # Start tracing.
@@ -288,6 +312,8 @@ function __main__() {
       # shellcheck disable=SC2034,SC2154
       _req_num=$((_req_num + 1))
 
+      _http_last="$_http_redirect"
+
       DomainTrace "$_http_redirect"
 
       _rcounter=$((_rcounter + 1))
@@ -297,6 +323,16 @@ function __main__() {
   done
 
   echo
+
+  if [[ "$scan_state" -eq 1 ]] ; then
+
+    DomainStrip "$_http_last"
+
+    _init_function "DomainScan \"$_domain_name\""
+
+    echo
+
+  fi
 
   # ````````````````````````````````````````````````````````````````````````````
 
