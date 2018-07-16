@@ -30,10 +30,10 @@ It is useful for:
 
 - checking properly web servers/reverse proxies domain configuration
 - redirects analysis, eg. to eliminate redirect loops
-- checking response headers for each query
+- checking response headers for each request
 - scanning domain with external security tools like **Mozilla Observatory** and **SSL Labs API**
 
-  > Before use **htrace.sh** please install above tools.
+  > Before use **htrace.sh** please see **[Requirements](#requirements)**.
 
 ## How To Use
 
@@ -70,6 +70,7 @@ This tool working with:
 - **GNU/Linux** (testing on Debian and CentOS)
 - **[Bash](https://www.gnu.org/software/bash/)** (testing on 4.4.19)
 - **[Curl](https://curl.haxx.se/)** with specific variables support (≥ 7.52.0)
+- **[OpenSSL](https://www.openssl.org/)**
 - **[Mozilla Observatory](https://github.com/mozilla/http-observatory)**
 - **[Ssllabs](https://github.com/ssllabs/ssllabs-scan)**
 
