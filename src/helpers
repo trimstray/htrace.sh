@@ -215,17 +215,22 @@ function _sprintf() {
   if [[ "$_s_type" == "head" ]] ; then
 
     s_char="+"
-    s_trgb="1;32"
+    s_trgb="1;1;33"
 
   elif [[ "$_s_type" == "info" ]] ; then
 
-    s_char="-"
-    s_trgb="0;33"
+    s_char="•"
+    s_trgb="1;0;32"
+
+  elif [[ "$_s_type" == "pass" ]] ; then
+
+    s_char="•"
+    s_trgb="1;0;32"
 
   elif [[ "$_s_type" == "warn" ]] ; then
 
     s_char="!"
-    s_trgb="1;37"
+    s_trgb="0;37"
 
   elif [[ "$_s_type" == "stop" ]] ; then
 
@@ -247,7 +252,7 @@ function _sprintf() {
       # Process id of the previous running command.
       local _pid="$_s_info"
 
-      local _sc='-\|/'
+      local _sc='░▒▓█'
 
       # Verify that the process is still running.
       local _n="0"
@@ -256,8 +261,16 @@ function _sprintf() {
       while [[ $(ps a | awk '{print $1}' | grep -w "$_pid") ]] ; do
 
         _n=$(( ( _n + 1 ) % 4 ))
-        printf "\\r[%s]" "${_sc:_n:1}"
+        printf "\\r » %s" "${_sc:_n:1}"
         sleep 0.1
+
+        _tmp=$(ps a | awk '{print $1}' | grep -w "$_pid")
+
+        if [[ -z "$_tmp" ]] ; then
+
+          printf "\\r%s" \
+                 "                                                             "
+        fi
 
       done
 
@@ -329,6 +342,143 @@ function _sprintf() {
     fi
 
   fi
+
+  # shellcheck disable=SC2154
+  sed 's/^/         › /' "$_scan_output" | \
+  sed 's/\r//' | grep "› ."
+
+  echo
+
+  # shellcheck disable=SC2154
+  : >"$_scan_output"
+
+  tput sgr0
+
+  return "$_STATE"
+
+}
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: _init_cmd()
+#
+# Description:
+#   Function executing given as a command parameter.
+#
+# Usage:
+#   _init_cmd "parameter"
+#
+# Examples:
+#   _init_cmd "eval cd /etc/init.d && ls"
+#
+
+function _init_cmd() {
+
+  local _FUNCTION_ID="_init_cmd"
+  local _STATE="0"
+
+  local _cmd="$1"
+
+  # Uncomment if you want to display executed commands.
+  # _sprintf "info" "init: \"$_cmd\""
+
+  _logger "info" \
+    "${_FUNCTION_ID}()" \
+    "init: $_cmd"
+
+  # Execute command and exit save to file.
+  # shellcheck disable=SC2154
+  $_cmd >>"$_scan_output" 2>&1 &
+
+  # We keep pid of the last command.
+  _pid="$!"
+
+  # When the '(command) &' command is performed.
+  _sprintf "spin" "$_pid"
+
+  # Very important line:
+  # We define the state of the output job from the background.
+  wait "$_pid" &>/dev/null && _state="0" || _state="1"
+
+  if [[ "$_state" -eq 0 ]] ; then
+
+    _logger "info" \
+      "${_FUNCTION_ID}()" \
+      "result: pass"
+
+  else
+
+    _sprintf "stop" "result: fail"
+
+    _logger "stop" \
+      "${_FUNCTION_ID}()" \
+      "result: fail"
+
+  fi
+
+  _STATE="$_state"
+
+  return "$_STATE"
+
+}
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: _init_function()
+#
+# Description:
+#   It deals with launching functions:
+#     - creates a simple environment for the functions you perform
+#     - operates on message to display and command to execute
+#
+# Usage:
+#   _init_function function_name params
+#
+# Examples:
+#   _init_function "CheckConn 172.20.20.50 22"
+#
+
+function _init_function() {
+
+  local _FUNCTION_ID="_init_function"
+  local _STATE="0"
+
+  _kstate=0
+
+  local _args=("$@")
+
+  _logger "info" \
+    "${_FUNCTION_ID}()" \
+    "init function: '${_args[*]}'"
+
+  # In these two variables we store the message to display
+  # and the command to execute.
+  export _msg_args=()
+  export _cmd_args=()
+
+  eval "${_args[@]}" ; if [ ! $? ] ; then _exit_ 255 ; fi
+
+  _num="${#_msg_args[@]}"
+  for (( _xa="0" ; _xa<=((_num - 1)) ; _xa++ )) ; do
+
+    _msg="${_msg_args[$_xa]}"
+    _full_command="${_cmd_args[$_xa]}"
+
+    # _sprintf "info" "$_msg"
+    _msg_x=$(echo "$_msg" | cut -d ":" -f1)
+    _msg_y=$(echo "$_msg" | cut -d ":" -f2-)
+    # shellcheck disable=SC2086,SC2154
+    printf '    \e['${c_trgb}'m%s\e[m \e['${p_trgb}'m(%s)\e[m\n\n' \
+           "$_msg_x" "$_msg_y"
+
+    _logger "info" \
+      "${_FUNCTION_ID}()" \
+      "$_msg"
+
+    _init_cmd "$_full_command"
+
+    # shellcheck disable=SC2034
+    if [ ! "$?" ] ; then _kstate=255 ; fi
+
+  done
 
   return "$_STATE"
 
@@ -430,6 +580,8 @@ function _help_() {
         --help                        show this message
         -d|--domain <domain_name>     set domain name
         -h|--headers                  show response headers
+        -s|--scan                     scan domain with external security tools
+                                      (Mozilla Observatory and Ssllabs)
 
 
   This program comes with ABSOLUTELY NO WARRANTY.
@@ -500,6 +652,9 @@ function _after_init() {
   _logger "stop" \
     "${_FUNCTION_ID}()" \
     "directory change error: '$_init_directory'"
+
+  # shellcheck disable=SC2154
+  : >"$_scan_output"
 
   return $_STATE
 
