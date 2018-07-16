@@ -33,6 +33,8 @@ It is useful for:
 - checking response headers for each query
 - scanning domain with external security tools like **Mozilla Observatory** and **SSL Labs API**
 
+  > Before use **htrace.sh** please install above tools.
+
 ## How To Use
 
 It's simple:
