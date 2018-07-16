@@ -22,22 +22,26 @@ function PrintfHeaders() {
   local _STATE=0
 
   # shellcheck disable=SC2086,SC2154
-  printf '\n\e['${h_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m' \
+  printf '\n\e['${h_trgb}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-16.22s %-20.22s %-7.7s %-5.5s %-8.10s %s\e[m' \
          "req" \
          "time_total" \
          "time_connect" \
          "local_socket" \
+         "external_ip" \
          "remote_socket" \
+         "type" \
          "http" \
          "code" \
          "next_hop"
 
-  printf '\n    %-4.6s %-12.10s %-15.12s %-22.22s %-22.22s %-5.5s %-8.10s %s\e[m\n' \
+  printf '\n    %-4.6s %-12.10s %-15.12s %-22.22s %-16.22s %-20.22s %-7.7s %-5.5s %-8.10s %s\e[m\n' \
          "---" \
          "----------" \
          "------------" \
          "------------" \
+         "-----------" \
          "-------------" \
+         "----" \
          "----" \
          "----" \
          "--------"
