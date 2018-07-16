@@ -271,14 +271,8 @@ function __main__() {
   printf '\n    %s %s\n\n' \
          "$_init_name" "$_version"
 
-  # Get external IP.
-  # shellcheck disable=SC2155
-  local _external_ip=$(curl -ks -X GET http://ipinfo.io/ip)
-
-  printf '\n    External IP: \e['${c_trgb}'m%s\e[m\n\n' "$_external_ip"
-
   # Show http(s) domain trace.
-  printf '\n    SCAN URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
+  printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
          "$_domain_proto" "$_domain_name" "$_domain_path"
 
   # Start tracing.
@@ -326,11 +320,17 @@ function __main__() {
 
   if [[ "$scan_state" -eq 1 ]] ; then
 
-    DomainStrip "$_http_last"
+    if [[ "$scan_type" = *"observatory"* ]] || \
+       [[ "$scan_type" = *"ssllabs"* ]] || \
+       [[ "$scan_type" = *"all"* ]] ; then
 
-    _init_function "DomainScan \"$_domain_name\""
+      DomainStrip "$_http_last"
 
-    echo
+      _init_function "DomainScan \"$_domain_name\""
+
+      echo
+
+    fi
 
   fi
 
