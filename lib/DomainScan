@@ -23,13 +23,40 @@ function DomainScan() {
 
   local _host="$1"
 
-  _msg_args+=(\
-              "Mozilla Observatory:https://observatory.mozilla.org" \
-              "ssllabs:https://www.ssllabs.com/ssltest")
+  local _observatory_desc="Mozilla Observatory:https://observatory.mozilla.org"
+  local _observatory_cmd="eval observatory \"$_host\" --format=report --rescan --quiet"
 
-  _cmd_args+=(\
-              "eval observatory \"$_host\" --format=report --rescan --quiet" \
-              "eval ssllabs-scan -usecache -quiet -grade \"$_host\"")
+  local _ssllabs_desc="ssllabs:https://www.ssllabs.com/ssltest"
+  local _ssllabs_cmd="eval ssllabs-scan -usecache -quiet -grade \"$_host\""
+
+  # shellcheck disable=SC2154
+  if [[ "$scan_type" = *"observatory"* ]] ; then
+
+    _msg_args+=(\
+                "$_observatory_desc")
+
+    _cmd_args+=(\
+                "$_observatory_cmd")
+
+  elif [[ "$scan_type" = *"ssllabs"* ]] ; then
+
+    _msg_args+=(\
+                "$_ssllabs_desc")
+
+    _cmd_args+=(\
+                "$_ssllabs_cmd")
+
+  elif [[ "$scan_type" == "all" ]] ; then
+
+    _msg_args+=(\
+                "$_observatory_desc" \
+                "$_ssllabs_desc")
+
+    _cmd_args+=(\
+                "$_observatory_cmd" \
+                "$_ssllabs_cmd")
+
+  fi
 
   return $_STATE
 
