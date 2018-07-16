@@ -73,7 +73,7 @@ function DomainTrace() {
 
     # Get external IP.
     # shellcheck disable=SC2155
-    local _external_ip=$(curl -ks -X GET http://ipinfo.io/ip)
+    local _external_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
 
     for _ip in "${_class_pattern[@]}" ; do
 
