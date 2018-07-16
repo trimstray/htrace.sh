@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainScan()
+#
+# Description:
+#   Scan domain with external tools.
+#
+# Usage:
+#   DomainScan domain
+#
+# Examples:
+#   DomainScan example.com
+#
+
+function DomainScan() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainScan"
+  local _STATE=0
+
+  local _host="$1"
+
+  _msg_args+=(\
+              "Mozilla Observatory:https://observatory.mozilla.org" \
+              "ssllabs:https://www.ssllabs.com/ssltest")
+
+  _cmd_args+=(\
+              "eval observatory \"$_host\" --format=report --rescan --quiet" \
+              "eval ssllabs-scan -usecache -quiet -grade \"$_host\"")
+
+  return $_STATE
+
+}
