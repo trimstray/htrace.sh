@@ -577,11 +577,10 @@ function _help_() {
     $_init_name --domain https://example.com
 
   Options:
-        --help                        show this message
-        -d|--domain <domain_name>     set domain name
-        -h|--headers                  show response headers
-        -s|--scan                     scan domain with external security tools
-                                      (Mozilla Observatory and Ssllabs)
+        --help                                show this message
+        -d|--domain <domain_name>             set domain name
+        -h|--headers                          show response headers
+        -s|--scan <all|observatory|ssllabs>   scan domain with external security tools
 
 
   This program comes with ABSOLUTELY NO WARRANTY.
