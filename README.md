@@ -7,7 +7,7 @@
   </a>
 </p>
 
-<h4 align="left">Simple shell script to debugging http/https traffic tracing, response headers. Support external security tools like Mozilla Observatory and Ssllabs.</h4>
+<h4 align="left">Simple shell script to debugging http/https traffic tracing and response headers.</h4>
 
 <p align="center">
     <img src="https://github.com/trimstray/htrace.sh/blob/master/doc/img/htrace.sh_preview.png"
@@ -31,7 +31,7 @@ It is useful for:
 - checking properly web servers/reverse proxies domain configuration
 - redirects analysis, eg. to eliminate redirect loops
 - checking response headers for each query
-- scanning domain with external security tools like **Mozilla Observatory** and **Ssllabs**
+- scanning domain with external security tools like **Mozilla Observatory** and **SSL Labs API**
 
 ## How To Use
 
@@ -54,15 +54,22 @@ htrace.sh --domain https://google.com
 > * symlink to `bin/htrace.sh` is placed in `/usr/local/bin`
 > * man page is placed in `/usr/local/man/man8`
 
+### External tools
+
+**htrace.sh** support external tools for security scans:
+
+- **[Mozilla Observatory](https://github.com/mozilla/http-observatory)** - cli version of [observatory.mozilla.org](observatory.mozilla.org)
+- **[Ssllabs](https://github.com/ssllabs/ssllabs-scan)** - command-line reference-implementation client for SSL Labs APIs
+
 ## Requirements
 
 This tool working with:
 
 - **GNU/Linux** (testing on Debian and CentOS)
-- **Bash** (testing on 4.4.19)
-- **Curl** with specific variables support (≥ 7.52.0)
-
-Also you will need **root access**.
+- **[Bash](https://www.gnu.org/software/bash/)** (testing on 4.4.19)
+- **[Curl](https://curl.haxx.se/)** with specific variables support (≥ 7.52.0)
+- **[Mozilla Observatory](https://github.com/mozilla/http-observatory)**
+- **[Ssllabs](https://github.com/ssllabs/ssllabs-scan)**
 
 ## Parameters
 
