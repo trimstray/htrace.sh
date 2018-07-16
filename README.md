@@ -7,7 +7,7 @@
   </a>
 </p>
 
-<h4 align="left">Simple shell script to debugging http/https traffic tracing.</h4>
+<h4 align="left">Simple shell script to debugging http/https traffic tracing, response headers. Support external security tools like Mozilla Observatory and Ssllabs.</h4>
 
 <p align="center">
     <img src="https://github.com/trimstray/htrace.sh/blob/master/doc/img/htrace.sh_preview.png"
@@ -28,9 +28,10 @@
 
 It is useful for:
 
+- checking properly web servers/reverse proxies domain configuration
 - redirects analysis, eg. to eliminate redirect loops
-- checking properly web servers/reverse proxies configuration
 - checking response headers for each query
+- scanning domain with external security tools like **Mozilla Observatory** and **Ssllabs**
 
 ## How To Use
 
@@ -53,6 +54,16 @@ htrace.sh --domain https://google.com
 > * symlink to `bin/htrace.sh` is placed in `/usr/local/bin`
 > * man page is placed in `/usr/local/man/man8`
 
+## Requirements
+
+This tool working with:
+
+- **GNU/Linux** (testing on Debian and CentOS)
+- **Bash** (testing on 4.4.19)
+- **Curl** with specific variables support (≥ 7.52.0)
+
+Also you will need **root access**.
+
 ## Parameters
 
 Provides the following options:
@@ -65,9 +76,10 @@ Provides the following options:
     htrace.sh --domain https://example.com
 
   Options:
-        --help                        show this message
-        -d|--domain <domain_name>     set domain name
-        -h|--headers                  show response headers
+        --help                                show this message
+        -d|--domain <domain_name>             set domain name
+        -h|--headers                          show response headers
+        -s|--scan <all|observatory|ssllabs>   scan domain with external security tools
 ```
 
 ## Contributing
