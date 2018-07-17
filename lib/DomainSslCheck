@@ -30,6 +30,8 @@ function DomainSslCheck() {
 
   _ssl_params_proto=$(echo "$_ssl_params" | grep "Protocol  :" | cut -d ":" -f2- | tr -d "[:space:]")
   _ssl_params_cipher=$(echo "$_ssl_params" | grep "Cipher    :" | cut -d ":" -f2- | tr -d "[:space:]")
+  # This variable is used in DomainTrace().
+  # shellcheck disable=SC2034
   _ssl_params_verify=$(echo "$_ssl_params" | grep "Verification: \\|Verification error: " | cut -d ":" -f2-)
 
   if [[ "$_ssl_params_proto" = *"TLSv1"* ]] ; then
@@ -48,16 +50,6 @@ function DomainSslCheck() {
   printf 'version(\e['${_ssl_trgb}'m%s\e[m), cipher(\e['${s_trgb}'m%s\e[m)\n' \
          "$_ssl_params_proto" \
          "$_ssl_params_cipher"
-
-  if [[ "$_ssl_params_verify" == " OK" ]] ; then
-
-    printf '         verification:\e[1;1;32m%s\e[m\n' "$_ssl_params_verify"
-
-  else
-
-    printf '         verification:\e[1;1;31m%s\e[m\n' "$_ssl_params_verify"
-
-  fi
 
   return $_STATE
 
