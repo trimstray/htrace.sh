@@ -30,7 +30,6 @@ function DomainSslCheck() {
 
   _ssl_params_proto=$(echo "$_ssl_params" | grep "Protocol  :" | cut -d ":" -f2- | tr -d "[:space:]")
   _ssl_params_cipher=$(echo "$_ssl_params" | grep "Cipher    :" | cut -d ":" -f2- | tr -d "[:space:]")
-  # _ssl_params_cn=$(echo "$_ssl_params" | grep -o "/CN=.*" | cut -d "=" -f2- | tr -d "[:space:]")
   _ssl_params_verify=$(echo "$_ssl_params" | grep "Verification: \\|Verification error: " | cut -d ":" -f2-)
 
   if [[ "$_ssl_params_proto" = *"TLSv1"* ]] ; then
