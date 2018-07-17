@@ -261,21 +261,21 @@ function _sprintf() {
       while [[ $(ps a | awk '{print $1}' | grep -w "$_pid") ]] ; do
 
         _n=$(( ( _n + 1 ) % 4 ))
-        printf "\\r » %s" "${_sc:_n:1}"
+        printf "\\r » %s" "${_sc:_n:1}" ; tput sgr0
         sleep 0.1
 
         _tmp=$(ps a | awk '{print $1}' | grep -w "$_pid")
 
         if [[ -z "$_tmp" ]] ; then
 
-          printf "\\r%s" \
-                 "                                                             "
+          printf "\\r »  " ; tput sgr0
+
         fi
 
       done
 
       # If the end, we clean.
-      printf "\\r"
+      printf "\\r" ; tput sgr0
 
     else
 
@@ -347,8 +347,6 @@ function _sprintf() {
   sed 's/^/         › /' "$_scan_output" | \
   sed 's/\r//' | grep "› ."
 
-  echo
-
   # shellcheck disable=SC2154
   : >"$_scan_output"
 
@@ -378,44 +376,47 @@ function _init_cmd() {
 
   local _cmd="$1"
 
-  # Uncomment if you want to display executed commands.
-  # _sprintf "info" "init: \"$_cmd\""
-
-  _logger "info" \
-    "${_FUNCTION_ID}()" \
-    "init: $_cmd"
-
-  # Execute command and exit save to file.
-  # shellcheck disable=SC2154
-  $_cmd >>"$_scan_output" 2>&1 &
-
-  # We keep pid of the last command.
-  _pid="$!"
-
-  # When the '(command) &' command is performed.
-  _sprintf "spin" "$_pid"
-
-  # Very important line:
-  # We define the state of the output job from the background.
-  wait "$_pid" &>/dev/null && _state="0" || _state="1"
-
-  if [[ "$_state" -eq 0 ]] ; then
+  # If the scanning command returns an error, we try again.
+  # shellcheck disable=SC2086,SC2154
+  for i in $(seq 1 $_scounter) ; do
 
     _logger "info" \
       "${_FUNCTION_ID}()" \
-      "result: pass"
+      "init: $_cmd (counter: $i)"
 
-  else
+    # Execute command and exit save to file.
+    # shellcheck disable=SC2154
+    $_cmd >"$_scan_output" 2>&1 &
 
-    _sprintf "stop" "result: fail"
+    # We keep pid of the last command.
+    _pid="$!"
 
-    _logger "stop" \
-      "${_FUNCTION_ID}()" \
-      "result: fail"
+    # When the '(command) &' command is performed.
+    _sprintf "spin" "$_pid"
 
-  fi
+    # Very important line:
+    # We define the state of the output job from the background.
+    wait "$_pid" &>/dev/null && _state="0" || _state="1"
 
-  _STATE="$_state"
+    if [[ "$_state" -eq 0 ]] ; then
+
+      _logger "info" \
+        "${_FUNCTION_ID}()" \
+        "result: pass"
+
+      break
+
+    else
+
+      _logger "info" \
+        "${_FUNCTION_ID}()" \
+        "result: fail"
+
+    fi
+
+    _STATE="$_state"
+
+  done
 
   return "$_STATE"
 
