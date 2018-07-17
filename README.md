@@ -31,7 +31,8 @@ It is useful for:
 - checking properly web servers/reverse proxies domain configuration
 - redirects analysis, eg. to eliminate redirect loops
 - checking response headers for each request
-- scanning domain with external security tools like **Mozilla Observatory** and **SSL Labs API**
+- checking basic ssl configuration
+- scanning domain with external security tools: **Mozilla Observatory** and **SSL Labs API**
 
   > Before use **htrace.sh** please see **[Requirements](#requirements)**.
 

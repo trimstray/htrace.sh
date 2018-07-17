@@ -151,6 +151,7 @@ function DomainTrace() {
 
       DomainCertCheck "$_host"
 
+      # shellcheck disable=SC2154
       if [[ "$_ssl_params_verify" == " OK" ]] ; then
 
         printf '         verification:\e[1;1;32m%s\e[m\n' "$_ssl_params_verify"
