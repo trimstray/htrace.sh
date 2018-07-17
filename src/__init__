@@ -291,6 +291,8 @@ function __main__() {
   local _rcounter=1
   # shellcheck disable=SC2034
   local _hcounter=1
+  # shellcheck disable=SC2034
+  local _scounter=5
 
   while [[ ${_http_code} =~ ^3[0-9]{2}$ ]] ; do
 
@@ -331,6 +333,15 @@ function __main__() {
       DomainStrip "$_http_last"
 
       _init_function "DomainScan \"$_domain_name\""
+
+      _fstate="$?"
+
+      if [[ "$_fstate" -ne 0 ]] ; then
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+
+      fi
 
       echo
 
