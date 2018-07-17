@@ -3,22 +3,22 @@
 # shellcheck shell=bash
 
 # ``````````````````````````````````````````````````````````````````````````````
-# Function name: SslCheck()
+# Function name: DomainSslCheck()
 #
 # Description:
 #   Check ssl configuration.
 #
 # Usage:
-#   SslCheck domain
+#   DomainSslCheck domain
 #
 # Examples:
-#   SslCheck example.com
+#   DomainSslCheck example.com
 #
 
-function SslCheck() {
+function DomainSslCheck() {
 
   # shellcheck disable=SC2034
-  local _FUNCTION_ID="SslCheck"
+  local _FUNCTION_ID="DomainSslCheck"
   local _STATE=0
 
   # shellcheck disable=SC2034,SC2154
