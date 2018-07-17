@@ -25,7 +25,8 @@ function DomainSslCheck() {
   _ssl_domain_name="$_domain_name"
 
   _ssl_params=$(echo | \
-                openssl s_client -servername "$_ssl_domain_name" -connect "$_ssl_domain_name":443 2>/dev/null)
+                openssl s_client -servername "$_ssl_domain_name" \
+                -connect "$_ssl_domain_name":443 2>/dev/null)
 
   _ssl_params_proto=$(echo "$_ssl_params" | grep "Protocol  :" | cut -d ":" -f2- | tr -d "[:space:]")
   _ssl_params_cipher=$(echo "$_ssl_params" | grep "Cipher    :" | cut -d ":" -f2- | tr -d "[:space:]")
