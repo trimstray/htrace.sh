@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainCertCheck()
+#
+# Description:
+#   Check domain certificate.
+#
+# Usage:
+#   DomainCertCheck domain
+#
+# Examples:
+#   DomainCertCheck example.com
+#
+
+function DomainCertCheck() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainCertCheck"
+  local _STATE=0
+
+  # shellcheck disable=SC2034,SC2154
+  _ssl_domain_name="$_domain_name"
+
+  _ssl_domain_cert=$(echo | \
+                     openssl s_client -servername "$_ssl_domain_name" \
+                     -connect "$_ssl_domain_name":443 2>/dev/null | \
+                     sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p')
+
+  _ssl_domain_names=$(echo "$_ssl_domain_cert" | \
+                     openssl x509 -noout -text | \
+                     sed -ne 's/^\( *\)Subject:/\1/p;/X509v3 Subject Alternative Name/{
+                     N;s/^.*\n//;:a;s/^\( *\)\(.*\), /\1\2\n\1/;ta;p;q; }' | \
+                     sed -e 's/^[ \t]*//')
+
+  _ssl_domain_issuer=$(echo "$_ssl_domain_cert" | \
+                     openssl x509 -noout -text | \
+                     grep "Issuer:" | \
+                     cut -d ":" -f2- | tr -s ' ' | \
+                     sed -e 's/^[ \t]*//')
+
+  _ssl_domain_not_before=$(echo "$_ssl_domain_cert" | \
+                     openssl x509 -noout -text | \
+                     grep "Not Before:" | \
+                     cut -d ":" -f2- | tr -s ' ' | \
+                     sed -e 's/^[ \t]*//')
+
+  _ssl_domain_not_after=$(echo "$_ssl_domain_cert" | \
+                     openssl x509 -noout -text | \
+                     grep "Not After :" | \
+                     cut -d ":" -f2- | tr -s ' ' | \
+                     sed -e 's/^[ \t]*//')
+
+  _ssl_domain_issuer_cn=$(echo "$_ssl_domain_issuer" | grep -o "CN =.*" | cut -d "=" -f2-)
+  _ssl_domain_cn=$(echo "$_ssl_domain_names" | grep -o "CN =.*" | cut -d "=" -f2-)
+  _ssl_domain_san=$(echo "$_ssl_domain_names" | grep "DNS:" | cut -d ":" -f2- | tr '\n' ' ')
+
+  # shellcheck disable=SC2086,SC2154
+  printf '         issuer:\e['${x_trgb}'m%s\e[m\n' \
+         "$_ssl_domain_issuer_cn"
+
+  # shellcheck disable=SC2086,SC2154
+  printf '         cn:\e['${x_trgb}'m%s\e[m\n         san: \e['${p_trgb}'m%s\e[m\n' \
+         "$_ssl_domain_cn" "$_ssl_domain_san"
+
+  # shellcheck disable=SC2086,SC2154
+  printf '         valid date: \e['${b_trgb}'m%s/%s\e[m\n' \
+         "$_ssl_domain_not_before" "$_ssl_domain_not_after"
+
+  return $_STATE
+
+}
