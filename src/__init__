@@ -253,6 +253,8 @@ function __main__() {
 
   # Set default colors for printf.
   # shellcheck disable=SC2034
+  local b_trgb="1;2;30"
+  # shellcheck disable=SC2034
   local e_trgb="1;1;31"
   # shellcheck disable=SC2034
   local d_trgb="4;1;33"
@@ -261,11 +263,13 @@ function __main__() {
   # shellcheck disable=SC2034
   local h_trgb="1;2;36"
   # shellcheck disable=SC2034
-  local c_trgb="1;1;38"
-  # shellcheck disable=SC2034
   local p_trgb="2;2;37"
   # shellcheck disable=SC2034
   local p2_trgb="2;0;37"
+  # shellcheck disable=SC2034
+  local c_trgb="1;1;38"
+  # shellcheck disable=SC2034
+  local x_trgb="1;2;38"
 
   # shellcheck disable=SC2154
   printf '\n    %s %s\n\n' \
