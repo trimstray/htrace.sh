@@ -23,6 +23,7 @@ function DomainTrace() {
 
   local _host="$1"
 
+  # Default timeout value for curl.
   local _timeout="15"
 
   _http_output=$(curl -ks -X GET -m $_timeout \
@@ -73,7 +74,7 @@ function DomainTrace() {
 
     # Get external IP (set https connection).
     # shellcheck disable=SC2155
-    local _external_ip=$(curl -ks http://whatismyip.akamai.com/)
+    local _external_ip=$(curl -ks -m $_timeout http://whatismyip.akamai.com/)
 
     if [[ ! "$_external_ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
 
@@ -97,7 +98,7 @@ function DomainTrace() {
 
     # Set properly total time.
     # shellcheck disable=SC2154
-    _full_conn_time="$( bc <<<"$_full_conn_time + $_time_total" | awk '{printf "%f", $0}')"
+    _full_conn_time="$(bc <<<"$_full_conn_time + $_time_total" | awk '{printf "%f", $0}')"
 
     if [[ -z "$_remote_ip" ]] ; then
 
