@@ -75,6 +75,12 @@ function DomainTrace() {
     # shellcheck disable=SC2155
     local _external_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
 
+    if [[ ! "$_external_ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
+
+      _external_ip="unknown"
+
+    fi
+
     for _ip in "${_class_pattern[@]}" ; do
 
       if [[ "$_remote_socket" = *"$_ip"* ]] ; then
