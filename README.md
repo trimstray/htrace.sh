@@ -81,7 +81,7 @@ docker build --rm -t htrace.sh -f Dockerfile .
 #### Run container
 
 ```bash
-docker run -it --name htrace.sh --rm htrace.sh -d http://nmap.org -h
+docker run --rm -it --name htrace.sh htrace.sh -d http://nmap.org -h
 ```
 
 ## Requirements
