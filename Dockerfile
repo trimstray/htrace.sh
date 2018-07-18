@@ -2,7 +2,7 @@
 #
 # Header:
 #
-#         fname : "htrace.sh"
+#         fname : "Dockerfile"
 #         cdate : "12.07.2018"
 #        author : "Michał Żurawski <trimstray@gmail.com>"
 #      tab_size : "2"
