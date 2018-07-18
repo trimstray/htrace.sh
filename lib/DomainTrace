@@ -71,9 +71,9 @@ function DomainTrace() {
 
     done
 
-    # Get external IP.
+    # Get external IP (set https connection).
     # shellcheck disable=SC2155
-    local _external_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
+    local _external_ip=$(curl -ks http://whatismyip.akamai.com/)
 
     if [[ ! "$_external_ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
 
