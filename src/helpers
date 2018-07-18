@@ -110,6 +110,9 @@ function _get_trap_SIG() {
 
   fi
 
+  # Normal cursor.
+  tput cnorm
+
   _logger "exit" \
     "$_FUNCTION_ID > ${_SIG_type} (${_STATE})"
 
@@ -665,9 +668,6 @@ function _after_init() {
 
   # shellcheck disable=SC2154
   : >"$_scan_output"
-
-  # Normal cursor.
-  tput cnorm
 
   return $_STATE
 
