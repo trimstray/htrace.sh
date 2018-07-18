@@ -252,16 +252,23 @@ function _sprintf() {
       # Process id of the previous running command.
       local _pid="$_s_info"
 
-      local _sc='░▒▓█'
+      # local _sc='░▒▓█'
+      local _sc='-\|/'
 
       # Verify that the process is still running.
       local _n="0"
+
+      # Invisible cursor.
+      tput civis
 
       # shellcheck disable=SC2143
       while [[ $(ps a | awk '{print $1}' | grep -w "$_pid") ]] ; do
 
         _n=$(( ( _n + 1 ) % 4 ))
-        printf "\\r » %s" "${_sc:_n:1}" ; tput sgr0
+
+        # shellcheck disable=SC2086
+        printf '\r » \e['${c_trgb}'m%s\e[m' "${_sc:_n:1}" ; tput sgr0
+
         sleep 0.1
 
         _tmp=$(ps a | awk '{print $1}' | grep -w "$_pid")
@@ -624,6 +631,9 @@ function _before_init() {
   # shellcheck disable=SC2154
   : >"$_log_stdout"
 
+  # Invisible cursor.
+  # tput civis
+
   return $_STATE
 
 }
@@ -655,6 +665,9 @@ function _after_init() {
 
   # shellcheck disable=SC2154
   : >"$_scan_output"
+
+  # Normal cursor.
+  tput cnorm
 
   return $_STATE
 
