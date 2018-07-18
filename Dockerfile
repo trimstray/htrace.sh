@@ -13,11 +13,10 @@
 #   This Dockerfile builds a static htrace.sh in a Docker container.
 #
 #   For build:
-#   - docker build --rm -t htrace.sh -f Dockerfile .
+#     docker build --rm -t htrace.sh -f Dockerfile .
 #
 #   For init:
-#   - docker run -it --entrypoint /usr/local/bin/htrace.sh --name htrace.sh \
-#     --rm htrace.sh -d http://nmap.org
+#     docker run -it --name htrace.sh --rm htrace.sh -d http://nmap.org -h
 #
 # License:
 #
