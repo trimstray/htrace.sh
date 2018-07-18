@@ -5,6 +5,10 @@
     <img src="https://travis-ci.org/trimstray/htrace.sh.svg?branch=master"
         alt="Travis-CI">
   </a>
+  <a href="https://www.docker.com/">
+    <img src="https://img.shields.io/badge/Docker-Support-blue.svg"
+        alt="Docker">
+  </a>
 </p>
 
 <h4 align="left">Simple shell script to debugging http/https traffic tracing and response headers.</h4>
@@ -63,6 +67,22 @@ htrace.sh --domain https://google.com
 
 - **[Mozilla Observatory](https://github.com/mozilla/http-observatory)** - cli version of [observatory.mozilla.org](observatory.mozilla.org)
 - **[Ssllabs](https://github.com/ssllabs/ssllabs-scan)** - command-line reference-implementation client for SSL Labs APIs
+
+### Docker
+
+The configuration is contained in the **Dockerfile**.
+
+#### Build image
+
+```bash
+docker build --rm -t htrace.sh -f Dockerfile .
+```
+
+#### Run container
+
+```bash
+docker run -it --name htrace.sh --rm htrace.sh -d http://nmap.org -h
+```
 
 ## Requirements
 
