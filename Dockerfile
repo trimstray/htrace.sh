@@ -16,7 +16,7 @@
 #     docker build --rm -t htrace.sh -f Dockerfile .
 #
 #   For init:
-#     docker run -it --name htrace.sh --rm htrace.sh -d http://nmap.org -h
+#     docker run --rm -it --name htrace.sh htrace.sh -d http://nmap.org -h
 #
 # License:
 #
@@ -41,9 +41,12 @@ FROM debian:stretch
 
 MAINTAINER trimstray "trimstray@gmail.com"
 
+ENV GOROOT="/usr/lib/go"
+ENV GOPATH "$GOROOT/bin"
+
 RUN \
   apt-get update && \
-  apt-get install -y git ca-certificates openssl curl dnsutils bc
+  apt-get install -y git ca-certificates openssl curl dnsutils bc gnupg
 
 RUN \
   apt-get install -y --reinstall procps
@@ -52,6 +55,15 @@ RUN \
   git clone https://github.com/trimstray/htrace.sh.git && \
   cd htrace.sh && \
   bash setup.sh install
+
+RUN \
+  curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+  apt-get install -y nodejs && \
+  npm install -g observatory-cli
+
+RUN \
+  apt-get install -y golang && \
+  go get github.com/ssllabs/ssllabs-scan
 
 RUN \
   apt-get purge -y git && \
