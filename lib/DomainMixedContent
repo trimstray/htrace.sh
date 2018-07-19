@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainMixedContent()
+#
+# Description:
+#   Scan domain with for check Mixed Content.
+#
+# Usage:
+#   DomainMixedContent domain
+#
+# Examples:
+#   DomainMixedContent example.com
+#
+
+function DomainMixedContent() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainMixedContent"
+  local _STATE=0
+
+  local _host="$1"
+
+  local _mixed_content_desc="Scan domain for Mixed Content:https://github.com/bramus/mixed-content-scan"
+  local _mixed_content_cmd="eval mixed-content-scan \"$_host\" --no-check-certificate | grep \"MCS.[E|W]\""
+
+  _msg_args+=(\
+              "$_mixed_content_desc")
+
+  _cmd_args+=(\
+              "$_mixed_content_cmd")
+
+  return $_STATE
+
+}
