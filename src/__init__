@@ -61,6 +61,9 @@ function __main__() {
   local scan_state="0"
   local scan_type=""
 
+  # Default 'mixed-content' variable.
+  local mixed_content_state="0"
+
   # Set redirects limit.
   local _redirects=10
 
@@ -117,7 +120,7 @@ function __main__() {
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
   local _short_opt="d:hs:"
-  local _long_opt="help,domain:,headers,scan:"
+  local _long_opt="help,domain:,headers,scan:,mixed-content"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -168,6 +171,12 @@ function __main__() {
         export scan_type="${2}"
 
         shift 2 ;;
+
+      --mixed-content)
+
+        export mixed_content_state=1
+
+        shift ;;
 
       *)
 
@@ -257,6 +266,8 @@ function __main__() {
   # shellcheck disable=SC2034
   local e_trgb="1;1;31"
   # shellcheck disable=SC2034
+  local g_trgb="1;1;32"
+  # shellcheck disable=SC2034
   local d_trgb="4;1;33"
   # shellcheck disable=SC2034
   local s_trgb="2;2;34"
@@ -339,13 +350,63 @@ function __main__() {
       if [[ "$_fstate" -ne 0 ]] ; then
 
         # shellcheck disable=SC2086,SC2154
-        printf '\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+        tput sgr0
 
       fi
 
       echo
 
     fi
+
+  fi
+
+  if [[ "$mixed_content_state" -eq 1 ]] ; then
+
+    local _fd_empty="0"
+
+    DomainStrip "$_http_last"
+
+    _init_function "DomainMixedContent \"${_domain_proto}${_domain_name}\""
+
+    _fstate="$?"
+
+    if [[ "$_fstate" -ne 0 ]] ; then
+
+      # shellcheck disable=SC2154
+      if [[ "$_fd_empty" -eq "0" ]] ; then
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r         › \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
+        tput sgr0
+
+      else
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r         › \e['${e_trgb}'m%s\e[m\n' "Connection error"
+        tput sgr0
+
+      fi
+
+    else
+
+      # shellcheck disable=SC2154
+      if [[ "$_fd_empty" -eq "0" ]] ; then
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r         › \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
+        tput sgr0
+
+      else
+
+        printf '\r'
+        tput sgr0
+
+      fi
+
+    fi
+
+    echo
 
   fi
 
