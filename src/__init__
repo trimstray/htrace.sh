@@ -337,13 +337,11 @@ function __main__() {
 
   if [[ "$scan_state" -eq 1 ]] ; then
 
-    if [[ "$scan_type" = *"observatory"* ]] || \
-       [[ "$scan_type" = *"ssllabs"* ]] || \
-       [[ "$scan_type" = *"all"* ]] ; then
+    if [[ "$scan_type" = *"observatory"* ]] ; then
 
       DomainStrip "$_http_last"
 
-      _init_function "DomainScan \"$_domain_name\""
+      _init_function "DomainScan \"$scan_type\" \"$_domain_name\""
 
       _fstate="$?"
 
@@ -355,7 +353,41 @@ function __main__() {
 
       fi
 
-      echo
+    elif [[ "$scan_type" = *"ssllabs"* ]] ; then
+
+      DomainStrip "$_http_last"
+
+      _init_function "DomainScan \"$scan_type\" \"$_domain_name\""
+
+      _fstate="$?"
+
+      if [[ "$_fstate" -ne 0 ]] ; then
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+        tput sgr0
+
+      fi
+
+    elif [[ "$scan_type" = *"all"* ]] ; then
+
+      DomainStrip "$_http_last"
+
+      for _i in observatory ssllabs ; do
+
+        _init_function "DomainScan \"$_i\" \"$_domain_name\""
+
+        _fstate="$?"
+
+        if [[ "$_fstate" -ne 0 ]] ; then
+
+          # shellcheck disable=SC2086,SC2154
+          printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+          tput sgr0
+
+        fi
+
+      done
 
     fi
 
@@ -405,8 +437,6 @@ function __main__() {
       fi
 
     fi
-
-    echo
 
   fi
 
