@@ -353,6 +353,8 @@ function __main__() {
 
       fi
 
+      echo
+
     elif [[ "$scan_type" = *"ssllabs"* ]] ; then
 
       DomainStrip "$_http_last"
@@ -368,6 +370,8 @@ function __main__() {
         tput sgr0
 
       fi
+
+      echo
 
     elif [[ "$scan_type" = *"all"* ]] ; then
 
@@ -386,6 +390,8 @@ function __main__() {
           tput sgr0
 
         fi
+
+        echo
 
       done
 
@@ -437,6 +443,8 @@ function __main__() {
       fi
 
     fi
+
+    echo
 
   fi
 
