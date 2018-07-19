@@ -26,8 +26,8 @@ function DomainScan() {
   local _observatory_desc="Mozilla Observatory:https://observatory.mozilla.org"
   local _observatory_cmd="eval observatory \"$_host\" --format=report --rescan --quiet"
 
-  local _ssllabs_desc="ssllabs:https://www.ssllabs.com/ssltest"
-  local _ssllabs_cmd="eval ssllabs-scan -usecache -quiet -grade \"$_host\""
+  local _ssllabs_desc="ssllabs:https://www.ssllabs.com/ssltest/"
+  local _ssllabs_cmd="eval ssllabs-scan -quiet -grade \"$_host\""
 
   # shellcheck disable=SC2154
   if [[ "$scan_type" = *"observatory"* ]] ; then
