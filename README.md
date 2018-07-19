@@ -11,7 +11,7 @@
   </a>
 </p>
 
-<h4 align="left">Simple shell script to debugging http/https traffic tracing and response headers.</h4>
+<h4 align="left">Simple shell script to debugging http/https traffic tracing, response headers and optional mixed-content.</h4>
 
 <p align="center">
     <img src="https://github.com/trimstray/htrace.sh/blob/master/doc/img/htrace.sh_preview.png"
@@ -36,6 +36,7 @@ It is useful for:
 - redirects analysis, eg. to eliminate redirect loops
 - checking response headers for each request
 - checking basic ssl configuration
+- scanning domain for Mixed Content
 - scanning domain with external security tools: **Mozilla Observatory** and **SSL Labs API**
 
   > Before use **htrace.sh** please see **[Requirements](#requirements)**.
@@ -65,8 +66,9 @@ htrace.sh --domain https://google.com
 
 **htrace.sh** support external tools for security scans:
 
-- **[Mozilla Observatory](https://github.com/mozilla/http-observatory)** - cli version of [observatory.mozilla.org](observatory.mozilla.org)
-- **[Ssllabs](https://github.com/ssllabs/ssllabs-scan)** - command-line reference-implementation client for SSL Labs APIs
+- **Mozilla Observatory** - cli version of [observatory.mozilla.org](observatory.mozilla.org)
+- **Ssllabs** - command-line reference-implementation client for SSL Labs APIs
+- **mixed-content-scan** - cli tool for check HTTPS-enabled website for Mixed Content
 
 ### Docker
 
@@ -95,6 +97,7 @@ This tool working with:
 - **[OpenSSL](https://www.openssl.org/)**
 - **[Mozilla Observatory](https://github.com/mozilla/http-observatory)**
 - **[Ssllabs](https://github.com/ssllabs/ssllabs-scan)**
+- **[mixed-content-scan](https://github.com/bramus/mixed-content-scan)**
 
 ## Parameters
 
@@ -112,6 +115,7 @@ Provides the following options:
         -d|--domain <domain_name>             set domain name
         -h|--headers                          show response headers
         -s|--scan <all|observatory|ssllabs>   scan domain with external security tools
+        --mixed-content                       scan website for mixed content
 ```
 
 ## Contributing
