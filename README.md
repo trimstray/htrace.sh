@@ -5,13 +5,13 @@
     <img src="https://travis-ci.org/trimstray/htrace.sh.svg?branch=master"
         alt="Travis-CI">
   </a>
-  <a href="https://www.docker.com/">
+  <a href="https://github.com/trimstray/htrace.sh/tree/master/build">
     <img src="https://img.shields.io/badge/Docker-Support-blue.svg"
         alt="Docker">
   </a>
 </p>
 
-<h4 align="left">Simple shell script to debugging http/https traffic tracing, response headers and optional mixed-content.</h4>
+<h4 align="left">Simple shell script to debugging http/https traffic tracing, response headers and mixed-content.</h4>
 
 <p align="center">
     <img src="https://github.com/trimstray/htrace.sh/blob/master/doc/img/htrace.sh_preview.png"
@@ -36,7 +36,7 @@ It is useful for:
 - redirects analysis, eg. to eliminate redirect loops
 - checking response headers for each request
 - checking basic ssl configuration
-- scanning domain for Mixed Content
+- scanning domain for mixed content
 - scanning domain with external security tools: **Mozilla Observatory** and **SSL Labs API**
 
   > Before use **htrace.sh** please see **[Requirements](#requirements)**.
