@@ -21,16 +21,14 @@ function DomainScan() {
   local _FUNCTION_ID="DomainScan"
   local _STATE=0
 
-  local _host="$1"
-
-  local _observatory_desc="Mozilla Observatory:https://observatory.mozilla.org"
-  local _observatory_cmd="eval observatory \"$_host\" --format=report --rescan --quiet"
-
-  local _ssllabs_desc="ssllabs:https://www.ssllabs.com/ssltest/"
-  local _ssllabs_cmd="eval ssllabs-scan -quiet -grade \"$_host\""
+  local _scan_t="$1"
+  local _host="$2"
 
   # shellcheck disable=SC2154
-  if [[ "$scan_type" = *"observatory"* ]] ; then
+  if [[ "$_scan_t" = *"observatory"* ]] ; then
+
+    local _observatory_desc="Mozilla Observatory:https://observatory.mozilla.org"
+    local _observatory_cmd="eval observatory \"$_host\" --format=report --rescan --quiet"
 
     _msg_args+=(\
                 "$_observatory_desc")
@@ -38,22 +36,15 @@ function DomainScan() {
     _cmd_args+=(\
                 "$_observatory_cmd")
 
-  elif [[ "$scan_type" = *"ssllabs"* ]] ; then
+  elif [[ "$_scan_t" = *"ssllabs"* ]] ; then
+
+    local _ssllabs_desc="ssllabs:https://www.ssllabs.com/ssltest/"
+    local _ssllabs_cmd="eval ssllabs-scan -quiet -grade \"$_host\""
 
     _msg_args+=(\
                 "$_ssllabs_desc")
 
     _cmd_args+=(\
-                "$_ssllabs_cmd")
-
-  elif [[ "$scan_type" == "all" ]] ; then
-
-    _msg_args+=(\
-                "$_observatory_desc" \
-                "$_ssllabs_desc")
-
-    _cmd_args+=(\
-                "$_observatory_cmd" \
                 "$_ssllabs_cmd")
 
   fi
