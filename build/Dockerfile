@@ -47,7 +47,7 @@ ENV GOPATH="/opt/go"
 # System tools.
 RUN \
   apt-get update && \
-  apt-get install -y ca-certificates dnsutils gnupg apt-utils
+  apt-get install -y ca-certificates dnsutils gnupg apt-utils unzip
 
 RUN \
   apt-get install -y --reinstall procps
@@ -68,6 +68,13 @@ RUN \
   apt-get install -y golang && \
   go get github.com/ssllabs/ssllabs-scan && \
   ln -s /opt/go/bin/ssllabs-scan /usr/bin/ssllabs-scan
+
+# For mixed-content-scan.
+RUN \
+  apt-get install -y composer php-curl php-dom && \
+  composer global require bramus/mixed-content-scan && \
+  ln -s /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan \
+  /usr/bin/mixed-content-scan
 
 RUN \
   mkdir -p /opt/git && cd /opt/git && \
