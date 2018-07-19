@@ -28,7 +28,7 @@ function DomainScan() {
   if [[ "$_scan_t" = *"observatory"* ]] ; then
 
     local _observatory_desc="Mozilla Observatory:https://observatory.mozilla.org"
-    local _observatory_cmd="eval observatory \"$_host\" --format=report --rescan --quiet"
+    local _observatory_cmd="eval observatory \"$_host\" --format=report --rescan --zero --quiet"
 
     _msg_args+=(\
                 "$_observatory_desc")
