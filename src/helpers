@@ -367,8 +367,6 @@ function _sprintf() {
   # shellcheck disable=SC2154
   : >"$_scan_output"
 
-  tput sgr0
-
   return "$_STATE"
 
 }
@@ -492,6 +490,9 @@ function _init_function() {
       "$_msg"
 
     _init_cmd "$_full_command"
+
+    printf '\r\n'
+    tput sgr0
 
     # shellcheck disable=SC2034
     if [ ! "$?" ] ; then _kstate=255 ; fi
