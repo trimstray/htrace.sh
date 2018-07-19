@@ -44,7 +44,8 @@ function DomainSslCheck() {
 
   fi
 
-  printf '         ssl: \e[1;1;32m%s\e[m, ' "on"
+  # shellcheck disable=SC2086,SC2154
+  printf '         ssl: \e['${g_trgb}'m%s\e[m, ' "on"
 
   # shellcheck disable=SC2086,SC2154
   printf 'version(\e['${_ssl_trgb}'m%s\e[m), cipher(\e['${s_trgb}'m%s\e[m)\n' \
