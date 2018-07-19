@@ -369,6 +369,13 @@ function __main__() {
         printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
         tput sgr0
 
+      else
+
+        printf '\r         › %s: %s\n' \
+               "Full Report Url" \
+               "https://www.ssllabs.com/ssltest/analyze.html?d=$_domain_name"
+        tput sgr0
+
       fi
 
       echo
@@ -388,6 +395,17 @@ function __main__() {
           # shellcheck disable=SC2086,SC2154
           printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
           tput sgr0
+
+        else
+
+          if [[ "$_i" == "ssllabs" ]] ; then
+
+            printf '\r         › %s: %s\n' \
+                   "Full Report Url" \
+                   "https://www.ssllabs.com/ssltest/analyze.html?d=$_domain_name"
+            tput sgr0
+
+          fi
 
         fi
 
