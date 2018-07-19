@@ -42,31 +42,41 @@ FROM debian:stretch
 MAINTAINER trimstray "trimstray@gmail.com"
 
 ENV GOROOT="/usr/lib/go"
-ENV GOPATH "$GOROOT/bin"
+ENV GOPATH="/opt/go"
 
+# System tools.
 RUN \
   apt-get update && \
-  apt-get install -y git ca-certificates openssl curl dnsutils bc gnupg
+  apt-get install -y ca-certificates dnsutils gnupg apt-utils
 
 RUN \
   apt-get install -y --reinstall procps
 
+# htrace.sh tools.
 RUN \
-  git clone https://github.com/trimstray/htrace.sh.git && \
-  cd htrace.sh && \
-  bash setup.sh install
+  apt-get update && \
+  apt-get install -y git openssl curl bc
 
+# For Mozilla-Observatory.
 RUN \
   curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
   apt-get install -y nodejs && \
   npm install -g observatory-cli
 
+# For Ssllabs API.
 RUN \
   apt-get install -y golang && \
   go get github.com/ssllabs/ssllabs-scan
 
 RUN \
-  apt-get purge -y git && \
+  mkdir -p /opt/git && cd /opt/git && \
+  git clone https://github.com/trimstray/htrace.sh.git && \
+  cd htrace.sh && \
+  bash setup.sh install
+
+# Remove some clean tasks.
+RUN \
+  apt-get -y remove --purge git && \
   apt-get clean && apt-get autoclean && \
   apt-get -y autoremove --purge && \
   rm -rf /var/lib/apt/lists/*
