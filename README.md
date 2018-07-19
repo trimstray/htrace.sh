@@ -70,11 +70,12 @@ htrace.sh --domain https://google.com
 
 ### Docker
 
-The configuration is contained in the **Dockerfile**.
+The configuration is contained in the **build/Dockerfile**.
 
 #### Build image
 
 ```bash
+cd htrace.sh/build
 docker build --rm -t htrace.sh -f Dockerfile .
 ```
 
