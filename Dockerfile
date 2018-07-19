@@ -66,7 +66,8 @@ RUN \
 # For Ssllabs API.
 RUN \
   apt-get install -y golang && \
-  go get github.com/ssllabs/ssllabs-scan
+  go get github.com/ssllabs/ssllabs-scan && \
+  ln -s /opt/go/bin/ssllabs-scan /usr/bin/ssllabs-scan
 
 RUN \
   mkdir -p /opt/git && cd /opt/git && \
