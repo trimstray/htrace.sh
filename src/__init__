@@ -54,6 +54,9 @@ function __main__() {
   local domain_state="0"
   local domain_type=""
 
+  # Default 'ssl' variable.
+  local ssl_state="0"
+
   # Default 'headers' variable.
   local headers_state="0"
 
@@ -123,8 +126,8 @@ function __main__() {
 
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
-  local _short_opt="d:hs:"
-  local _long_opt="help,domain:,headers,scan:,mixed-content"
+  local _short_opt="d:sh"
+  local _long_opt="help,domain:,ssl,headers,scan:,mixed-content"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -162,13 +165,19 @@ function __main__() {
 
         shift 2 ;;
 
+      -s|--ssl)
+
+        export ssl_state=1
+
+        shift ;;
+
       -h|--headers)
 
         export headers_state=1
 
         shift ;;
 
-      -s|--scan)
+      --scan)
 
         export scan_state=1
 
