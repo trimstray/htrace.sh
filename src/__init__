@@ -26,12 +26,12 @@ function __main__() {
   readonly _scan_output="${_log_directory}/scan.out"
 
   # We check if we are a root user.
-  if [[ "$EUID" -ne 0 ]] ; then
-
-    printf "EUID is not equal 0 (no root user)\\n"
-    _exit_ "1"
-
-  fi
+  # if [[ "$EUID" -ne 0 ]] ; then
+  #
+  #   printf "EUID is not equal 0 (no root user)\\n"
+  #   _exit_ "1"
+  #
+  # fi
 
   # Path to import file.
   # shellcheck disable=SC2154
