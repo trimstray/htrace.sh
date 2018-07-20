@@ -68,6 +68,7 @@ function __main__() {
   local mixed_content_state="0"
 
   # Set redirects limit.
+  local max_redirects_state="0"
   local _redirects=10
 
   # Set default User-Agent.
@@ -193,7 +194,7 @@ function __main__() {
 
       --max-redirects)
 
-        export mixed_content_state=1
+        export max_redirects_state=1
 
         export _redirects="${2}"
 
