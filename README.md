@@ -120,6 +120,7 @@ Provides the following options:
         -h|--headers                          show response headers
         --scan <all|observatory|ssllabs>      scan domain with external security tools
         --mixed-content                       scan website for mixed content
+        --max-redirects <num>                 set max redirects (default: 10)
 ```
 
 ## Contributing
