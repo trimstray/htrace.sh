@@ -109,12 +109,14 @@ Provides the following options:
 
   Examples:
     htrace.sh --domain https://example.com
+    htrace.sh --domain https://example.com -s -h --scan ssllabs
 
   Options:
         --help                                show this message
         -d|--domain <domain_name>             set domain name
+        -s|--ssl                              show ssl server/connection params
         -h|--headers                          show response headers
-        -s|--scan <all|observatory|ssllabs>   scan domain with external security tools
+        --scan <all|observatory|ssllabs>      scan domain with external security tools
         --mixed-content                       scan website for mixed content
 ```
 
