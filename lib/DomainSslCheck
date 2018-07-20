@@ -46,13 +46,18 @@ function DomainSslCheck() {
 
   fi
 
-  # shellcheck disable=SC2086,SC2154
-  printf '         ssl: \e['${g_trgb}'m%s\e[m, ' "on"
+  # shellcheck disable=SC2154
+  if [[ "$ssl_state" -eq 1 ]] ; then
 
-  # shellcheck disable=SC2086,SC2154
-  printf 'version(\e['${_ssl_trgb}'m%s\e[m), cipher(\e['${s_trgb}'m%s\e[m)\n' \
-         "$_ssl_params_proto" \
-         "$_ssl_params_cipher"
+    # shellcheck disable=SC2086,SC2154
+    printf '         ssl: \e['${g_trgb}'m%s\e[m, ' "on"
+
+    # shellcheck disable=SC2086,SC2154
+    printf 'version(\e['${_ssl_trgb}'m%s\e[m), cipher(\e['${s_trgb}'m%s\e[m)\n' \
+           "$_ssl_params_proto" \
+           "$_ssl_params_cipher"
+
+  fi
 
   return $_STATE
 

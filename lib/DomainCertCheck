@@ -89,25 +89,30 @@ function DomainCertCheck() {
 
   fi
 
-  # shellcheck disable=SC2086,SC2154
-  printf '         public-key(\e['${_pkey_trgb}'m%s\e[m), ' \
-         "$_ssl_domain_public_key"
+  # shellcheck disable=SC2154
+  if [[ "$ssl_state" -eq 1 ]] ; then
 
-  # shellcheck disable=SC2086,SC2154
-  printf 'signature(\e['${s_trgb}'m%s\e[m)\n' \
-         "$_ssl_domain_signature"
+    # shellcheck disable=SC2086,SC2154
+    printf '         public-key(\e['${_pkey_trgb}'m%s\e[m), ' \
+           "$_ssl_domain_public_key"
 
-  # shellcheck disable=SC2086,SC2154
-  printf '         issuer:\e['${x_trgb}'m%s\e[m\n' \
-         "$_ssl_domain_issuer_cn"
+    # shellcheck disable=SC2086,SC2154
+    printf 'signature(\e['${s_trgb}'m%s\e[m)\n' \
+          "$_ssl_domain_signature"
 
-  # shellcheck disable=SC2086,SC2154
-  printf '         cn:\e['${x_trgb}'m%s\e[m\n         san: \e['${p_trgb}'m%s\e[m\n' \
-         "$_ssl_domain_cn" "$_ssl_domain_san"
+    # shellcheck disable=SC2086,SC2154
+    printf '         issuer:\e['${x_trgb}'m%s\e[m\n' \
+           "$_ssl_domain_issuer_cn"
 
-  # shellcheck disable=SC2086,SC2154
-  printf '         valid date: \e['${b_trgb}'m%s/%s\e[m\n' \
-         "$_ssl_domain_not_before" "$_ssl_domain_not_after"
+    # shellcheck disable=SC2086,SC2154
+    printf '         cn:\e['${x_trgb}'m%s\e[m\n         san: \e['${p_trgb}'m%s\e[m\n' \
+          "$_ssl_domain_cn" "$_ssl_domain_san"
+
+    # shellcheck disable=SC2086,SC2154
+    printf '         valid date: \e['${b_trgb}'m%s/%s\e[m\n' \
+          "$_ssl_domain_not_before" "$_ssl_domain_not_after"
+
+  fi
 
   return $_STATE
 
