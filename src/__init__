@@ -324,12 +324,12 @@ function __main__() {
     if [[ "$_rcounter" -eq "$_redirects" ]] ; then
 
       printf '\n    %s \e['${e_trgb}'m%s\e[m\n\n' \
-             "Redirects loop prevention: limit is" \
+             "Prevention of redirection loops: limit is" \
              "$_redirects"
 
       _logger "stop" \
         "${_FUNCTION_ID}()" \
-        "Redirects loop prevention: limit is $_redirects"
+        "Prevention of redirection loops: limit is $_redirects"
 
     else
 
