@@ -329,7 +329,7 @@ function __main__() {
   while [[ ${_http_code} =~ ^3[0-9]{2}$ ]] ; do
 
     # Prevention of redirection loops.
-    if [[ "$_rcounter" -eq "$_redirects" ]] ; then
+    if [[ "$_rcounter" -gt "$_redirects" ]] ; then
 
       printf '\n    %s \e['${e_trgb}'m%s\e[m\n\n' \
              "Prevention of redirection loops: limit is" \
