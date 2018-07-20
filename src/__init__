@@ -67,6 +67,10 @@ function __main__() {
   # Set redirects limit.
   local _redirects=10
 
+  # Set default User-Agent.
+  # shellcheck disable=SC2034
+  local _user_agent="User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
+
   # We place here used commands at script runtime, as strings to anything
   # unnecessarily run.
   readonly commands=(basename dirname stat ps date grep cut sed awk chown \
