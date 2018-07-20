@@ -70,6 +70,8 @@ htrace.sh --domain https://google.com
 - **Ssllabs** - command-line reference-implementation client for SSL Labs APIs
 - **mixed-content-scan** - cli tool for check HTTPS-enabled website for Mixed Content
 
+  > When scanning for mixed content, remember that it may take a long time before the entire site is checked.
+
 ### Docker
 
 The configuration is contained in the **build/Dockerfile**.
