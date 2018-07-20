@@ -24,6 +24,11 @@ function DomainCertCheck() {
   # shellcheck disable=SC2034,SC2154
   _ssl_domain_name="$_domain_name"
 
+  # Alternative:
+  #   echo | \
+  #   openssl s_client -servername "$_ssl_domain_name" \
+  #   -connect "$_ssl_domain_name":443 2>/dev/null | \
+  #   openssl x509 -text -noout
   _ssl_domain_cert=$(echo | \
                      openssl s_client -servername "$_ssl_domain_name" \
                      -connect "$_ssl_domain_name":443 2>/dev/null | \
@@ -53,9 +58,44 @@ function DomainCertCheck() {
                      cut -d ":" -f2- | tr -s ' ' | \
                      sed -e 's/^[ \t]*//')
 
+  _ssl_domain_public_key=$(echo "$_ssl_domain_cert" | \
+                     openssl x509 -noout -text | \
+                     grep "Public-Key:" | \
+                     cut -d ":" -f2- | tr -s ' ' | tr -d '()' | \
+                     sed -e 's/^[ \t]*//')
+
+  _ssl_domain_signature=$(echo "$_ssl_domain_cert" | \
+                     openssl x509 -noout -text | \
+                     grep "Signature Algorithm:" | head -n 1 | \
+                     cut -d ":" -f2- | tr -s ' ' | tr -d '()' | \
+                     sed -e 's/^[ \t]*//')
+
   _ssl_domain_issuer_cn=$(echo "$_ssl_domain_issuer" | grep -o "CN =.*" | cut -d "=" -f2-)
-  _ssl_domain_cn=$(echo "$_ssl_domain_names" | grep -o "CN =.*" | cut -d "=" -f2-)
+  _ssl_domain_cn=$(echo "$_ssl_domain_names" | grep -o "CN =.*" | cut -d "=" -f2- | sed 's/^\(.*\),.*$/\1/')
   _ssl_domain_san=$(echo "$_ssl_domain_names" | grep "DNS:" | cut -d ":" -f2- | tr '\n' ' ')
+
+  if [[ "$_ssl_domain_public_key" = *"4096"* ]] ; then
+
+    # shellcheck disable=SC2154
+    local _pkey_trgb="0;0;32"
+
+  elif [[ "$_ssl_domain_public_key" = *"2048"* ]] ; then
+
+    local _pkey_trgb="0;0;33"
+
+  else
+
+    local _pkey_trgb="0;0;31"
+
+  fi
+
+  # shellcheck disable=SC2086,SC2154
+  printf '         public-key(\e['${_pkey_trgb}'m%s\e[m), ' \
+         "$_ssl_domain_public_key"
+
+  # shellcheck disable=SC2086,SC2154
+  printf 'signature(\e['${s_trgb}'m%s\e[m)\n' \
+         "$_ssl_domain_signature"
 
   # shellcheck disable=SC2086,SC2154
   printf '         issuer:\e['${x_trgb}'m%s\e[m\n' \
