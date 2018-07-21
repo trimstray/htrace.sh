@@ -288,9 +288,15 @@ function __main__() {
   # shellcheck disable=SC2034
   local e_trgb="1;1;31"
   # shellcheck disable=SC2034
+  local e2_trgb="0;0;31"
+  # shellcheck disable=SC2034
   local g_trgb="1;1;32"
   # shellcheck disable=SC2034
+  local g2_trgb="0;0;32"
+  # shellcheck disable=SC2034
   local d_trgb="4;1;33"
+  # shellcheck disable=SC2034
+  local d2_trgb="0;0;33"
   # shellcheck disable=SC2034
   local s_trgb="2;2;34"
   # shellcheck disable=SC2034
