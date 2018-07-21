@@ -163,17 +163,22 @@ function DomainTrace() {
       if [[ "$ssl_state" -eq 1 ]] ; then
 
         # shellcheck disable=SC2154
-        if [[ "$_ssl_params_verify" == " OK" ]] ; then
+        if [[ "$_ssl_params_verify" == "OK" ]] ; then
 
           _ssl_params_verify="ok"
 
           # shellcheck disable=SC2086,SC2154
           printf '         verification: \e['${g_trgb}'m%s\e[m\n' "$_ssl_params_verify"
 
+        elif [[ "$_ssl_params_verify" == "self signed certificate" ]] ; then
+
+          # shellcheck disable=SC2086,SC2154
+          printf '         verification: \e['${d2_trgb}'m%s\e[m\n' "$_ssl_params_verify"
+
         else
 
           # shellcheck disable=SC2086,SC2154
-          printf '         verification:\e['${e2_trgb}'m%s\e[m\n' "$_ssl_params_verify"
+          printf '         verification: \e['${e2_trgb}'m%s\e[m\n' "$_ssl_params_verify"
 
         fi
 
