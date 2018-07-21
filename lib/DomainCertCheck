@@ -27,8 +27,7 @@ function DomainCertCheck() {
   # Alternative:
   #   echo | \
   #   openssl s_client -servername "$_ssl_domain_name" \
-  #   -connect "$_ssl_domain_name":443 2>/dev/null | \
-  #   openssl x509 -text -noout
+  #   -connect "$_ssl_domain_name":443 2>/dev/null | openssl x509 -text -noout
   _ssl_domain_cert=$(echo | \
                      openssl s_client -servername "$_ssl_domain_name" \
                      -connect "$_ssl_domain_name":443 2>/dev/null | \
@@ -77,20 +76,56 @@ function DomainCertCheck() {
   if [[ "$_ssl_domain_public_key" = *"4096"* ]] ; then
 
     # shellcheck disable=SC2154
-    local _pkey_trgb="0;0;32"
+    local _pkey_trgb="$g2_trgb"
 
   elif [[ "$_ssl_domain_public_key" = *"2048"* ]] ; then
 
-    local _pkey_trgb="0;0;33"
+    # shellcheck disable=SC2154
+    local _pkey_trgb="$d2_trgb"
 
   else
 
-    local _pkey_trgb="0;0;31"
+    # shellcheck disable=SC2154
+    local _pkey_trgb="$e2_trgb"
 
   fi
 
   # shellcheck disable=SC2154
   if [[ "$ssl_state" -eq 1 ]] ; then
+
+    local _equal_state="0"
+    local _all_common_names="$_ssl_domain_cn $_ssl_domain_san"
+
+    IFS=" " read -r -a _common_names <<< "$(sort <<<"$_all_common_names")"
+    for _cn in "${_common_names[@]}" ; do
+
+      if [[ "$_ssl_domain_name" == "$_cn" ]] ; then
+
+        # shellcheck disable=SC2034
+        _equal_state="1"
+        break
+
+      else
+
+        if [[ "$_cn" = *"*"* ]] ; then
+
+          _cn_crt=$(echo "$_cn" | cut -d "." -f2-)
+          _cn_dom=$(echo "$_ssl_domain_name" | cut -d "." -f2-)
+
+          if [[ "$_cn_crt" == "$_cn_dom" ]] ; then
+
+            # shellcheck disable=SC2034
+            _equal_state="1"
+            break
+
+          fi
+
+        fi
+
+      fi
+
+    done
+    unset IFS
 
     # shellcheck disable=SC2086,SC2154
     printf '         public-key(\e['${_pkey_trgb}'m%s\e[m), ' \
@@ -107,6 +142,20 @@ function DomainCertCheck() {
     # shellcheck disable=SC2086,SC2154
     printf '         cn:\e['${x_trgb}'m%s\e[m\n         san: \e['${p_trgb}'m%s\e[m\n' \
           "$_ssl_domain_cn" "$_ssl_domain_san"
+
+    if [[ "$_equal_state" -eq 1 ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         valid cert: \e['${g2_trgb}'m%s\e[m\n' \
+            "hostname matches the common name"
+
+    else
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         valid cert: \e['${e2_trgb}'m%s\e[m\n' \
+            "common name mismatch error"
+
+    fi
 
     # shellcheck disable=SC2086,SC2154
     printf '         valid date: \e['${b_trgb}'m%s/%s\e[m\n' \
