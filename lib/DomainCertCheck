@@ -161,23 +161,23 @@ function DomainCertCheck() {
     printf '         san: \e['${p_trgb}'m%s\e[m\n' \
           "$_ssl_domain_san"
 
+    # shellcheck disable=SC2086,SC2154
+    printf '         date: \e['${b_trgb}'m%s/%s\e[m\n' \
+          "$_ssl_domain_not_before" "$_ssl_domain_not_after"
+
     if [[ "$_equal_state" -eq 1 ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         valid cert: \e['${g2_trgb}'m%s\e[m\n' \
-            "hostname matches the common name"
+      printf '         cert validity: \e['${g2_trgb}'m%s\e[m\n' \
+            "match"
 
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '         valid cert: \e['${e2_trgb}'m%s\e[m\n' \
-            "common name mismatch error"
+      printf '         cert validity: \e['${e2_trgb}'m%s\e[m\n' \
+            "is not valid (hostname mismatch)"
 
     fi
-
-    # shellcheck disable=SC2086,SC2154
-    printf '         valid date: \e['${b_trgb}'m%s/%s\e[m\n' \
-          "$_ssl_domain_not_before" "$_ssl_domain_not_after"
 
   fi
 
