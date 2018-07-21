@@ -168,13 +168,13 @@ function DomainCertCheck() {
     if [[ "$_equal_state" -eq 1 ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         cert validity: \e['${g2_trgb}'m%s\e[m\n' \
+      printf '         validity: \e['${g2_trgb}'m%s\e[m\n' \
             "match"
 
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '         cert validity: \e['${e2_trgb}'m%s\e[m\n' \
+      printf '         validity: \e['${e2_trgb}'m%s\e[m\n' \
             "is not valid (hostname mismatch)"
 
     fi
