@@ -69,9 +69,21 @@ function DomainCertCheck() {
                      cut -d ":" -f2- | tr -s ' ' | tr -d '()' | \
                      sed -e 's/^[ \t]*//')
 
-  _ssl_domain_issuer_cn=$(echo "$_ssl_domain_issuer" | grep -o "CN =.*" | cut -d "=" -f2-)
-  _ssl_domain_cn=$(echo "$_ssl_domain_names" | grep -o "CN =.*" | cut -d "=" -f2- | sed 's/^\(.*\),.*$/\1/')
-  _ssl_domain_san=$(echo "$_ssl_domain_names" | grep "DNS:" | cut -d ":" -f2- | tr '\n' ' ')
+  _ssl_domain_issuer_cn=$(echo "$_ssl_domain_issuer" | \
+                     grep -o "CN =.*" | \
+                     cut -d "=" -f2- | \
+                     awk '{$1=$1};1')
+
+  _ssl_domain_cn=$(echo "$_ssl_domain_names" | \
+                     grep -o "CN =.*" | \
+                     cut -d "=" -f2- | \
+                     sed 's/^\(.*\),.*$/\1/' | \
+                     awk '{$1=$1};1')
+
+  _ssl_domain_san=$(echo "$_ssl_domain_names" | \
+                     grep "DNS:" | \
+                     cut -d ":" -f2- | \
+                     tr '\n' ' ')
 
   if [[ "$_ssl_domain_public_key" = *"4096"* ]] ; then
 
@@ -103,6 +115,7 @@ function DomainCertCheck() {
 
         # shellcheck disable=SC2034
         _equal_state="1"
+
         break
 
       else
@@ -116,6 +129,7 @@ function DomainCertCheck() {
 
             # shellcheck disable=SC2034
             _equal_state="1"
+
             break
 
           fi
@@ -136,12 +150,16 @@ function DomainCertCheck() {
           "$_ssl_domain_signature"
 
     # shellcheck disable=SC2086,SC2154
-    printf '         issuer:\e['${x_trgb}'m%s\e[m\n' \
+    printf '         issuer: \e['${x_trgb}'m%s\e[m\n' \
            "$_ssl_domain_issuer_cn"
 
     # shellcheck disable=SC2086,SC2154
-    printf '         cn:\e['${x_trgb}'m%s\e[m\n         san: \e['${p_trgb}'m%s\e[m\n' \
-          "$_ssl_domain_cn" "$_ssl_domain_san"
+    printf '         cn: \e['${x_trgb}'m%s\e[m\n' \
+          "$_ssl_domain_cn"
+
+    # shellcheck disable=SC2086,SC2154
+    printf '         san: \e['${p_trgb}'m%s\e[m\n' \
+          "$_ssl_domain_san"
 
     if [[ "$_equal_state" -eq 1 ]] ; then
 
