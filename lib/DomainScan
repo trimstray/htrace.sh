@@ -38,7 +38,7 @@ function DomainScan() {
 
   elif [[ "$_scan_t" = *"ssllabs"* ]] ; then
 
-    local _ssllabs_desc="ssllabs:https://www.ssllabs.com/ssltest/"
+    local _ssllabs_desc="Ssllabs API:https://www.ssllabs.com/ssltest/"
     local _ssllabs_cmd="eval ssllabs-scan -quiet -grade \"$_host\""
 
     _msg_args+=(\
