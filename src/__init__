@@ -73,7 +73,8 @@ function __main__() {
 
   # Set default User-Agent.
   # shellcheck disable=SC2034
-  local _user_agent="User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
+  local user_agent_state="0"
+  local _user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
 
   # We place here used commands at script runtime, as strings to anything
   # unnecessarily run.
@@ -128,7 +129,7 @@ function __main__() {
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
   local _short_opt="d:sh"
-  local _long_opt="help,domain:,ssl,headers,scan:,mixed-content,max-redirects:"
+  local _long_opt="help,domain:,ssl,headers,scan:,mixed-content,max-redirects:,user-agent:"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -197,6 +198,14 @@ function __main__() {
         export max_redirects_state=1
 
         export _redirects="${2}"
+
+        shift 2 ;;
+
+      --user-agent)
+
+        export user_agent_state=1
+
+        export _user_agent="${2}"
 
         shift 2 ;;
 
