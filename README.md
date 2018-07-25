@@ -67,7 +67,7 @@ htrace.sh --domain https://google.com
 **htrace.sh** support external tools for security scans:
 
 - **Mozilla Observatory** - cli version of [observatory.mozilla.org](observatory.mozilla.org)
-- **Ssllabs** - command-line reference-implementation client for SSL Labs APIs
+- **Ssllabs** - command-line reference-implementation client for SSL Labs API
 - **mixed-content-scan** - cli tool for check HTTPS-enabled website for Mixed Content
 
   > When scanning for **mixed content**, remember that it may take a long time before the entire site is checked.
