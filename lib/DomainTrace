@@ -76,11 +76,11 @@ function DomainTrace() {
 
     # Get external IP (set https connection).
     # shellcheck disable=SC2155
-    local _external_ip=$(curl -ks -m $_timeout http://whatismyip.akamai.com/)
+    local _via_ip=$(curl -ks -m $_timeout http://whatismyip.akamai.com/)
 
-    if [[ ! "$_external_ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
+    if [[ ! "$_via_ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
 
-      _external_ip="unknown"
+      _via_ip="unknown"
 
     fi
 
@@ -88,7 +88,7 @@ function DomainTrace() {
 
       if [[ "$_remote_socket" = *"$_ip"* ]] ; then
 
-        _external_ip="<int_link>"
+        _via_ip="<int_link>"
 
       fi
 
@@ -145,7 +145,7 @@ function DomainTrace() {
            "$_full_conn_time" \
            "$_time_total" \
            "$_local_socket" \
-           "$_external_ip" \
+           "$_via_ip" \
            "$_remote_socket" \
            "$_http_scheme" \
            "$_http_version" \
