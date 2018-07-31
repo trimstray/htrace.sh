@@ -27,7 +27,7 @@ function PrintfHeaders() {
          "time_total" \
          "time_connect" \
          "local_socket" \
-         "external_ip" \
+         "via" \
          "remote_socket" \
          "type" \
          "http" \
@@ -39,7 +39,7 @@ function PrintfHeaders() {
          "----------" \
          "------------" \
          "------------" \
-         "-----------" \
+         "---" \
          "-------------" \
          "----" \
          "----" \
