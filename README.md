@@ -106,7 +106,7 @@ htrace.sh --domain https://google.com
 
 ### Reports
 
-**htrace.sh** allows you to generate a report in **html** format (with `--html` script param). To do this, you need to download one of the tools that deals with the whole process.
+If you want to generate a report in html format, use the **ansi2html.sh** tool. A detailed description of the installation and use below:
 
 ```bash
 wget -c https://raw.githubusercontent.com/pixelb/scripts/master/scripts/ansi2html.sh -O /usr/local/bin/ansi2html
