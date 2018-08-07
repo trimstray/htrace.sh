@@ -151,6 +151,10 @@ function DomainCertCheck() {
           "$_ssl_domain_signature"
 
     # shellcheck disable=SC2086,SC2154
+    printf '         date: \e['${b_trgb}'m%s/%s\e[m\n' \
+          "$_ssl_domain_not_before" "$_ssl_domain_not_after"
+
+    # shellcheck disable=SC2086,SC2154
     printf '         issuer: \e['${x_trgb}'m%s\e[m\n' \
            "$_ssl_domain_issuer_cn"
 
@@ -175,10 +179,6 @@ function DomainCertCheck() {
             "is not valid (hostname mismatch)"
 
     fi
-
-    # shellcheck disable=SC2086,SC2154
-    printf '         date: \e['${b_trgb}'m%s/%s\e[m\n' \
-          "$_ssl_domain_not_before" "$_ssl_domain_not_after"
 
   fi
 
