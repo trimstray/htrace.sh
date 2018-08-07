@@ -168,7 +168,7 @@ Provides the following options:
         -h|--headers                          show response headers
         --scan <all|observatory|ssllabs>      scan domain with external security tools
         --mixed-content                       scan website for mixed content
-        --nmap-nse                            scan website for nmap nse library
+        --nmap-nse                            scan website with nmap nse library
         --max-redirects <num>                 set max redirects (default: 10)
         --user-agent <val>                    set 'User-Agent' header
 ```
