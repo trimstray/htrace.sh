@@ -11,7 +11,7 @@
   </a>
 </p>
 
-<h4 align="left">Simple shell script to debugging http/https traffic tracing, response headers and mixed-content.</h4>
+<h4 align="left">Simple shell script to debugging http/https traffic tracing, response headers, mixed-content and checks security.</h4>
 
 <p align="center">
     <img src="https://github.com/trimstray/htrace.sh/blob/master/doc/img/htrace.sh_preview.png"
@@ -32,11 +32,12 @@
 
 It is useful for:
 
-- checking properly web servers/reverse proxies domain configuration
-- redirects analysis, eg. to eliminate redirect loops
-- checking response headers for each request
-- checking basic ssl configuration
-- scanning domain for mixed content
+- checking **properly domain configuration** (web servers/reverse proxies)
+- **redirects analysis**, eg. to eliminate redirect loops
+- checking **response headers** for each request
+- checking **basic ssl** configuration
+- scanning domain for **Mixed Content**
+- scanning domain with **Nmap NSE Library**
 - scanning domain with external security tools: **Mozilla Observatory** and **SSL Labs API**
 
   > Before use **htrace.sh** please see **[Requirements](#requirements)**.
@@ -66,11 +67,42 @@ htrace.sh --domain https://google.com
 
 **htrace.sh** support external tools for security scans:
 
-- **Mozilla Observatory** - cli version of [observatory.mozilla.org](observatory.mozilla.org)
-- **Ssllabs** - command-line reference-implementation client for SSL Labs API
-- **mixed-content-scan** - cli tool for check HTTPS-enabled website for Mixed Content
+- **Mozilla Observatory** - cli version of [observatory.mozilla.org](observatory.mozilla.org)  
+  with params: `--format=report --rescan --zero --quiet`
+- **Ssllabs** - command-line reference-implementation client for [SSL Labs API](https://www.ssllabs.com/ssltest/)  
+  with params: `-quiet -grade`
+- **mixed-content-scan** - cli tool for check HTTPS-enabled website for Mixed Content  
+  with params: `-user-agent \"$_user_agent\"--no-check-certificate`  
+- **Nmap NSE Library** - provide automated security scans with Nmap
+  with scripts:
+  * http-auth-finder
+  * http-chrono
+  * http-cookie-flags
+  * http-cors
+  * http-cross-domain-policy
+  * http-csrf
+  * http-dombased-xss
+  * http-git
+  * http-grep
+  * http-internal-ip-disclosure
+  * http-jsonp-detection
+  * http-malware-host
+  * http-methods
+  * http-passwd
+  * http-phpself-xss
+  * http-php-version
+  * http-robots.txt
+  * http-sitemap-generator
+  * http-shellshock
+  * http-stored-xss
+  * http-unsafe-output-escaping
+  * http-useragent-tester
+  * http-vhosts
+  * http-xssed
+  * ssl-enum-ciphers
+  * whois-ip
 
-  > When scanning for **mixed content**, remember that it may take a long time before the entire site is checked.
+  > When scanning for **mixed content** and **nmap scripting engine**, remember that it may take a long time before the entire site is checked.
 
 ### Docker
 
@@ -100,12 +132,20 @@ This tool working with:
 - **[Mozilla Observatory](https://github.com/mozilla/http-observatory)**
 - **[Ssllabs](https://github.com/ssllabs/ssllabs-scan)**
 - **[mixed-content-scan](https://github.com/bramus/mixed-content-scan)**
+- **[Nmap](https://nmap.org/)**
 
 ## Parameters
 
 Provides the following options:
 
 ```bash
+  Usage:
+    htrace.sh <option|long-option>
+
+  Examples:
+    htrace.sh --domain https://example.com
+    htrace.sh --domain https://example.com -s -h --scan ssllabs
+
   Usage:
     htrace.sh <option|long-option>
 
@@ -120,6 +160,7 @@ Provides the following options:
         -h|--headers                          show response headers
         --scan <all|observatory|ssllabs>      scan domain with external security tools
         --mixed-content                       scan website for mixed content
+        --nmap-nse                            scan website for nmap nse library
         --max-redirects <num>                 set max redirects (default: 10)
         --user-agent <val>                    set 'User-Agent' header
 ```
