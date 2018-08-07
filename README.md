@@ -169,8 +169,8 @@ Provides the following options:
         --scan <all|observatory|ssllabs>      scan domain with external security tools
         --mixed-content                       scan website for mixed content
         --nmap-nse                            scan website with nmap nse library
-        --max-redirects <num>                 set max redirects (default: 10)
         --user-agent <val>                    set 'User-Agent' header
+        --max-redirects <num>                 set max redirects (default: 10)
 ```
 
 ## Contributing

@@ -203,19 +203,19 @@ function __main__() {
 
         shift ;;
 
-      --max-redirects)
-
-        export max_redirects_state=1
-
-        export _redirects="${2}"
-
-        shift 2 ;;
-
       --user-agent)
 
         export user_agent_state=1
 
         export _user_agent="${2}"
+
+        shift 2 ;;
+
+      --max-redirects)
+
+        export max_redirects_state=1
+
+        export _redirects="${2}"
 
         shift 2 ;;
 
