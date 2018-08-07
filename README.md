@@ -171,6 +171,7 @@ Provides the following options:
         --nmap-nse                            scan website with nmap nse library
         --user-agent <val>                    set 'User-Agent' header
         --max-redirects <num>                 set max redirects (default: 10)
+        --timeout <num>                       set max timeout (default: 15)
 ```
 
 ## Contributing

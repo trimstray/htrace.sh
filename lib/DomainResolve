@@ -25,7 +25,7 @@ function DomainResolve() {
   local _host_ip=""
 
   # shellcheck disable=SC2154
-  _host_ip=$(timeout 5 dig "$_host" | \
+  _host_ip=$(timeout "$_timeout" dig "$_host" | \
              awk '/^;; ANSWER SECTION:$/ { getline ; print $5 }')
 
   if [[ -z "$_host_ip" ]] ; then

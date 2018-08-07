@@ -70,14 +70,17 @@ function __main__() {
   # Default 'nmap-nse' variable.
   local nmap_nse_state="0"
 
-  # Set redirects limit.
-  local max_redirects_state="0"
-  local _redirects=10
-
   # Set default User-Agent.
   # shellcheck disable=SC2034
   local user_agent_state="0"
   local _user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
+
+  # Set redirects limit.
+  local max_redirects_state="0"
+  local _redirects=10
+
+  # Default timeout value for.
+  local _timeout="15"
 
   # We place here used commands at script runtime, as strings to anything
   # unnecessarily run.
@@ -133,7 +136,7 @@ function __main__() {
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
   local _short_opt="d:sh"
-  local _long_opt="help,domain:,ssl,headers,scan:,mixed-content,nmap-nse,max-redirects:,user-agent:"
+  local _long_opt="help,domain:,ssl,headers,scan:,mixed-content,nmap-nse,user-agent:,max-redirects:,timeout:"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -216,6 +219,14 @@ function __main__() {
         export max_redirects_state=1
 
         export _redirects="${2}"
+
+        shift 2 ;;
+
+      --timeout)
+
+        export timeout_state=1
+
+        export _timeout="${2}"
 
         shift 2 ;;
 
