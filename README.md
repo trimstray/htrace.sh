@@ -11,7 +11,7 @@
   </a>
 </p>
 
-<h4 align="left">Simple shell script to debugging http/https traffic tracing, response headers, mixed-content and checks security with Nmap NSE Library.</h4>
+<h4 align="left">Simple shell script to debugging http/https traffic tracing, response headers, mixed-content and checks domain with Nmap NSE Library.</h4>
 
 <p align="center">
     <img src="https://github.com/trimstray/htrace.sh/blob/master/doc/img/htrace.sh_preview.png"
