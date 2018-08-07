@@ -68,7 +68,7 @@ function __main__() {
   local mixed_content_state="0"
 
   # Default 'nmap-nse' variable.
-  local nmap_nse_state="0"
+  local nse_state="0"
 
   # Set default User-Agent.
   # shellcheck disable=SC2034
@@ -200,9 +200,9 @@ function __main__() {
 
         shift ;;
 
-      --nmap-nse)
+      --nse)
 
-        export nmap_nse_state=1
+        export nse_state=1
 
         shift ;;
 
@@ -536,7 +536,7 @@ function __main__() {
 
   fi
 
-if [[ "$nmap_nse_state" -eq 1 ]] ; then
+if [[ "$nse_state" -eq 1 ]] ; then
 
     DomainStrip "$_http_last"
 

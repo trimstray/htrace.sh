@@ -600,7 +600,7 @@ function _help_() {
         -h|--headers                          show response headers
         --scan <all|observatory|ssllabs>      scan domain with external security tools
         --mixed-content                       scan website for mixed content
-        --nmap-nse                            scan website with nmap nse library
+        --nse                                 scan website with nmap nse library
         --user-agent <val>                    set 'User-Agent' header
         --max-redirects <num>                 set max redirects (default: 10)
         --timeout <num>                       set max timeout (default: 15)

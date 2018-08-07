@@ -72,8 +72,8 @@ htrace.sh --domain https://google.com
 - **Ssllabs** - command-line reference-implementation client for [SSL Labs API](https://www.ssllabs.com/ssltest/)  
   with params: `-quiet -grade`
 - **mixed-content-scan** - cli tool for check HTTPS-enabled website for Mixed Content  
-  with params: `-user-agent \"$_user_agent\"--no-check-certificate`  
-- **Nmap NSE Library** - provide automated security scans with Nmap
+  with params: `-user-agent \"$_user_agent\"--no-check-certificate`
+- **Nmap NSE Library** - provide automated security scans with Nmap  
   with scripts:
   * http-auth-finder
   * http-chrono
@@ -168,7 +168,7 @@ Provides the following options:
         -h|--headers                          show response headers
         --scan <all|observatory|ssllabs>      scan domain with external security tools
         --mixed-content                       scan website for mixed content
-        --nmap-nse                            scan website with nmap nse library
+        --nse                                 scan website with nmap nse library
         --user-agent <val>                    set 'User-Agent' header
         --max-redirects <num>                 set max redirects (default: 10)
         --timeout <num>                       set max timeout (default: 15)
