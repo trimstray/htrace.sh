@@ -67,7 +67,7 @@ htrace.sh --domain https://google.com
 
 **htrace.sh** support external tools for security scans:
 
-- **Mozilla Observatory** - cli version of [observatory.mozilla.org](observatory.mozilla.org)  
+- **Mozilla Observatory** - cli version of [observatory.mozilla.org](https://observatory.mozilla.org/)  
   with params: `--format=report --rescan --zero --quiet`
 - **Ssllabs** - command-line reference-implementation client for [SSL Labs API](https://www.ssllabs.com/ssltest/)  
   with params: `-quiet -grade`
