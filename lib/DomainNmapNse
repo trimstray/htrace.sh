@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainNmapNse()
+#
+# Description:
+#   Scan domain with Nmap NSE Library.
+#
+# Usage:
+#   DomainNmapNse domain port
+#
+# Examples:
+#   DomainNmapNse example.com 443
+#
+
+function DomainNmapNse() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainNmapNse"
+  local _STATE=0
+
+  local _host="$1"
+  local _port="$2"
+
+  local _nmap_nse_scripts="http-auth-finder,\
+                           http-chrono,\
+                           http-cookie-flags,\
+                           http-cors,\
+                           http-cross-domain-policy,\
+                           http-csrf,\
+                           http-dombased-xss,\
+                           http-git,\
+                           http-grep,\
+                           http-internal-ip-disclosure,\
+                           http-jsonp-detection,\
+                           http-malware-host,\
+                           http-methods,\
+                           http-passwd,\
+                           http-phpself-xss,\
+                           http-php-version,\
+                           http-robots.txt,\
+                           http-sitemap-generator,\
+                           http-shellshock,\
+                           http-stored-xss,\
+                           http-unsafe-output-escaping,\
+                           http-useragent-tester,\
+                           http-vhosts,\
+                           http-xssed,\
+                           ssl-enum-ciphers,\
+                           whois-ip"
+
+  local _mixed_content_desc="Scan domain with Nmap NSE Library:https://nmap.org/book/nse.html"
+  # shellcheck disable=SC2034,SC2154
+  local _mixed_content_cmd="eval nmap --script=\"$_nmap_nse_scripts\" -p \"$_port\" \"$_host\""
+
+  _msg_args+=(\
+              "$_mixed_content_desc")
+
+  _cmd_args+=(\
+              "$_mixed_content_cmd")
+
+  return $_STATE
+
+}
