@@ -76,6 +76,10 @@ RUN \
   ln -s /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan \
   /usr/bin/mixed-content-scan
 
+# For Nmap NSE Library.
+RUN \
+  apt-get install -y nmap
+
 RUN \
   mkdir -p /opt/git && cd /opt/git && \
   git clone https://github.com/trimstray/htrace.sh.git && \
