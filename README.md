@@ -104,6 +104,15 @@ htrace.sh --domain https://google.com
 
   > When scanning for **mixed content** and **nmap scripting engine**, remember that it may take a long time before the entire site is checked.
 
+### Reports
+
+**htrace.sh** allows you to generate a report in **html** format (with `--html` script param). To do this, you need to download one of the tools that deals with the whole process.
+
+```bash
+wget -c https://raw.githubusercontent.com/pixelb/scripts/master/scripts/ansi2html.sh -O /usr/local/bin/ansi2html
+chmod +x /usr/local/bin/ansi2html
+```
+
 ### Docker
 
 The configuration is contained in the **build/Dockerfile**.
