@@ -112,7 +112,7 @@ If you want to generate a report in html format, use the **ansi2html.sh** tool. 
 wget -c https://raw.githubusercontent.com/pixelb/scripts/master/scripts/ansi2html.sh -O /usr/local/bin/ansi2html
 chmod +x /usr/local/bin/ansi2html
 
-htrace.sh -d https://nmap.org -s -h | ansi2html --bg=black > report.html
+htrace.sh -d https://nmap.org -s -h | ansi2html --bg=dark > report.html
 ```
 
 ### Docker
