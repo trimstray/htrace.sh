@@ -106,7 +106,7 @@ htrace.sh --domain https://google.com
 
 ### Reports
 
-If you want to generate a report in html format, use the **[ansi2html.sh](https://raw.githubusercontent.com/pixelb/scripts/master/scripts/ansi2html.sh)** tool. A detailed description of the installation and use below:
+If you want to generate a report in html format, use the **[ansi2html.sh](https://raw.githubusercontent.com/pixelb/scripts/master/scripts/ansi2html.sh)** tool. A detailed description of use:
 
 ```bash
 htrace.sh -d https://nmap.org -s -h | ansi2html --bg=dark > report.html
