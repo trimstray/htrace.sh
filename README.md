@@ -30,12 +30,15 @@
 
 ## Description
 
+In my daily work, I missed a tool with which I could test the configuration of domains in a simple way. The ability to use *curl* or *openssl* is very important, but I did not have the tools to automate this process. Until now, I used the tools available on the web, but each of them had some shortcomings. **Htrace.sh** is a shell script that allows you to validate your domain configuration and catch any errors (eg. redirect loops). It also displays basic information about the ssl configuration (if available), response headers, checks for mixed content and performs security scans using Nmap scripts and great external tools such as Ssllabs or Mozilla Observatory.
+
 It is useful for:
 
 - checking **properly domain configuration** (web servers/reverse proxies)
 - **redirects analysis**, eg. to eliminate redirect loops
 - checking **response headers** for each request
 - checking **basic ssl** configuration
+  - **validation** of the certificates (date, cn, san) and **verification** ssl connection
 - scanning domain for **Mixed Content**
 - scanning domain using **Nmap NSE Library**
 - scanning domain with external security tools: **Mozilla Observatory** and **SSL Labs API**
@@ -63,7 +66,7 @@ htrace.sh --domain https://google.com
 > * symlink to `bin/htrace.sh` is placed in `/usr/local/bin`
 > * man page is placed in `/usr/local/man/man8`
 
-### External tools
+## External tools
 
 **htrace.sh** support external tools for security scans:
 
@@ -104,7 +107,7 @@ htrace.sh --domain https://google.com
 
   > When scanning for **mixed content** and **nmap scripting engine**, remember that it may take a long time before the entire site is checked.
 
-### Reports
+## Reports
 
 If you want to generate a report in html format, use the **[ansi2html.sh](https://raw.githubusercontent.com/pixelb/scripts/master/scripts/ansi2html.sh)** tool. A detailed description of use:
 
@@ -112,18 +115,18 @@ If you want to generate a report in html format, use the **[ansi2html.sh](https:
 htrace.sh -d https://nmap.org -s -h | ansi2html --bg=dark > report.html
 ```
 
-### Docker
+## Docker
 
 The configuration is contained in the **build/Dockerfile**.
 
-#### Build image
+### Build image
 
 ```bash
 cd htrace.sh/build
 docker build --rm -t htrace.sh -f Dockerfile .
 ```
 
-#### Run container
+### Run container
 
 ```bash
 docker run --rm -it --name htrace.sh htrace.sh -d http://nmap.org -h
