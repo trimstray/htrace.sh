@@ -11,7 +11,7 @@
   </a>
 </p>
 
-<h4 align="left">Simple shell script to debugging http/https traffic tracing, response headers, mixed-content and checks domain with Nmap NSE Library.</h4>
+<br>
 
 <p align="center">
     <img src="https://github.com/trimstray/htrace.sh/blob/master/doc/img/htrace.sh_preview.png"
@@ -37,7 +37,7 @@ It is useful for:
 - checking **response headers** for each request
 - checking **basic ssl** configuration
 - scanning domain for **Mixed Content**
-- scanning domain with **Nmap NSE Library**
+- scanning domain using **Nmap NSE Library**
 - scanning domain with external security tools: **Mozilla Observatory** and **SSL Labs API**
 
   > Before use **htrace.sh** please see **[Requirements](#requirements)**.
