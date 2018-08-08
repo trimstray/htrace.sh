@@ -150,14 +150,7 @@ This tool working with:
 Provides the following options:
 
 ```bash
-  Usage:
-    htrace.sh <option|long-option>
-
-  Examples:
-    htrace.sh --domain https://example.com
-    htrace.sh --domain https://example.com -s -h --scan ssllabs
-
-  Usage:
+Usage:
     htrace.sh <option|long-option>
 
   Examples:
