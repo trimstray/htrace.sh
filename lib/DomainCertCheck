@@ -86,12 +86,15 @@ function DomainCertCheck() {
                      cut -d ":" -f2- | \
                      tr '\n' ' ')
 
-  if [[ "$_ssl_domain_public_key" = *"4096"* ]] ; then
+  if [[ "$_ssl_domain_public_key" == "4096 bit" ]] || \
+     [[ "$_ssl_domain_public_key" == "256 bit" ]] ; then
 
     # shellcheck disable=SC2154
     local _pkey_trgb="$g2_trgb"
 
-  elif [[ "$_ssl_domain_public_key" = *"2048"* ]] ; then
+  elif [[ "$_ssl_domain_public_key" == "2048 bit" ]] || \
+       [[ "$_ssl_domain_public_key" == "224 bit" ]] || \
+       [[ "$_ssl_domain_public_key" == "192 bit" ]] ; then
 
     # shellcheck disable=SC2154
     local _pkey_trgb="$d2_trgb"
