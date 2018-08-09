@@ -585,7 +585,10 @@ function _help_() {
   local _FUNCTION_ID="_help_"
   local _STATE=0
 
+  # shellcheck disable=SC2154
   printf "%s" "
+    $_init_name $_version
+
   Usage:
     $_init_name <option|long-option>
 
