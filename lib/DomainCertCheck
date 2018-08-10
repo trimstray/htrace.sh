@@ -78,7 +78,8 @@ function DomainCertCheck() {
   _ssl_domain_cn=$(echo "$_ssl_domain_names" | \
                      grep -o "CN =.*" | \
                      cut -d "=" -f2- | \
-                     sed 's/^\(.*\),.*$/\1/' | \
+                     # sed 's/^\(.*\),.*$/\1/' | \
+                     cut -d "," -f1 | \
                      awk '{$1=$1};1')
 
   _ssl_domain_san=$(echo "$_ssl_domain_names" | \
