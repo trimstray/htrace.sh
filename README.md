@@ -105,6 +105,8 @@ htrace.sh --domain https://google.com
   * ssl-enum-ciphers
   * whois-ip
 
+If you don't know how to install these tools and where they should be placed, please see in **[Dockerfile](https://github.com/trimstray/htrace.sh/blob/master/build/Dockerfile)** where exactly every step is described.
+
   > When scanning for **mixed content** and **nmap scripting engine**, remember that it may take a long time before the entire site is checked.
 
 ## Reports
