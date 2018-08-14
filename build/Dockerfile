@@ -18,6 +18,9 @@
 #   For init:
 #     docker run --rm -it --name htrace.sh htrace.sh -d http://nmap.org -h
 #
+#   For debug:
+#     docker run --rm -it --entrypoint /bin/bash --name htrace.sh htrace.sh
+#
 # License:
 #
 #   htrace.sh, Copyright (C) 2018  Michał Żurawski
@@ -37,7 +40,7 @@
 #
 ### END SCRIPT INFO
 
-FROM debian:stretch
+FROM debian:buster
 
 MAINTAINER trimstray "trimstray@gmail.com"
 
