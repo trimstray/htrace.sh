@@ -75,7 +75,7 @@ RUN \
 
 # For mixed-content-scan.
 RUN \
-  apt-get install -y composer php-curl php-dom && \
+  apt-get install -y composer php7.2-curl php7.2-xml && \
   composer global require bramus/mixed-content-scan && \
   # It's important - PATH is hardcoded in src/settings.
   ln -s /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan \
