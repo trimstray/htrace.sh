@@ -536,7 +536,7 @@ function __main__() {
 
   fi
 
-if [[ "$nse_state" -eq 1 ]] ; then
+  if [[ "$nse_state" -eq 1 ]] ; then
 
     DomainStrip "$_http_last"
 
