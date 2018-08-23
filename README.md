@@ -30,7 +30,11 @@
 
 ## Description
 
-In my daily work, I missed a tool with which I could test the configuration of domains in a simple way. The ability to use *curl* or *openssl* is very important, but I did not have the tools to automate this process. Until now, I used the tools available on the web, but each of them had some shortcomings. **Htrace.sh** is a shell script that allows you to validate your domain configuration and catch any errors (e.g. redirect loops). It also displays basic information about the ssl configuration (if available), response headers, checks for mixed content and performs security scans using Nmap scripts and great external tools such as Ssllabs or Mozilla Observatory.
+In my daily work, I missed a tool with which I could test the configuration of domains in a simple way. The ability to use *curl* or *openssl* is very important, but I did not have the tools to automate this process. Until now, I used the tools available on the web, but each of them had some shortcomings.
+
+**Htrace.sh** is a shell script that allows you to validate your domain configuration and catch any errors (e.g. redirect loops). It also displays basic information about the ssl configuration (if available), response headers, checks for mixed content and performs security scans using Nmap scripts and great external tools such as Ssllabs or Mozilla Observatory.
+
+## Functions
 
 It is useful for:
 
