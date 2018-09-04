@@ -19,6 +19,7 @@
 #     docker run --rm -it --name htrace.sh htrace.sh -d http://nmap.org -h
 #
 #   For debug:
+#     docker exec -it htrace.sh /bin/bash
 #     docker run --rm -it --entrypoint /bin/bash --name htrace.sh htrace.sh
 #
 # License:
