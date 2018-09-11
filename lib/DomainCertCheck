@@ -45,6 +45,12 @@ function DomainCertCheck() {
                      cut -d ":" -f2- | tr -s ' ' | \
                      sed -e 's/^[ \t]*//')
 
+  _ssl_domain_subject=$(echo "$_ssl_domain_cert" | \
+                     openssl x509 -noout -text | \
+                     grep "Subject:" | \
+                     cut -d ":" -f2- | tr -s ' ' | \
+                     sed -e 's/^[ \t]*//')
+
   _ssl_domain_not_before=$(echo "$_ssl_domain_cert" | \
                      openssl x509 -noout -text | \
                      grep "Not Before:" | \
@@ -74,6 +80,22 @@ function DomainCertCheck() {
                      cut -d "=" -f2- | \
                      cut -d "," -f1 | \
                      awk '{$1=$1};1')
+
+  _ssl_domain_subject_o=$(echo "$_ssl_domain_subject" | \
+                     tr ',' '\n' | \
+                     grep -o "O =.*" | \
+                     cut -d "=" -f2- | \
+                     cut -d "," -f1 | \
+                     awk '{$1=$1};1' | \
+                     tr '\n' ' ' | sed 's/ *$//')
+
+  _ssl_domain_subject_ou=$(echo "$_ssl_domain_subject" | \
+                     tr ',' '\n' | \
+                     grep -o "OU =.*" | \
+                     cut -d "=" -f2- | \
+                     cut -d "," -f1 | \
+                     awk '{$1=$1};1' | \
+                     tr '\n' ' ' | sed 's/ *$//')
 
   _ssl_domain_cn=$(echo "$_ssl_domain_names" | \
                      grep -o "CN =.*" | \
@@ -155,12 +177,32 @@ function DomainCertCheck() {
           "$_ssl_domain_signature"
 
     # shellcheck disable=SC2086,SC2154
-    printf '         date: \e['${b_trgb}'m%s/%s\e[m\n' \
+    printf '         date: \e['${p_trgb}'m%s / %s\e[m\n' \
           "$_ssl_domain_not_before" "$_ssl_domain_not_after"
 
     # shellcheck disable=SC2086,SC2154
     printf '         issuer: \e['${x_trgb}'m%s\e[m\n' \
            "$_ssl_domain_issuer_cn"
+
+    if [[ -z "$_ssl_domain_subject_ou" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         owner: \e['${x_trgb}'m%s\e[m\n' \
+             "$_ssl_domain_subject_o"
+
+    elif [[ -z "$_ssl_domain_subject_o" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         owner: (\e['${b_trgb}'m%s\e[m)\n' \
+             "$_ssl_domain_subject_ou"
+
+    else
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         owner: \e['${x_trgb}'m%s\e[m (\e['${b_trgb}'m%s\e[m)\n' \
+             "$_ssl_domain_subject_o" "$_ssl_domain_subject_ou"
+
+    fi
 
     # shellcheck disable=SC2086,SC2154
     printf '         cn: \e['${x_trgb}'m%s\e[m\n' \
