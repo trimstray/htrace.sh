@@ -180,11 +180,26 @@ function DomainCertCheck() {
     printf '         date: \e['${p_trgb}'m%s / %s\e[m\n' \
           "$_ssl_domain_not_before" "$_ssl_domain_not_after"
 
-    # shellcheck disable=SC2086,SC2154
-    printf '         issuer: \e['${x_trgb}'m%s\e[m\n' \
-           "$_ssl_domain_issuer_cn"
+    if [[ -z "$_ssl_domain_issuer_cn" ]] ; then
 
-    if [[ -z "$_ssl_domain_subject_ou" ]] ; then
+      # shellcheck disable=SC2086,SC2154
+      printf '         issuer: <empty>\n'
+
+    else
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         issuer: \e['${x_trgb}'m%s\e[m\n' \
+             "$_ssl_domain_issuer_cn"
+
+    fi
+
+    if [[ -z "$_ssl_domain_subject_o" ]] && \
+       [[ -z "$_ssl_domain_subject_ou" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         owner: <empty>\n'
+
+    elif [[ -z "$_ssl_domain_subject_ou" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
       printf '         owner: \e['${x_trgb}'m%s\e[m\n' \
@@ -204,13 +219,31 @@ function DomainCertCheck() {
 
     fi
 
-    # shellcheck disable=SC2086,SC2154
-    printf '         cn: \e['${x_trgb}'m%s\e[m\n' \
-          "$_ssl_domain_cn"
+    if [[ -z "$_ssl_domain_cn" ]] ; then
 
-    # shellcheck disable=SC2086,SC2154
-    printf '         san: \e['${p_trgb}'m%s\e[m\n' \
-          "$_ssl_domain_san"
+      # shellcheck disable=SC2086,SC2154
+      printf '         cn: <empty>\n'
+
+    else
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         cn: \e['${x_trgb}'m%s\e[m\n' \
+             "$_ssl_domain_cn"
+
+    fi
+
+    if [[ -z "$_ssl_domain_san" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         san: <empty>\n'
+
+    else
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         san: \e['${p_trgb}'m%s\e[m\n' \
+             "$_ssl_domain_san"
+
+    fi
 
     if [[ "$_equal_state" -eq 1 ]] ; then
 
