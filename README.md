@@ -156,7 +156,7 @@ This tool working with:
 Provides the following options:
 
 ```bash
-    htrace.sh v1.0.6
+    htrace.sh v1.0.7
 
 Usage:
     htrace.sh <option|long-option>
