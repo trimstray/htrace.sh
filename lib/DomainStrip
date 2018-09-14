@@ -21,14 +21,18 @@ function DomainStrip() {
   local _FUNCTION_ID="DomainStrip"
   local _STATE=0
 
-  local _host="$1"
+  local _uri="$1"
 
   # Extract the protocol (includes trailing "://").
-  _domain_proto=$(echo "$_host" | sed -nr 's,^(.*://).*,\1,p')
+  _domain_proto=$(echo "$_uri" | sed -nr 's,^(.*://).*,\1,p')
 
   # shellcheck disable=SC2116
   # Remove the protocol from the URL.
-  _domain_url=$(echo "${_host/$_domain_proto/}")
+  _domain_url_with_args=$(echo "${_uri/$_domain_proto/}")
+
+  # shellcheck disable=SC2116
+  # Remove all url args.
+  _domain_url=$(echo "${_domain_url_with_args%/?}" | cut -d "?" -f1)
 
   # Extract the path (includes leading "/" or ":").
   _domain_path=$(echo "$_domain_url" | sed -nr 's,[^/:]*([/:].*),\1,p')
@@ -40,6 +44,14 @@ function DomainStrip() {
   # shellcheck disable=SC2034
   # Resolve -d|--domain param value - if host.
   _domain_ip=$(DomainResolve "$_domain_name")
+
+  printf "\\n%s: %s , %s: %s , %s: %s , %s: %s , %s: %s , %s: %s\\n\\n" \
+         "_uri" "$_uri" \
+         "_domain_proto" "$_domain_proto" \
+         "_domain_url" "$_domain_url" \
+         "_domain_path" "$_domain_path" \
+         "_domain_name" "$_domain_name" \
+         "_domain_ip" "$_domain_ip"
 
   return $_STATE
 
