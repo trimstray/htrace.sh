@@ -24,36 +24,54 @@ function DomainNmapNse() {
   local _host="$1"
   local _port="$2"
 
-  local _nmap_nse_scripts="http-auth-finder,\
-                           http-chrono,\
-                           http-cookie-flags,\
-                           http-cors,\
-                           http-cross-domain-policy,\
-                           http-csrf,\
-                           http-dombased-xss,\
-                           http-git,\
-                           http-grep,\
-                           http-internal-ip-disclosure,\
-                           http-jsonp-detection,\
-                           http-malware-host,\
-                           http-methods,\
-                           http-passwd,\
-                           http-phpself-xss,\
-                           http-php-version,\
-                           http-robots.txt,\
-                           http-sitemap-generator,\
-                           http-shellshock,\
-                           http-stored-xss,\
-                           http-unsafe-output-escaping,\
-                           http-useragent-tester,\
-                           http-vhosts,\
-                           http-xssed,\
-                           ssl-enum-ciphers,\
-                           whois-ip"
+  local _nmap_nse_scripts="+dns-brute,\
+                           +http-auth-finder,\
+                           +http-chrono,\
+                           +http-cookie-flags,\
+                           +http-cors,\
+                           +http-cross-domain-policy,\
+                           +http-csrf,\
+                           +http-dombased-xss,\
+                           +http-enum,\
+                           +http-errors,\
+                           +http-git,\
+                           +http-grep,\
+                           +http-internal-ip-disclosure,\
+                           +http-jsonp-detection,\
+                           +http-malware-host,\
+                           +http-methods,\
+                           +http-passwd,\
+                           +http-phpself-xss,\
+                           +http-php-version,\
+                           +http-robots.txt,\
+                           +http-sitemap-generator,\
+                           +http-shellshock,\
+                           +http-stored-xss,\
+                           +http-title,\
+                           +http-unsafe-output-escaping,\
+                           +http-useragent-tester,\
+                           +http-vhosts,\
+                           +http-waf-detect,\
+                           +http-waf-fingerprint,\
+                           +http-xssed,\
+                           +traceroute-geolocation.nse,\
+                           +ssl-enum-ciphers,\
+                           +whois-domain,\
+                           +whois-ip"
 
-  local _mixed_content_desc="Scan domain with Nmap NSE Library:https://nmap.org/book/nse.html"
+  local _nmap_nse_scripts_args="dns-brute.domain=${_host},"
+        _nmap_nse_scripts_args+="http-cross-domain-policy.domain-lookup=true,"
+        _nmap_nse_scripts_args+="http-waf-detect.aggro,"
+        _nmap_nse_scripts_args+="http-waf-detect.detectBodyChanges,"
+        _nmap_nse_scripts_args+="http-waf-fingerprint.intensive=1"
+
+  local _mixed_content_desc="Scan domain with Nmap NSE Library:"
+        _mixed_content_desc+="https://nmap.org/book/nse.html"
+
   # shellcheck disable=SC2034,SC2154
-  local _mixed_content_cmd="eval nmap --script=\"$_nmap_nse_scripts\" -p \"$_port\" \"$_host\""
+  local _mixed_content_cmd="eval nmap --script=\"$_nmap_nse_scripts\""
+        _mixed_content_cmd+=" --script-args=\"$_nmap_nse_scripts_args\""
+        _mixed_content_cmd+=" -p \"$_port\" \"$_host\""
 
   _msg_args+=(\
               "$_mixed_content_desc")
