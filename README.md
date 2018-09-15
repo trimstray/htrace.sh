@@ -82,6 +82,7 @@ htrace.sh --domain https://google.com
   with params: `-user-agent \"$_user_agent\" --no-check-certificate`
 - **Nmap NSE Library** - provide automated security scans with Nmap  
   with scripts:
+  * dns-brute
   * http-auth-finder
   * http-chrono
   * http-cookie-flags
@@ -89,6 +90,8 @@ htrace.sh --domain https://google.com
   * http-cross-domain-policy
   * http-csrf
   * http-dombased-xss
+  * http-enum
+  * http-errors
   * http-git
   * http-grep
   * http-internal-ip-disclosure
@@ -102,11 +105,16 @@ htrace.sh --domain https://google.com
   * http-sitemap-generator
   * http-shellshock
   * http-stored-xss
+  * http-title
   * http-unsafe-output-escaping
   * http-useragent-tester
   * http-vhosts
+  * http-waf-detect
+  * http-waf-fingerprint
   * http-xssed
+  * traceroute-geolocation.nse
   * ssl-enum-ciphers
+  * whois-domain
   * whois-ip
 
 If you don't know how to install these tools and where they should be placed, please see in **[Dockerfile](https://github.com/trimstray/htrace.sh/blob/master/build/Dockerfile)** where exactly every step is described.
