@@ -39,12 +39,14 @@ In my daily work, I missed a tool with which I could test the configuration of d
 It is useful for:
 
 - checking **properly domain configuration** (web servers/reverse proxies)
-- **redirects analysis**, e.g. to eliminate redirect loops
-- checking **response headers** for each request
+- displaying basic HTTP information including **URLs and status codes**
+- checking **HTTP request latency** (time_connect and time_total)
+- **redirects analysis** (and follows it), e.g. to eliminate redirect loops
+- viewing and analyzing **response headers** for each request
 - checking **basic ssl** configuration
-  - **validation** of the certificates (date, cn, san) and **verification** ssl connection
+  - **validation** of the certificates (e.g. date, cn, san) and **verification** ssl connection
 - scanning domain for **Mixed Content**
-- scanning domain using **Nmap NSE Library**
+- scanning domain using **Nmap NSE Library** (34 scripts)
 - scanning domain with external security tools: **Mozilla Observatory** and **SSL Labs API**
 
   > Before use **htrace.sh** please see **[Requirements](#requirements)**.
@@ -117,9 +119,7 @@ htrace.sh --domain https://google.com
   * whois-domain
   * whois-ip
 
-If you don't know how to install these tools and where they should be placed, please see in **[Dockerfile](https://github.com/trimstray/htrace.sh/blob/master/build/Dockerfile)** where exactly every step is described.
-
-  > When scanning for **mixed content** and **nmap scripting engine**, remember that it may take a long time before the entire site is checked.
+  > When scanning for **mixed content** and with **Nmap scripting engine**, remember that it may take a long time before the entire site is checked. In addition, NSE scripts can generate a large number of requests.
 
 ## Reports
 
@@ -158,6 +158,8 @@ This tool working with:
 - **[Ssllabs](https://github.com/ssllabs/ssllabs-scan)**
 - **[mixed-content-scan](https://github.com/bramus/mixed-content-scan)**
 - **[Nmap](https://nmap.org/)**
+
+If you don't know how to install these tools and where they should be placed, please see in **[Dockerfile](https://github.com/trimstray/htrace.sh/blob/master/build/Dockerfile)** where exactly every step is described.
 
 ## Parameters
 
