@@ -40,7 +40,7 @@ It is useful for:
 
 - checking **properly domain configuration** (web servers/reverse proxies)
 - displaying basic HTTP information including **URLs and status codes**
-- checking **HTTP request latency** (time_connect and time_total)
+- checking **HTTP request latency** (`time_connect` and `time_total`)
 - **redirects analysis** (and follows it), e.g. to eliminate redirect loops
 - viewing and analyzing **response headers** for each request
 - checking **basic ssl** configuration
@@ -119,7 +119,7 @@ htrace.sh --domain https://google.com
   * whois-domain
   * whois-ip
 
-  > When scanning for **mixed content** and with **Nmap scripting engine**, remember that it may take a long time before the entire site is checked. In addition, NSE scripts can generate a large number of requests.
+When scanning for **mixed content** and with **Nmap scripting engine**, remember that it may take a long time before the entire site is checked. In addition, NSE scripts can generate a large number of requests.
 
 ## Reports
 
