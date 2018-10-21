@@ -29,8 +29,8 @@ function PrintfHeaders() {
          "local_socket" \
          "via" \
          "remote_socket" \
-         "type" \
-         "http" \
+         "proto" \
+         "ver" \
          "code" \
          "next_hop"
 
@@ -41,8 +41,8 @@ function PrintfHeaders() {
          "------------" \
          "---" \
          "-------------" \
-         "----" \
-         "----" \
+         "-----" \
+         "---" \
          "----" \
          "--------"
 
