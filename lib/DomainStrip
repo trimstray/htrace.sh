@@ -45,13 +45,17 @@ function DomainStrip() {
   # Resolve -d|--domain param value - if host.
   _domain_ip=$(DomainResolve "$_domain_name")
 
-  # printf "\\n%s: %s , %s: %s , %s: %s , %s: %s , %s: %s , %s: %s\\n\\n" \
+  # shellcheck disable=SC2034
+  _domain_geoip=$(geoiplookup "$_domain_ip" | cut -d ":" -f2 | cut -d "," -f1 | tr -d " \\t\\n\\r")
+
+  # printf "\\n%s: %s , %s: %s , %s: %s , %s: %s , %s: %s , %s: %s , %s: %s\\n\\n" \
   #        "_uri" "$_uri" \
   #        "_domain_proto" "$_domain_proto" \
   #        "_domain_url" "$_domain_url" \
   #        "_domain_path" "$_domain_path" \
   #        "_domain_name" "$_domain_name" \
-  #        "_domain_ip" "$_domain_ip"
+  #        "_domain_ip" "$_domain_ip" \
+  #        "_domain_geoip" "$_domain_geoip"
 
   return $_STATE
 

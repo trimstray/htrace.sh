@@ -85,7 +85,7 @@ function __main__() {
   # We place here used commands at script runtime, as strings to anything
   # unnecessarily run.
   readonly commands=(basename dirname stat ps date grep cut sed awk chown \
-                     chmod mkdir curl openssl dig bc \
+                     chmod mkdir curl openssl dig geoiplookup bc \
                      observatory ssllabs-scan mixed-content-scan nmap)
 
   # If you intend to specify the full path to the command we do it like:
@@ -305,7 +305,7 @@ function __main__() {
 
   fi
 
-  # Strip domain name.
+  # Strip domain name - first check.
   DomainStrip "$domain_type"
 
   # shellcheck disable=SC2154
