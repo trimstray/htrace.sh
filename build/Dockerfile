@@ -59,7 +59,7 @@ RUN \
 # htrace.sh tools.
 RUN \
   apt-get update && \
-  apt-get install -y git openssl curl bc
+  apt-get install -y git openssl curl bc geoip-bin
 
 # For Mozilla-Observatory.
 RUN \
