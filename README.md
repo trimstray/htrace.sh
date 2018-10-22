@@ -188,6 +188,16 @@ Usage:
         --timeout <num>                       set max timeout (default: 15)
 ```
 
+## Issues
+
+If you get the error below after run `htrace.sh`:
+
+```
+not found in PATH: geoiplookup observatory ssllabs-scan mixed-content-scan
+```
+
+You should look here: **[#18](https://github.com/trimstray/htrace.sh/issues/18)**.
+
 ## Contributing
 
 See **[this](CONTRIBUTING.md)**.
