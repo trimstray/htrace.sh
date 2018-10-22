@@ -2,6 +2,8 @@
 
 # shellcheck shell=bash
 
+### UNUSED FUNCTION
+
 # ``````````````````````````````````````````````````````````````````````````````
 # Function name: DomainResolve()
 #

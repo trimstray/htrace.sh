@@ -91,6 +91,8 @@ function DomainTrace() {
 
     done
 
+    DomainGeo "$_remote_ip"
+
     # Convert times.
     _time_total=$(echo "$_time_total" | tr ',' '.')
     _time_connect=$(echo "$_time_connect" | tr ',' '.')
@@ -133,18 +135,6 @@ function DomainTrace() {
         _hcounter=0
 
       fi
-
-    fi
-
-    # shellcheck disable=SC2154
-    # Check properly country code.
-    if [[ "${#_domain_geoip}" -eq 2 ]] ; then
-
-      _geo_ip="$_domain_geoip"
-
-    else
-
-      _geo_ip=""
 
     fi
 

@@ -37,16 +37,14 @@ function DomainStrip() {
   # Extract the path (includes leading "/" or ":").
   _domain_path=$(echo "$_domain_url" | sed -nr 's,[^/:]*([/:].*),\1,p')
 
-  # shellcheck disable=SC2116
+  # shellcheck disable=SC2034,SC2116
   # Remove the path from the URL.
   _domain_name=$(echo "${_domain_url/$_domain_path/}")
 
-  # shellcheck disable=SC2034
+  # shellcheck disable=SC2034,SC2154
   # Resolve -d|--domain param value - if host.
-  _domain_ip=$(DomainResolve "$_domain_name")
-
-  # shellcheck disable=SC2034
-  _domain_geoip=$(geoiplookup "$_domain_ip" | cut -d ":" -f2 | cut -d "," -f1 | tr -d " \\t\\n\\r")
+  # The most reliable solution is to use a '_remote_ip' curl variable.
+  _domain_ip="$_remote_ip"
 
   # printf "\\n%s: %s , %s: %s , %s: %s , %s: %s , %s: %s , %s: %s , %s: %s\\n\\n" \
   #        "_uri" "$_uri" \
@@ -55,7 +53,6 @@ function DomainStrip() {
   #        "_domain_path" "$_domain_path" \
   #        "_domain_name" "$_domain_name" \
   #        "_domain_ip" "$_domain_ip" \
-  #        "_domain_geoip" "$_domain_geoip"
 
   return $_STATE
 

@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainGeo()
+#
+# Description:
+#   Strip domain elements.
+#
+# Usage:
+#   DomainGeo ip
+#
+# Examples:
+#   DomainGeo 9.9.9.9
+#
+
+function DomainGeo() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainGeo"
+  local _STATE=0
+
+  export _geo_ip
+
+  local _domain_ip="$1"
+
+  # shellcheck disable=SC2034
+  _domain_geoip=$(geoiplookup "$_domain_ip" | cut -d ":" -f2 | cut -d "," -f1 | tr -d " \\t\\n\\r")
+
+  # shellcheck disable=SC2154
+  # Check properly country code.
+  if [[ "${#_domain_geoip}" -eq 2 ]] ; then
+
+    _geo_ip="$_domain_geoip"
+
+  else
+
+    _geo_ip=""
+
+  fi
+
+  return $_STATE
+
+}
