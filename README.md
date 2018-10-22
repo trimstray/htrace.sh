@@ -190,7 +190,7 @@ Usage:
 
 ## Issues
 
-If you get the error below after run `htrace.sh`:
+If you getting this error:
 
 ```
 not found in PATH: geoiplookup observatory ssllabs-scan mixed-content-scan
