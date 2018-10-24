@@ -104,7 +104,10 @@ function DomainTrace() {
     if [[ -z "$_remote_ip" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '\n    \e['${e_trgb}'m%s\e[m (%s)\n\n' "Connection error" "domain not resolved?"
+      printf '\n    \e['${e_trgb}'m%s\e[m:\n\n\t%s\n\t%s\n\n' \
+             "Connection error" \
+             "- domain not resolved" \
+             "- http or https not responding"
 
       # shellcheck disable=SC2034
       _STATE="1"
