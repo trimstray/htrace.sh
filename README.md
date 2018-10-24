@@ -32,7 +32,7 @@
 
 In my daily work, I missed a tool with which I could test the configuration of domains in a simple way. The ability to use *curl* or *openssl* is very important, but I did not have the tools to automate this process. Until now, I used the tools available on the web, but each of them had some shortcomings.
 
-**htrace.sh** is a shell script that allows you to validate your domain configuration and catch any errors (e.g. redirect loops). It also displays basic information about the ssl configuration (if available), response headers, checks for mixed content and performs security scans using Nmap scripts and great external tools such as Ssllabs or Mozilla Observatory.
+`htrace.sh` is a shell script that allows you to validate your domain configuration and catch any errors (e.g. redirect loops). It also displays basic information about the ssl configuration (if available), response headers, checks for mixed content and performs security scans using Nmap scripts and great external tools such as Ssllabs or Mozilla Observatory.
 
 ## Functions
 
@@ -49,7 +49,7 @@ It is useful for:
 - scanning domain using **Nmap NSE Library** (34 scripts)
 - scanning domain with external security tools: **Mozilla Observatory** and **SSL Labs API**
 
-  > Before use **htrace.sh** please see **[Requirements](#requirements)**.
+  > Before use `htrace.sh` please see **[Requirements](#requirements)**.
 
 ## How To Use
 
@@ -74,7 +74,7 @@ htrace.sh --domain https://google.com
 
 ## External tools
 
-**htrace.sh** support external tools for security scans:
+`htrace.sh` support external tools for security scans:
 
 - **Mozilla Observatory** - cli version of [observatory.mozilla.org](https://observatory.mozilla.org/)  
   with params: `--format=report --rescan --zero --quiet`
