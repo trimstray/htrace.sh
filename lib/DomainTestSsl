@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainTestSsl()
+#
+# Description:
+#   Test SSL protocols and ciphers.
+#
+# Usage:
+#   DomainTestSsl domain
+#
+# Examples:
+#   DomainTestSsl example.com
+#
+
+function DomainTestSsl() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainTestSsl"
+  local _STATE=0
+
+  local _host="$1"
+
+  local _testssl_desc="Testing SSL protocols and ciphers:https://testssl.sh/"
+  local _testssl_cmd="eval testssl.sh --protocols --cipher-per-proto --server-preference \"$_host\""
+
+  _msg_args+=(\
+              "$_testssl_desc")
+
+  _cmd_args+=(\
+              "$_testssl_cmd")
+
+  return $_STATE
+
+}
