@@ -79,6 +79,9 @@ function __main__() {
   local max_redirects_state="0"
   local _redirects=10
 
+  # Default OpenSSL version state.
+  _openssl_version_state="0"
+
   # Default timeout value for.
   local _timeout="15"
 
@@ -341,8 +344,35 @@ function __main__() {
   local x_trgb="1;2;38"
 
   # shellcheck disable=SC2154
-  printf '\n    %s %s\n\n' \
+  printf '\n    %s %s' \
          "$_init_name" "$_version"
+
+  # Show OpenSSL version.
+  _openssl_version=$(openssl version -a | head -n 1 | grep OpenSSL | awk '{print $2}')
+
+  if [[ "$_openssl_version" == "1.1.0g" ]] || [[ "$_openssl_version" == "1.1.0h" ]] ; then
+
+    _openssl_version_status="ok"
+    _openssl_version_state="1"
+
+  else
+
+    _openssl_version_status="not tested"
+    _openssl_version_state="0"
+
+  fi
+
+  if [[ "$_openssl_version_state" -eq 1 ]] ; then
+
+    printf ' (openssl %s: \e['${g_trgb}'m%s\e[m)\n\n' \
+           "$_openssl_version" "$_openssl_version_status"
+
+  else
+
+    printf ' (openssl %s: \e['${e_trgb}'m%s\e[m)\n\n' \
+           "$_openssl_version" "$_openssl_version_status"
+
+  fi
 
   # Show http(s) domain trace.
   printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
