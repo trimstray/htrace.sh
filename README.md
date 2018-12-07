@@ -168,7 +168,7 @@ If you don't know how to install these tools and where they should be placed, pl
 Provides the following options:
 
 ```bash
-    htrace.sh v1.0.7
+    htrace.sh v1.0.8
 
 Usage:
     htrace.sh <option|long-option>
