@@ -153,7 +153,7 @@ This tool working with:
 - **GNU/Linux** (testing on Debian and CentOS)
 - **[Bash](https://www.gnu.org/software/bash/)** (testing on 4.4.19)
 - **[Curl](https://curl.haxx.se/)** with specific variables support (≥ 7.52.0)
-- **[OpenSSL](https://www.openssl.org/)**
+- **[OpenSSL](https://www.openssl.org/)** (testing on 1.1.0g/h)
 - **[Mozilla Observatory](https://github.com/mozilla/http-observatory)**
 - **[Ssllabs](https://github.com/ssllabs/ssllabs-scan)**
 - **[mixed-content-scan](https://github.com/bramus/mixed-content-scan)**
@@ -190,6 +190,8 @@ Usage:
 
 ## Issues
 
+#### `not found in PATH`
+
 If you getting this error:
 
 ```
@@ -197,6 +199,14 @@ not found in PATH: geoiplookup observatory ssllabs-scan mixed-content-scan
 ```
 
 You should look here: **[#18](https://github.com/trimstray/htrace.sh/issues/18)**.
+
+#### `unable to get local issuer certificate`
+
+Set correct environment variable:
+
+```
+export SSL_CERT_DIR=/path/to/ca/dir
+```
 
 ## Contributing
 
