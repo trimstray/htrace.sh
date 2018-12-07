@@ -188,6 +188,9 @@ function DomainTrace() {
 
       fi
 
+      # shellcheck disable=SC2034
+      _last_http_scheme="$_http_scheme"
+
     fi
 
     # shellcheck disable=SC2154
