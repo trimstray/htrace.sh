@@ -464,6 +464,8 @@ function __main__() {
 
       fi
 
+      echo
+
     fi
 
   else
@@ -473,8 +475,6 @@ function __main__() {
     tput sgr0
 
   fi
-
-  echo
 
   if [[ "$scan_state" -eq 1 ]] ; then
 
