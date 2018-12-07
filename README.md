@@ -44,8 +44,8 @@ It is useful for:
 - **redirects analysis** (and follows it), e.g. to eliminate redirect loops
 - viewing and analyzing **response headers** for each request
 - checking **basic ssl** configuration
-  - **validation** of the certificates (e.g. date, cn, san) and **verification** ssl connection
-- checking **extended ssl** configuration with `testssl.sh`
+  - **validation** of the certificates (e.g. `date`, `cn`, `san`) and **verification** ssl connection
+- checking **extended ssl** configuration with **testssl.sh**
 - scanning domain for **Mixed Content**
 - scanning domain using **Nmap NSE Library** (34 scripts)
 - scanning domain with external security tools: **Mozilla Observatory** and **SSL Labs API**
