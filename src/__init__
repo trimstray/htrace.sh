@@ -143,7 +143,7 @@ function __main__() {
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
   local _short_opt="d:sth"
-  local _long_opt="help,domain:,ssl,ssl-test,headers,scan:,mixed-content,nse,user-agent:,max-redirects:,timeout:"
+  local _long_opt="help,domain:,ssl-info,ssl-test,headers,scan:,mixed-content,nse,user-agent:,max-redirects:,timeout:"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -181,7 +181,7 @@ function __main__() {
 
         shift 2 ;;
 
-      -s|--ssl)
+      -s|--ssl-info)
 
         export ssl_state=1
 
