@@ -45,6 +45,7 @@ It is useful for:
 - viewing and analyzing **response headers** for each request
 - checking **basic ssl** configuration
   - **validation** of the certificates (e.g. date, cn, san) and **verification** ssl connection
+- checking **extended ssl** configuration with `testssl.sh`
 - scanning domain for **Mixed Content**
 - scanning domain using **Nmap NSE Library** (34 scripts)
 - scanning domain with external security tools: **Mozilla Observatory** and **SSL Labs API**
@@ -82,7 +83,7 @@ htrace.sh --domain https://google.com
   with params: `-quiet -grade`
 - **mixed-content-scan** - cli tool for check HTTPS-enabled website for Mixed Content  
   with params: `-user-agent \"$_user_agent\" --no-check-certificate`
-- **Nmap NSE Library** - provide automated security scans with Nmap  
+- **Nmap NSE Library** - provide automated security scans with Nmap
   with scripts:
   * dns-brute
   * http-auth-finder
@@ -157,6 +158,7 @@ This tool working with:
 - **[Mozilla Observatory](https://github.com/mozilla/http-observatory)**
 - **[Ssllabs](https://github.com/ssllabs/ssllabs-scan)**
 - **[mixed-content-scan](https://github.com/bramus/mixed-content-scan)**
+- **[testssl.sh](https://testssl.sh/)**
 - **[Nmap](https://nmap.org/)**
 
 If you don't know how to install these tools and where they should be placed, please see in **[Dockerfile](https://github.com/trimstray/htrace.sh/blob/master/build/Dockerfile)** where exactly every step is described.
@@ -179,6 +181,7 @@ Usage:
         --help                                show this message
         -d|--domain <domain_name>             set domain name
         -s|--ssl                              show ssl server/connection params
+        -t|--ssl-test                         test ssl protocols and ciphers with testssl.sh
         -h|--headers                          show response headers
         --scan <all|observatory|ssllabs>      scan domain with external security tools
         --mixed-content                       scan website for mixed content
