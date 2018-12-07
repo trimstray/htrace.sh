@@ -466,6 +466,12 @@ function __main__() {
 
     fi
 
+  else
+
+    # shellcheck disable=SC2086,SC2154
+    printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+    tput sgr0
+
   fi
 
   echo
@@ -492,36 +498,12 @@ function __main__() {
 
     elif [[ "$scan_type" = *"ssllabs"* ]] ; then
 
-      DomainStrip "$_http_last"
+      # shellcheck disable=SC2154
+      if [[ "$_last_http_scheme" == "https" ]] ; then
 
-      _init_function "DomainScan \"$scan_type\" \"$_domain_name\""
+        DomainStrip "$_http_last"
 
-      _fstate="$?"
-
-      if [[ "$_fstate" -ne 0 ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
-        tput sgr0
-
-      else
-
-        printf '\r         › %s: %s\n' \
-               "Full Report Url" \
-               "https://www.ssllabs.com/ssltest/analyze.html?d=$_domain_name"
-        tput sgr0
-
-      fi
-
-      echo
-
-    elif [[ "$scan_type" = *"all"* ]] ; then
-
-      DomainStrip "$_http_last"
-
-      for _i in observatory ssllabs ; do
-
-        _init_function "DomainScan \"$_i\" \"$_domain_name\""
+        _init_function "DomainScan \"$scan_type\" \"$_domain_name\""
 
         _fstate="$?"
 
@@ -533,14 +515,76 @@ function __main__() {
 
         else
 
-          if [[ "$_i" == "ssllabs" ]] ; then
+          printf '\r         › %s: %s\n' \
+                 "Full Report Url" \
+                 "https://www.ssllabs.com/ssltest/analyze.html?d=$_domain_name"
+          tput sgr0
 
-            printf '\r         › %s: %s\n' \
-                   "Full Report Url" \
-                   "https://www.ssllabs.com/ssltest/analyze.html?d=$_domain_name"
+        fi
+
+      else
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+        tput sgr0
+
+      fi
+
+      echo
+
+    elif [[ "$scan_type" = *"all"* ]] ; then
+
+      DomainStrip "$_http_last"
+
+      local _scan_pass="0"
+
+      for _i in observatory ssllabs ; do
+
+        # shellcheck disable=SC2154
+        if [[ "$_i" == "ssllabs" ]] && [[ "$_last_http_scheme" == "https" ]] ; then
+
+          _scan_pass="1"
+
+        elif [[ "$_i" == "observatory" ]] ; then
+
+          _scan_pass="1"
+
+        else
+
+          _scan_pass="0"
+
+        fi
+
+        if [[ "$_scan_pass" -eq 1 ]] ; then
+
+          _init_function "DomainScan \"$_i\" \"$_domain_name\""
+
+          _fstate="$?"
+
+          if [[ "$_fstate" -ne 0 ]] ; then
+
+            # shellcheck disable=SC2086,SC2154
+            printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
             tput sgr0
 
+          else
+
+            if [[ "$_i" == "ssllabs" ]] ; then
+
+              printf '\r         › %s: %s\n' \
+                     "Full Report Url" \
+                     "https://www.ssllabs.com/ssltest/analyze.html?d=$_domain_name"
+              tput sr0
+
+            fi
+
           fi
+
+        else
+
+          # shellcheck disable=SC2086,SC2154
+          printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+          tput sgr0
 
         fi
 
@@ -554,46 +598,57 @@ function __main__() {
 
   if [[ "$mixed_content_state" -eq 1 ]] ; then
 
-    local _fd_empty="0"
+    # shellcheck disable=SC2154
+    if [[ "$_last_http_scheme" == "https" ]] ; then
 
-    DomainStrip "$_http_last"
+      local _fd_empty="0"
 
-    _init_function "DomainMixedContent \"${_domain_proto}${_domain_name}\""
+      DomainStrip "$_http_last"
 
-    _fstate="$?"
+      _init_function "DomainMixedContent \"${_domain_proto}${_domain_name}\""
 
-    if [[ "$_fstate" -ne 0 ]] ; then
+      _fstate="$?"
 
-      # shellcheck disable=SC2154
-      if [[ "$_fd_empty" -eq "0" ]] ; then
+      if [[ "$_fstate" -ne 0 ]] ; then
 
-        # shellcheck disable=SC2086,SC2154
-        printf '\r         › \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
-        tput sgr0
+        # shellcheck disable=SC2154
+        if [[ "$_fd_empty" -eq "0" ]] ; then
+
+          # shellcheck disable=SC2086,SC2154
+          printf '\r         › \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
+          tput sgr0
+
+        else
+
+          # shellcheck disable=SC2086,SC2154
+          printf '\r         › \e['${e_trgb}'m%s\e[m\n' "Connection error"
+          tput sgr0
+
+        fi
 
       else
 
-        # shellcheck disable=SC2086,SC2154
-        printf '\r         › \e['${e_trgb}'m%s\e[m\n' "Connection error"
-        tput sgr0
+        # shellcheck disable=SC2154
+        if [[ "$_fd_empty" -eq "0" ]] ; then
+
+          # shellcheck disable=SC2086,SC2154
+          printf '\r         › \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
+          tput sgr0
+
+        else
+
+          printf '\r'
+          tput sgr0
+
+        fi
 
       fi
 
     else
 
-      # shellcheck disable=SC2154
-      if [[ "$_fd_empty" -eq "0" ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '\r         › \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
-        tput sgr0
-
-      else
-
-        printf '\r'
-        tput sgr0
-
-      fi
+      # shellcheck disable=SC2086,SC2154
+      printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+      tput sgr0
 
     fi
 
