@@ -600,6 +600,7 @@ function _help_() {
         --help                                show this message
         -d|--domain <domain_name>             set domain name
         -s|--ssl                              show ssl server/connection params
+        -t|--ssl-test                         test ssl protocols and ciphers with testssl.sh
         -h|--headers                          show response headers
         --scan <all|observatory|ssllabs>      scan domain with external security tools
         --mixed-content                       scan website for mixed content
