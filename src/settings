@@ -18,8 +18,9 @@ set -o pipefail
 #   IFS_HACK=$'\n\t'
 #   IFS="$IFS_HACK"
 
+# https://github.com/trimstray/htrace.sh/issues/18
 # PATH env variable setup:
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Setting permissions in the script environment:
 #   0022 - less restrictive settings (default value)
