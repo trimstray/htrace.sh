@@ -77,13 +77,13 @@ htrace.sh -d https://google.com -s -h
 
 `htrace.sh` support external tools for security scans:
 
-- **Mozilla Observatory** - cli version of [observatory.mozilla.org](https://observatory.mozilla.org/)  
+- **Mozilla Observatory** - cli version of [observatory.mozilla.org](https://observatory.mozilla.org/), working with `http` and `https`  
   with params: `--format=report --rescan --zero --quiet`
-- **Ssllabs** - command-line reference-implementation client for [SSL Labs API](https://www.ssllabs.com/ssltest/)  
+- **Ssllabs** - command-line reference-implementation client for [SSL Labs API](https://www.ssllabs.com/ssltest/), working with `https`  
   with params: `-quiet -grade`
-- **mixed-content-scan** - cli tool for check HTTPS-enabled website for Mixed Content  
+- **mixed-content-scan** - cli tool for check HTTPS-enabled website for Mixed Content, working with `https`  
   with params: `-user-agent \"$_user_agent\" --no-check-certificate`
-- **Nmap NSE Library** - provide automated security scans with Nmap
+- **Nmap NSE Library** - provide automated security scans with Nmap, , working with `http` and `https`  
   with scripts:
   * dns-brute
   * http-auth-finder
@@ -159,7 +159,7 @@ This tool working with:
 - **[Ssllabs](https://github.com/ssllabs/ssllabs-scan)**
 - **[mixed-content-scan](https://github.com/bramus/mixed-content-scan)**
 - **[testssl.sh](https://testssl.sh/)**
-- **[Nmap](https://nmap.org/)**
+- **[Nmap](https://nmap.org/)** (testing on 7.70)
 
 If you don't know how to install these tools and where they should be placed, please see in **[Dockerfile](https://github.com/trimstray/htrace.sh/blob/master/build/Dockerfile)** where exactly every step is described.
 
