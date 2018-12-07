@@ -39,7 +39,7 @@ In my daily work, I missed a tool with which I could test the configuration of d
 It is useful for:
 
 - checking **properly domain configuration** (web servers/reverse proxies)
-- displaying basic HTTP information including **URLs, GeoIP, status codes and protocol info**
+- displaying basic **HTTP information** including **URLs, GeoIP, status codes and protocol info**
 - checking **HTTP request latency** (`time_connect` and `time_total`)
 - **redirects analysis** (and follows it), e.g. to eliminate redirect loops
 - viewing and analyzing **response headers** for each request
