@@ -82,6 +82,10 @@ RUN \
   ln -s /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan \
   /usr/bin/mixed-content-scan
 
+# For testssl.sh.
+RUN \
+  apt-get install -y testssl.sh
+
 # For Nmap NSE Library.
 RUN \
   apt-get install -y nmap
