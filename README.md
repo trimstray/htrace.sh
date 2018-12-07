@@ -67,7 +67,7 @@ cd htrace.sh
 ./setup.sh install
 
 # Run the app
-htrace.sh --domain https://google.com
+htrace.sh -d https://google.com -s -h
 ```
 
 > * symlink to `bin/htrace.sh` is placed in `/usr/local/bin`
