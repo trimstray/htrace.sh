@@ -446,9 +446,9 @@ function __main__() {
   echo
 
   # shellcheck disable=SC2154
-  if [[ "$_last_http_scheme" == "https" ]] ; then
+  if [[ "$ssl_test_state" -eq 1 ]] ; then
 
-    if [[ "$ssl_test_state" -eq 1 ]] ; then
+    if [[ "$_last_http_scheme" == "https" ]] ; then
 
       DomainStrip "$_http_last"
 
@@ -466,13 +466,13 @@ function __main__() {
 
       echo
 
+    else
+
+      # shellcheck disable=SC2086,SC2154
+      printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+      tput sgr0
+
     fi
-
-  else
-
-    # shellcheck disable=SC2086,SC2154
-    printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
-    tput sgr0
 
   fi
 
