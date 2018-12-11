@@ -78,7 +78,7 @@ htrace.sh -d https://google.com -s -h
 `htrace.sh` support external tools for security scans:
 
 - **testssl.sh** - cli tool for testing SSL configuration, working with `https`  
-  include params: `--protocols --cipher-per-proto --server-preference --server-defaults \"$_host\"`
+  include params: `--quiet --protocols --cipher-per-proto --server-preference --server-defaults \"$_host\"`
 - **Mozilla Observatory** - cli version of [observatory.mozilla.org](https://observatory.mozilla.org/), working with `http` and `https`  
   include params: `--format=report --rescan --zero --quiet`
 - **Ssllabs** - command-line reference-implementation client for [SSL Labs API](https://www.ssllabs.com/ssltest/), working with `https`  
