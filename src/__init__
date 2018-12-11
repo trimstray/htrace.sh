@@ -54,6 +54,10 @@ function __main__() {
   local domain_state="0"
   local domain_type=""
 
+  # Default destination host variable.
+  # shellcheck disable=SC2034
+  local _destination_host=""
+
   # Default 'ssl' variable.
   local ssl_state="0"
 

@@ -24,6 +24,9 @@ function DomainNmapNse() {
   local _host="$1"
   local _port="$2"
 
+  # shellcheck disable=SC2034
+  _destination_host="$_host"
+
   local _nmap_nse_scripts="+dns-brute,\
                            +http-auth-finder,\
                            +http-chrono,\

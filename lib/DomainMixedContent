@@ -23,6 +23,9 @@ function DomainMixedContent() {
 
   local _host="$1"
 
+  # shellcheck disable=SC2034
+  _destination_host="$_host"
+
   local _mixed_content_desc="Scan domain for Mixed Content:https://github.com/bramus/mixed-content-scan"
   # shellcheck disable=SC2034,SC2154
   local _mixed_content_cmd="eval mixed-content-scan \"$_host\" --user-agent \"$_user_agent\" --no-check-certificate | grep \"MCS.[E|W]\""

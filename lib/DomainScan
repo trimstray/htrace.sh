@@ -24,6 +24,9 @@ function DomainScan() {
   local _scan_t="$1"
   local _host="$2"
 
+  # shellcheck disable=SC2034
+  _destination_host="$_host"
+
   # shellcheck disable=SC2154
   if [[ "$_scan_t" = *"observatory"* ]] ; then
 
