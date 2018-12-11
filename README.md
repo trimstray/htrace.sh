@@ -78,13 +78,13 @@ htrace.sh -d https://google.com -s -h
 `htrace.sh` support external tools for security scans:
 
 - **Mozilla Observatory** - cli version of [observatory.mozilla.org](https://observatory.mozilla.org/), working with `http` and `https`  
-  with params: `--format=report --rescan --zero --quiet`
+  include params: `--format=report --rescan --zero --quiet`
 - **Ssllabs** - command-line reference-implementation client for [SSL Labs API](https://www.ssllabs.com/ssltest/), working with `https`  
-  with params: `-quiet -grade`
+  include params: `-quiet -grade`
 - **mixed-content-scan** - cli tool for check HTTPS-enabled website for Mixed Content, working with `https`  
-  with params: `-user-agent \"$_user_agent\" --no-check-certificate`
-- **Nmap NSE Library** - provide automated security scans with Nmap, , working with `http` and `https`  
-  with scripts:
+  include params: `-user-agent \"$_user_agent\" --no-check-certificate`
+- **Nmap NSE Library** - provide automated security scans with Nmap, working with `http` and `https`
+  include scripts:  
   * dns-brute
   * http-auth-finder
   * http-chrono
@@ -132,7 +132,7 @@ htrace.sh -d https://nmap.org -s -h | ansi2html --bg=dark > report.html
 
 ## Docker
 
-The configuration is contained in the **build/Dockerfile**.
+The configuration is in the **build/Dockerfile**.
 
 ### Build image
 
@@ -155,10 +155,10 @@ This tool working with:
 - **[Bash](https://www.gnu.org/software/bash/)** (testing on 4.4.19)
 - **[Curl](https://curl.haxx.se/)** with specific variables support (≥ 7.52.0)
 - **[OpenSSL](https://www.openssl.org/)** (testing on 1.1.0g/h)
-- **[Mozilla Observatory](https://github.com/mozilla/http-observatory)**
-- **[Ssllabs](https://github.com/ssllabs/ssllabs-scan)**
-- **[mixed-content-scan](https://github.com/bramus/mixed-content-scan)**
-- **[testssl.sh](https://testssl.sh/)**
+- **[Mozilla Observatory](https://github.com/mozilla/http-observatory)** (testing on 0.7.1)
+- **[Ssllabs](https://github.com/ssllabs/ssllabs-scan)** (testing on v1.5.0)
+- **[mixed-content-scan](https://github.com/bramus/mixed-content-scan)** with **php-curl**
+- **[testssl.sh](https://testssl.sh/)** (testing on 3.0rc3)
 - **[Nmap](https://nmap.org/)** (testing on 7.70)
 
 If you don't know how to install these tools and where they should be placed, please see in **[Dockerfile](https://github.com/trimstray/htrace.sh/blob/master/build/Dockerfile)** where exactly every step is described.
