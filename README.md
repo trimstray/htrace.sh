@@ -67,7 +67,7 @@ cd htrace.sh
 ./setup.sh install
 
 # Run the app
-htrace.sh -d https://google.com -s -h
+htrace.sh -d http://nmap.org -s -h
 ```
 
 > * symlink to `bin/htrace.sh` is placed in `/usr/local/bin`
@@ -146,7 +146,7 @@ docker build --rm -t htrace.sh -f Dockerfile .
 ### Run container
 
 ```bash
-docker run --rm -it --name htrace.sh htrace.sh -d http://nmap.org -h
+docker run --rm -it --name htrace.sh htrace.sh -d http://nmap.org -s -h
 ```
 
 ## Requirements
