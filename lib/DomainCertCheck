@@ -33,7 +33,19 @@ function DomainCertCheck() {
                      -connect "$_ssl_domain_name":443 2>/dev/null | \
                      sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p')
 
+  _ssl_domain_cert_non_sni=$(echo | \
+                     openssl s_client \
+                     -connect "$_ssl_domain_name":443 2>/dev/null | \
+                     sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p')
+
   _ssl_domain_names=$(echo "$_ssl_domain_cert" | \
+                     openssl x509 -noout -text | \
+                     sed -ne 's/^\( *\)Subject:/\1/p;/X509v3 Subject Alternative Name/{
+                     N;s/^.*\n//;:a;s/^\( *\)\(.*\), /\1\2\n\1/;ta;p;q; }' | \
+                     sed -e 's/^[ \t]*//' | \
+                     tr -d '"')
+
+  _ssl_domain_names_non_sni=$(echo "$_ssl_domain_cert_non_sni" | \
                      openssl x509 -noout -text | \
                      sed -ne 's/^\( *\)Subject:/\1/p;/X509v3 Subject Alternative Name/{
                      N;s/^.*\n//;:a;s/^\( *\)\(.*\), /\1\2\n\1/;ta;p;q; }' | \
@@ -183,6 +195,7 @@ function DomainCertCheck() {
       fi
 
     done
+
     unset IFS
 
     # shellcheck disable=SC2086,SC2154
@@ -272,6 +285,21 @@ function DomainCertCheck() {
       # shellcheck disable=SC2086,SC2154
       printf '         san: \e['${p_trgb}'m%s\e[m\n' \
              "$_ssl_domain_san"
+
+    fi
+
+    # Check SNI vs without-SNI.
+    if [[ "$_ssl_domain_names" == "$_ssl_domain_names_non_sni" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         sni: \e['${g2_trgb}'m%s\e[m\n' \
+             "match"
+
+    else
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         sni: \e['${e2_trgb}'m%s\e[m\n' \
+             "not match"
 
     fi
 
