@@ -68,9 +68,11 @@ function __main__() {
   # Default 'headers' variable.
   local headers_state="0"
 
-  # Default 'domain' variables.
-  local scan_state="0"
-  local scan_type=""
+  # Default 'observatory' variables.
+  local observatory_state="0"
+
+  # Default 'ssllabs' variables.
+  local ssllabs_state="0"
 
   # Default 'mixed-content' variable.
   local mixed_content_state="0"
@@ -146,8 +148,8 @@ function __main__() {
 
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
-  local _short_opt="d:sth"
-  local _long_opt="help,domain:,ssl,headers,testssl,scan:,mixed-content,nse,user-agent:,max-redirects:,timeout:"
+  local _short_opt="d:sh"
+  local _long_opt="help,domain:,ssl,headers,testssl,observatory,ssllabs:,mixed-content,nse,user-agent:,max-redirects:,timeout:"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -197,17 +199,21 @@ function __main__() {
 
         shift ;;
 
-      -t|--testssl)
+      --testssl)
 
         export ssl_test_state=1
 
         shift ;;
 
-      --scan)
+      --observatory)
 
-        export scan_state=1
+        export observatory_state=1
 
-        export scan_type="${2}"
+        shift 2 ;;
+
+      --ssllabs)
+
+        export ssllabs_state=1
 
         shift 2 ;;
 
@@ -461,7 +467,7 @@ function __main__() {
 
       DomainStrip "$_http_last"
 
-      _init_function "DomainTestSsl \"$_domain_name\""
+      _init_function "DomainScanTestssl \"$_domain_name\""
 
       _fstate="$?"
 
@@ -485,13 +491,11 @@ function __main__() {
 
   fi
 
-  if [[ "$scan_state" -eq 1 ]] ; then
-
-    if [[ "$scan_type" = *"observatory"* ]] ; then
+  if [[ "$observatory_state" -eq 1 ]] ; then
 
       DomainStrip "$_http_last"
 
-      _init_function "DomainScan \"$scan_type\" \"$_domain_name\""
+      _init_function "DomainScanObservatory \"$_domain_name\""
 
       _fstate="$?"
 
@@ -505,103 +509,43 @@ function __main__() {
 
       echo
 
-    elif [[ "$scan_type" = *"ssllabs"* ]] ; then
+  fi
 
-      # shellcheck disable=SC2154
-      if [[ "$_last_http_scheme" == "https" ]] ; then
+  if [[ "$ssllabs_state" -eq 1 ]] ; then
 
-        DomainStrip "$_http_last"
+    # shellcheck disable=SC2154
+    if [[ "$_last_http_scheme" == "https" ]] ; then
 
-        _init_function "DomainScan \"$scan_type\" \"$_domain_name\""
+      DomainStrip "$_http_last"
 
-        _fstate="$?"
+      _init_function "DomainScanSsllabs \"$_domain_name\""
 
-        if [[ "$_fstate" -ne 0 ]] ; then
+      _fstate="$?"
 
-          # shellcheck disable=SC2086,SC2154
-          printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
-          tput sgr0
+      if [[ "$_fstate" -ne 0 ]] ; then
 
-        else
-
-          printf '\r         \e['${_rd}'m›\e[m %s: %s\n' \
-                 "Full Report Url" \
-                 "https://www.ssllabs.com/ssltest/analyze.html?d=$_domain_name"
-          tput sgr0
-
-        fi
+        # shellcheck disable=SC2086,SC2154
+        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+        tput sgr0
 
       else
 
-        # shellcheck disable=SC2086,SC2154
-        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+        printf '\r         \e['${_rd}'m›\e[m %s: %s\n' \
+               "Full Report Url" \
+               "https://www.ssllabs.com/ssltest/analyze.html?d=$_domain_name"
         tput sgr0
 
       fi
 
-      echo
+    else
 
-    elif [[ "$scan_type" = *"all"* ]] ; then
-
-      DomainStrip "$_http_last"
-
-      local _scan_pass="0"
-
-      for _i in observatory ssllabs ; do
-
-        # shellcheck disable=SC2154
-        if [[ "$_i" == "ssllabs" ]] && [[ "$_last_http_scheme" == "https" ]] ; then
-
-          _scan_pass="1"
-
-        elif [[ "$_i" == "observatory" ]] ; then
-
-          _scan_pass="1"
-
-        else
-
-          _scan_pass="0"
-
-        fi
-
-        if [[ "$_scan_pass" -eq 1 ]] ; then
-
-          _init_function "DomainScan \"$_i\" \"$_domain_name\""
-
-          _fstate="$?"
-
-          if [[ "$_fstate" -ne 0 ]] ; then
-
-            # shellcheck disable=SC2086,SC2154
-            printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
-            tput sgr0
-
-          else
-
-            if [[ "$_i" == "ssllabs" ]] ; then
-
-              printf '\r         \e['${_rd}'m›\e[m %s: %s\n' \
-                     "Full Report Url" \
-                     "https://www.ssllabs.com/ssltest/analyze.html?d=$_domain_name"
-              tput sr0
-
-            fi
-
-          fi
-
-        else
-
-          # shellcheck disable=SC2086,SC2154
-          printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
-          tput sgr0
-
-        fi
-
-        echo
-
-      done
+      # shellcheck disable=SC2086,SC2154
+      printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+      tput sgr0
 
     fi
+
+    echo
 
   fi
 
@@ -614,7 +558,7 @@ function __main__() {
 
       DomainStrip "$_http_last"
 
-      _init_function "DomainMixedContent \"${_domain_proto}${_domain_name}\""
+      _init_function "DomainScanMixedContent \"${_domain_proto}${_domain_name}\""
 
       _fstate="$?"
 
@@ -670,7 +614,7 @@ function __main__() {
     DomainStrip "$_http_last"
 
     # shellcheck disable=SC2154
-    _init_function "DomainNmapNse \"${_domain_name}\" \"${_remote_port}\""
+    _init_function "DomainScanNmapNse \"${_domain_name}\" \"${_remote_port}\""
 
     _fstate="$?"
 
