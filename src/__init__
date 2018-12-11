@@ -331,6 +331,8 @@ function __main__() {
 
   # Set default colors for printf.
   # shellcheck disable=SC2034
+  local _rd="0;0;29"
+  # shellcheck disable=SC2034
   local b_trgb="1;2;30"
   # shellcheck disable=SC2034
   local e_trgb="1;1;31"
@@ -356,9 +358,12 @@ function __main__() {
   local c_trgb="1;1;38"
   # shellcheck disable=SC2034
   local x_trgb="1;2;38"
+  # shellcheck disable=SC2034
+  local z_trgb="1;39;44"
+
 
   # shellcheck disable=SC2154
-  printf '\n    %s %s' \
+  printf '\n    \e['${z_trgb}'m %s %s \e[m' \
          "$_init_name" "$_version"
 
   # Show OpenSSL version.
@@ -519,7 +524,7 @@ function __main__() {
 
         else
 
-          printf '\r         › %s: %s\n' \
+          printf '\r         \e['${_rd}'m›\e[m %s: %s\n' \
                  "Full Report Url" \
                  "https://www.ssllabs.com/ssltest/analyze.html?d=$_domain_name"
           tput sgr0
@@ -575,7 +580,7 @@ function __main__() {
 
             if [[ "$_i" == "ssllabs" ]] ; then
 
-              printf '\r         › %s: %s\n' \
+              printf '\r         \e['${_rd}'m›\e[m %s: %s\n' \
                      "Full Report Url" \
                      "https://www.ssllabs.com/ssltest/analyze.html?d=$_domain_name"
               tput sr0
@@ -619,13 +624,13 @@ function __main__() {
         if [[ "$_fd_empty" -eq "0" ]] ; then
 
           # shellcheck disable=SC2086,SC2154
-          printf '\r         › \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
+          printf '\r         \e['${_rd}'m›\e[m \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
           tput sgr0
 
         else
 
           # shellcheck disable=SC2086,SC2154
-          printf '\r         › \e['${e_trgb}'m%s\e[m\n' "Connection error"
+          printf '\r         \e['${_rd}'m›\e[m \e['${e_trgb}'m%s\e[m\n' "Connection error"
           tput sgr0
 
         fi
@@ -636,7 +641,7 @@ function __main__() {
         if [[ "$_fd_empty" -eq "0" ]] ; then
 
           # shellcheck disable=SC2086,SC2154
-          printf '\r         › \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
+          printf '\r         \e['${_rd}'m›\e[m \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
           tput sgr0
 
         else
