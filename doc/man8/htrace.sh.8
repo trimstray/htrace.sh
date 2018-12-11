@@ -2,11 +2,11 @@
 .\" Contact trimstray@gmail.com.
 .TH man 8 "12.07.2018" "1.0.8" "htrace.sh man page"
 .SH NAME
-htrace.sh \- simple shell script to debugging http/https traffic tracing, response headers and mixed-content. Scanning domain using Nmap NSE Library.
+htrace.sh \- simple shell script to debugging http/https connection tracing, response headers and mixed-content.
 .SH SYNOPSIS
 htrace.sh <option|long-option>
 .SH DESCRIPTION
-htrace.sh is a simple shell script to debugging http/https traffic tracing, response headers and mixed-content. Scanning domain using Nmap NSE Library. Support external security tools: Mozilla Observatory and SSL Labs API.
+htrace.sh is a simple shell script to debugging http/https connection tracing, response headers and mixed-content. Scanning domain using Nmap NSE Library. Support external security tools: testssl.sh, Mozilla Observatory and SSL Labs API.
 .SH OPTIONS
 --help
         show this message
@@ -20,16 +20,19 @@ htrace.sh is a simple shell script to debugging http/https traffic tracing, resp
 -h|--headers
         show response headers
 
--t|--testssl
+--testssl
         test ssl protocols and ciphers with testssl.sh
 
---scan <all|observatory|ssllabs>
-        scan domain with external security tools
+--observatory
+        scan domain with mozilla observatory security tool
+
+--ssllabs
+        scan domain with ssllabs security tool
 
 --mixed-content
         scan website for mixed content
 
---nmap-nse
+--nse
         scan website with nmap nse library
 
 --user-agent <val>

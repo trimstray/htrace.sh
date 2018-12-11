@@ -77,16 +77,16 @@ htrace.sh -d https://google.com -s -h
 
 `htrace.sh` support external tools for security scans:
 
-- **testssl.sh** - cli tool for testing SSL configuration, working with `https`  
-  include params: `--quiet --protocols --cipher-per-proto --server-preference --server-defaults \"$_host\"`
-- **Mozilla Observatory** - cli version of [observatory.mozilla.org](https://observatory.mozilla.org/), working with `http` and `https`  
-  include params: `--format=report --rescan --zero --quiet`
-- **Ssllabs** - command-line reference-implementation client for [SSL Labs API](https://www.ssllabs.com/ssltest/), working with `https`  
-  include params: `-quiet -grade`
-- **mixed-content-scan** - cli tool for check HTTPS-enabled website for Mixed Content, working with `https`  
-  include params: `-user-agent \"$_user_agent\" --no-check-certificate`
-- **Nmap NSE Library** - provide automated security scans with Nmap, working with `http` and `https`
-  include scripts:  
+- **testssl.sh** - cli tool for testing SSL configuration, working with `https`
+  include params: `--quiet --protocols --cipher-per-proto --server-preference --server-defaults \"$_host\"`  
+- **Mozilla Observatory** - cli version of [observatory.mozilla.org](https://observatory.mozilla.org/), working with `http` and `https`
+  include params: `--format=report --rescan --zero --quiet`  
+- **Ssllabs** - command-line reference-implementation client for [SSL Labs API](https://www.ssllabs.com/ssltest/), working with `https`
+  include params: `-quiet -grade`  
+- **mixed-content-scan** - cli tool for check HTTPS-enabled website for Mixed Content, working with `https`
+  include params: `-user-agent \"$_user_agent\" --no-check-certificate`  
+- **Nmap NSE Library** - provide automated security scans with Nmap, working with `http` and `https`  
+  include scripts:
   * dns-brute
   * http-auth-finder
   * http-chrono
@@ -177,15 +177,16 @@ Usage:
 
   Examples:
     htrace.sh --domain https://example.com
-    htrace.sh --domain https://example.com -s -h --scan ssllabs
+    htrace.sh --domain https://example.com --ssl --headers --testssl --ssllabs
 
   Options:
         --help                                show this message
         -d|--domain <domain_name>             set domain name
         -s|--ssl                              show basic ssl server/connection params
         -h|--headers                          show response headers
-        -t|--testssl                          test ssl protocols and ciphers with testssl.sh
-        --scan <all|observatory|ssllabs>      scan domain with external security tools
+        --testssl                             test ssl protocols and ciphers with testssl.sh
+        --observatory                         scan domain with mozilla observatory security tool
+        --ssllabs                             scan domain with ssllabs security tool
         --mixed-content                       scan website for mixed content
         --nse                                 scan website with nmap nse library
         --user-agent <val>                    set 'User-Agent' header
@@ -200,7 +201,7 @@ Usage:
 If you getting this error:
 
 ```
-not found in PATH: geoiplookup observatory ssllabs-scan mixed-content-scan
+not found in PATH: <...>
 ```
 
 You should look here: **[#18](https://github.com/trimstray/htrace.sh/issues/18)**.
