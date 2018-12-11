@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainScanSsllabs()
+#
+# Description:
+#   Scan domain with ssllabs tool.
+#
+# Usage:
+#   DomainScanSsllabs domain
+#
+# Examples:
+#   DomainScanSsllabs example.com
+#
+
+function DomainScanSsllabs() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainScanSsllabs"
+  local _STATE=0
+
+  local _host="$1"
+
+  # shellcheck disable=SC2034
+  _destination_host="$_host"
+
+  local _ssllabs_desc="Ssllabs API:https://www.ssllabs.com/ssltest/"
+  local _ssllabs_cmd="eval ssllabs-scan -quiet -grade \"$_host\""
+
+  _msg_args+=(\
+              "$_ssllabs_desc")
+
+  _cmd_args+=(\
+              "$_ssllabs_cmd")
+
+  return $_STATE
+
+}

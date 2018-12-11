@@ -3,22 +3,22 @@
 # shellcheck shell=bash
 
 # ``````````````````````````````````````````````````````````````````````````````
-# Function name: DomainMixedContent()
+# Function name: DomainScanMixedContent()
 #
 # Description:
-#   Scan domain with for check Mixed Content.
+#   Scan domain with for check mixed content.
 #
 # Usage:
-#   DomainMixedContent domain
+#   DomainScanMixedContent domain
 #
 # Examples:
-#   DomainMixedContent example.com
+#   DomainScanMixedContent example.com
 #
 
-function DomainMixedContent() {
+function DomainScanMixedContent() {
 
   # shellcheck disable=SC2034
-  local _FUNCTION_ID="DomainMixedContent"
+  local _FUNCTION_ID="DomainScanMixedContent"
   local _STATE=0
 
   local _host="$1"

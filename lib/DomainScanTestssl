@@ -3,22 +3,22 @@
 # shellcheck shell=bash
 
 # ``````````````````````````````````````````````````````````````````````````````
-# Function name: DomainTestSsl()
+# Function name: DomainScanTestssl()
 #
 # Description:
-#   Test SSL protocols and ciphers.
+#   Test SSL protocols and ciphers with testssl.sh.
 #
 # Usage:
-#   DomainTestSsl domain
+#   DomainScanTestssl domain
 #
 # Examples:
-#   DomainTestSsl example.com
+#   DomainScanTestssl example.com
 #
 
-function DomainTestSsl() {
+function DomainScanTestssl() {
 
   # shellcheck disable=SC2034
-  local _FUNCTION_ID="DomainTestSsl"
+  local _FUNCTION_ID="DomainScanTestssl"
   local _STATE=0
 
   local _host="$1"
