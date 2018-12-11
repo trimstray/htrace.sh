@@ -360,6 +360,8 @@ function _sprintf() {
 
   fi
 
+  tput sgr0
+
   # shellcheck disable=SC2154
   sed 's/^/         › /' "$_scan_output" | \
   sed 's/\r//' | grep "› ."
