@@ -209,13 +209,13 @@ function __main__() {
 
         export observatory_state=1
 
-        shift 2 ;;
+        shift ;;
 
       --ssllabs)
 
         export ssllabs_state=1
 
-        shift 2 ;;
+        shift ;;
 
       --mixed-content)
 
