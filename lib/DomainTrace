@@ -191,6 +191,11 @@ function DomainTrace() {
       # shellcheck disable=SC2034
       _last_http_scheme="$_http_scheme"
 
+    elif [[ "$_http_scheme" == "http" ]] && [[ "$ssl_state" -eq 1 ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         ssl: \e['${e_trgb}'m%s\e[m\n' "off"
+
     fi
 
     # shellcheck disable=SC2154
