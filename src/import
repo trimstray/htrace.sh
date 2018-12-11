@@ -14,8 +14,9 @@
 #   - lib/kill_process - file with your function
 #   - _fd_stack=("kill_process") - says to include this file in the script
 readonly _fd_stack=(DomainStrip DomainTrace DomainGeo DomainSslCheck \
-                    DomainCertCheck DomainTestSsl PrintfHeaders DomainScan \
-                    DomainMixedContent DomainNmapNse)
+                    DomainCertCheck PrintfHeaders \
+                    DomainScanTestssl DomainScanObservatory DomainScanSsllabs \
+                    DomainScanMixedContent DomainScanNmapNse)
 
 if [[ "${#_fd_stack[@]}" -ne 0 ]] ; then
 
