@@ -3,22 +3,22 @@
 # shellcheck shell=bash
 
 # ``````````````````````````````````````````````````````````````````````````````
-# Function name: DomainNmapNse()
+# Function name: DomainScanNmapNse()
 #
 # Description:
 #   Scan domain with Nmap NSE Library.
 #
 # Usage:
-#   DomainNmapNse domain port
+#   DomainScanNmapNse domain port
 #
 # Examples:
-#   DomainNmapNse example.com 443
+#   DomainScanNmapNse example.com 443
 #
 
-function DomainNmapNse() {
+function DomainScanNmapNse() {
 
   # shellcheck disable=SC2034
-  local _FUNCTION_ID="DomainNmapNse"
+  local _FUNCTION_ID="DomainScanNmapNse"
   local _STATE=0
 
   local _host="$1"
