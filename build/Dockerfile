@@ -76,7 +76,7 @@ RUN \
 
 # For mixed-content-scan.
 RUN \
-  apt-get install -y composer php7.2-curl php7.2-xml && \
+  apt-get install -y composer php7.3-curl php7.3-xml && \
   composer global require bramus/mixed-content-scan && \
   # It's important - PATH is hardcoded in src/settings.
   ln -s /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan \
@@ -84,7 +84,7 @@ RUN \
 
 # For testssl.sh.
 RUN \
-  apt-get install -y testssl.sh
+  apt-get install -y testssl.sh bsdmainutils
 
 # For Nmap NSE Library.
 RUN \
