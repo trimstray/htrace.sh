@@ -45,12 +45,16 @@ function DomainCertCheck() {
                      sed -e 's/^[ \t]*//' | \
                      tr -d '"')
 
-  _ssl_domain_names_non_sni=$(echo "$_ssl_domain_cert_non_sni" | \
-                     openssl x509 -noout -text | \
-                     sed -ne 's/^\( *\)Subject:/\1/p;/X509v3 Subject Alternative Name/{
-                     N;s/^.*\n//;:a;s/^\( *\)\(.*\), /\1\2\n\1/;ta;p;q; }' | \
-                     sed -e 's/^[ \t]*//' | \
-                     tr -d '"')
+  if [[ ! -z "$_ssl_domain_cert_non_sni" ]] ; then
+
+    _ssl_domain_names_non_sni=$(echo "$_ssl_domain_cert_non_sni" | \
+                       openssl x509 -noout -text | \
+                       sed -ne 's/^\( *\)Subject:/\1/p;/X509v3 Subject Alternative Name/{
+                       N;s/^.*\n//;:a;s/^\( *\)\(.*\), /\1\2\n\1/;ta;p;q; }' | \
+                       sed -e 's/^[ \t]*//' | \
+                       tr -d '"')
+
+  fi
 
   _ssl_domain_issuer=$(echo "$_ssl_domain_cert" | \
                      openssl x509 -noout -text | \
@@ -294,6 +298,12 @@ function DomainCertCheck() {
       # shellcheck disable=SC2086,SC2154
       printf '         sni: \e['${g2_trgb}'m%s\e[m\n' \
              "match"
+
+    elif [[ -z "$_ssl_domain_cert_non_sni" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         sni: \e['${e2_trgb}'m%s\e[m\n' \
+             "no peer certificate available"
 
     else
 
