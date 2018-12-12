@@ -599,7 +599,7 @@ function _help_() {
 
   Examples:
     $_init_name --domain https://example.com
-    $_init_name --domain https://example.com --proxy-bypass \"?${RANDOM}\"
+    $_init_name --domain https://example.com --proxy-bypass \"?\${RANDOM}\"
     $_init_name --domain https://example.com --ssl --headers --testssl --ssllabs
 
   Options:
