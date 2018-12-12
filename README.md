@@ -48,7 +48,7 @@ It is useful for:
 - checking **HTTP request latency** (`time_connect` and `time_total`)
 - **redirects analysis** (and follows it), e.g. to eliminate redirect loops
 - viewing and analyzing **response headers** for each request
-  - try bypassing cache
+  - try **bypassing cache**
 - checking **basic ssl** configuration
   - **validation** of the certificates (e.g. `date`, `cn`, `san`), check **sni** and **verification** ssl connection
 - checking **extended ssl** configuration with **testssl.sh**
