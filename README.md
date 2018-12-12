@@ -19,9 +19,9 @@
 </p>
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/trimstray/htrace.sh/master/doc/img/htrace.sh_preview-01.png" width="32%"></img>
     <img src="https://raw.githubusercontent.com/trimstray/htrace.sh/master/doc/img/htrace.sh_preview-02.png" width="32%"></img>
     <img src="https://raw.githubusercontent.com/trimstray/htrace.sh/master/doc/img/htrace.sh_preview-03.png" width="32%"></img>
+    <img src="https://raw.githubusercontent.com/trimstray/htrace.sh/master/doc/img/htrace.sh_preview-04.png" width="32%"></img>
 </p>
 
 <div align="center">
