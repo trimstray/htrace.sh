@@ -25,6 +25,9 @@ function __main__() {
 
   readonly _scan_output="${_log_directory}/scan.out"
 
+  # shellcheck disable=SC2154
+  readonly _user_agent_fd="${_src}/useragents"
+
   # We check if we are a root user.
   # if [[ "$EUID" -ne 0 ]] ; then
   #
@@ -305,6 +308,16 @@ function __main__() {
   # shellcheck disable=SC2034
   # Generate random value.
   _random=$(date +"%s")
+
+  # Load user-agents file.
+  if [[ "$user_agent_state" -eq 0 ]] ; then
+
+    _load "null" "$_user_agent_fd"
+
+    # Pick a random entry from the user agents list.
+    _user_agent=${USER_AGENTS[$_random % ${#USER_AGENTS[@]}]}
+
+  fi
 
   # Array that stores the names of variables used that are part of the script
   # call parameters (_GETOPT_PARAMS). Useful when checking whether all
