@@ -177,7 +177,7 @@ Usage:
 
   Examples:
     htrace.sh --domain https://example.com
-    htrace.sh --domain https://example.com --proxy-bypass "?${RANDOM}"
+    htrace.sh --domain https://example.com --cache-bypass "?${RANDOM}"
     htrace.sh --domain https://example.com --ssl --headers --testssl --ssllabs
 
   Options:
@@ -190,7 +190,7 @@ Usage:
         --ssllabs                             scan domain with ssllabs security tool
         --mixed-content                       scan website for mixed content
         --nse                                 scan website with nmap nse library
-        --proxy-bypass <val>                  try proxy cache bypass
+        --cache-bypass <val>                  try (proxy) cache bypass
         --user-agent <val>                    set 'User-Agent' header
         --max-redirects <num>                 set max redirects (default: 10)
         --timeout <num>                       set max timeout (default: 15)

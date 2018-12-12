@@ -83,9 +83,9 @@ function __main__() {
   # Default 'nmap-nse' variable.
   local nse_state="0"
 
-  # Default 'proxy-bypass' variable.
-  local proxy_bypass_state="0"
-  local proxy_bypass_type=""
+  # Default 'cache-bypass' variable.
+  local cache_bypass_state="0"
+  local cache_bypass_type=""
 
   # Set default User-Agent.
   # shellcheck disable=SC2034
@@ -156,7 +156,7 @@ function __main__() {
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
   local _short_opt="d:sh"
-  local _long_opt="help,domain:,ssl,headers,testssl,observatory,ssllabs,mixed-content,nse,proxy-bypass:,user-agent:,max-redirects:,timeout:"
+  local _long_opt="help,domain:,ssl,headers,testssl,observatory,ssllabs,mixed-content,nse,cache-bypass:,user-agent:,max-redirects:,timeout:"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -236,11 +236,11 @@ function __main__() {
 
         shift ;;
 
-      --proxy-bypass)
+      --cache-bypass)
 
-        export proxy_bypass_state=1
+        export cache_bypass_state=1
 
-        export proxy_bypass_type="${2}"
+        export cache_bypass_type="${2}"
 
         shift 2 ;;
 
@@ -427,7 +427,7 @@ function __main__() {
 
   # Show http(s) domain trace.
   printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\e['${x2_trgb}'m%s\e[m\n' \
-         "$_domain_proto" "$_domain_name" "$_domain_path" "$proxy_bypass_type"
+         "$_domain_proto" "$_domain_name" "$_domain_path" "$cache_bypass_type"
 
   # Start tracing.
   local _http_code="300"
