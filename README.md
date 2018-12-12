@@ -44,7 +44,7 @@ It is useful for:
 - **redirects analysis** (and follows it), e.g. to eliminate redirect loops
 - viewing and analyzing **response headers** for each request
 - checking **basic ssl** configuration
-  - **validation** of the certificates (e.g. `date`, `cn`, `san`) and **verification** ssl connection
+  - **validation** of the certificates (e.g. `date`, `cn`, `san`), check **sni** and **verification** ssl connection
 - checking **extended ssl** configuration with **testssl.sh**
 - scanning domain for **Mixed Content**
 - scanning domain using **Nmap NSE Library** (34 scripts)
@@ -177,6 +177,7 @@ Usage:
 
   Examples:
     htrace.sh --domain https://example.com
+    htrace.sh --domain https://example.com --proxy-bypass "?${RANDOM}"
     htrace.sh --domain https://example.com --ssl --headers --testssl --ssllabs
 
   Options:
@@ -189,6 +190,7 @@ Usage:
         --ssllabs                             scan domain with ssllabs security tool
         --mixed-content                       scan website for mixed content
         --nse                                 scan website with nmap nse library
+        --proxy-bypass <val>                  try proxy cache bypass
         --user-agent <val>                    set 'User-Agent' header
         --max-redirects <num>                 set max redirects (default: 10)
         --timeout <num>                       set max timeout (default: 15)

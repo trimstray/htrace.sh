@@ -599,6 +599,7 @@ function _help_() {
 
   Examples:
     $_init_name --domain https://example.com
+    $_init_name --domain https://example.com --proxy-bypass \"?${RANDOM}\"
     $_init_name --domain https://example.com --ssl --headers --testssl --ssllabs
 
   Options:
@@ -611,6 +612,7 @@ function _help_() {
         --ssllabs                             scan domain with ssllabs security tool
         --mixed-content                       scan website for mixed content
         --nse                                 scan website with nmap nse library
+        --proxy-bypass <val>                  try proxy cache bypass
         --user-agent <val>                    set 'User-Agent' header
         --max-redirects <num>                 set max redirects (default: 10)
         --timeout <num>                       set max timeout (default: 15)

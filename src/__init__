@@ -80,6 +80,10 @@ function __main__() {
   # Default 'nmap-nse' variable.
   local nse_state="0"
 
+  # Default 'proxy-bypass' variable.
+  local proxy_bypass_state="0"
+  local proxy_bypass_type=""
+
   # Set default User-Agent.
   # shellcheck disable=SC2034
   local user_agent_state="0"
@@ -149,7 +153,7 @@ function __main__() {
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
   local _short_opt="d:sh"
-  local _long_opt="help,domain:,ssl,headers,testssl,observatory,ssllabs,mixed-content,nse,user-agent:,max-redirects:,timeout:"
+  local _long_opt="help,domain:,ssl,headers,testssl,observatory,ssllabs,mixed-content,nse,proxy-bypass:,user-agent:,max-redirects:,timeout:"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -228,6 +232,14 @@ function __main__() {
         export nse_state=1
 
         shift ;;
+
+      --proxy-bypass)
+
+        export proxy_bypass_state=1
+
+        export proxy_bypass_type="${2}"
+
+        shift 2 ;;
 
       --user-agent)
 
@@ -365,8 +377,9 @@ function __main__() {
   # shellcheck disable=SC2034
   local x_trgb="1;2;38"
   # shellcheck disable=SC2034
+  local x2_trgb="4;3;38"
+  # shellcheck disable=SC2034
   local z_trgb="1;39;44"
-
 
   # shellcheck disable=SC2154
   printf '\n    \e['${z_trgb}'m %s %s \e[m' \
@@ -400,8 +413,8 @@ function __main__() {
   fi
 
   # Show http(s) domain trace.
-  printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
-         "$_domain_proto" "$_domain_name" "$_domain_path"
+  printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\e['${x2_trgb}'m%s\e[m\n' \
+         "$_domain_proto" "$_domain_name" "$_domain_path" "$proxy_bypass_type"
 
   # Start tracing.
   local _http_code="300"
@@ -418,6 +431,7 @@ function __main__() {
   # shellcheck disable=SC2034
   local _scounter=5
 
+  # Core mechanism of htrace.sh - redirects.
   while [[ ${_http_code} =~ ^3[0-9]{2}$ ]] ; do
 
     # Prevention of redirection loops.
@@ -450,6 +464,7 @@ function __main__() {
 
       _http_last="$_http_redirect"
 
+      # Init trace function.
       DomainTrace "$_http_redirect"
 
       _rcounter=$((_rcounter + 1))

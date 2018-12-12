@@ -203,17 +203,35 @@ function DomainTrace() {
 
       echo
 
-      # shellcheck disable=SC2034,SC2154
-      curl -Iks -X GET -m "$_timeout" \
-        -H 'Connection: keep-alive' \
-        -H 'Upgrade-Insecure-Requests: 1' \
-        -H "User-Agent: $_user_agent" \
-        -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
-        -H 'Accept-Encoding: gzip, deflate, br' \
-        -H 'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7' \
-        --compressed "$_host" | \
-        sed -e 's/^[ \t]*/         › /' | \
-        sed 's/\r//' | grep "› ."
+      if [[ "$proxy_bypass_state" -eq 0 ]] ; then
+
+        # shellcheck disable=SC2034,SC2154
+        curl -Iks -X GET -m "$_timeout" \
+          -H 'Connection: keep-alive' \
+          -H 'Upgrade-Insecure-Requests: 1' \
+          -H "User-Agent: $_user_agent" \
+          -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
+          -H 'Accept-Encoding: gzip, deflate, br' \
+          -H 'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7' \
+          --compressed "$_host" | \
+          sed -e 's/^[ \t]*/         › /' | \
+          sed 's/\r//' | grep "› ."
+
+      else
+
+        # shellcheck disable=SC2034,SC2154
+        curl -Iks -X GET -m "$_timeout" \
+          -H 'Connection: keep-alive' \
+          -H 'Upgrade-Insecure-Requests: 1' \
+          -H "User-Agent: $_user_agent" \
+          -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
+          -H 'Accept-Encoding: gzip, deflate, br' \
+          -H 'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7' \
+          --compressed "${_host}${proxy_bypass_type}" | \
+          sed -e 's/^[ \t]*/         › /' | \
+          sed 's/\r//' | grep "› ."
+
+      fi
 
     fi
 
