@@ -18,12 +18,6 @@
         alt="Master">
 </p>
 
-<p align="center">
-    <img src="https://raw.githubusercontent.com/trimstray/htrace.sh/master/doc/img/htrace.sh_preview-02.png" width="32%"></img>
-    <img src="https://raw.githubusercontent.com/trimstray/htrace.sh/master/doc/img/htrace.sh_preview-03.png" width="32%"></img>
-    <img src="https://raw.githubusercontent.com/trimstray/htrace.sh/master/doc/img/htrace.sh_preview-04.png" width="32%"></img>
-</p>
-
 <div align="center">
   <sub>Created by
   <a href="https://twitter.com/trimstray">trimstray</a> and
@@ -51,7 +45,7 @@ It is useful for:
 - viewing and analyzing **response headers** for each request
   - try **bypassing cache**
 - checking **basic ssl** configuration
-  - **validation** of the certificates (e.g. `date`, `cn`, `san`), check **sni** and **verification** ssl connection
+  - **validation** of the certificates (e.g. `date`, `cn`, `san`), checking **sni** and **verification** ssl connection
 - checking **extended ssl** configuration with **testssl.sh**
 - scanning domain for **Mixed Content**
 - scanning domain using **Nmap NSE Library** (34 scripts)
@@ -222,6 +216,14 @@ Set correct environment variable:
 ```
 export SSL_CERT_DIR=/path/to/ca/dir
 ```
+
+## Previews
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/trimstray/htrace.sh/master/doc/img/htrace.sh_preview-02.png" width="32%"></img>
+    <img src="https://raw.githubusercontent.com/trimstray/htrace.sh/master/doc/img/htrace.sh_preview-03.png" width="32%"></img>
+    <img src="https://raw.githubusercontent.com/trimstray/htrace.sh/master/doc/img/htrace.sh_preview-04.png" width="32%"></img>
+</p>
 
 ## Contributing
 
