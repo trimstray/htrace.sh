@@ -41,67 +41,57 @@
 #
 ### END SCRIPT INFO
 
-FROM debian:buster
+FROM golang:alpine AS golang
+RUN apk update && apk add --no-cache git
+RUN go get github.com/ssllabs/ssllabs-scan
+
+FROM alpine:latest AS builder
+RUN \
+  apk add --no-cache nodejs-current npm && rm -rf /var/cache/apk/* \
+  && npm install -g observatory-cli
+RUN \
+  apk add --no-cache composer php7-curl php7-xml && rm -rf /var/cache/apk/* \
+  && composer global require bramus/mixed-content-scan
+
+FROM drwetter/testssl.sh:stable AS testssl
+
+FROM alpine:latest
 
 MAINTAINER trimstray "trimstray@gmail.com"
 
-ENV GOROOT="/usr/lib/go"
-ENV GOPATH="/opt/go"
-
 # System tools.
 RUN \
-  apt-get update && \
-  apt-get install -y ca-certificates dnsutils gnupg apt-utils unzip
+  apk add --no-cache \
+    bash \
+    bc \
+    bind-tools \
+    ca-certificates \
+    coreutils \
+    curl \
+    drill \
+    geoip \
+    git \
+    gnupg \
+    ncurses \
+    nmap \
+    openssl \
+    procps \
+    unzip \
+    wget \
+  && rm -rf /var/cache/apk/*
+
+COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
+COPY --from=builder /usr/lib/node_modules/observatory-cli/index.js /usr/bin/observatory
+COPY --from=builder /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan /usr/bin/mixed-content-scan
+COPY --from=testssl /usr/local/bin/testssl.sh /usr/local/bin/testssl.sh
 
 RUN \
-  apt-get install -y --reinstall procps
-
-# htrace.sh tools.
-RUN \
-  apt-get update && \
-  apt-get install -y git openssl curl bc geoip-bin
-
-# For Mozilla-Observatory.
-RUN \
-  curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
-  apt-get install -y nodejs && \
-  npm install -g observatory-cli
-
-# For Ssllabs API.
-RUN \
-  apt-get install -y golang && \
-  go get github.com/ssllabs/ssllabs-scan && \
-  # It's important - PATH is hardcoded in src/settings.
-  ln -s /opt/go/bin/ssllabs-scan /usr/bin/ssllabs-scan
-
-# For mixed-content-scan.
-RUN \
-  apt-get install -y composer php7.3-curl php7.3-xml && \
-  composer global require bramus/mixed-content-scan && \
-  # It's important - PATH is hardcoded in src/settings.
-  ln -s /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan \
-  /usr/bin/mixed-content-scan
-
-# For testssl.sh.
-RUN \
-  apt-get install -y testssl.sh bsdmainutils
-
-# For Nmap NSE Library.
-RUN \
-  apt-get install -y nmap
-
-RUN \
-  mkdir -p /opt/git && cd /opt/git && \
-  git clone https://github.com/trimstray/htrace.sh.git && \
-  cd htrace.sh && \
-  bash setup.sh install
-
-# Remove some clean tasks.
-RUN \
-  apt-get -y remove --purge git && \
-  apt-get clean && apt-get autoclean && \
-  apt-get -y autoremove --purge && \
-  rm -rf /var/lib/apt/lists/*
+  mkdir -p /opt/git && cd /opt/git \
+  && git clone https://github.com/trimstray/htrace.sh.git \
+  && cd htrace.sh \
+  && mkdir -p /opt/git/htrace.sh/log/ \
+  && ln -s /usr/local/bin/testssl.sh /usr/local/bin/testssl \
+  && bash setup.sh install
 
 ENTRYPOINT ["/usr/local/bin/htrace.sh"]
 CMD ["--help"]
