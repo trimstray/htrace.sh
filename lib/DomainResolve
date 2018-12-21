@@ -24,13 +24,15 @@ function DomainResolve() {
   local _STATE=0
 
   local _host="$1"
-  local _host_ip=""
 
   # shellcheck disable=SC2154
-  _host_ip=$(timeout "$_timeout" dig "$_host" | \
-             awk '/^;; ANSWER SECTION:$/ { getline ; print $5 }')
+  # _host_ip=$(timeout "$_timeout" dig "$_host" | \
+  #            awk '/^;; ANSWER SECTION:$/ { getline ; print $5 }')
 
-  if [[ -z "$_host_ip" ]] ; then
+  _host_ip=$($_curl_base -ks -m "$_timeout" "https://dns.google.com/resolve?name=${_host}&type=A" | \
+  jq '.Answer[0].data' | tr -d "\"")
+
+  if [[ -z "$_host_ip" ]] || [[ "$_host_ip" == "null" ]] ; then
 
     # shellcheck disable=SC2034
     _STATE="1"
@@ -43,8 +45,6 @@ function DomainResolve() {
 
     # shellcheck disable=SC2034
     _STATE="0"
-
-    printf "%s" "$_host_ip"
 
     _logger "info" \
       "${_FUNCTION_ID}()" \
