@@ -78,15 +78,15 @@ htrace.sh -d http://nmap.org -s -h
 
 `htrace.sh` support external tools for security scans:
 
-- **testssl.sh** - cli tool for testing SSL configuration, working with `https`
+- **testssl.sh** - cli tool for testing SSL configuration, working with `https`  
   include params: `--quiet --protocols --cipher-per-proto --server-preference --server-defaults \"$_host\"`
-- **Mozilla Observatory** - cli version of [observatory.mozilla.org](https://observatory.mozilla.org/), working with `http` and `https`
+- **Mozilla Observatory** - cli version of [observatory.mozilla.org](https://observatory.mozilla.org/), working with `http` and `https`  
   include params: `--format=report --rescan --zero --quiet`
-- **Ssllabs** - command-line reference-implementation client for [SSL Labs API](https://www.ssllabs.com/ssltest/), working with `https`
+- **Ssllabs** - command-line reference-implementation client for [SSL Labs API](https://www.ssllabs.com/ssltest/), working with `https`  
   include params: `-quiet -grade`
-- **mixed-content-scan** - cli tool for check HTTPS-enabled website for Mixed Content, working with `https`
+- **mixed-content-scan** - cli tool for check HTTPS-enabled website for Mixed Content, working with `https`  
   include params: `-user-agent \"$_user_agent\" --no-check-certificate`
-- **Nmap NSE Library** - provide automated security scans with Nmap, working with `http` and `https`
+- **Nmap NSE Library** - provide automated security scans with Nmap, working with `http` and `https`  
   include scripts:
   * dns-brute
   * http-auth-finder
@@ -158,6 +158,7 @@ This tool working with:
 - **[Bash](https://www.gnu.org/software/bash/)** (testing on 4.4.19)
 - **[Curl](https://curl.haxx.se/)** with specific variables support (≥ 7.52.0)
 - **[OpenSSL](https://www.openssl.org/)** (testing on 1.1.0g/h)
+- **[jq](https://stedolan.github.io/jq/)** (testing on jq-1.5-1-a5b5cbe)
 - **[Mozilla Observatory](https://github.com/mozilla/http-observatory)** (testing on 0.7.1)
 - **[Ssllabs](https://github.com/ssllabs/ssllabs-scan)** (testing on v1.5.0)
 - **[mixed-content-scan](https://github.com/bramus/mixed-content-scan)** with **php-curl**
@@ -180,6 +181,7 @@ Usage:
     htrace.sh --domain https://example.com
     htrace.sh --domain https://example.com --cache-bypass "?${RANDOM}"
     htrace.sh --domain https://example.com --ssl --headers --testssl --ssllabs
+    htrace.sh -d https://example.com -s -h --proxy "socks5h://127.0.0.1:9501"
 
   Options:
         --help                                show this message

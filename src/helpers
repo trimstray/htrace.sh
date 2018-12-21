@@ -601,6 +601,7 @@ function _help_() {
     $_init_name --domain https://example.com
     $_init_name --domain https://example.com --cache-bypass \"?\${RANDOM}\"
     $_init_name --domain https://example.com --ssl --headers --testssl --ssllabs
+    $_init_name -d https://example.com -s -h --proxy \"socks5h://127.0.0.1:9501\"
 
   Options:
         --help                                show this message
