@@ -178,10 +178,9 @@ Usage:
     htrace.sh <option|long-option>
 
   Examples:
-    htrace.sh --domain https://example.com
+    htrace.sh -d https://example.com -s -h --testssl --ssllabs
     htrace.sh --domain https://example.com --cache-bypass "?${RANDOM}"
-    htrace.sh --domain https://example.com --ssl --headers --testssl --ssllabs
-    htrace.sh -d https://example.com -s -h --proxy "socks5h://127.0.0.1:9501"
+    htrace.sh --domain https://example.com --ssl --headers --proxy "socks5h://127.0.0.1:9501"
 
   Options:
         --help                                show this message
