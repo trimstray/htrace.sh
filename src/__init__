@@ -60,6 +60,7 @@ function __main__() {
   local domain_state="0"
   local domain_type=""
 
+  # shellcheck disable=SC2034
   # Default remote 'ip'.
   local _host_ip=""
 
@@ -348,10 +349,12 @@ function __main__() {
   # shellcheck disable=SC2154
   if [[ "$proxy_state" -eq 1 ]] ; then
 
+    # shellcheck disable=SC2034
     _curl_base="curl --proxy $proxy_type"
 
   else
 
+    # shellcheck disable=SC2034
     _curl_base="curl"
 
   fi

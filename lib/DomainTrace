@@ -56,13 +56,16 @@ function DomainTrace() {
     _http_scheme=$(echo "$_http_output" | cut -d ":" -f9 | tr '[:upper:]' '[:lower:]')
     _http_redirect=$(echo "$_http_output" | cut -d ":" -f10-)
 
+    # shellcheck disable=SC2154
     if [[ "$proxy_state" -eq 1 ]] ; then
 
       # Set local and remote sockets.
       _local_socket="${_local_ip}:${_local_port}"
 
+      # shellcheck disable=SC2154
       DomainResolve "$_domain_name"
 
+      # shellcheck disable=SC2154
       _remote_socket="${_host_ip}:???"
       _remote_socket_proxy="${_remote_ip}:${_remote_port}"
 
@@ -192,6 +195,7 @@ function DomainTrace() {
 
     if [[ "$proxy_state" -eq 1 ]] ; then
 
+      # shellcheck disable=SC2086,SC2154
       printf '  %-4.6s %-12.10s %-15.12s %-22.22s └\e['${x_trgb}'m%-16.22s\e[m\n' \
              "       " \
              "       " \
