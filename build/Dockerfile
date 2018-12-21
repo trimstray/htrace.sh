@@ -12,6 +12,9 @@
 #
 #   This Dockerfile builds a static htrace.sh in a Docker container.
 #
+#   - converted Dockerfile to Alpine Linux
+#     author: https://github.com/davidneudorfer
+#
 #   For build:
 #     docker build --rm -t htrace.sh -f Dockerfile .
 #
@@ -78,6 +81,7 @@ RUN \
     procps \
     unzip \
     wget \
+    jq \
   && rm -rf /var/cache/apk/*
 
 COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
