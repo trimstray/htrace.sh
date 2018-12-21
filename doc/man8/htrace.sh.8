@@ -23,6 +23,9 @@ htrace.sh is a simple shell script to debugging http/https connection tracing, r
 -b|--body
         show response body
 
+-p|--proxy
+        set proxy server (not for external tools)
+
 --testssl
         test ssl protocols and ciphers with testssl.sh
 
@@ -50,7 +53,7 @@ htrace.sh is a simple shell script to debugging http/https connection tracing, r
 --timeout <num>
         set max timeout (default: 15)
 
---ip-hide
+--hide-src-ip
         hide source ip from output
 .SH SEE ALSO
 https://github.com/trimstray/htrace.sh
