@@ -53,9 +53,15 @@ function __main__() {
   # shellcheck disable=SC2034
   s_color="true"
 
+  # Default 'curl' command.
+  local _curl_base=""
+
   # Default 'domain' variables.
   local domain_state="0"
   local domain_type=""
+
+  # Default remote 'ip'.
+  local _host_ip=""
 
   # Default destination host variable.
   # shellcheck disable=SC2034
@@ -73,6 +79,10 @@ function __main__() {
 
   # Default 'body' variable.
   local body_state="0"
+
+  # Default 'proxy' variable.
+  local proxy_state="0"
+  local proxy_type=""
 
   # Default 'observatory' variables.
   local observatory_state="0"
@@ -161,8 +171,8 @@ function __main__() {
 
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
-  local _short_opt="d:shb"
-  local _long_opt="help,domain:,ssl,headers,body,testssl,observatory,ssllabs,mixed-content,nse,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
+  local _short_opt="d:shbp:"
+  local _long_opt="help,domain:,ssl,headers,body,proxy:,testssl,observatory,ssllabs,mixed-content,nse,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -217,6 +227,14 @@ function __main__() {
         export body_state=1
 
         shift ;;
+
+      -p|--proxy)
+
+        export proxy_state=1
+
+        export proxy_type="${2}"
+
+        shift 2 ;;
 
       --testssl)
 
@@ -326,6 +344,17 @@ function __main__() {
   # shellcheck disable=SC2034
   # Generate random value.
   _random=$(date +"%s")
+
+  # shellcheck disable=SC2154
+  if [[ "$proxy_state" -eq 1 ]] ; then
+
+    _curl_base="curl --proxy $proxy_type"
+
+  else
+
+    _curl_base="curl"
+
+  fi
 
   # Load user-agents file.
   if [[ "$user_agent_state" -eq 0 ]] ; then

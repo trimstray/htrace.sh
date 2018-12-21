@@ -24,7 +24,7 @@ function DomainTrace() {
   local _host="$1"
 
   # shellcheck disable=SC2034,SC2154
-  _http_output=$(curl -ks -X GET -m "$_timeout" \
+  _http_output=$($_curl_base -ks -X GET -m "$_timeout" \
     -H 'Connection: keep-alive' \
     -H 'Upgrade-Insecure-Requests: 1' \
     -H "User-Agent: $_user_agent" \
@@ -56,9 +56,23 @@ function DomainTrace() {
     _http_scheme=$(echo "$_http_output" | cut -d ":" -f9 | tr '[:upper:]' '[:lower:]')
     _http_redirect=$(echo "$_http_output" | cut -d ":" -f10-)
 
-    # Set local and remote sockets.
-    _local_socket="${_local_ip}:${_local_port}"
-    _remote_socket="${_remote_ip}:${_remote_port}"
+    if [[ "$proxy_state" -eq 1 ]] ; then
+
+      # Set local and remote sockets.
+      _local_socket="${_local_ip}:${_local_port}"
+
+      DomainResolve "$_domain_name"
+
+      _remote_socket="${_host_ip}:???"
+      _remote_socket_proxy="${_remote_ip}:${_remote_port}"
+
+    else
+
+      # Set local and remote sockets.
+      _local_socket="${_local_ip}:${_local_port}"
+      _remote_socket="${_remote_ip}:${_remote_port}"
+
+    fi
 
     # Check if _remote_socket is private address - generate pattern.
     _class_pattern=('10.')        # 10.0.0.0/8
@@ -73,7 +87,7 @@ function DomainTrace() {
 
     # Get external IP (set https connection).
     # shellcheck disable=SC2155
-    local _via_ip=$(curl -ks -m "$_timeout" http://whatismyip.akamai.com/)
+    local _via_ip=$($_curl_base -ks -m "$_timeout" http://whatismyip.akamai.com/)
 
     if [[ ! "$_via_ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
 
@@ -91,7 +105,15 @@ function DomainTrace() {
 
     done
 
-    DomainGeo "$_remote_ip"
+    if [[ "$proxy_state" -eq 1 ]] ; then
+
+      DomainGeo "$_host_ip"
+
+    else
+
+      DomainGeo "$_remote_ip"
+
+    fi
 
     # Convert times.
     _time_total=$(echo "$_time_total" | tr ',' '.')
@@ -141,6 +163,7 @@ function DomainTrace() {
 
     fi
 
+    # shellcheck disable=SC2154
     if [[ "$_hide_src_ip_state" -eq 1 ]] ; then
 
       _local_socket_std="xxx.xxx.xxx.xxx"
@@ -166,6 +189,17 @@ function DomainTrace() {
            "$_http_version" \
            "$_http_code" \
            "$_http_redirect"
+
+    if [[ "$proxy_state" -eq 1 ]] ; then
+
+      printf '  %-4.6s %-12.10s %-15.12s %-22.22s └\e['${x_trgb}'m%-16.22s\e[m\n' \
+             "       " \
+             "       " \
+             "       " \
+             "       " \
+             "$_remote_socket_proxy"
+
+    fi
 
     if [[ "$_http_scheme" == "https" ]] ; then
 
@@ -218,7 +252,7 @@ function DomainTrace() {
       if [[ "$cache_bypass_state" -eq 0 ]] ; then
 
         # shellcheck disable=SC2034,SC2154
-        curl -Iks -X GET -m "$_timeout" \
+        $_curl_base -Iks -X GET -m "$_timeout" \
           -H 'Connection: keep-alive' \
           -H 'Upgrade-Insecure-Requests: 1' \
           -H "User-Agent: $_user_agent" \
@@ -232,7 +266,7 @@ function DomainTrace() {
       else
 
         # shellcheck disable=SC2034,SC2154
-        curl -Iks -X GET -m "$_timeout" \
+        $_curl_base -Iks -X GET -m "$_timeout" \
           -H 'Connection: keep-alive' \
           -H 'Upgrade-Insecure-Requests: 1' \
           -H "User-Agent: $_user_agent" \
@@ -255,7 +289,7 @@ function DomainTrace() {
       if [[ "$cache_bypass_state" -eq 0 ]] ; then
 
         # shellcheck disable=SC2034,SC2154
-        curl -ks -X GET -m "$_timeout" \
+        $_curl_base -ks -X GET -m "$_timeout" \
           -H 'Connection: keep-alive' \
           -H 'Upgrade-Insecure-Requests: 1' \
           -H "User-Agent: $_user_agent" \
@@ -269,7 +303,7 @@ function DomainTrace() {
       else
 
         # shellcheck disable=SC2034,SC2154
-        curl -ks -X GET -m "$_timeout" \
+        $_curl_base -ks -X GET -m "$_timeout" \
           -H 'Connection: keep-alive' \
           -H 'Upgrade-Insecure-Requests: 1' \
           -H "User-Agent: $_user_agent" \
