@@ -99,8 +99,11 @@ function __main__() {
   # Default OpenSSL version state.
   _openssl_version_state="0"
 
-  # Default timeout value for.
+  # Default timeout value.
   local _timeout="15"
+
+  # Default ip-mask value.
+  local _hide_src_ip_state="0"
 
   # We place here used commands at script runtime, as strings to anything
   # unnecessarily run.
@@ -156,7 +159,7 @@ function __main__() {
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
   local _short_opt="d:sh"
-  local _long_opt="help,domain:,ssl,headers,testssl,observatory,ssllabs,mixed-content,nse,cache-bypass:,user-agent:,max-redirects:,timeout:"
+  local _long_opt="help,domain:,ssl,headers,testssl,observatory,ssllabs,mixed-content,nse,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -267,6 +270,12 @@ function __main__() {
         export _timeout="${2}"
 
         shift 2 ;;
+
+      --hide-src-ip)
+
+        export _hide_src_ip_state=1
+
+        shift ;;
 
       *)
 

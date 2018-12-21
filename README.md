@@ -195,6 +195,7 @@ Usage:
         --user-agent <val>                    set 'User-Agent' header
         --max-redirects <num>                 set max redirects (default: 10)
         --timeout <num>                       set max timeout (default: 15)
+        --hide-src-ip                         hide source ip from output
 ```
 
 ## Issues

@@ -141,13 +141,25 @@ function DomainTrace() {
 
     fi
 
+    if [[ "$_hide_src_ip_state" -eq 1 ]] ; then
+
+      _local_socket_std="xxx.xxx.xxx.xxx"
+      _via_ip_std="xxx.xxx.xxx.xxx"
+
+    else
+
+      _local_socket_std="$_local_socket"
+      _via_ip_std="$_via_ip"
+
+    fi
+
     # shellcheck disable=SC2086,SC2154
     printf ' \e['${e_trgb}'m•\e[m \e['${c_trgb}'m %-4.6s %-12.10s %-15.12s %-22.22s %-16.22s %-21.22s %-5.7s %-7.7s %-5.5s %-8.10s %s\e[m\n' \
            " $_req_num" \
            "$_full_conn_time" \
            "$_time_total" \
-           "$_local_socket" \
-           "$_via_ip" \
+           "$_local_socket_std" \
+           "$_via_ip_std" \
            "$_remote_socket" \
            "$_geo_ip" \
            "$_http_scheme" \
