@@ -71,6 +71,9 @@ function __main__() {
   # Default 'headers' variable.
   local headers_state="0"
 
+  # Default 'body' variable.
+  local body_state="0"
+
   # Default 'observatory' variables.
   local observatory_state="0"
 
@@ -158,8 +161,8 @@ function __main__() {
 
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
-  local _short_opt="d:sh"
-  local _long_opt="help,domain:,ssl,headers,testssl,observatory,ssllabs,mixed-content,nse,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
+  local _short_opt="d:shb"
+  local _long_opt="help,domain:,ssl,headers,body,testssl,observatory,ssllabs,mixed-content,nse,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -206,6 +209,12 @@ function __main__() {
       -h|--headers)
 
         export headers_state=1
+
+        shift ;;
+
+      -b|--body)
+
+        export body_state=1
 
         shift ;;
 
