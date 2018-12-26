@@ -30,13 +30,11 @@
 
 ## Description
 
-`htrace.sh` is a shell script that allows you to validate your domain configuration and catch any errors (e.g. redirect loops).
-
-It also displays basic information about the ssl configuration (if available), response headers, response body, extended ssl configuration using testssl.sh tool, checks for mixed content and performs security scans using Nmap scripts and great external tools such as Ssllabs or Mozilla Observatory.
+`htrace.sh` is a shell script for http/https troubleshooting and profiling. It's also a simple wrapper script around several open source security tools.
 
 ## How To Use
 
-  > Detailed understanding all parameters and how it works, see the **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
+  > Detailed understanding all parameters and how it works, see **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
 
 It's simple:
 
