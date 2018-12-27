@@ -2,7 +2,7 @@
 .\" Contact trimstray@gmail.com.
 .TH man 8 "12.07.2018" "1.0.9" "htrace.sh man page"
 .SH NAME
-htrace.sh \- simple shell script to debugging http/https connection tracing, response headers and mixed-content.
+htrace.sh \- shell script for http/https troubleshooting and profiling.
 .SH SYNOPSIS
 htrace.sh <option|long-option>
 .SH DESCRIPTION
@@ -15,13 +15,16 @@ htrace.sh is a simple shell script to debugging http/https connection tracing, r
         set domain name
 
 -s|--ssl
-        show basic ssl server/connection params
+        show basic ssl server/connection parameters
 
 -h|--headers
         show response headers
 
 -b|--body
         show response body
+
+-m|--method <value>
+        set request method (default: GET)
 
 -p|--proxy
         set proxy server (not for external tools)
@@ -41,10 +44,10 @@ htrace.sh is a simple shell script to debugging http/https connection tracing, r
 --nse
         scan website with nmap nse library
 
---cache-bypass <val>
+--cache-bypass <value>
         try (proxy) cache bypass
 
---user-agent <val>
+--user-agent <value>
         set 'User-Agent' header
 
 --max-redirects <num>

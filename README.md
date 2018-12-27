@@ -73,17 +73,18 @@ Usage:
   Options:
         --help                                show this message
         -d|--domain <domain_name>             set domain name
-        -s|--ssl                              show basic ssl server/connection params
+        -s|--ssl                              show basic ssl server/connection parameters
         -h|--headers                          show response headers
         -b|--body                             show response body
+        -m|--method <value>                   set request method (default: GET)
         -p|--proxy                            set proxy server (not for external tools)
         --testssl                             test ssl protocols and ciphers with testssl.sh
         --observatory                         scan domain with mozilla observatory security tool
         --ssllabs                             scan domain with ssllabs security tool
         --mixed-content                       scan website for mixed content
         --nse                                 scan website with nmap nse library
-        --cache-bypass <val>                  try (proxy) cache bypass
-        --user-agent <val>                    set 'User-Agent' header
+        --cache-bypass <value>                try (proxy) cache bypass
+        --user-agent <value>                  set 'User-Agent' header
         --max-redirects <num>                 set max redirects (default: 10)
         --timeout <num>                       set max timeout (default: 15)
         --hide-src-ip                         hide source ip from output
