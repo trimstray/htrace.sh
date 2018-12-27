@@ -176,7 +176,7 @@ function __main__() {
 
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
-  local _short_opt="d:shbp:"
+  local _short_opt="d:shbm:p:"
   local _long_opt="help,domain:,ssl,headers,body,method:,proxy:,testssl,observatory,ssllabs,mixed-content,nse,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
@@ -359,15 +359,29 @@ function __main__() {
   _random=$(date +"%s")
 
   # shellcheck disable=SC2154
+  if [[ "$method_type" != "GET" ]] && \
+     [[ "$method_type" != "HEAD" ]] && \
+     [[ "$method_type" != "POST" ]] && \
+     [[ "$method_type" != "PUT" ]] && \
+     [[ "$method_type" != "DELETE" ]] && \
+     [[ "$method_type" != "CONNECT" ]] && \
+     [[ "$method_type" != "OPTIONS" ]] && \
+     [[ "$method_type" != "TRACE" ]] ; then
+
+    method_type="GET"
+
+  fi
+
+  # shellcheck disable=SC2154
   if [[ "$proxy_state" -eq 1 ]] ; then
 
     # shellcheck disable=SC2034
-    _curl_base="curl --proxy $proxy_type"
+    _curl_base="curl --proxy $proxy_type --request $method_type"
 
   else
 
     # shellcheck disable=SC2034
-    _curl_base="curl"
+    _curl_base="curl --request $method_type"
 
   fi
 
