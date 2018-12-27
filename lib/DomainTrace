@@ -24,7 +24,7 @@ function DomainTrace() {
   local _host="$1"
 
   # shellcheck disable=SC2034,SC2154
-  _http_output=$($_curl_base -ks -X GET -m "$_timeout" \
+  _http_output=$($_curl_base -ks -m "$_timeout" \
     -H 'Connection: keep-alive' \
     -H 'Upgrade-Insecure-Requests: 1' \
     -H "User-Agent: $_user_agent" \
@@ -256,7 +256,7 @@ function DomainTrace() {
       if [[ "$cache_bypass_state" -eq 0 ]] ; then
 
         # shellcheck disable=SC2034,SC2154
-        $_curl_base -Iks -X GET -m "$_timeout" \
+        $_curl_base -Iks -m "$_timeout" \
           -H 'Connection: keep-alive' \
           -H 'Upgrade-Insecure-Requests: 1' \
           -H "User-Agent: $_user_agent" \
@@ -270,7 +270,7 @@ function DomainTrace() {
       else
 
         # shellcheck disable=SC2034,SC2154
-        $_curl_base -Iks -X GET -m "$_timeout" \
+        $_curl_base -Iks -m "$_timeout" \
           -H 'Connection: keep-alive' \
           -H 'Upgrade-Insecure-Requests: 1' \
           -H "User-Agent: $_user_agent" \
@@ -293,7 +293,7 @@ function DomainTrace() {
       if [[ "$cache_bypass_state" -eq 0 ]] ; then
 
         # shellcheck disable=SC2034,SC2154
-        $_curl_base -ks -X GET -m "$_timeout" \
+        $_curl_base -ks -m "$_timeout" \
           -H 'Connection: keep-alive' \
           -H 'Upgrade-Insecure-Requests: 1' \
           -H "User-Agent: $_user_agent" \
@@ -307,7 +307,7 @@ function DomainTrace() {
       else
 
         # shellcheck disable=SC2034,SC2154
-        $_curl_base -ks -X GET -m "$_timeout" \
+        $_curl_base -ks -m "$_timeout" \
           -H 'Connection: keep-alive' \
           -H 'Upgrade-Insecure-Requests: 1' \
           -H "User-Agent: $_user_agent" \
