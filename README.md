@@ -76,7 +76,7 @@ Usage:
         -s|--ssl                              show basic ssl server/connection parameters
         -h|--headers                          show response headers
         -b|--body                             show response body
-        -m|--method <value>                   set request method (default: GET)
+        -M|--method <value>                   set request method (default: GET)
         -H|--header <value>                   set request header(s)
         -p|--proxy                            set proxy server (not for external tools)
         --testssl                             test ssl protocols and ciphers with testssl.sh

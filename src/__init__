@@ -181,7 +181,7 @@ function __main__() {
 
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
-  local _short_opt="d:shbm:H:p:"
+  local _short_opt="d:shbM:H:p:"
   local _long_opt="help,domain:,ssl,headers,body,method:,header:,proxy:,testssl,observatory,ssllabs,mixed-content,nse,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
@@ -238,7 +238,7 @@ function __main__() {
 
         shift ;;
 
-      -m|--method)
+      -M|--method)
 
         export method_state=1
 
