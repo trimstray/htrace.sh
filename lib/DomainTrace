@@ -25,6 +25,7 @@ function DomainTrace() {
 
   # shellcheck disable=SC2034,SC2154
   _http_output=$($_curl_base -ks -m "$_timeout" \
+    "${header_type_arr[@]}" \
     -H 'Connection: keep-alive' \
     -H 'Upgrade-Insecure-Requests: 1' \
     -H "User-Agent: $_user_agent" \
@@ -257,6 +258,7 @@ function DomainTrace() {
 
         # shellcheck disable=SC2034,SC2154
         $_curl_base -Iks -m "$_timeout" \
+          "${header_type_arr[@]}" \
           -H 'Connection: keep-alive' \
           -H 'Upgrade-Insecure-Requests: 1' \
           -H "User-Agent: $_user_agent" \
@@ -271,6 +273,7 @@ function DomainTrace() {
 
         # shellcheck disable=SC2034,SC2154
         $_curl_base -Iks -m "$_timeout" \
+          "${header_type_arr[@]}" \
           -H 'Connection: keep-alive' \
           -H 'Upgrade-Insecure-Requests: 1' \
           -H "User-Agent: $_user_agent" \
@@ -294,6 +297,7 @@ function DomainTrace() {
 
         # shellcheck disable=SC2034,SC2154
         $_curl_base -ks -m "$_timeout" \
+          "${header_type_arr[@]}" \
           -H 'Connection: keep-alive' \
           -H 'Upgrade-Insecure-Requests: 1' \
           -H "User-Agent: $_user_agent" \
@@ -308,6 +312,7 @@ function DomainTrace() {
 
         # shellcheck disable=SC2034,SC2154
         $_curl_base -ks -m "$_timeout" \
+          "${header_type_arr[@]}" \
           -H 'Connection: keep-alive' \
           -H 'Upgrade-Insecure-Requests: 1' \
           -H "User-Agent: $_user_agent" \

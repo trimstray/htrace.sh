@@ -88,6 +88,7 @@ function __main__() {
   # Default 'header' variable.
   local header_state="0"
   local header_type=""
+  local header_type_arr=()
 
   # Default 'proxy' variable.
   local proxy_state="0"
@@ -384,6 +385,16 @@ function __main__() {
 
   fi
 
+  if [[ "$header_state" -eq 1 ]] ; then
+
+    header_h=$(echo "$header_type" | cut -d ":" -f1 | sed 's/ //g')
+    header_b=$(echo "$header_type" | cut -d ":" -f2- | sed 's/ //g')
+
+    # shellcheck disable=SC2034
+    header_type_arr=('-H' "${header_h}: ${header_b}")
+
+  fi
+
   # shellcheck disable=SC2154
   if [[ "$proxy_state" -eq 1 ]] ; then
 
@@ -394,12 +405,6 @@ function __main__() {
 
     # shellcheck disable=SC2034
     _curl_base="curl --request $method_type"
-
-  fi
-
-  if [[ "$header_state" -eq 1 ]] ; then
-
-    _curl_base="$_curl_base --header $_header_type"
 
   fi
 
