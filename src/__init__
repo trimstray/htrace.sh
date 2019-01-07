@@ -88,7 +88,7 @@ function __main__() {
   # Default 'header' variable.
   local header_state="0"
   local header_type=()
-  local header_type_arr=()
+  local header_type_all=()
 
   # Default 'proxy' variable.
   local proxy_state="0"
@@ -393,7 +393,7 @@ function __main__() {
       header_b=$(echo "$header_type" | cut -d ":" -f2- | sed 's/ //g')
 
       # shellcheck disable=SC2034
-      header_type_arr=('-H' "${header_h}: ${header_b}")
+      header_type_all=('-H' "${header_h}: ${header_b}")
 
     done
 
