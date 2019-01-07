@@ -60,7 +60,7 @@ htrace.sh -d http://nmap.org -s -h
 Provides the following options:
 
 ```bash
-    htrace.sh v1.0.9
+    htrace.sh v1.1.0
 
 Usage:
     htrace.sh <option|long-option>
@@ -74,8 +74,8 @@ Usage:
         --help                                show this message
         -d|--domain <domain_name>             set domain name
         -s|--ssl                              show basic ssl server/connection parameters
-        -h|--headers                          show response headers
-        -b|--body                             show response body
+        -h|--dump-headers                     show response headers
+        -b|--dump-body                        show response body
         -M|--method <value>                   set request method (default: GET)
         -H|--header <value>                   set request header(s)
         -p|--proxy                            set proxy server (not for external tools)
