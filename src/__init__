@@ -391,7 +391,9 @@ function __main__() {
 
       IFS_ORIG="$IFS"
 
-      IFS=$'\n' ; _xarr=($(echo "$i" | sed 's/ ; /\n/g'))
+      IFS=$'\n'
+      # shellcheck disable=SC2001
+      _xarr=($(echo "$i" | sed 's/ ; /\n/g'))
 
       IFS=$IFS_ORIG
 
