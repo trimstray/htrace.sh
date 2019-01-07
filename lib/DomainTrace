@@ -289,7 +289,7 @@ function DomainTrace() {
     fi
 
     # shellcheck disable=SC2154
-    if [[ "$body_state" -eq 1 ]] ; then
+    if [[ "$dump_body_state" -eq 1 ]] ; then
 
       echo
 

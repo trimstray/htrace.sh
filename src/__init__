@@ -79,7 +79,7 @@ function __main__() {
   local dump_headers_state="0"
 
   # Default 'body' variable.
-  local body_state="0"
+  local dump_body_state="0"
 
   # Default 'method' variable.
   local method_state="0"
@@ -234,7 +234,7 @@ function __main__() {
 
       -b|--dump-body)
 
-        export body_state=1
+        export dump_body_state=1
 
         shift ;;
 
