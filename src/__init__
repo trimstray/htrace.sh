@@ -76,7 +76,7 @@ function __main__() {
   local _last_http_scheme="http"
 
   # Default 'headers' variable.
-  local headers_state="0"
+  local dump_headers_state="0"
 
   # Default 'body' variable.
   local body_state="0"
@@ -228,7 +228,7 @@ function __main__() {
 
       -h|--dump-headers)
 
-        export headers_state=1
+        export dump_headers_state=1
 
         shift ;;
 

@@ -151,7 +151,7 @@ function DomainTrace() {
     _STATE="0"
 
     # shellcheck disable=SC2154
-    if [[ "$headers_state" -eq 1 ]] ; then
+    if [[ "$dump_headers_state" -eq 1 ]] ; then
 
       PrintfHeaders
 
@@ -250,7 +250,7 @@ function DomainTrace() {
     fi
 
     # shellcheck disable=SC2154
-    if [[ "$headers_state" -eq 1 ]] ; then
+    if [[ "$dump_headers_state" -eq 1 ]] ; then
 
       echo
 
