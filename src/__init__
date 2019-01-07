@@ -389,11 +389,20 @@ function __main__() {
 
     for i in "${header_type[@]}" ; do
 
-      header_h=$(echo "$header_type" | cut -d ":" -f1 | sed 's/ //g')
-      header_b=$(echo "$header_type" | cut -d ":" -f2- | sed 's/ //g')
+      IFS_ORIG="$IFS"
 
-      # shellcheck disable=SC2034
-      header_type_all=('-H' "${header_h}: ${header_b}")
+      IFS=$'\n' ; _xarr=($(echo "$i" | sed 's/ ; /\n/g'))
+
+      IFS=$IFS_ORIG
+
+      for j in "${_xarr[@]}" ; do
+
+        _header_key=$(echo "$j" | cut -d ":" -f1 | sed 's/ //g')
+        _header_value=$(echo "$j" | cut -d ":" -f2- | sed 's/ //g')
+
+        header_type_all+=('-H' "${_header_key}: ${_header_value}")
+
+      done
 
     done
 
