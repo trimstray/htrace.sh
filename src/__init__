@@ -87,7 +87,7 @@ function __main__() {
 
   # Default 'header' variable.
   local header_state="0"
-  local header_type=""
+  local header_type=()
   local header_type_arr=()
 
   # Default 'proxy' variable.
@@ -250,7 +250,7 @@ function __main__() {
 
         export header_state=1
 
-        export header_type="${2}"
+        export header_type=("${2}")
 
         shift 2 ;;
 
@@ -387,11 +387,15 @@ function __main__() {
 
   if [[ "$header_state" -eq 1 ]] ; then
 
-    header_h=$(echo "$header_type" | cut -d ":" -f1 | sed 's/ //g')
-    header_b=$(echo "$header_type" | cut -d ":" -f2- | sed 's/ //g')
+    for i in "${header_type[@]}" ; do
 
-    # shellcheck disable=SC2034
-    header_type_arr=('-H' "${header_h}: ${header_b}")
+      header_h=$(echo "$header_type" | cut -d ":" -f1 | sed 's/ //g')
+      header_b=$(echo "$header_type" | cut -d ":" -f2- | sed 's/ //g')
+
+      # shellcheck disable=SC2034
+      header_type_arr=('-H' "${header_h}: ${header_b}")
+
+    done
 
   fi
 
