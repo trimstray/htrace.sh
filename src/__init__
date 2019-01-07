@@ -82,13 +82,13 @@ function __main__() {
   local dump_body_state="0"
 
   # Default 'method' variable.
-  local method_state="0"
-  local method_type="GET"
+  local req_method_state="0"
+  local req_method_type="GET"
 
   # Default 'header' variable.
-  local header_state="0"
-  local header_type=()
-  local header_type_all=()
+  local req_header_state="0"
+  local req_header_type=()
+  local req_header_type_all=()
 
   # Default 'proxy' variable.
   local proxy_state="0"
@@ -182,7 +182,7 @@ function __main__() {
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
   local _short_opt="d:shbM:H:p:"
-  local _long_opt="help,domain:,ssl,dump-headers,dump-body,method:,header:,proxy:,testssl,observatory,ssllabs,mixed-content,nse,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
+  local _long_opt="help,domain:,ssl,headers,body,req-method:,req-header:,proxy:,testssl,observatory,ssllabs,mixed-content,nse,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -226,31 +226,31 @@ function __main__() {
 
         shift ;;
 
-      -h|--dump-headers)
+      -h|--headers)
 
         export dump_headers_state=1
 
         shift ;;
 
-      -b|--dump-body)
+      -b|--body)
 
         export dump_body_state=1
 
         shift ;;
 
-      -M|--method)
+      -M|--req-method)
 
-        export method_state=1
+        export req_method_state=1
 
-        export method_type="${2}"
+        export req_method_type="${2}"
 
         shift 2 ;;
 
-      -H|--header)
+      -H|--req-header)
 
-        export header_state=1
+        export req_header_state=1
 
-        export header_type=("${2}")
+        export req_header_type=("${2}")
 
         shift 2 ;;
 
@@ -372,22 +372,22 @@ function __main__() {
   _random=$(date +"%s")
 
   # shellcheck disable=SC2154
-  if [[ "$method_type" != "GET" ]] && \
-     [[ "$method_type" != "HEAD" ]] && \
-     [[ "$method_type" != "POST" ]] && \
-     [[ "$method_type" != "PUT" ]] && \
-     [[ "$method_type" != "DELETE" ]] && \
-     [[ "$method_type" != "CONNECT" ]] && \
-     [[ "$method_type" != "OPTIONS" ]] && \
-     [[ "$method_type" != "TRACE" ]] ; then
+  if [[ "$req_method_type" != "GET" ]] && \
+     [[ "$req_method_type" != "HEAD" ]] && \
+     [[ "$req_method_type" != "POST" ]] && \
+     [[ "$req_method_type" != "PUT" ]] && \
+     [[ "$req_method_type" != "DELETE" ]] && \
+     [[ "$req_method_type" != "CONNECT" ]] && \
+     [[ "$req_method_type" != "OPTIONS" ]] && \
+     [[ "$req_method_type" != "TRACE" ]] ; then
 
-    method_type="GET"
+    req_method_type="GET"
 
   fi
 
-  if [[ "$header_state" -eq 1 ]] ; then
+  if [[ "$req_header_state" -eq 1 ]] ; then
 
-    for i in "${header_type[@]}" ; do
+    for i in "${req_header_type[@]}" ; do
 
       IFS_ORIG="$IFS"
 
@@ -400,24 +400,28 @@ function __main__() {
         _header_key=$(echo "$j" | cut -d ":" -f1 | sed 's/ //g')
         _header_value=$(echo "$j" | cut -d ":" -f2- | sed 's/ //g')
 
-        header_type_all+=('-H' "${_header_key}: ${_header_value}")
+        req_header_type_all+=('-H' "${_header_key}: ${_header_value}")
 
       done
+
+      # echo "${req_header_type_all[@]}"
 
     done
 
   fi
 
+
+
   # shellcheck disable=SC2154
   if [[ "$proxy_state" -eq 1 ]] ; then
 
     # shellcheck disable=SC2034
-    _curl_base="curl --proxy $proxy_type --request $method_type"
+    _curl_base="curl --proxy $proxy_type --request $req_method_type"
 
   else
 
     # shellcheck disable=SC2034
-    _curl_base="curl --request $method_type"
+    _curl_base="curl --request $req_method_type"
 
   fi
 

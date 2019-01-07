@@ -606,10 +606,10 @@ function _help_() {
         --help                                show this message
         -d|--domain <domain_name>             set domain name
         -s|--ssl                              show basic ssl server/connection parameters
-        -h|--dump-headers                     show response headers
-        -b|--dump-body                        show response body
-        -M|--method <value>                   set request method (default: GET)
-        -H|--header <value>                   set request header(s)
+        -h|--headers                          show response headers
+        -b|--body                             show response body
+        -M|--req-method <value>               set request method (default: GET)
+        -H|--req-header <value>               set request header(s)
         -p|--proxy                            set proxy server (not for external tools)
         --testssl                             test ssl protocols and ciphers with testssl.sh
         --observatory                         scan domain with mozilla observatory security tool
