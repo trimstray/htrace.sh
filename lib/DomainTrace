@@ -91,7 +91,7 @@ function DomainTrace() {
 
     # Get external IP (set https connection).
     # shellcheck disable=SC2155
-    local _via_ip=$($_curl_base -ks -m "$_timeout" http://whatismyip.akamai.com/)
+    local _via_ip=$($_curl_base_remote -ks -m "$_timeout" http://whatismyip.akamai.com/)
 
     if [[ ! "$_via_ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
 

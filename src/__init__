@@ -55,6 +55,7 @@ function __main__() {
 
   # Default 'curl' command.
   local _curl_base=""
+  local _curl_base_remote=""
 
   # Default 'domain' variables.
   local domain_state="0"
@@ -419,11 +420,13 @@ function __main__() {
 
     # shellcheck disable=SC2034
     _curl_base="curl --proxy $proxy_type --request $req_method_type"
+    _curl_base_remote="curl --proxy $proxy_type"
 
   else
 
     # shellcheck disable=SC2034
     _curl_base="curl --request $req_method_type"
+    _curl_base_remote="curl"
 
   fi
 
