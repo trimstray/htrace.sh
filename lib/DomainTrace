@@ -90,7 +90,7 @@ function DomainTrace() {
     done
 
     # Get external IP (set https connection).
-    # shellcheck disable=SC2155
+    # shellcheck disable=SC2154,SC2155
     local _via_ip=$($_curl_base_remote -ks -m "$_timeout" http://whatismyip.akamai.com/)
 
     if [[ ! "$_via_ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
@@ -170,7 +170,10 @@ function DomainTrace() {
     # shellcheck disable=SC2154
     if [[ "$_hide_src_ip_state" -eq 1 ]] ; then
 
-      _local_socket_std="xxx.xxx.xxx.xxx"
+      # shellcheck disable=SC2034
+      _local_socket_port=$(echo "$_local_socket" | cut -d ":" -f2)
+
+      _local_socket_std="xxx.xxx.xxx.xxx:${_local_socket_port}"
       _via_ip_std="xxx.xxx.xxx.xxx"
 
     else
