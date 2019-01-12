@@ -610,7 +610,7 @@ function _help_() {
         -b|--body                             show response body
         -M|--req-method <value>               set request method (default: GET)
         -H|--req-header <value>               set request header(s)
-        -p|--proxy                            set proxy server (not for external tools)
+        -p|--proxy <value>                    set proxy server (not for external tools)
         --testssl                             test ssl protocols and ciphers with testssl.sh
         --observatory                         scan domain with mozilla observatory security tool
         --ssllabs                             scan domain with ssllabs security tool
