@@ -51,7 +51,7 @@ RUN go get github.com/ssllabs/ssllabs-scan
 FROM alpine:latest AS builder
 RUN \
   apk add --no-cache nodejs-current npm && rm -rf /var/cache/apk/* \
-  && npm install -g observatory-cli
+  && npm config set unsafe-perm true && npm install -g observatory-cli
 RUN \
   apk add --no-cache composer php7-curl php7-xml && rm -rf /var/cache/apk/* \
   && composer global require bramus/mixed-content-scan
