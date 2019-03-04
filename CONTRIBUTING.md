@@ -10,7 +10,7 @@ The following should help:
 
 - [http://wiki.bash-hackers.org/](http://wiki.bash-hackers.org/)
 - [https://google.github.io/styleguide/shell.xml](https://google.github.io/styleguide/shell.xml)
-- [https://github.com/progrium/bashstyle](https://github.com/progrium/bashstyl)
+- [https://github.com/progrium/bashstyle](https://github.com/progrium/bashstyle)
 - [http://kvz.io/blog/2013/11/21/bash-best-practices/](http://kvz.io/blog/2013/11/21/bash-best-practices/)
 
 ## Shellcheck
