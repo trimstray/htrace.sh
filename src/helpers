@@ -599,6 +599,7 @@ function _help_() {
 
   Examples:
     $_init_name -d https://example.com -s -h --testssl --ssllabs
+    $_init_name -d https://example.com -h -M 'POST:name=admin&num=12'
     $_init_name --domain https://example.com --cache-bypass \"?\${RANDOM}\"
     $_init_name --domain https://example.com --ssl --headers --proxy \"socks5h://127.0.0.1:9501\"
 
