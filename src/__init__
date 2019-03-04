@@ -85,6 +85,7 @@ function __main__() {
   # Default 'method' variable.
   local req_method_state="0"
   local req_method_type="GET"
+  local req_method_value=""
 
   # Default 'header' variable.
   local req_header_state="0"
@@ -373,6 +374,26 @@ function __main__() {
   _random=$(date +"%s")
 
   # shellcheck disable=SC2154
+  if [[ "$req_method_type" == *"POST"* ]] ; then
+
+    req_method_post=$(echo "$req_method_type" | awk -v FS="(:|:)" '{print $1}')
+    req_method_post_value=$(echo "$req_method_type" | awk -v FS="(:|:)" '{print $2}')
+
+    if [[ "$req_method_post" == "POST" ]] ; then
+
+      req_method_type="POST"
+
+    fi
+
+    if [[ -z "$req_method_post_value" ]] ; then
+
+      req_method_post_value=""
+
+    fi
+
+  fi
+
+  # shellcheck disable=SC2154
   if [[ "$req_method_type" != "GET" ]] && \
      [[ "$req_method_type" != "HEAD" ]] && \
      [[ "$req_method_type" != "POST" ]] && \
@@ -419,14 +440,36 @@ function __main__() {
   if [[ "$proxy_state" -eq 1 ]] ; then
 
     # shellcheck disable=SC2034
-    _curl_base="curl --proxy $proxy_type --request $req_method_type"
+    if [[ "$_req_method_type" == "POST" ]] ; then
+
+      # shellcheck disable=SC2034
+      _curl_base="curl --proxy $proxy_type --request $req_method_type -d \"$req_method_post_value\""
+
+    else
+
+      # shellcheck disable=SC2034
+      _curl_base="curl --proxy $proxy_type --request $req_method_type"
+
+    fi
+
     # shellcheck disable=SC2034
     _curl_base_remote="curl --proxy $proxy_type"
 
   else
 
     # shellcheck disable=SC2034
-    _curl_base="curl --request $req_method_type"
+    if [[ "$_req_method_type" == "POST" ]] ; then
+
+      # shellcheck disable=SC2034
+      _curl_base="curl --request $req_method_type -d \"$req_method_post_value\""
+
+    else
+
+      # shellcheck disable=SC2034
+      _curl_base="curl --request $req_method_type"
+
+    fi
+
     # shellcheck disable=SC2034
     _curl_base_remote="curl"
 
@@ -549,8 +592,8 @@ function __main__() {
   fi
 
   # Show http(s) domain trace.
-  printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\e['${x2_trgb}'m%s\e[m ; Method: \e['${e2_trgb}'m%s\e[m\n' \
-         "$_domain_proto" "$_domain_name" "$_domain_path" "$cache_bypass_type" "$req_method_type"
+  printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\e['${x2_trgb}'m%s\e[m ; Method: \e['${e2_trgb}'m%s\e[m (%s)\n' \
+         "$_domain_proto" "$_domain_name" "$_domain_path" "$cache_bypass_type" "$req_method_type" "$req_method_post_value"
 
   # Start tracing.
   local _http_code="300"
