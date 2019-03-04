@@ -62,7 +62,7 @@ Provides the following options:
 ```bash
     htrace.sh v1.1.0
 
-Usage:
+  Usage:
     htrace.sh <option|long-option>
 
   Examples:
