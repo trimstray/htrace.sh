@@ -36,7 +36,14 @@
 
   > Detailed understanding all parameters and how it works, see **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
 
-It's simple:
+First, install the required dependencies. On macOS:
+```bash
+brew install coreutils testssl ssllabs-scan jq nmap openssl gnu-getopt gnu-sed node composer
+npm install -g observatory-cli
+composer global require bramus/mixed-content-scan
+```
+
+To install htrace.sh itself:
 
 ```bash
 # Clone this repository
@@ -46,7 +53,7 @@ git clone https://github.com/trimstray/htrace.sh
 cd htrace.sh
 
 # Install
-./setup.sh install
+sudo ./setup.sh install
 
 # Run the app
 htrace.sh -d http://nmap.org -s -h

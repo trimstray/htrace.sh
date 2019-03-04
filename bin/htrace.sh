@@ -39,6 +39,8 @@
 __init_params=()
 __script_params=("$@")
 
+[ ! -z "$(brew --prefix)" ] && PATH=$(brew --prefix)/opt/gnu-getopt/bin:$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
+
 # Store the name of the script and directory call.
 readonly _init_name="$(basename "$0")"
 readonly _init_directory="$(dirname "$(readlink -f "$0")")"

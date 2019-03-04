@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+[ ! -z "$(brew --prefix)" ] && PATH=$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
+
 readonly _dir="$(dirname "$(readlink -f "$0")")"
 
 # shellcheck disable=SC2034
