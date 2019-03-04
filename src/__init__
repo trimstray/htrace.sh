@@ -549,8 +549,8 @@ function __main__() {
   fi
 
   # Show http(s) domain trace.
-  printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\e['${x2_trgb}'m%s\e[m\n' \
-         "$_domain_proto" "$_domain_name" "$_domain_path" "$cache_bypass_type"
+  printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\e['${x2_trgb}'m%s\e[m ; Method: \e['${e2_trgb}'m%s\e[m\n' \
+         "$_domain_proto" "$_domain_name" "$_domain_path" "$cache_bypass_type" "$req_method_type"
 
   # Start tracing.
   local _http_code="300"
