@@ -85,7 +85,8 @@ function __main__() {
   # Default 'method' variable.
   local req_method_state="0"
   local req_method_type="GET"
-  local req_method_value=""
+  local req_method_post=""
+  local req_method_post_value=""
 
   # Default 'header' variable.
   local req_header_state="0"
