@@ -38,7 +38,7 @@
 
 First, install the required dependencies. On macOS:
 ```bash
-brew install coreutils testssl ssllabs-scan jq nmap openssl gnu-getopt gnu-sed node composer
+brew install coreutils testssl ssllabs-scan jq nmap openssl gnu-getopt gnu-sed node composer geoip
 npm install -g observatory-cli
 composer global require bramus/mixed-content-scan
 ```
