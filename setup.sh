@@ -21,12 +21,12 @@ if [[ "$1" == "install" ]] ; then
 
   printf "%s\\n" "Create man page to /usr/local/man/man8"
 
-  if [[ -e "${_dir}/doc/man8/htrace.sh.8" ]] ; then
+  if [[ -e "${_dir}/static/man8/htrace.sh.8" ]] ; then
 
     if [[ ! -e "/usr/local/man/man8/htrace.sh.8.gz" ]] ; then
 
       mkdir -p /usr/local/man/man8
-      cp "${_dir}/doc/man8/htrace.sh.8" /usr/local/man/man8
+      cp "${_dir}/static/man8/htrace.sh.8" /usr/local/man/man8
       gzip /usr/local/man/man8/htrace.sh.8
 
     fi
