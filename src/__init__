@@ -378,7 +378,7 @@ function __main__() {
   if [[ "$req_method_type" == *"POST"* ]] ; then
 
     req_method_post=$(echo "$req_method_type" | awk -v FS="(:|:)" '{print $1}')
-    req_method_post_value=$(echo "$req_method_type" | awk -v FS="(:|:)" '{print $2}')
+    req_method_post_value=$(echo "$req_method_type" | cut -d ':' -f2-)
 
     if [[ "$req_method_post" == "POST" ]] ; then
 
@@ -593,8 +593,17 @@ function __main__() {
   fi
 
   # Show http(s) domain trace.
-  printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\e['${x2_trgb}'m%s\e[m ; Method: \e['${e2_trgb}'m%s\e[m (%s)\n' \
-         "$_domain_proto" "$_domain_name" "$_domain_path" "$cache_bypass_type" "$req_method_type" "$req_method_post_value"
+  if [[ "$req_method_type" == "POST" ]] ; then
+
+    printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\e['${x2_trgb}'m%s\e[m ; Method: \e['${e2_trgb}'m%s\e[m (payload: \e['${p_trgb}'m%s\e[m)\n' \
+           "$_domain_proto" "$_domain_name" "$_domain_path" "$cache_bypass_type" "$req_method_type" "$req_method_post_value"
+
+  else
+
+    printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\e['${x2_trgb}'m%s\e[m ; Method: \e['${e2_trgb}'m%s\e[m\n' \
+           "$_domain_proto" "$_domain_name" "$_domain_path" "$cache_bypass_type" "$req_method_type"
+
+  fi
 
   # Start tracing.
   local _http_code="300"
