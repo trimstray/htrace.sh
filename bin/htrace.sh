@@ -46,12 +46,14 @@ if [[ "$OSTYPE" == "darwin"* ]] ; then
 
   # Store the name of the script and directory call.
   readonly _init_name="$(basename "$0")"
+  # shellcheck disable=SC2001,SC2005
   readonly _init_directory=$(dirname "$(readlink "$0" || echo "$(echo "$0" | sed -e 's,\\,/,g')")")
 
 elif [[ "$OSTYPE" == "linux-gnu" ]] ; then
 
   # Store the name of the script and directory call.
   readonly _init_name="$(basename "$0")"
+  # shellcheck disable=SC2001,SC2005
   readonly _init_directory=$(dirname "$(readlink -f "$0" || echo "$(echo "$0" | sed -e 's,\\,/,g')")")
 
 else
