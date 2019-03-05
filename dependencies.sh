@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 
 readonly _dir="$(dirname "$(readlink -f "$0")")"
-readonly _tmp="${_dir}/.tmp"
+
 
 # We check if we are a root user.
 if [[ "$EUID" -ne 0 ]] ; then
 
   printf "EUID is not equal 0 (no root user)\\n"
-
-  exit 0
+  exit 1
 
 fi
 
@@ -41,13 +40,17 @@ function _tread() {
 mkdir -p "${_tmp}" && cd "${_tmp}"
 
 # Machine type.
-if [[ "$(uname)" == "Darwin" ]] ; then
+if [[ "$OSTYPE" == "darwin"* ]] ; then
 
-  _os_name="macos"
+  _os_name="darwin"
   _os_version=""
-  _os_id="macos"
+  _os_id="darwin"
 
-elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]] ; then
+  readonly _dir=$(dirname "$(readlink "$0" || echo "$(echo "$0" | sed -e 's,\\,/,g')")")
+
+elif [[ "$OSTYPE" == "linux-gnu" ]] ; then
+
+  readonly _dir=$(dirname "$(readlink -f "$0" || echo "$(echo "$0" | sed -e 's,\\,/,g')")")
 
   if [[ -f /etc/os-release ]] ; then
 
@@ -93,6 +96,8 @@ elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]] ; then
 fi
 
 # Global variables.
+readonly _tmp="${_dir}/.tmp"
+
 export GOROOT="/usr/lib/go"
 export GOPATH="/opt/go"
 
@@ -102,10 +107,10 @@ printf "%s" "
 
 "
 
-if [[ "$_os_name" == "macos" ]] || \
-   [[ "$_os_name" == "macos" ]] || \
-   [[ "$_os_id" == "macos" ]] || \
-   [[ "$_os_id" == "macos" ]] ; then
+if [[ "$_os_name" == "darwin" ]] || \
+   [[ "$_os_name" == "darwin" ]] || \
+   [[ "$_os_id" == "darwin" ]] || \
+   [[ "$_os_id" == "darwin" ]] ; then
 
   _tread
 
