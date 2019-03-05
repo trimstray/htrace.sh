@@ -19,7 +19,7 @@
 #     docker build --rm -t htrace.sh -f Dockerfile .
 #
 #   For init:
-#     docker run --rm -it --name htrace.sh htrace.sh -d http://nmap.org -h
+#     docker run --rm -it --name htrace.sh htrace.sh -u http://nmap.org -h
 #
 #   For debug:
 #     docker exec -it htrace.sh /bin/bash
@@ -62,7 +62,6 @@ FROM alpine:latest
 
 MAINTAINER trimstray "trimstray@gmail.com"
 
-# System tools.
 RUN \
   apk add --no-cache \
     bash \
