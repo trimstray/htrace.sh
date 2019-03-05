@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+if [[ "$OSTYPE" == "darwin"* ]] ; then
+
+  [ ! -z "$(brew --prefix)" ] && PATH=$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
+
+elif [[ "$OSTYPE" == "linux-gnu" ]] ; then
+  true
+else
+  true
+fi
+
 readonly _dir="$(dirname "$(readlink -f "$0")")"
 
 # shellcheck disable=SC2034

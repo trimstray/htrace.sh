@@ -39,6 +39,17 @@
 __init_params=()
 __script_params=("$@")
 
+if [[ "$OSTYPE" == "darwin"* ]] ; then
+
+  [ ! -z "$(brew --prefix)" ] && PATH=$(brew --prefix)/opt/gnu-getopt/bin:$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
+  [ ! -z "$(composer global config bin-dir --absolute 2>/dev/null)" ] && PATH=$(composer global config bin-dir --absolute 2>/dev/null):$PATH
+
+elif [[ "$OSTYPE" == "linux-gnu" ]] ; then
+  true
+else
+  true
+fi
+
 # Store the name of the script and directory call.
 readonly _init_name="$(basename "$0")"
 readonly _init_directory="$(dirname "$(readlink -f "$0")")"

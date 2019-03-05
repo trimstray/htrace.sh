@@ -36,7 +36,7 @@
 
   > For a more detailed understanding of `htrace.sh`, its parameters, and how it all works, see the **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
 
-It's simple:
+To install htrace.sh itself:
 
 ```bash
 # Clone this repository
@@ -45,13 +45,13 @@ git clone https://github.com/trimstray/htrace.sh
 # Go into the repository
 cd htrace.sh
 
-# Install htrace.sh
-./setup.sh install
+# Install
+sudo ./setup.sh install
 
 # Install dependencies (Debian/Ubuntu and MacOS support)
 #   - I recommend build docker image
 #   - before init please see what it does
-./dependencies.sh
+sudo ./dependencies.sh
 
 # Run the app
 htrace.sh -u http://nmap.org -s -h
