@@ -34,7 +34,7 @@
 
 ## How To Use
 
-  > For a more detailed understanding of htrace.sh, its parameters, and how it all works, see the **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
+  > For a more detailed understanding of **htrace.sh**, its parameters, and how it all works, see the **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
 
 It's simple:
 
@@ -62,7 +62,7 @@ or use [Dockerfile](https://raw.githubusercontent.com/trimstray/htrace.sh/master
 git clone https://github.com/trimstray/htrace.sh
 
 # Go to build/ directory and build docker image
-docker build --rm -t htrace.sh -f Dockerfile .
+cd build && docker build --rm -t htrace.sh -f Dockerfile .
 
 # Run the app
 docker run --rm -it --name htrace.sh htrace.sh -d http://nmap.org -s -h
