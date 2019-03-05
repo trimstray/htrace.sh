@@ -9,7 +9,7 @@ if [[ "$OSTYPE" == "darwin"* ]] ; then
 
   readonly _dir=$(dirname "$(readlink "$0" || echo "$(echo "$0" | sed -e 's,\\,/,g')")")
 
-elif [[ "$OSTYPE" == "linux-gnu" ]] ; then
+elif [[ "$OSTYPE" == "linux-gnu" ]] || [[ "$OSTYPE" == "linux-musl" ]] ; then
 
   readonly _dir=$(dirname "$(readlink -f "$0" || echo "$(echo "$0" | sed -e 's,\\,/,g')")")
 
