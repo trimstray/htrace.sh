@@ -49,7 +49,7 @@ if [[ "$OSTYPE" == "darwin"* ]] ; then
   # shellcheck disable=SC2001,SC2005
   readonly _init_directory=$(dirname "$(readlink "$0" || echo "$(echo "$0" | sed -e 's,\\,/,g')")")
 
-elif [[ "$OSTYPE" == "linux-gnu" ]] ; then
+elif [[ "$OSTYPE" == "linux-gnu" ]] || [[ "$OSTYPE" == "linux-musl" ]] ; then
 
   # Store the name of the script and directory call.
   readonly _init_name="$(basename "$0")"

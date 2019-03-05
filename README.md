@@ -67,7 +67,7 @@ or build docker image:
 git clone https://github.com/trimstray/htrace.sh
 
 # Go to build/ directory and build docker image
-cd htrace.sh/build && docker build --rm -t htrace.sh -f Dockerfile .
+cd htrace.sh && build/build.sh
 
 # Run the app
 docker run --rm -it --name htrace.sh htrace.sh -u http://nmap.org -s -h
