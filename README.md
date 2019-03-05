@@ -49,7 +49,7 @@ cd htrace.sh
 ./setup.sh install
 
 # Run the app
-htrace.sh -d http://nmap.org -s -h
+htrace.sh -u http://nmap.org -s -h
 ```
 
 > * symlink to `bin/htrace.sh` is placed in `/usr/local/bin`
@@ -65,7 +65,7 @@ git clone https://github.com/trimstray/htrace.sh
 cd build && docker build --rm -t htrace.sh -f Dockerfile .
 
 # Run the app
-docker run --rm -it --name htrace.sh htrace.sh -d http://nmap.org -s -h
+docker run --rm -it --name htrace.sh htrace.sh -u http://nmap.org -s -h
 ```
 
 ## Parameters
@@ -79,14 +79,14 @@ Provides the following options:
     htrace.sh <option|long-option>
 
   Examples:
-    htrace.sh -d https://example.com -s -h --testssl --ssllabs
-    htrace.sh -d https://example.com -h -M 'POST:name=admin&num=12'
-    htrace.sh --domain https://example.com --cache-bypass "?${RANDOM}"
-    htrace.sh --domain https://example.com --ssl --headers --proxy "socks5h://127.0.0.1:9501"
+    htrace.sh -u https://example.com -s -h --testssl --ssllabs
+    htrace.sh -u https://example.com -h -M 'POST:name=admin&num=12'
+    htrace.sh --url https://example.com --cache-bypass "?${RANDOM}"
+    htrace.sh --url https://example.com --ssl --headers --proxy "socks5h://127.0.0.1:9501"
 
   Options:
         --help                                show this message
-        -d|--domain <domain_name>             set domain name
+        -u|--url <domain_name>                set url with http/https protocol
         -s|--ssl                              show basic ssl server/connection parameters
         -h|--headers                          show response headers
         -b|--body                             show response body
