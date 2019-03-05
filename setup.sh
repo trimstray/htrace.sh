@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
-if [[ "$(uname)" == "Darwin" ]] ; then
+if [[ "$OSTYPE" == "darwin"* ]] ; then
 
   [ ! -z "$(brew --prefix)" ] && PATH=$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
 
-# shellcheck disable=SC2003,SC2046
-elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]] ; then
+elif [[ "$OSTYPE" == "linux-gnu" ]] ; then
   true
 else
   true
