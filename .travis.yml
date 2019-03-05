@@ -25,4 +25,4 @@ before_install:
 
 script:
   - shellcheck --version
-  - shellcheck -s bash -e 1072,1094 -x src/* -x lib/* bin/htrace.sh
+  - shellcheck -s bash -e 1009,1073,1072,1094 -x src/* -x lib/* bin/htrace.sh
