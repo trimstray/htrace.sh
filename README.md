@@ -91,7 +91,7 @@ Provides the following options:
 
   Options:
         --help                                show this message
-        -u|--url <domain_name>                set url with http/https protocol
+        -u|--url <value>                      set url with http/https protocol
         -s|--ssl                              show basic ssl server/connection parameters
         -h|--headers                          show response headers
         -b|--body                             show response body
