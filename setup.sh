@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=SC2034
-_arg="$1"
-
+# Tasks for specific system version.
 if [[ "$OSTYPE" == "darwin"* ]] ; then
 
   [ ! -z "$(brew --prefix)" ] && PATH=$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH

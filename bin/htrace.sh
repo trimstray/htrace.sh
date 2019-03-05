@@ -39,6 +39,7 @@
 __init_params=()
 __script_params=("$@")
 
+# Tasks for specific system version.
 if [[ "$OSTYPE" == "darwin"* ]] ; then
 
   [ ! -z "$(brew --prefix)" ] && PATH=$(brew --prefix)/opt/gnu-getopt/bin:$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
@@ -78,7 +79,7 @@ source "${_src}/helpers"
 # shellcheck disable=SC1090
 source "${_src}/__init__"
 
-readonly _version="v1.1.1"
+readonly _version="v1.1.2"
 
 
 # We pass arguments to the __main__ function.

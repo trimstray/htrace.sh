@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 
-# We check if we are a root user.
-if [[ "$EUID" -ne 0 ]] ; then
-
-  printf "EUID is not equal 0 (no root user)\\n"
-  exit 1
-
-fi
-
 function _bye() {
 
   printf '  %s\n  \e[1;1;31m%s\e[m\n\n' \
@@ -33,6 +25,14 @@ function _tread() {
   echo
 
 }
+
+# We check if we are a root user.
+if [[ "$EUID" -ne 0 ]] ; then
+
+  printf "EUID is not equal 0 (no root user)\\n"
+  exit 1
+
+fi
 
 # Machine type.
 if [[ "$OSTYPE" == "darwin"* ]] ; then
