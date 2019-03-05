@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 
-[ ! -z "$(brew --prefix)" ] && PATH=$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
+if [[ "$(uname)" == "Darwin" ]] ; then
+
+  [ ! -z "$(brew --prefix)" ] && PATH=$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
+
+elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]] ; then
+  true
+else
+  true
+fi
 
 readonly _dir="$(dirname "$(readlink -f "$0")")"
 
