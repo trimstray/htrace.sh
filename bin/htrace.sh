@@ -39,8 +39,16 @@
 __init_params=()
 __script_params=("$@")
 
-[ ! -z "$(brew --prefix)" ] && PATH=$(brew --prefix)/opt/gnu-getopt/bin:$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
-[ ! -z "$(composer global config bin-dir --absolute 2>/dev/null)" ] && PATH=$(composer global config bin-dir --absolute 2>/dev/null):$PATH
+if [[ "$(uname)" == "Darwin" ]] ; then
+
+  [ ! -z "$(brew --prefix)" ] && PATH=$(brew --prefix)/opt/gnu-getopt/bin:$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
+  [ ! -z "$(composer global config bin-dir --absolute 2>/dev/null)" ] && PATH=$(composer global config bin-dir --absolute 2>/dev/null):$PATH
+
+elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]] ; then
+  true
+else
+  true
+fi
 
 # Store the name of the script and directory call.
 readonly _init_name="$(basename "$0")"
