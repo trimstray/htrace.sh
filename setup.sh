@@ -4,6 +4,7 @@ if [[ "$(uname)" == "Darwin" ]] ; then
 
   [ ! -z "$(brew --prefix)" ] && PATH=$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
 
+# shellcheck disable=SC2003,SC2046
 elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]] ; then
   true
 else
