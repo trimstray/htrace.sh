@@ -89,10 +89,10 @@ COPY --from=builder /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-c
 COPY --from=testssl /usr/local/bin/testssl.sh /usr/local/bin/testssl.sh
 
 RUN \
-  mkdir -p /opt/git && cd /opt/git \
+  mkdir -p /opt && cd /opt \
   && git clone https://github.com/trimstray/htrace.sh.git \
   && cd htrace.sh \
-  && mkdir -p /opt/git/htrace.sh/log/ \
+  && mkdir -p /opt/htrace.sh/log/ \
   && bash setup.sh install
 
 ENTRYPOINT ["/usr/local/bin/htrace.sh"]
