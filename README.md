@@ -48,7 +48,7 @@ cd htrace.sh
 # Install htrace.sh
 ./setup.sh install
 
-# Install dependencies
+# Install dependencies (Debian/Ubuntu and MacOS support)
 #   - I recommend build docker image
 #   - before init please see what it does
 ./dependencies.sh
