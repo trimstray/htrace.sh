@@ -93,7 +93,6 @@ RUN \
   && git clone https://github.com/trimstray/htrace.sh.git \
   && cd htrace.sh \
   && mkdir -p /opt/git/htrace.sh/log/ \
-  && ln -s /usr/local/bin/testssl.sh /usr/local/bin/testssl \
   && bash setup.sh install
 
 ENTRYPOINT ["/usr/local/bin/htrace.sh"]
