@@ -180,7 +180,8 @@ elif [[ "$_os_name" == "debian" ]] || \
   fi
 
   # For testssl.sh.
-  apt-get install -y testssl.sh
+  git clone --depth 1 https://github.com/drwetter/testssl.sh.git
+  ln -s "${_tmp}/testssl.sh/testssl.sh /usr/bin/testssl.sh"
 
   # For Nmap NSE Library.
   # apt-get install nmap
