@@ -6,13 +6,13 @@ htrace.sh \- shell script for http/https troubleshooting and profiling.
 .SH SYNOPSIS
 htrace.sh <option|long-option>
 .SH DESCRIPTION
-htrace.sh is a simple shell script to debugging http/https connection tracing, response headers and mixed-content. Scanning domain using Nmap NSE Library. Support external security tools: testssl.sh, Mozilla Observatory and SSL Labs API.
+htrace.sh is a shell script for http/https troubleshooting and profiling. It's also a simple wrapper script around several open source security tools.
 .SH OPTIONS
 --help
         show this message
 
--d|--domain <domain_name>
-        set domain name
+-u|--url <domain_name>
+        set url with http/https protocol
 
 -s|--ssl
         show basic ssl server/connection parameters
