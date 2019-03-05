@@ -34,7 +34,7 @@
 
 ## How To Use
 
-  > For a more detailed understanding of **htrace.sh**, its parameters, and how it all works, see the **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
+  > For a more detailed understanding of `htrace.sh`, its parameters, and how it all works, see the **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
 
 It's simple:
 
