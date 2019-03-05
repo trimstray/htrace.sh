@@ -19,7 +19,7 @@
 #     docker build --rm -t htrace.sh -f Dockerfile .
 #
 #   For init:
-#     docker run --rm -it --name htrace.sh htrace.sh -d http://nmap.org -h
+#     docker run --rm -it --name htrace.sh htrace.sh -u http://nmap.org -h
 #
 #   For debug:
 #     docker exec -it htrace.sh /bin/bash
@@ -62,7 +62,6 @@ FROM alpine:latest
 
 MAINTAINER trimstray "trimstray@gmail.com"
 
-# System tools.
 RUN \
   apk add --no-cache \
     bash \
@@ -87,14 +86,13 @@ RUN \
 COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
 COPY --from=builder /usr/lib/node_modules/observatory-cli/index.js /usr/bin/observatory
 COPY --from=builder /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan /usr/bin/mixed-content-scan
-COPY --from=testssl /usr/local/bin/testssl.sh /usr/local/bin/testssl.sh
+COPY --from=testssl /usr/local/bin/testssl.sh /usr/bin/testssl.sh
 
 RUN \
-  mkdir -p /opt/git && cd /opt/git \
+  mkdir -p /opt && cd /opt \
   && git clone https://github.com/trimstray/htrace.sh.git \
   && cd htrace.sh \
-  && mkdir -p /opt/git/htrace.sh/log/ \
-  && ln -s /usr/local/bin/testssl.sh /usr/local/bin/testssl \
+  && mkdir -p /opt/htrace.sh/log/ \
   && bash setup.sh install
 
 ENTRYPOINT ["/usr/local/bin/htrace.sh"]

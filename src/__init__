@@ -58,8 +58,8 @@ function __main__() {
   local _curl_base_remote=""
 
   # Default 'domain' variables.
-  local domain_state="0"
-  local domain_type=""
+  local url_state="0"
+  local url_type=""
 
   # shellcheck disable=SC2034
   # Default remote 'ip'.
@@ -184,8 +184,8 @@ function __main__() {
 
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
-  local _short_opt="d:shbM:H:p:"
-  local _long_opt="help,domain:,ssl,headers,body,req-method:,req-header:,proxy:,testssl,observatory,ssllabs,mixed-content,nse,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
+  local _short_opt="u:shbM:H:p:"
+  local _long_opt="help,url:,ssl,headers,body,req-method:,req-header:,proxy:,testssl,observatory,ssllabs,mixed-content,nse,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -215,11 +215,11 @@ function __main__() {
 
         shift ; _exit_ "0" ;;
 
-      -d|--domain)
+      -u|--url)
 
-        export domain_state=1
+        export url_state=1
 
-        export domain_type="${2}"
+        export url_type="${2}"
 
         shift 2 ;;
 
@@ -491,7 +491,7 @@ function __main__() {
   # or selected parameters without which the script can not work properly
   # have been used. Do not add the load_state variable to the _opt_values array,
   # which is supported above.
-  _opt_values=("domain_state" "domain_type")
+  _opt_values=("url_state" "url_type")
 
   # Checking the value of the variables (if they are unset or empty):
   #   - variables for call parameters
@@ -521,7 +521,7 @@ function __main__() {
   fi
 
   # Strip domain name - first check.
-  DomainStrip "$domain_type"
+  DomainStrip "$url_type"
 
   # shellcheck disable=SC2154
   # Set -d|--domain value to variable.

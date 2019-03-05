@@ -598,14 +598,14 @@ function _help_() {
     $_init_name <option|long-option>
 
   Examples:
-    $_init_name -d https://example.com -s -h --testssl --ssllabs
-    $_init_name -d https://example.com -h -M 'POST:name=admin&num=12'
-    $_init_name --domain https://example.com --cache-bypass \"?\${RANDOM}\"
-    $_init_name --domain https://example.com --ssl --headers --proxy \"socks5h://127.0.0.1:9501\"
+    $_init_name -u https://example.com -s -h --testssl --ssllabs
+    $_init_name -u https://example.com -h -M 'POST:name=admin&num=12'
+    $_init_name --url https://example.com --cache-bypass \"?\${RANDOM}\"
+    $_init_name --url https://example.com --ssl --headers --proxy \"socks5h://127.0.0.1:9501\"
 
   Options:
         --help                                show this message
-        -d|--domain <domain_name>             set domain name
+        -u|--url <value>                      set url with http/https protocol
         -s|--ssl                              show basic ssl server/connection parameters
         -h|--headers                          show response headers
         -b|--body                             show response body
