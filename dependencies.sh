@@ -182,7 +182,7 @@ elif [[ "$_os_name" == "debian" ]] || \
   # For testssl.sh.
   git clone --depth 1 https://github.com/drwetter/testssl.sh.git /opt/testssl.sh
   chmod +x /opt/testssl.sh/testssl.sh
-  ln -s "/opt/testssl.sh/testssl.sh /usr/bin/testssl.sh"
+  ln -s /opt/testssl.sh/testssl.sh /usr/bin/testssl.sh
 
   # For Nmap NSE Library.
   # apt-get install nmap
