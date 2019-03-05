@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-readonly _dir="$(dirname "$(readlink -f "$0")")"
-
-
 # We check if we are a root user.
 if [[ "$EUID" -ne 0 ]] ; then
 
@@ -36,8 +33,6 @@ function _tread() {
   echo
 
 }
-
-mkdir -p "${_tmp}" && cd "${_tmp}"
 
 # Machine type.
 if [[ "$OSTYPE" == "darwin"* ]] ; then
@@ -100,6 +95,8 @@ readonly _tmp="${_dir}/.tmp"
 
 export GOROOT="/usr/lib/go"
 export GOPATH="/opt/go"
+
+mkdir -p "${_tmp}" && cd "${_tmp}"
 
 printf "%s" "
 
