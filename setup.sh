@@ -15,7 +15,7 @@ elif [[ "$OSTYPE" == "linux-gnu" ]] ; then
 
 else
 
-  printf "Unsupported system os version.\\n"
+  printf "Unsupported system version.\\n"
   exit 1
 
 fi
