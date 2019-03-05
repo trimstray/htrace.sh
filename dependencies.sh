@@ -13,7 +13,7 @@ fi
 
 function _bye() {
 
-  printf '\n  %s\n  \e[1;1;31m%s\e[m\n\n' \
+  printf '  %s\n  \e[1;1;31m%s\e[m\n\n' \
          "Autoinstaller is not available on your system." \
          "For more info please see https://github.com/trimstray/htrace.sh/wiki/Requirements."
 
@@ -23,7 +23,7 @@ function _bye() {
 
 function _tread() {
 
-  printf '\n  \e[1;1;31m%s\e[m: \e[1;1;32m%s\e[m\n    \e[1;1;31m%s\e[m: \e[1;1;32m%s\e[m\n\n' \
+  printf '  \e[1;1;31m%s\e[m: \e[1;1;32m%s\e[m\n    \e[1;1;31m%s\e[m: \e[1;1;32m%s\e[m\n\n' \
          "os_name" "$_os_name" \
          "os_id" "$_os_id"
 
@@ -58,7 +58,7 @@ elif [[ "$OSTYPE" == "linux-gnu" ]] ; then
 
     _os_name="$NAME"
     _os_version="$VERSION_ID"
-    _os_id="$ID"
+    _os_id="$ID_LIKE"
 
   elif type lsb_release >/dev/null 2>&1 ; then
 
