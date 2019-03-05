@@ -45,8 +45,13 @@ git clone https://github.com/trimstray/htrace.sh
 # Go into the repository
 cd htrace.sh
 
-# Install
+# Install htrace.sh
 ./setup.sh install
+
+# Install dependencies
+#   - I recommend build docker image
+#   - before init please see what it does
+./dependencies.sh
 
 # Run the app
 htrace.sh -u http://nmap.org -s -h
@@ -62,7 +67,7 @@ or use [Dockerfile](https://raw.githubusercontent.com/trimstray/htrace.sh/master
 git clone https://github.com/trimstray/htrace.sh
 
 # Go to build/ directory and build docker image
-cd build && docker build --rm -t htrace.sh -f Dockerfile .
+cd htrace.sh/build && docker build --rm -t htrace.sh -f Dockerfile .
 
 # Run the app
 docker run --rm -it --name htrace.sh htrace.sh -u http://nmap.org -s -h
