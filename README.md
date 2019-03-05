@@ -36,7 +36,7 @@
 
   > For a more detailed understanding of `htrace.sh`, its parameters, and how it all works, see the **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
 
-To install htrace.sh itself:
+To install `htrace.sh` itself:
 
 ```bash
 # Clone this repository
