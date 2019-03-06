@@ -16,7 +16,7 @@
 #     author: https://github.com/davidneudorfer
 #
 #   For build:
-#     cd build/ && ./build.sh
+#     cd htrace.sh && build/build.sh
 #
 #   For init:
 #     docker run --rm -it --name htrace.sh htrace.sh -u https://nmap.org -h
