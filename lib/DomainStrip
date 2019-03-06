@@ -37,7 +37,7 @@ function DomainStrip() {
   # Extract the path (includes leading "/" or ":").
   _http_url_path=$(echo "$_http_url" | sed -nr 's,[^/:]*([/:].*),\1,p')
 
-  # shellcheck disable=SC2116
+  # shellcheck disable=SC2034,SC2116
   # Store all url args.
   _http_url_args=$(echo "${_http_url_with_args%/?}" | cut -d "?" -f2-)
 
