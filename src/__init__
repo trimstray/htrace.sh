@@ -568,7 +568,7 @@ function __main__() {
          "$_init_name" "$_version"
 
   # Show OpenSSL version.
-  _openssl_version=$(openssl version -a | head -n 1 | grep OpenSSL | awk '{print $2}')
+  _openssl_version=$(openssl version -a | head -n 1 | grep 'OpenSSL\|LibreSSL' | awk '{print $2}')
 
   if [[ "$_openssl_version" == "1.0.2g" ]]
      [[ "$_openssl_version" == "1.1.0g" ]] || \
