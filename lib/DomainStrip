@@ -24,22 +24,22 @@ function DomainStrip() {
   local _uri="$1"
 
   # Extract the protocol (includes trailing "://").
-  _domain_proto=$(echo "$_uri" | sed -nr 's,^(.*://).*,\1,p')
+  _http_proto=$(echo "$_uri" | sed -nr 's,^(.*://).*,\1,p')
 
   # shellcheck disable=SC2116
   # Remove the protocol from the URL.
-  _domain_url_with_args=$(echo "${_uri/$_domain_proto/}")
+  _http_url_with_args=$(echo "${_uri/$_http_proto/}")
 
   # shellcheck disable=SC2116
   # Remove all url args.
-  _domain_url=$(echo "${_domain_url_with_args%/?}" | cut -d "?" -f1)
+  _http_url=$(echo "${_http_url_with_args%/?}" | cut -d "?" -f1)
 
   # Extract the path (includes leading "/" or ":").
-  _domain_path=$(echo "$_domain_url" | sed -nr 's,[^/:]*([/:].*),\1,p')
+  _url_path=$(echo "$_http_url" | sed -nr 's,[^/:]*([/:].*),\1,p')
 
   # shellcheck disable=SC2034,SC2116
   # Remove the path from the URL.
-  _domain_name=$(echo "${_domain_url/$_domain_path/}")
+  _domain_name=$(echo "${_http_url/$_url_path/}")
 
   # shellcheck disable=SC2034,SC2154
   # Resolve -d|--domain param value - if host.
@@ -48,9 +48,9 @@ function DomainStrip() {
 
   # printf "\\n%s: %s , %s: %s , %s: %s , %s: %s , %s: %s , %s: %s , %s: %s\\n\\n" \
   #        "_uri" "$_uri" \
-  #        "_domain_proto" "$_domain_proto" \
-  #        "_domain_url" "$_domain_url" \
-  #        "_domain_path" "$_domain_path" \
+  #        "_http_proto" "$_http_proto" \
+  #        "_http_url" "$_http_url" \
+  #        "_url_path" "$_url_path" \
   #        "_domain_name" "$_domain_name" \
   #        "_domain_ip" "$_domain_ip" \
 

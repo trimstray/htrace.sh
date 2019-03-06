@@ -525,7 +525,7 @@ function __main__() {
 
   # shellcheck disable=SC2154
   # Set -d|--domain value to variable.
-  local _http_redirect="${_domain_proto}${_domain_name}${_domain_path}"
+  local _http_redirect="${_http_proto}${_domain_name}${_url_path}"
 
   # Set default colors for printf.
   # shellcheck disable=SC2034
@@ -600,12 +600,12 @@ function __main__() {
   if [[ "$req_method_type" == "POST" ]] ; then
 
     printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\e['${x2_trgb}'m%s\e[m ; Method: \e['${e2_trgb}'m%s\e[m (payload: \e['${p_trgb}'m%s\e[m)\n' \
-           "$_domain_proto" "$_domain_name" "$_domain_path" "$cache_bypass_type" "$req_method_type" "$req_method_post_value"
+           "$_http_proto" "$_domain_name" "$_url_path" "$cache_bypass_type" "$req_method_type" "$req_method_post_value"
 
   else
 
     printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\e['${x2_trgb}'m%s\e[m ; Method: \e['${e2_trgb}'m%s\e[m\n' \
-           "$_domain_proto" "$_domain_name" "$_domain_path" "$cache_bypass_type" "$req_method_type"
+           "$_http_proto" "$_domain_name" "$_url_path" "$cache_bypass_type" "$req_method_type"
 
   fi
 
@@ -766,7 +766,7 @@ function __main__() {
 
       DomainStrip "$_http_last"
 
-      _init_function "DomainScanMixedContent \"${_domain_proto}${_domain_name}\""
+      _init_function "DomainScanMixedContent \"${_http_proto}${_domain_name}\""
 
       _fstate="$?"
 
