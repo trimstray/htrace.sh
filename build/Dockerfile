@@ -16,7 +16,7 @@
 #     author: https://github.com/davidneudorfer
 #
 #   For build:
-#     docker build --rm -t htrace.sh -f Dockerfile .
+#     cd build/ && ./build.sh
 #
 #   For init:
 #     docker run --rm -it --name htrace.sh htrace.sh -u http://nmap.org -h
@@ -88,12 +88,16 @@ COPY --from=builder /usr/lib/node_modules/observatory-cli/index.js /usr/bin/obse
 COPY --from=builder /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan /usr/bin/mixed-content-scan
 COPY --from=testssl /usr/local/bin/testssl.sh /usr/bin/testssl.sh
 
-RUN \
-  mkdir -p /opt && cd /opt \
-  && git clone https://github.com/trimstray/htrace.sh.git \
-  && cd htrace.sh \
-  && mkdir -p /opt/htrace.sh/log/ \
-  && bash setup.sh install
+WORKDIR /opt/htrace.sh
+
+COPY bin /opt/htrace.sh/bin/
+COPY lib /opt/htrace.sh/lib/
+COPY log /opt/htrace.sh/log/
+COPY src /opt/htrace.sh/src/
+COPY static /opt/htrace.sh/static/
+COPY dependencies.sh setup.sh /opt/htrace.sh/
+
+RUN ./setup.sh install
 
 ENTRYPOINT ["/usr/local/bin/htrace.sh"]
 CMD ["--help"]
