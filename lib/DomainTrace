@@ -38,7 +38,15 @@ function DomainTrace() {
 
   else
 
-    _host_arg="$_host"
+    if [[ "$cache_bypass_state" -eq 0 ]] ; then
+
+      _host_arg="$_host"
+
+    else
+
+      _host_arg="${_host}${cache_bypass_type}"
+
+    fi
 
   fi
 

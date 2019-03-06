@@ -525,7 +525,7 @@ function __main__() {
 
   # shellcheck disable=SC2154
   # Set -d|--domain value to variable.
-  local _http_redirect="${_http_proto}${_domain_name}${_url_path}"
+  local _http_redirect="${_http_proto}${_http_url_with_args}"
 
   # Set default colors for printf.
   # shellcheck disable=SC2034
@@ -598,11 +598,11 @@ function __main__() {
 
   fi
 
+  printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
+         "$_http_proto" "$_http_url_with_args"
+
   # Show http(s) domain trace.
   if [[ "$req_method_type" == "POST" ]] ; then
-
-    printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
-           "$_http_proto" "$_domain_name" "$_url_path"
 
     printf '\n         - request-method: \e['${b2_trgb}'m%s\e[m (payload: \e['${p_trgb}'m%s\e[m)\n' \
            "$req_method_type" "$req_method_post_value"
@@ -615,9 +615,6 @@ function __main__() {
     fi
 
   else
-
-    printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
-           "$_http_proto" "$_domain_name" "$_url_path"
 
     printf '\n         - request-method: \e['${b2_trgb}'m%s\e[m\n' \
            "$req_method_type"
