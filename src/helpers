@@ -274,9 +274,9 @@ function _sprintf() {
 
         sleep 0.1
 
-        _tmp=$(ps a | awk '{print $1}' | grep -w "$_pid")
+        _tmp_id=$(ps a | awk '{print $1}' | grep -w "$_pid")
 
-        if [[ -z "$_tmp" ]] ; then
+        if [[ -z "$_tmp_id" ]] ; then
 
           printf "\\r »  " ; tput sgr0
 
@@ -664,6 +664,16 @@ function _before_init() {
   # shellcheck disable=SC2154
   : >"$_log_stdout"
 
+  for i in "$_tmp" ; do
+
+    if [[ ! -d "$i" ]] ; then
+
+      mkdir "$i"
+
+    fi
+
+  done
+
   # Invisible cursor.
   # tput civis
 
@@ -698,6 +708,16 @@ function _after_init() {
 
   # shellcheck disable=SC2154
   : >"$_scan_output"
+
+  for i in "$_tmp" ; do
+
+    if [[ -d "$i" ]] ; then
+
+      rm -fr "$i"
+
+    fi
+
+  done
 
   return $_STATE
 
