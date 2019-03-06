@@ -664,6 +664,7 @@ function _before_init() {
   # shellcheck disable=SC2154
   : >"$_log_stdout"
 
+  # shellcheck disable=SC2066,SC2154
   for i in "$_tmp" ; do
 
     if [[ ! -d "$i" ]] ; then
@@ -709,6 +710,7 @@ function _after_init() {
   # shellcheck disable=SC2154
   : >"$_scan_output"
 
+  # shellcheck disable=SC2066,SC2154
   for i in "$_tmp" ; do
 
     if [[ -d "$i" ]] ; then

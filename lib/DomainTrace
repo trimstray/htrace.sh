@@ -276,8 +276,7 @@ function DomainTrace() {
 
       echo
 
-      cat "${_tmp}/headers.dump" | \
-      sed -e 's/^[ \t]*/         › /' | \
+      < "${_tmp}/headers.dump" sed -e 's/^[ \t]*/         › /' | \
       sed 's/\r//' | grep "› ."
 
     fi
@@ -287,8 +286,7 @@ function DomainTrace() {
 
       echo
 
-      cat "${_tmp}/body.dump" | \
-      sed -e 's/^[ \t]*/         › /' | \
+      < "${_tmp}/body.dump" sed -e 's/^[ \t]*/         › /' | \
       sed 's/\r//' | grep "› ."
 
     fi
