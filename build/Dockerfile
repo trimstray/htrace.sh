@@ -19,7 +19,7 @@
 #     cd build/ && ./build.sh
 #
 #   For init:
-#     docker run --rm -it --name htrace.sh htrace.sh -u http://nmap.org -h
+#     docker run --rm -it --name htrace.sh htrace.sh -u https://nmap.org -h
 #
 #   For debug:
 #     docker exec -it htrace.sh /bin/bash

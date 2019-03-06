@@ -49,12 +49,12 @@ cd htrace.sh
 sudo ./setup.sh install
 
 # Install dependencies (Debian/Ubuntu and MacOS support)
-#   - I recommend build docker image
+#   - I recommend build docker image or install dependencies manually
 #   - before init please see what it does
 sudo ./dependencies.sh
 
 # Run the app
-htrace.sh -u http://nmap.org -s -h
+htrace.sh -u https://nmap.org -s -h
 ```
 
 > * symlink to `bin/htrace.sh` is placed in `/usr/local/bin`
@@ -66,11 +66,11 @@ or build docker image:
 # Clone this repository
 git clone https://github.com/trimstray/htrace.sh
 
-# Go to build/ directory and build docker image
+# Go into the repository and build docker image
 cd htrace.sh && build/build.sh
 
 # Run the app
-docker run --rm -it --name htrace.sh htrace.sh -u http://nmap.org -s -h
+docker run --rm -it --name htrace.sh htrace.sh -u https://nmap.org -s -h
 ```
 
 ## Parameters
