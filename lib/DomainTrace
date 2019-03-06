@@ -23,6 +23,25 @@ function DomainTrace() {
 
   local _host="$1"
 
+  # shellcheck disable=SC2154
+  if [[ "$dump_headers_state" -eq 1 ]] ; then
+
+    if [[ "$cache_bypass_state" -eq 0 ]] ; then
+
+      _host_arg="$_host"
+
+    else
+
+      _host_arg="${_host}${cache_bypass_type}"
+
+    fi
+
+  else
+
+    _host_arg="$_host"
+
+  fi
+
   # shellcheck disable=SC2034,SC2154
   _http_output=$($_curl_base -ks -m "$_timeout" \
     "${req_header_type_all[@]}" \
@@ -33,7 +52,7 @@ function DomainTrace() {
     -H 'Accept-Encoding: gzip, deflate, br' \
     -H 'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7' \
     -w '%{time_total}:%{time_connect}:%{local_ip}:%{local_port}:%{remote_ip}:%{remote_port}:%{http_version}:%{http_code}:%{scheme}:%{redirect_url}' \
-    -o /dev/null --compressed "$_host")
+    -D "${_tmp}/headers.dump" -o "${_tmp}/body.dump" --compressed "$_host_arg")
 
   if [[ -z "$_http_output" ]] ; then
 
@@ -257,37 +276,9 @@ function DomainTrace() {
 
       echo
 
-      if [[ "$cache_bypass_state" -eq 0 ]] ; then
-
-        # shellcheck disable=SC2034,SC2154
-        $_curl_base -Iks -m "$_timeout" \
-          "${req_header_type_all[@]}" \
-          -H 'Connection: keep-alive' \
-          -H 'Upgrade-Insecure-Requests: 1' \
-          -H "User-Agent: $_user_agent" \
-          -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
-          -H 'Accept-Encoding: gzip, deflate, br' \
-          -H 'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7' \
-          --compressed "$_host" | \
-          sed -e 's/^[ \t]*/         › /' | \
-          sed 's/\r//' | grep "› ."
-
-      else
-
-        # shellcheck disable=SC2034,SC2154
-        $_curl_base -Iks -m "$_timeout" \
-          "${req_header_type_all[@]}" \
-          -H 'Connection: keep-alive' \
-          -H 'Upgrade-Insecure-Requests: 1' \
-          -H "User-Agent: $_user_agent" \
-          -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
-          -H 'Accept-Encoding: gzip, deflate, br' \
-          -H 'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7' \
-          --compressed "${_host}${cache_bypass_type}" | \
-          sed -e 's/^[ \t]*/         › /' | \
-          sed 's/\r//' | grep "› ."
-
-      fi
+      cat "${_tmp}/headers.dump" | \
+      sed -e 's/^[ \t]*/         › /' | \
+      sed 's/\r//' | grep "› ."
 
     fi
 
@@ -296,37 +287,9 @@ function DomainTrace() {
 
       echo
 
-      if [[ "$cache_bypass_state" -eq 0 ]] ; then
-
-        # shellcheck disable=SC2034,SC2154
-        $_curl_base -ks -m "$_timeout" \
-          "${req_header_type_all[@]}" \
-          -H 'Connection: keep-alive' \
-          -H 'Upgrade-Insecure-Requests: 1' \
-          -H "User-Agent: $_user_agent" \
-          -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
-          -H 'Accept-Encoding: gzip, deflate, br' \
-          -H 'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7' \
-          --compressed "$_host" | \
-          sed -e 's/^[ \t]*/         › /' | \
-          sed 's/\r//' | grep "› ."
-
-      else
-
-        # shellcheck disable=SC2034,SC2154
-        $_curl_base -ks -m "$_timeout" \
-          "${req_header_type_all[@]}" \
-          -H 'Connection: keep-alive' \
-          -H 'Upgrade-Insecure-Requests: 1' \
-          -H "User-Agent: $_user_agent" \
-          -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
-          -H 'Accept-Encoding: gzip, deflate, br' \
-          -H 'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7' \
-          --compressed "${_host}${cache_bypass_type}" | \
-          sed -e 's/^[ \t]*/         › /' | \
-          sed 's/\r//' | grep "› ."
-
-      fi
+      cat "${_tmp}/body.dump" | \
+      sed -e 's/^[ \t]*/         › /' | \
+      sed 's/\r//' | grep "› ."
 
     fi
 
