@@ -533,6 +533,8 @@ function __main__() {
   # shellcheck disable=SC2034
   local b_trgb="1;2;30"
   # shellcheck disable=SC2034
+  local b2_trgb="2;1;30"
+  # shellcheck disable=SC2034
   local e_trgb="1;1;31"
   # shellcheck disable=SC2034
   local e2_trgb="0;0;31"
@@ -599,13 +601,33 @@ function __main__() {
   # Show http(s) domain trace.
   if [[ "$req_method_type" == "POST" ]] ; then
 
-    printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\e['${x2_trgb}'m%s\e[m ; Method: \e['${e2_trgb}'m%s\e[m (payload: \e['${p_trgb}'m%s\e[m)\n' \
-           "$_http_proto" "$_domain_name" "$_url_path" "$cache_bypass_type" "$req_method_type" "$req_method_post_value"
+    printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
+           "$_http_proto" "$_domain_name" "$_url_path"
+
+    printf '\n         - request-method: \e['${b2_trgb}'m%s\e[m (payload: \e['${p_trgb}'m%s\e[m)\n' \
+           "$req_method_type" "$req_method_post_value"
+
+    if [[ "$cache_bypass_state" -eq 1 ]] ; then
+
+      printf '         - cache-bypass-value: \e['${b2_trgb}'m%s\e[m\n' \
+             "$cache_bypass_type"
+
+    fi
 
   else
 
-    printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\e['${x2_trgb}'m%s\e[m ; Method: \e['${e2_trgb}'m%s\e[m\n' \
-           "$_http_proto" "$_domain_name" "$_url_path" "$cache_bypass_type" "$req_method_type"
+    printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
+           "$_http_proto" "$_domain_name" "$_url_path"
+
+    printf '\n         - request-method: \e['${b2_trgb}'m%s\e[m\n' \
+           "$req_method_type"
+
+    if [[ "$cache_bypass_state" -eq 1 ]] ; then
+
+      printf '         - cache-bypass-value: \e['${b2_trgb}'m%s\e[m\n' \
+             "$cache_bypass_type"
+
+    fi
 
   fi
 
