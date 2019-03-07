@@ -87,6 +87,9 @@ COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
 COPY --from=builder /usr/lib/node_modules/observatory-cli/index.js /usr/bin/observatory
 COPY --from=builder /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan /usr/bin/mixed-content-scan
 COPY --from=testssl /usr/local/bin/testssl.sh /usr/bin/testssl.sh
+COPY --from=testssl /home/testssl/etc/ /etc/testssl/etc/
+
+ENV TESTSSL_INSTALL_DIR /etc/testssl
 
 WORKDIR /opt/htrace.sh
 
