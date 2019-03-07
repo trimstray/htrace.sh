@@ -47,6 +47,7 @@
 FROM golang:alpine AS golang
 RUN apk update && apk add --no-cache git
 RUN go get github.com/ssllabs/ssllabs-scan
+RUN go get github.com/maxmind/geoipupdate/cmd/geoipupdate
 
 FROM alpine:latest AS builder
 RUN \
@@ -71,7 +72,6 @@ RUN \
     coreutils \
     curl \
     drill \
-    geoip \
     git \
     gnupg \
     ncurses \
@@ -81,9 +81,11 @@ RUN \
     unzip \
     wget \
     jq \
+    libmaxminddb \
   && rm -rf /var/cache/apk/*
 
 COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
+COPY --from=golang /go/bin/geoipupdate /usr/bin/geoipupdate
 COPY --from=builder /usr/lib/node_modules/observatory-cli/index.js /usr/bin/observatory
 COPY --from=builder /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan /usr/bin/mixed-content-scan
 COPY --from=testssl /usr/local/bin/testssl.sh /usr/bin/testssl.sh
@@ -99,6 +101,17 @@ COPY log /opt/htrace.sh/log/
 COPY src /opt/htrace.sh/src/
 COPY static /opt/htrace.sh/static/
 COPY dependencies.sh setup.sh /opt/htrace.sh/
+
+RUN \
+  mkdir -p /usr/local/etc/ && \
+  echo -en "AccountID 0\\nLicenseKey 000000000000\\nEditionIDs GeoLite2-Country GeoLite2-City" > /usr/local/etc/GeoIP.conf
+
+RUN \
+  mkdir -p /usr/local/share/GeoIP/ && \
+  geoipupdate
+
+RUN \
+  cp -R /usr/local/share/GeoIP /usr/share/
 
 RUN ./setup.sh install
 

@@ -26,7 +26,10 @@ function DomainGeo() {
   local _domain_ip="$1"
 
   # shellcheck disable=SC2034
-  _domain_geoip=$(geoiplookup "$_domain_ip" | cut -d ":" -f2 | cut -d "," -f1 | tr -d " \\t\\n\\r")
+  # _domain_geoip=$(geoiplookup "$_domain_ip" | cut -d ":" -f2 | cut -d "," -f1 | tr -d " \\t\\n\\r")
+  _domain_geoip=$(mmdblookup -f /usr/share/GeoIP/GeoLite2-Country.mmdb -i "$_domain_ip" | \
+                  sed -ne 's/<[^>]*>$// ; s/ *$// ; s/[^:{[]$/&,/ ; N ; s/,\(\n\s*[\x5d}]\)/\1/ ; s/,\n\s*$// ; P ; D' | \
+                  jq '.registered_country.iso_code' | tr -d '"')
 
   # shellcheck disable=SC2154
   # Check properly country code.

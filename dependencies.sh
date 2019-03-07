@@ -2,7 +2,7 @@
 
 function _bye() {
 
-  printf '  %s\n  \e[1;1;31m%s\e[m\n\n' \
+  printf '  %s\n\n  \e[1;1;31m%s\e[m\n\n' \
          "Autoinstaller is not available on your system." \
          "For more info please see https://github.com/trimstray/htrace.sh/wiki/Requirements."
 
@@ -12,7 +12,7 @@ function _bye() {
 
 function _tread() {
 
-  printf '  \e[1;1;31m%s\e[m: \e[1;1;32m%s\e[m\n    \e[1;1;31m%s\e[m: \e[1;1;32m%s\e[m\n\n' \
+  printf '  \e[1;1;30m%s\e[m: \e[1;1;37m%s\e[m\n    \e[1;1;30m%s\e[m: \e[1;1;37m%s\e[m\n\n' \
          "os_name" "$_os_name" \
          "os_id" "$_os_id"
 
@@ -20,7 +20,7 @@ function _tread() {
 
   read _kvar
 
-  if [[ "$_kvar" != "Y" ]] ; then exit 1 ; fi
+  if [[ "$_kvar" != "Y" ]] ; then echo ; exit 1 ; fi
 
   echo
 
@@ -53,7 +53,8 @@ elif [[ "$OSTYPE" == "linux-gnu" ]] || [[ "$OSTYPE" == "linux-musl" ]] ; then
 
     _os_name="$NAME"
     _os_version="$VERSION_ID"
-    _os_id="$ID_LIKE"
+    _os_id="$ID"
+    _os_id_like="$ID_LIKE"
 
   elif type lsb_release >/dev/null 2>&1 ; then
 
@@ -105,14 +106,13 @@ printf "%s" "
 "
 
 if [[ "$_os_name" == "darwin" ]] || \
-   [[ "$_os_name" == "darwin" ]] || \
    [[ "$_os_id" == "darwin" ]] || \
-   [[ "$_os_id" == "darwin" ]] ; then
+   [[ "$_os_id_like" == "darwin" ]] ; then
 
   _tread
 
   # System tools.
-  brew install coreutils gnu-getopt gnu-sed openssl curl bc geoip jq php72
+  brew install coreutils gnu-getopt gnu-sed openssl curl bc jq php72 libmaxminddb geoipupdate
 
   brew install node composer
 
@@ -131,19 +131,26 @@ if [[ "$_os_name" == "darwin" ]] || \
   # For Nmap NSE Library.
   brew install nmap
 
+  geoipupdate
+
 elif [[ "$_os_name" == "debian" ]] || \
      [[ "$_os_name" == "ubuntu" ]] || \
      [[ "$_os_id" == "debian" ]] || \
-     [[ "$_os_id" == "ubuntu" ]] ; then
+     [[ "$_os_id" == "ubuntu" ]] || \
+     [[ "$_os_id_like" == "debian" ]] || \
+     [[ "$_os_id_like" == "ubuntu" ]] ; then
 
   _tread
 
   # System tools.
   apt-get update
 
-  apt-get install -y ca-certificates dnsutils gnupg apt-utils unzip openssl curl bc geoip-bin jq
+  apt-get install -y ca-certificates dnsutils gnupg apt-utils unzip openssl curl bc jq mmdb-bin libmaxminddb0 libmaxminddb-dev
 
   apt-get install -y --reinstall procps
+
+  wget -c https://github.com/maxmind/geoipupdate/releases/download/v4.0.2/geoipupdate_4.0.2_linux_amd64.deb &&
+  dpkg -i geoipupdate_4.0.2_linux_amd64.deb
 
   # For Mozilla-Observatory.
   curl -sL https://deb.nodesource.com/setup_10.x | bash -
@@ -192,6 +199,8 @@ elif [[ "$_os_name" == "debian" ]] || \
   apt -y install alien
   alien nmap-7.70-1.x86_64.rpm
   dpkg -i nmap_7.70-2_amd64.deb
+
+  geoipupdate
 
 else
 
