@@ -48,7 +48,7 @@ cd htrace.sh
 # Install
 sudo ./setup.sh install
 
-# Install dependencies (Debian/Ubuntu and MacOS support)
+# Install dependencies (Debian 8/9, Ubuntu 18.x and MacOS support)
 #   - recommend build docker image or install dependencies manually
 #   - before init please see what it does and which packages are available on your repository
 sudo ./dependencies.sh
