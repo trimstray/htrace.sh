@@ -94,6 +94,13 @@ RUN \
   npm config set unsafe-perm true && \
   npm install -g observatory-cli
 
+RUN \
+  git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf && \
+  cd /opt/whatwaf && \
+  chmod +x whatwaf.py && \
+  pip install -r requirements.txt && \
+  ln -s /opt/whatwaf/whatwaf.py /usr/bin/whatwaf.py
+
 COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
 COPY --from=golang /go/bin/geoipupdate /usr/bin/geoipupdate
 COPY --from=testssl /usr/local/bin/testssl.sh /usr/bin/testssl.sh
