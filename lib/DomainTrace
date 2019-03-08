@@ -157,10 +157,23 @@ function DomainTrace() {
     if [[ -z "$_remote_ip" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '\n    \e['${e_trgb}'m%s\e[m:\n\n\t%s\n\t%s\n\n' \
-             "Connection error" \
-             "- domain not resolved" \
-             "- http or https not responding"
+      if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\n    %s:\n\n\t%s\n\t%s\n\n' \
+               "Connection error" \
+               "- domain not resolved" \
+               "- http or https not responding"
+
+      else
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\n    \e['${e_trgb}'m%s\e[m:\n\n\t%s\n\t%s\n\n' \
+               "Connection error" \
+               "- domain not resolved" \
+               "- http or https not responding"
+
+      fi
 
       # shellcheck disable=SC2034
       _STATE="1"
@@ -211,28 +224,64 @@ function DomainTrace() {
     fi
 
     # shellcheck disable=SC2086,SC2154
-    printf ' \e['${e_trgb}'m•\e[m \e['${c_trgb}'m %-4.6s %-12.10s %-15.12s %-22.22s %-16.22s %-21.22s %-5.7s %-7.7s %-5.5s %-8.10s %s\e[m\n' \
-           " $_req_num" \
-           "$_full_conn_time" \
-           "$_time_total" \
-           "$_local_socket_std" \
-           "$_via_ip_std" \
-           "$_remote_socket" \
-           "$_geo_ip" \
-           "$_http_scheme" \
-           "$_http_version" \
-           "$_http_code" \
-           "$_http_redirect"
+    if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf ' •  %-4.6s %-12.10s %-15.12s %-22.22s %-16.22s %-21.22s %-5.7s %-7.7s %-5.5s %-8.10s %s\n' \
+             " $_req_num" \
+             "$_full_conn_time" \
+             "$_time_total" \
+             "$_local_socket_std" \
+             "$_via_ip_std" \
+             "$_remote_socket" \
+             "$_geo_ip" \
+             "$_http_scheme" \
+             "$_http_version" \
+             "$_http_code" \
+             "$_http_redirect"
+
+    else
+
+      # shellcheck disable=SC2086,SC2154
+      printf ' \e['${e_trgb}'m•\e[m \e['${c_trgb}'m %-4.6s %-12.10s %-15.12s %-22.22s %-16.22s %-21.22s %-5.7s %-7.7s %-5.5s %-8.10s %s\e[m\n' \
+             " $_req_num" \
+             "$_full_conn_time" \
+             "$_time_total" \
+             "$_local_socket_std" \
+             "$_via_ip_std" \
+             "$_remote_socket" \
+             "$_geo_ip" \
+             "$_http_scheme" \
+             "$_http_version" \
+             "$_http_code" \
+             "$_http_redirect"
+
+    fi
 
     if [[ "$proxy_state" -eq 1 ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '  %-4.6s %-12.10s %-15.12s %-22.22s └\e['${x_trgb}'m%-16.22s\e[m\n' \
-             "       " \
-             "       " \
-             "       " \
-             "       " \
-             "$_remote_socket_proxy"
+      if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+        # shellcheck disable=SC2086,SC2154
+        printf '  %-4.6s %-12.10s %-15.12s %-22.22s └%-16.22s\n' \
+               "       " \
+               "       " \
+               "       " \
+               "       " \
+               "$_remote_socket_proxy"
+
+      else
+
+        # shellcheck disable=SC2086,SC2154
+        printf '  %-4.6s %-12.10s %-15.12s %-22.22s └\e['${x_trgb}'m%-16.22s\e[m\n' \
+               "       " \
+               "       " \
+               "       " \
+               "       " \
+               "$_remote_socket_proxy"
+
+      fi
 
     fi
 
@@ -253,17 +302,47 @@ function DomainTrace() {
           _ssl_params_verify="ok"
 
           # shellcheck disable=SC2086,SC2154
-          printf '         verification: \e['${g_trgb}'m%s\e[m\n' "$_ssl_params_verify"
+          if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+            # shellcheck disable=SC2086,SC2154
+            printf '         verification: %s\n' "$_ssl_params_verify"
+
+          else
+
+            # shellcheck disable=SC2086,SC2154
+            printf '         verification: \e['${g_trgb}'m%s\e[m\n' "$_ssl_params_verify"
+
+          fi
 
         elif [[ "$_ssl_params_verify" == "self signed certificate" ]] ; then
 
           # shellcheck disable=SC2086,SC2154
-          printf '         verification: \e['${d2_trgb}'m%s\e[m\n' "$_ssl_params_verify"
+          if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+            # shellcheck disable=SC2086,SC2154
+            printf '         verification: %s\n' "$_ssl_params_verify"
+
+          else
+
+            # shellcheck disable=SC2086,SC2154
+            printf '         verification: \e['${d2_trgb}'m%s\e[m\n' "$_ssl_params_verify"
+
+          fi
 
         else
 
           # shellcheck disable=SC2086,SC2154
-          printf '         verification: \e['${e2_trgb}'m%s\e[m\n' "$_ssl_params_verify"
+          if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+            # shellcheck disable=SC2086,SC2154
+            printf '         verification: %s\n' "$_ssl_params_verify"
+
+          else
+
+            # shellcheck disable=SC2086,SC2154
+            printf '         verification: \e['${e2_trgb}'m%s\e[m\n' "$_ssl_params_verify"
+
+          fi
 
         fi
 
@@ -275,7 +354,17 @@ function DomainTrace() {
     elif [[ "$_http_scheme" == "http" ]] && [[ "$ssl_state" -eq 1 ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         ssl: \e['${e_trgb}'m%s\e[m\n' "off"
+      if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+        # shellcheck disable=SC2086,SC2154
+        printf '         ssl: %s\n' "off"
+
+      else
+
+        # shellcheck disable=SC2086,SC2154
+        printf '         ssl: \e['${e_trgb}'m%s\e[m\n' "off"
+
+      fi
 
     fi
 

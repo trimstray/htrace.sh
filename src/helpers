@@ -269,8 +269,18 @@ function _sprintf() {
 
         _n=$(( ( _n + 1 ) % 4 ))
 
-        # shellcheck disable=SC2086
-        printf '\r » \e['${c_trgb}'m%s\e[m' "${_sc:_n:1}" ; tput sgr0
+        # shellcheck disable=SC2086,SC2154
+        if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+          # shellcheck disable=SC2086
+          printf '\r » %s' "${_sc:_n:1}" ; tput sgr0
+
+        else
+
+          # shellcheck disable=SC2086
+          printf '\r » \e['${c_trgb}'m%s\e[m' "${_sc:_n:1}" ; tput sgr0
+
+        fi
 
         sleep 0.1
 
@@ -297,7 +307,16 @@ function _sprintf() {
       # shellcheck disable=SC2154
       if [[ "$printf_mode" == "verbose" ]] && [[ "$_s_type" == "info" ]] ; then
 
-        printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
+        # shellcheck disable=SC2086,SC2154
+        if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+          printf '[%s] %s\n' "$s_char" "$_s_info"
+
+        else
+
+          printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
+
+        fi
 
       else
 
@@ -309,11 +328,29 @@ function _sprintf() {
 
             c_trgb="1;39"
 
-            printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
+            # shellcheck disable=SC2086,SC2154
+            if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+              printf '[%s] %s\n' "$s_char" "$_s_info"
+
+            else
+
+              printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
+
+            fi
 
           else
 
-            printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
+            # shellcheck disable=SC2086,SC2154
+            if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+              printf '[%s] %s\n' "$s_char" "$_s_info"
+
+            else
+
+              printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
+
+            fi
 
           fi
 
@@ -323,11 +360,29 @@ function _sprintf() {
 
             c_trgb="1;43"
 
-            printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
+            # shellcheck disable=SC2086,SC2154
+            if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+              printf '[%s] %s\n' "$s_char" "$_s_info"
+
+            else
+
+              printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
+
+            fi
 
           else
 
-            printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
+            # shellcheck disable=SC2086,SC2154
+            if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+              printf '[%s] %s\n' "$s_char" "$_s_info"
+
+            else
+
+              printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
+
+            fi
 
           fi
 
@@ -337,11 +392,29 @@ function _sprintf() {
 
             c_trgb="1;41"
 
-            printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
+            # shellcheck disable=SC2086,SC2154
+            if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+              printf '[%s] %s\n' "$s_char" "$_s_info"
+
+            else
+
+              printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
+
+            fi
 
           else
 
-            printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
+            # shellcheck disable=SC2086,SC2154
+            if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+              printf '[%s] %s\n' "$s_char" "$_s_info"
+
+            else
+
+              printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
+
+            fi
 
           fi
 
@@ -483,9 +556,21 @@ function _init_function() {
     # _sprintf "info" "$_msg"
     _msg_x=$(echo "$_msg" | cut -d ":" -f1)
     _msg_y=$(echo "$_msg" | cut -d ":" -f2-)
+
     # shellcheck disable=SC2086,SC2154
-    printf '    \e['${c_trgb}'m%s\e[m \e['${p_trgb}'m(%s)\e[m\n\n' \
-           "$_msg_x" "$_msg_y"
+    if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '    %s (%s)\n\n' \
+             "$_msg_x" "$_msg_y"
+
+    else
+
+      # shellcheck disable=SC2086,SC2154
+      printf '    \e['${c_trgb}'m%s\e[m \e['${p_trgb}'m(%s)\e[m\n\n' \
+             "$_msg_x" "$_msg_y"
+
+    fi
 
     _logger "info" \
       "${_FUNCTION_ID}()" \

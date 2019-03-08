@@ -561,9 +561,20 @@ function __main__() {
   # shellcheck disable=SC2034
   local z_trgb="1;39;44"
 
-  # shellcheck disable=SC2154
-  printf '\n    \e['${z_trgb}'m %s %s \e[m' \
-         "$_init_name" "$_version"
+  # shellcheck disable=SC2086,SC2154
+  if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+    # shellcheck disable=SC2154
+    printf '\n     %s %s ' \
+           "$_init_name" "$_version"
+
+  else
+
+    # shellcheck disable=SC2154
+    printf '\n    \e['${z_trgb}'m %s %s \e[m' \
+           "$_init_name" "$_version"
+
+  fi
 
   # Show OpenSSL version.
   _openssl_version=$(openssl version -a | head -n 1 | grep 'OpenSSL\|LibreSSL' | awk '{print $2}')
@@ -586,41 +597,111 @@ function __main__() {
 
   if [[ "$_openssl_version_state" -eq 1 ]] ; then
 
-    printf ' (openssl %s: \e['${g_trgb}'m%s\e[m)\n\n' \
-           "$_openssl_version" "$_openssl_version_status"
+    # shellcheck disable=SC2086,SC2154
+    if [[ "$HTRACE_COLORS" == "off" ]] ; then
 
-  else
+      printf ' (openssl %s: %s)\n\n' \
+             "$_openssl_version" "$_openssl_version_status"
 
-    printf ' (openssl %s: \e['${e_trgb}'m%s\e[m)\n\n' \
-           "$_openssl_version" "$_openssl_version_status"
+    else
 
-  fi
-
-  printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
-         "$_http_proto" "$_http_url_with_args"
-
-  # Show http(s) domain trace.
-  if [[ "$req_method_type" == "POST" ]] ; then
-
-    printf '\n         - request-method: \e['${b2_trgb}'m%s\e[m (payload: \e['${p_trgb}'m%s\e[m)\n' \
-           "$req_method_type" "$req_method_post_value"
-
-    if [[ "$cache_bypass_state" -eq 1 ]] ; then
-
-      printf '         - cache-bypass-value: \e['${b2_trgb}'m%s\e[m\n' \
-             "$cache_bypass_type"
+      printf ' (openssl %s: \e['${g_trgb}'m%s\e[m)\n\n' \
+             "$_openssl_version" "$_openssl_version_status"
 
     fi
 
   else
 
-    printf '\n         - request-method: \e['${b2_trgb}'m%s\e[m\n' \
-           "$req_method_type"
+    # shellcheck disable=SC2086,SC2154
+    if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+      printf ' (openssl %s: %s)\n\n' \
+             "$_openssl_version" "$_openssl_version_status"
+
+    else
+
+      printf ' (openssl %s: \e['${e_trgb}'m%s\e[m)\n\n' \
+             "$_openssl_version" "$_openssl_version_status"
+
+    fi
+
+  fi
+
+  # shellcheck disable=SC2086,SC2154
+  if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+    printf '\n    URI: %s%s\n' \
+           "$_http_proto" "$_http_url_with_args"
+
+  else
+
+    printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
+           "$_http_proto" "$_http_url_with_args"
+
+  fi
+
+  # Show http(s) domain trace.
+  if [[ "$req_method_type" == "POST" ]] ; then
+
+    # shellcheck disable=SC2086,SC2154
+    if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+      printf '\n         - request-method: %s (payload: %s)\n' \
+             "$req_method_type" "$req_method_post_value"
+
+    else
+
+      printf '\n         - request-method: \e['${b2_trgb}'m%s\e[m (payload: \e['${p_trgb}'m%s\e[m)\n' \
+             "$req_method_type" "$req_method_post_value"
+
+    fi
 
     if [[ "$cache_bypass_state" -eq 1 ]] ; then
 
-      printf '         - cache-bypass-value: \e['${b2_trgb}'m%s\e[m\n' \
-             "$cache_bypass_type"
+      # shellcheck disable=SC2086,SC2154
+      if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+        printf '         - cache-bypass-value: %s\n' \
+               "$cache_bypass_type"
+
+      else
+
+        printf '         - cache-bypass-value: \e['${b2_trgb}'m%s\e[m\n' \
+               "$cache_bypass_type"
+
+      fi
+
+    fi
+
+  else
+
+    # shellcheck disable=SC2086,SC2154
+    if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+      printf '\n         - request-method: %s\n' \
+             "$req_method_type"
+
+    else
+
+      printf '\n         - request-method: \e['${b2_trgb}'m%s\e[m\n' \
+             "$req_method_type"
+
+    fi
+
+    if [[ "$cache_bypass_state" -eq 1 ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+        printf '         - cache-bypass-value: %s\n' \
+               "$cache_bypass_type"
+
+      else
+
+        printf '         - cache-bypass-value: \e['${b2_trgb}'m%s\e[m\n' \
+               "$cache_bypass_type"
+
+      fi
 
     fi
 
@@ -649,8 +730,18 @@ function __main__() {
 
       if [[ "$max_redirects_state" -eq 1 ]] ; then
 
-        printf '\n    %s: \e['${e_trgb}'m%s\e[m\n\n' \
-               "Max redirects" "$_redirects"
+        # shellcheck disable=SC2086,SC2154
+        if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+          printf '\n    %s: \e['${e_trgb}'m%s\e[m\n\n' \
+                 "Max redirects" "$_redirects"
+
+        else
+
+          printf '\n    %s: %s\n\n' \
+                 "Max redirects" "$_redirects"
+
+        fi
 
         _logger "stop" \
           "${_FUNCTION_ID}()" \
@@ -658,8 +749,18 @@ function __main__() {
 
       else
 
-        printf '\n    %s \e['${e_trgb}'m%s\e[m\n\n' \
-               "Redirect loop: limit is" "$_redirects"
+        # shellcheck disable=SC2086,SC2154
+        if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+          printf '\n    %s \e['${e_trgb}'m%s\e[m\n\n' \
+                 "Redirect loop: limit is" "$_redirects"
+
+        else
+
+          printf '\n    %s %s\n\n' \
+                 "Redirect loop: limit is" "$_redirects"
+
+        fi
 
         _logger "stop" \
           "${_FUNCTION_ID}()" \
@@ -699,7 +800,18 @@ function __main__() {
       if [[ "$_fstate" -ne 0 ]] ; then
 
         # shellcheck disable=SC2086,SC2154
-        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+        if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+          # shellcheck disable=SC2086,SC2154
+          printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+
+        else
+
+          # shellcheck disable=SC2086,SC2154
+          printf '\r\n    %s\n\n' "Connection error"
+
+        fi
+
         tput sgr0
 
       fi
@@ -709,7 +821,18 @@ function __main__() {
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+      if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r\n    %s\n\n' "Connection error (https not detected)"
+
+      else
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+
+      fi
+
       tput sgr0
 
     fi
@@ -727,7 +850,18 @@ function __main__() {
       if [[ "$_fstate" -ne 0 ]] ; then
 
         # shellcheck disable=SC2086,SC2154
-        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+        if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+          # shellcheck disable=SC2086,SC2154
+          printf '\r\n    %s\n\n' "Connection error"
+
+        else
+
+          # shellcheck disable=SC2086,SC2154
+          printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+
+        fi
+
         tput sgr0
 
       fi
@@ -750,14 +884,37 @@ function __main__() {
       if [[ "$_fstate" -ne 0 ]] ; then
 
         # shellcheck disable=SC2086,SC2154
-        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+        if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+          # shellcheck disable=SC2086,SC2154
+          printf '\r\n    %s\n\n' "Connection error"
+
+        else
+
+          # shellcheck disable=SC2086,SC2154
+          printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+
+        fi
+
         tput sgr0
 
       else
 
-        printf '\r         \e['${_rd}'m›\e[m %s: %s\n' \
-               "Full Report Url" \
-               "https://www.ssllabs.com/ssltest/analyze.html?d=$_domain_name"
+        # shellcheck disable=SC2086,SC2154
+        if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+          printf '\r         › %s: %s\n' \
+                 "Full Report Url" \
+                 "https://www.ssllabs.com/ssltest/analyze.html?d=$_domain_name"
+
+        else
+
+          printf '\r         \e['${_rd}'m›\e[m %s: %s\n' \
+                 "Full Report Url" \
+                 "https://www.ssllabs.com/ssltest/analyze.html?d=$_domain_name"
+
+        fi
+
         tput sgr0
 
       fi
@@ -765,7 +922,18 @@ function __main__() {
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+      if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r\n    %s\n\n' "Connection error (https not detected)"
+
+      else
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+
+      fi
+
       tput sgr0
 
     fi
@@ -793,13 +961,35 @@ function __main__() {
         if [[ "$_fd_empty" -eq "0" ]] ; then
 
           # shellcheck disable=SC2086,SC2154
-          printf '\r         \e['${_rd}'m›\e[m \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
+          if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+            # shellcheck disable=SC2086,SC2154
+            printf '\r         › %s\n' "Mixed content not found"
+
+          else
+
+            # shellcheck disable=SC2086,SC2154
+            printf '\r         \e['${_rd}'m›\e[m \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
+
+          fi
+
           tput sgr0
 
         else
 
           # shellcheck disable=SC2086,SC2154
-          printf '\r         \e['${_rd}'m›\e[m \e['${e_trgb}'m%s\e[m\n' "Connection error"
+          if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+            # shellcheck disable=SC2086,SC2154
+            printf '\r         › %s\n' "Connection error"
+
+          else
+
+            # shellcheck disable=SC2086,SC2154
+            printf '\r         \e['${_rd}'m›\e[m \e['${e_trgb}'m%s\e[m\n' "Connection error"
+
+          fi
+
           tput sgr0
 
         fi
@@ -810,7 +1000,18 @@ function __main__() {
         if [[ "$_fd_empty" -eq "0" ]] ; then
 
           # shellcheck disable=SC2086,SC2154
-          printf '\r         \e['${_rd}'m›\e[m \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
+          if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+            # shellcheck disable=SC2086,SC2154
+            printf '\r         › %s\n' "Mixed content not found"
+
+          else
+
+            # shellcheck disable=SC2086,SC2154
+            printf '\r         \e['${_rd}'m›\e[m \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
+
+          fi
+
           tput sgr0
 
         else
@@ -825,7 +1026,18 @@ function __main__() {
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+      if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r\n    %s\n\n' "Connection error (https not detected)"
+
+      else
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+
+      fi
+
       tput sgr0
 
     fi
@@ -846,7 +1058,18 @@ function __main__() {
     if [[ "$_fstate" -ne 0 ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+      if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r\n    %s\n\n' "Connection error"
+
+      else
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+
+      fi
+
       tput sgr0
 
     fi
