@@ -51,7 +51,8 @@ RUN go get github.com/maxmind/geoipupdate/cmd/geoipupdate
 
 FROM alpine:latest AS builder
 RUN \
-  apk add --no-cache composer php7-curl php7-xml && rm -rf /var/cache/apk/* \
+  apk add --no-cache composer php7 php7-curl php7-xml \
+  && rm -rf /var/cache/apk/* \
   && composer global require bramus/mixed-content-scan
 
 FROM drwetter/testssl.sh:stable AS testssl
@@ -62,32 +63,33 @@ MAINTAINER trimstray "trimstray@gmail.com"
 
 RUN \
   apk add --no-cache \
-    bash \
-    bc \
-    bind-tools \
-    ca-certificates \
-    coreutils \
-    curl \
-    drill \
-    git \
-    gnupg \
-    ncurses \
-    nmap \
-    openssl \
-    procps \
-    unzip \
-    wget \
-    jq \
-    libmaxminddb \
-    && rm -rf /var/cache/apk/*
+  bash \
+  bc \
+  bind-tools \
+  ca-certificates \
+  coreutils \
+  curl \
+  drill \
+  git \
+  gnupg \
+  ncurses \
+  nmap \
+  openssl \
+  procps \
+  unzip \
+  wget \
+  jq \
+  libmaxminddb \
+  && rm -rf /var/cache/apk/*
 
 RUN \
-  apk add --no-cache nodejs npm && rm -rf /var/cache/apk/* \
-  && npm config set unsafe-perm true && npm install -g observatory-cli
+  apk add --no-cache nodejs npm && \
+  rm -rf /var/cache/apk/* && \
+  npm config set unsafe-perm true && \
+  npm install -g observatory-cli
 
 COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
 COPY --from=golang /go/bin/geoipupdate /usr/bin/geoipupdate
-COPY --from=builder /usr/lib/node_modules/observatory-cli/index.js /usr/bin/observatory
 COPY --from=builder /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan /usr/bin/mixed-content-scan
 COPY --from=testssl /usr/local/bin/testssl.sh /usr/bin/testssl.sh
 COPY --from=testssl /home/testssl/etc/ /etc/testssl/etc/
