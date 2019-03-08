@@ -80,7 +80,7 @@ source "${_src}/helpers"
 # shellcheck disable=SC1090
 source "${_src}/__init__"
 
-readonly _version="v1.1.2"
+readonly _version="v1.1.3"
 
 
 # We pass arguments to the __main__ function.
