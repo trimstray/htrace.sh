@@ -42,7 +42,7 @@ To install `htrace.sh` itself:
 # Clone this repository
 git clone https://github.com/trimstray/htrace.sh
 
-# Go into the repository
+# Go into directory
 cd htrace.sh
 
 # Install
@@ -66,7 +66,7 @@ or build docker image:
 # Clone this repository
 git clone https://github.com/trimstray/htrace.sh
 
-# Go into the repository and build docker image
+# Go into directory and build docker image
 cd htrace.sh && build/build.sh
 
 # Run the app
@@ -108,6 +108,14 @@ Provides the following options:
         --max-redirects <num>                 set max redirects (default: 10)
         --timeout <num>                       set max timeout (default: 15)
         --hide-src-ip                         hide source ip from output
+```
+
+### Output colors
+
+Sometimes it is very useful to redirect the output to a file. Default `htrace.sh` produces nonprintable characters (for colors). For disable output colors set `HTRACE_COLORS` variable:
+
+```bash
+export HTRACE_COLORS=off ; htrace.sh -u htrace.sh -u https://nmap.org -s -h
 ```
 
 ## Contributing
