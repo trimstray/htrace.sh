@@ -51,9 +51,6 @@ RUN go get github.com/maxmind/geoipupdate/cmd/geoipupdate
 
 FROM alpine:latest AS builder
 RUN \
-  apk add --no-cache nodejs-current npm && rm -rf /var/cache/apk/* \
-  && npm config set unsafe-perm true && npm install -g observatory-cli
-RUN \
   apk add --no-cache composer php7-curl php7-xml && rm -rf /var/cache/apk/* \
   && composer global require bramus/mixed-content-scan
 
@@ -82,7 +79,11 @@ RUN \
     wget \
     jq \
     libmaxminddb \
-  && rm -rf /var/cache/apk/*
+    && rm -rf /var/cache/apk/*
+
+RUN \
+  apk add --no-cache nodejs npm && rm -rf /var/cache/apk/* \
+  && npm config set unsafe-perm true && npm install -g observatory-cli
 
 COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
 COPY --from=golang /go/bin/geoipupdate /usr/bin/geoipupdate
