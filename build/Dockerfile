@@ -51,7 +51,7 @@ RUN go get github.com/maxmind/geoipupdate/cmd/geoipupdate
 
 FROM alpine:latest AS builder
 RUN \
-  apk add --no-cache composer php7 php7-curl php7-xml \
+  apk add --no-cache composer php7-curl php7-xml \
   && rm -rf /var/cache/apk/* \
   && composer global require bramus/mixed-content-scan
 
@@ -78,6 +78,7 @@ RUN \
   procps \
   unzip \
   wget \
+  php \
   jq \
   libmaxminddb \
   && rm -rf /var/cache/apk/*
