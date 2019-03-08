@@ -75,6 +75,7 @@ RUN \
   ncurses \
   nmap \
   nmap-nselibs \
+  nmap-scripts \
   openssl \
   procps \
   unzip \
