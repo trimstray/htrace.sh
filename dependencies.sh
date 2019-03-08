@@ -131,6 +131,13 @@ if [[ "$_os_name" == "darwin" ]] || \
   # For Nmap NSE Library.
   brew install nmap
 
+  # For WhatWaf.
+  git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
+  cd /opt/whatwaf
+  chmod +x whatwaf.py
+  pip install -r requirements.txt
+  ln -s /opt/whatwaf/whatwaf.py /usr/bin/whatwaf.py
+
   geoipupdate
 
 elif [[ "$_os_name" == "debian" ]] || \
@@ -199,6 +206,13 @@ elif [[ "$_os_name" == "debian" ]] || \
   apt -y install alien
   alien nmap-7.70-1.x86_64.rpm
   dpkg -i nmap_7.70-2_amd64.deb
+
+  # For WhatWaf.
+  git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
+  cd /opt/whatwaf
+  chmod +x whatwaf.py
+  pip install -r requirements.txt
+  ln -s /opt/whatwaf/whatwaf.py /usr/bin/whatwaf.py
 
   geoipupdate
 
