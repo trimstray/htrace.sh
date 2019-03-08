@@ -103,6 +103,7 @@ Provides the following options:
         --ssllabs                             scan domain with ssllabs security tool
         --mixed-content                       scan website for mixed content
         --nse                                 scan website with nmap nse library
+        --waf                                 scan website with whatwaf
         --cache-bypass <value>                try (proxy) cache bypass
         --user-agent <value>                  set 'User-Agent' header
         --max-redirects <num>                 set max redirects (default: 10)
