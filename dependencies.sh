@@ -112,7 +112,8 @@ if [[ "$_os_name" == "darwin" ]] || \
   _tread
 
   # System tools.
-  brew install coreutils gnu-getopt gnu-sed openssl curl bc jq php72 libmaxminddb geoipupdate
+  brew install coreutils gnu-getopt gnu-sed openssl curl bc jq php72 \
+  libmaxminddb geoipupdate python
 
   brew install node composer
 
@@ -152,7 +153,8 @@ elif [[ "$_os_name" == "debian" ]] || \
   # System tools.
   apt-get update
 
-  apt-get install -y ca-certificates dnsutils gnupg apt-utils unzip openssl curl bc jq mmdb-bin libmaxminddb0 libmaxminddb-dev
+  apt-get install -y ca-certificates dnsutils gnupg apt-utils unzip openssl \
+  curl bc jq mmdb-bin libmaxminddb0 libmaxminddb-dev python python-pip
 
   apt-get install -y --reinstall procps
 
