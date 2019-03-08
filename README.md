@@ -85,7 +85,7 @@ Provides the following options:
 
   Examples:
     htrace.sh -u https://example.com -s -h --testssl --ssllabs
-    htrace.sh -u https://example.com -h -M 'POST:name=admin&num=12'
+    htrace.sh -u https://example.com -h -M 'POST:password=123&name=Admin'
     htrace.sh --url https://example.com --cache-bypass "?${RANDOM}"
     htrace.sh --url https://example.com --ssl --headers --proxy "socks5h://127.0.0.1:9501"
 
