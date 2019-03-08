@@ -51,7 +51,7 @@ RUN go get github.com/maxmind/geoipupdate/cmd/geoipupdate
 
 FROM alpine:latest AS builder
 RUN \
-  apk add --no-cache composer php7-curl php7-xml \
+  apk add --no-cache composer php7-curl php7-xml php7-dom \
   && rm -rf /var/cache/apk/* \
   && composer global require bramus/mixed-content-scan
 
@@ -93,20 +93,11 @@ RUN \
 
 COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
 COPY --from=golang /go/bin/geoipupdate /usr/bin/geoipupdate
-COPY --from=builder /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan /usr/bin/mixed-content-scan
 COPY --from=testssl /usr/local/bin/testssl.sh /usr/bin/testssl.sh
 COPY --from=testssl /home/testssl/etc/ /etc/testssl/etc/
 
-ENV TESTSSL_INSTALL_DIR /etc/testssl
-
-WORKDIR /opt/htrace.sh
-
-COPY bin /opt/htrace.sh/bin/
-COPY lib /opt/htrace.sh/lib/
-COPY log /opt/htrace.sh/log/
-COPY src /opt/htrace.sh/src/
-COPY static /opt/htrace.sh/static/
-COPY dependencies.sh setup.sh /opt/htrace.sh/
+RUN \
+  ln -s /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan /usr/bin/mixed-content-scan
 
 RUN \
   mkdir -p /usr/local/etc/ && \
@@ -118,6 +109,17 @@ RUN \
 
 RUN \
   cp -R /usr/local/share/GeoIP /usr/share/
+
+ENV TESTSSL_INSTALL_DIR /etc/testssl
+
+WORKDIR /opt/htrace.sh
+
+COPY bin /opt/htrace.sh/bin/
+COPY lib /opt/htrace.sh/lib/
+COPY log /opt/htrace.sh/log/
+COPY src /opt/htrace.sh/src/
+COPY static /opt/htrace.sh/static/
+COPY dependencies.sh setup.sh /opt/htrace.sh/
 
 RUN ./setup.sh install
 
