@@ -112,7 +112,7 @@ Provides the following options:
 
 ### Output colors
 
-Sometimes it is very useful to redirect the output to a file. Default `htrace.sh` produces nonprintable characters (for colors). For disable output colors set `HTRACE_COLORS` variable:
+Sometimes it is very useful to redirect the output to a file. Default `htrace.sh` produces nonprintable characters (for colors). For disable them export `HTRACE_COLORS` variable:
 
 ```bash
 export HTRACE_COLORS=off ; htrace.sh -u htrace.sh -u https://nmap.org -s -h
