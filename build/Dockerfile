@@ -49,12 +49,6 @@ RUN apk update && apk add --no-cache git
 RUN go get github.com/ssllabs/ssllabs-scan
 RUN go get github.com/maxmind/geoipupdate/cmd/geoipupdate
 
-FROM alpine:latest AS builder
-RUN \
-  apk add --no-cache composer php7-curl php7-xml php7-dom \
-  && rm -rf /var/cache/apk/* \
-  && composer global require bramus/mixed-content-scan
-
 FROM drwetter/testssl.sh:stable AS testssl
 
 FROM alpine:latest
@@ -73,17 +67,26 @@ RUN \
   git \
   gnupg \
   ncurses \
-  nmap \
-  nmap-nselibs \
-  nmap-scripts \
   openssl \
   procps \
   unzip \
   wget \
-  php \
   jq \
   libmaxminddb \
   && rm -rf /var/cache/apk/*
+
+RUN \
+  apk add --no-cache nmap nmap-nselibs nmap-scripts \
+  && rm -rf /var/cache/apk/*
+
+RUN \
+  apk add --no-cache php php7-curl php7-xml php7-dom && \
+  rm -rf /var/cache/apk/*
+
+RUN \
+  apk add composer && \
+  composer global require bramus/mixed-content-scan && \
+  ln -s /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan /usr/bin/mixed-content-scan
 
 RUN \
   apk add --no-cache nodejs npm && \
@@ -95,9 +98,6 @@ COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
 COPY --from=golang /go/bin/geoipupdate /usr/bin/geoipupdate
 COPY --from=testssl /usr/local/bin/testssl.sh /usr/bin/testssl.sh
 COPY --from=testssl /home/testssl/etc/ /etc/testssl/etc/
-
-RUN \
-  ln -s /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan /usr/bin/mixed-content-scan
 
 RUN \
   mkdir -p /usr/local/etc/ && \
