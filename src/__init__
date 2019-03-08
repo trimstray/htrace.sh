@@ -1087,6 +1087,38 @@ function __main__() {
 
   fi
 
+if [[ "$waf_state" -eq 1 ]] ; then
+
+    DomainStrip "$_http_last"
+
+    # shellcheck disable=SC2154
+    _init_function "DomainScanWhatWaf \"${_http_proto}${_domain_name}\""
+
+    _fstate="$?"
+
+    if [[ "$_fstate" -ne 0 ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r\n    %s\n\n' "Connection error"
+
+      else
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+
+      fi
+
+      tput sgr0
+
+    fi
+
+    echo
+
+  fi
+
   # ````````````````````````````````````````````````````````````````````````````
 
   return "$_STATE"
