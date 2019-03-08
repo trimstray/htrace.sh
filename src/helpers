@@ -577,7 +577,7 @@ function _init_function() {
       "$_msg"
 
     # shellcheck disable=SC2154
-    printf '     ▸ https://%s\n\n' "$_destination_host"
+    printf '     ▸ %s\n\n' "$_destination_host"
 
     _init_cmd "$_full_command"
 

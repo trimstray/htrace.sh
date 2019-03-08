@@ -793,7 +793,7 @@ function __main__() {
 
       DomainStrip "$_http_last"
 
-      _init_function "DomainScanTestssl \"$_domain_name\""
+      _init_function "DomainScanTestssl \"${_http_proto}${_domain_name}\""
 
       _fstate="$?"
 
@@ -843,7 +843,7 @@ function __main__() {
 
       DomainStrip "$_http_last"
 
-      _init_function "DomainScanObservatory \"$_domain_name\""
+      _init_function "DomainScanObservatory \"${_http_proto}${_domain_name}\""
 
       _fstate="$?"
 
@@ -877,7 +877,7 @@ function __main__() {
 
       DomainStrip "$_http_last"
 
-      _init_function "DomainScanSsllabs \"$_domain_name\""
+      _init_function "DomainScanSsllabs \"${_http_proto}${_domain_name}\""
 
       _fstate="$?"
 
