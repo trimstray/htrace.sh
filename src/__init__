@@ -138,7 +138,8 @@ function __main__() {
   # unnecessarily run.
   readonly commands=(basename dirname stat ps date grep cut sed awk chown \
                      chmod mkdir curl openssl dig mmdblookup bc jq \
-                     testssl.sh observatory ssllabs-scan mixed-content-scan nmap)
+                     testssl.sh observatory ssllabs-scan mixed-content-scan \
+                     nmap python whatwaf.py)
 
   # If you intend to specify the full path to the command we do it like:
   # readonly exec_gzip="/bin/gzip"
