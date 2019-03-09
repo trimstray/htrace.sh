@@ -24,6 +24,9 @@ function DomainScanWhatWaf() {
   local _host="$1"
 
   # shellcheck disable=SC2034
+  _scan_type="active"
+
+  # shellcheck disable=SC2034
   _destination_host="$_host"
 
   local _whatwaf_desc="Detect and bypass WAF:https://github.com/Ekultek/WhatWaf"

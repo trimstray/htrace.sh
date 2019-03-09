@@ -576,6 +576,28 @@ function _init_function() {
       "${_FUNCTION_ID}()" \
       "$_msg"
 
+    # shellcheck disable=SC2086,SC2154
+    if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+      # shellcheck disable=SC2154
+      printf '       - scan-type: %s\n\n' "$_scan_type"
+
+    else
+
+      if [[ "$_scan_type" == "active" ]] ; then
+
+        # shellcheck disable=SC2154
+        printf '       - scan-type: \e['${e_trgb}'m%s\e[m\n\n' "$_scan_type"
+
+      else
+
+        # shellcheck disable=SC2154
+        printf '       - scan-type: \e['${g_trgb}'m%s\e[m\n\n' "$_scan_type"
+
+      fi
+
+    fi
+
     # shellcheck disable=SC2154
     printf '     ▸ %s\n\n' "$_destination_host"
 

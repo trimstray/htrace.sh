@@ -24,6 +24,9 @@ function DomainScanMixedContent() {
   local _host="$1"
 
   # shellcheck disable=SC2034
+  _scan_type="active"
+
+  # shellcheck disable=SC2034
   _destination_host="$_host"
 
   local _mixed_content_desc="Scan domain for Mixed Content:https://github.com/bramus/mixed-content-scan"

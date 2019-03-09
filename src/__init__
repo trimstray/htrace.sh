@@ -125,6 +125,10 @@ function __main__() {
   local max_redirects_state="0"
   local _redirects=10
 
+  # Set default scan type.
+  # shellcheck disable=SC2034
+  local _scan_type=""
+
   # Default OpenSSL version state.
   _openssl_version_state="0"
 

@@ -24,6 +24,9 @@ function DomainScanObservatory() {
   local _host="$1"
 
   # shellcheck disable=SC2034
+  _scan_type="passive"
+
+  # shellcheck disable=SC2034
   _destination_host="$_host"
 
   local _observatory_desc="Mozilla Observatory:https://observatory.mozilla.org"

@@ -24,6 +24,9 @@ function DomainScanTestssl() {
   local _host="$1"
 
   # shellcheck disable=SC2034
+  _scan_type="active"
+
+  # shellcheck disable=SC2034
   _destination_host="$_host"
 
   # shellcheck disable=SC2086,SC2154
