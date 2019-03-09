@@ -221,6 +221,7 @@ function __main__() {
 
       --version)
 
+        # shellcheck disable=SC2154
         printf "%s, %s\\n" "htrace.sh" "$_version"
 
         shift ; _exit_ "0" ;;
