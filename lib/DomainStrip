@@ -50,7 +50,7 @@ function DomainStrip() {
   # The most reliable solution is to use a '_remote_ip' curl variable.
   _domain_ip="$_remote_ip"
 
-  # shellcheck disable=SC2034,SC2116
+  # shellcheck disable=SC2034,SC2116,SC2154
   # Remove the path from the URL.
   _domain_port="$_remote_port"
 

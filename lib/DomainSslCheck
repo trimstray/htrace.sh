@@ -23,6 +23,7 @@ function DomainSslCheck() {
 
   # shellcheck disable=SC2034,SC2154
   _ssl_remote_socket="${_domain_ip}:${_domain_port}"
+  # shellcheck disable=SC2154
   _ssl_domain_name="$_domain_name"
 
   # Default ssl params.
@@ -54,17 +55,17 @@ function DomainSslCheck() {
     if [[ "$HTRACE_COLORS" == "off" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '\n    %s:\n\n\t%s\n\t%s\n\n' \
+      printf '\n    %s:\n\n\t%s\n\n' \
              "SSL error" \
-             "- no peer certificate available" \
+             "- no peer certificate available"
              # "- no client certificate CA names sent"
 
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '\n    \e['${e_trgb}'m%s\e[m:\n\n\t%s\n\t%s\n\n' \
+      printf '\n    \e['${e_trgb}'m%s\e[m:\n\n\t%s\n\n' \
              "SSL error" \
-             "- no peer certificate available" \
+             "- no peer certificate available"
              # "- no client certificate CA names sent"
 
     fi

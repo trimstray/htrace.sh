@@ -23,6 +23,7 @@ function DomainCertCheck() {
 
   # shellcheck disable=SC2034,SC2154
   _ssl_remote_socket="${_domain_ip}:${_domain_port}"
+  # shellcheck disable=SC2154
   _ssl_domain_name="$_domain_name"
 
   # Alternative:
