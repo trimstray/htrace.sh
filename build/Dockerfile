@@ -73,6 +73,8 @@ RUN \
   wget \
   jq \
   libmaxminddb \
+  python \
+  py-pip \
   && rm -rf /var/cache/apk/*
 
 RUN \
@@ -99,7 +101,8 @@ RUN \
   cd /opt/whatwaf && \
   chmod +x whatwaf.py && \
   pip install -r requirements.txt && \
-  ln -s /opt/whatwaf/whatwaf.py /usr/bin/whatwaf.py
+  ./setup.sh install && \
+  source ~/.bash_profile
 
 COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
 COPY --from=golang /go/bin/geoipupdate /usr/bin/geoipupdate

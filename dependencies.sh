@@ -137,7 +137,8 @@ if [[ "$_os_name" == "darwin" ]] || \
   cd /opt/whatwaf
   chmod +x whatwaf.py
   pip install -r requirements.txt
-  ln -s /opt/whatwaf/whatwaf.py /usr/bin/whatwaf.py
+  ./setup.sh install
+  source ~/.bash_profile
 
   geoipupdate
 
@@ -214,7 +215,8 @@ elif [[ "$_os_name" == "debian" ]] || \
   cd /opt/whatwaf
   chmod +x whatwaf.py
   pip install -r requirements.txt
-  ln -s /opt/whatwaf/whatwaf.py /usr/bin/whatwaf.py
+  ./setup.sh install
+  source ~/.bash_profile
 
   geoipupdate
 
