@@ -22,12 +22,13 @@ function DomainSslCheck() {
   local _STATE=0
 
   # shellcheck disable=SC2034,SC2154
+  _ssl_remote_socket="${_domain_ip}:${_domain_port}"
   _ssl_domain_name="$_domain_name"
 
   # Default ssl params.
   _ssl_params_default=$(echo | \
                        openssl s_client -servername "$_ssl_domain_name" \
-                       -connect "$_ssl_domain_name":443 2>/dev/null)
+                       -connect "$_ssl_remote_socket" 2>/dev/null)
 
   _ssl_params_proto=$(echo "$_ssl_params_default" | \
                        grep "Protocol  :" | \

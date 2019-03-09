@@ -289,9 +289,9 @@ function DomainTrace() {
 
       DomainStrip "$_host"
 
-      DomainSslCheck "$_host"
+      DomainSslCheck "$_domain_name"
 
-      DomainCertCheck "$_host"
+      DomainCertCheck "$_domain_name"
 
       # shellcheck disable=SC2154
       if [[ "$ssl_state" -eq 1 ]] ; then

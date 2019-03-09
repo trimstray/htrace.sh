@@ -35,7 +35,7 @@ function DomainStrip() {
   _http_url=$(echo "${_http_url_with_args%/?}" | cut -d "?" -f1)
 
   # Extract the path (includes leading "/" or ":").
-  _http_url_path=$(echo "$_http_url" | sed -nr 's,[^/:]*([/:].*),\1,p')
+  _http_url_path=$(echo "$_http_url" | cut -d ":" -f2- | sed -nr 's,[^/:]*([/:].*),\1,p')
 
   # shellcheck disable=SC2034,SC2116
   # Store all url args.
@@ -43,20 +43,27 @@ function DomainStrip() {
 
   # shellcheck disable=SC2034,SC2116
   # Remove the path from the URL.
-  _domain_name=$(echo "${_http_url/$_http_url_path/}")
+  _domain_name=$(echo "${_http_url/$_http_url_path/}" | cut -d ":" -f1)
 
   # shellcheck disable=SC2034,SC2154
   # Resolve -d|--domain param value - if host.
   # The most reliable solution is to use a '_remote_ip' curl variable.
   _domain_ip="$_remote_ip"
 
+  # shellcheck disable=SC2034,SC2116
+  # Remove the path from the URL.
+  _domain_port="$_remote_port"
+
   # printf "\\n%s: %s , %s: %s , %s: %s , %s: %s , %s: %s , %s: %s , %s: %s\\n\\n" \
   #        "_uri" "$_uri" \
   #        "_http_proto" "$_http_proto" \
+  #        "_http_url_with_args" "$_http_url_with_args" \
   #        "_http_url" "$_http_url" \
   #        "_http_url_path" "$_http_url_path" \
+  #        "_http_url_args" "$_http_url_args" \
   #        "_domain_name" "$_domain_name" \
   #        "_domain_ip" "$_domain_ip" \
+  #        "_domain_port" "$_domain_port"
 
   return $_STATE
 
