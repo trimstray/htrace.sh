@@ -47,6 +47,35 @@ function DomainSslCheck() {
                        cut -d ":" -f2- | \
                        awk '{$1=$1};1')
 
+  if [[ "$_ssl_params_default" == *"no peer certificate available"* ]] ; then
+     # [[ "$_ssl_params_default" == *"No client certificate CA names sent"* ]] ; then
+
+    # shellcheck disable=SC2086,SC2154
+    if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '\n    %s:\n\n\t%s\n\t%s\n\n' \
+             "SSL error" \
+             "- no peer certificate available" \
+             # "- no client certificate CA names sent"
+
+    else
+
+      # shellcheck disable=SC2086,SC2154
+      printf '\n    \e['${e_trgb}'m%s\e[m:\n\n\t%s\n\t%s\n\n' \
+             "SSL error" \
+             "- no peer certificate available" \
+             # "- no client certificate CA names sent"
+
+    fi
+
+      _logger "stop" \
+        "${_FUNCTION_ID}()" \
+        "no peer certificate available"
+        # "no peer certificate available/no client certificate CA names sent"
+
+  fi
+
   if [[ "$_ssl_params_proto" = *"TLSv1"* ]] ; then
 
     # shellcheck disable=SC2154
