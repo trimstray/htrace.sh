@@ -30,14 +30,7 @@
 
 ## Description
 
-`htrace.sh` is a shell script for http/https troubleshooting and profiling. It's also a simple wrapper script around several open source security tools:
-
-- [testssl.sh](https://testssl.sh/)
-- [mozilla-observatory](https://github.com/mozilla/http-observatory)
-- [ssllabs-scan](https://github.com/ssllabs/ssllabs-scan)
-- [mixed-content-scan](https://github.com/bramus/mixed-content-scan)
-- [nmap](https://nmap.org/) + [nse engine](https://nmap.org/book/nse.html)
-- [whatwaf](https://github.com/Ekultek/WhatWaf)
+`htrace.sh` is a shell script for http/https troubleshooting and profiling. It's also a simple wrapper script around several open source security tools.
 
 ## How To Use
 
@@ -98,6 +91,7 @@ Provides the following options:
 
   Options:
         --help                                show this message
+        --version                             show script version
         -u|--url <value>                      set url with http/https protocol
         -s|--ssl                              show basic ssl server/connection parameters
         -h|--headers                          show response headers

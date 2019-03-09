@@ -690,6 +690,7 @@ function _help_() {
 
   Options:
         --help                                show this message
+        --version                             show script version
         -u|--url <value>                      set url with http/https protocol
         -s|--ssl                              show basic ssl server/connection parameters
         -h|--headers                          show response headers

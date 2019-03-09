@@ -189,7 +189,7 @@ function __main__() {
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
   local _short_opt="u:shbM:H:p:"
-  local _long_opt="help,url:,ssl,headers,body,req-method:,req-header:,proxy:,testssl,observatory,ssllabs,mixed-content,nse,waf,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
+  local _long_opt="help,version,url:,ssl,headers,body,req-method:,req-header:,proxy:,testssl,observatory,ssllabs,mixed-content,nse,waf,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -216,6 +216,12 @@ function __main__() {
       --help)
 
         _help_
+
+        shift ; _exit_ "0" ;;
+
+      --version)
+
+        printf "%s, %s\\n" "htrace.sh" "$_version"
 
         shift ; _exit_ "0" ;;
 
