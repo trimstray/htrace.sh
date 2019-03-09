@@ -75,6 +75,7 @@ RUN \
   libmaxminddb \
   python \
   py-pip \
+  rsync \
   && rm -rf /var/cache/apk/*
 
 RUN \
