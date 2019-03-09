@@ -102,7 +102,8 @@ RUN \
   chmod +x whatwaf.py && \
   pip install -r requirements.txt && \
   ./setup.sh install && \
-  source ~/.bash_profile
+  cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf && \
+  ./setup.sh uninstall
 
 COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
 COPY --from=golang /go/bin/geoipupdate /usr/bin/geoipupdate

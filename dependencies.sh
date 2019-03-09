@@ -138,7 +138,8 @@ if [[ "$_os_name" == "darwin" ]] || \
   chmod +x whatwaf.py
   pip install -r requirements.txt
   ./setup.sh install
-  source ~/.bash_profile
+  cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
+  ./setup.sh uninstall
 
   geoipupdate
 
@@ -216,7 +217,8 @@ elif [[ "$_os_name" == "debian" ]] || \
   chmod +x whatwaf.py
   pip install -r requirements.txt
   ./setup.sh install
-  source ~/.bash_profile
+  cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
+  ./setup.sh uninstall
 
   geoipupdate
 
