@@ -587,12 +587,17 @@ function _init_function() {
       if [[ "$_scan_type" == "active" ]] ; then
 
         # shellcheck disable=SC2154
-        printf '       - scan-type: \e['${e_trgb}'m%s\e[m\n\n' "$_scan_type"
+        printf '       - scan-type: \e['${e2_trgb}'m%s\e[m\n\n' "$_scan_type"
+
+      elif [[ "$_scan_type" == "passive" ]] ; then
+
+        # shellcheck disable=SC2154
+        printf '       - scan-type: \e['${g2_trgb}'m%s\e[m\n\n' "$_scan_type"
 
       else
 
         # shellcheck disable=SC2154
-        printf '       - scan-type: \e['${g_trgb}'m%s\e[m\n\n' "$_scan_type"
+        printf '       - scan-type: \e['${d2_trgb}'m%s\e[m\n\n' "$_scan_type"
 
       fi
 
