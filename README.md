@@ -81,31 +81,45 @@ Provides the following options:
     htrace.sh v1.1.3
 
   Usage:
+
     htrace.sh <option|long-option>
 
   Examples:
+
+    htrace.sh -u https://example.com --all-scans
     htrace.sh -u https://example.com -s -h --testssl --ssllabs
     htrace.sh -u https://example.com -h -M 'POST:password=123&name=Admin'
     htrace.sh --url https://example.com --cache-bypass "?${RANDOM}"
     htrace.sh --url https://example.com --ssl --headers --proxy "socks5h://127.0.0.1:9501"
 
   Options:
+
         --help                                show this message
         --version                             show script version
-        -u|--url <value>                      set url with http/https protocol
+
+    Standard:
+
+        -u|--url <value>                      set target url with http/https protocol
         -s|--ssl                              show basic ssl server/connection parameters
         -h|--headers                          show response headers
         -b|--body                             show response body
         -M|--req-method <value>               set request method (default: GET)
         -H|--req-header <value>               set request header(s)
         -p|--proxy <value>                    set proxy server (not for external tools)
+
+    Security tools:
+
         --testssl                             test ssl protocols and ciphers with testssl.sh
-        --observatory                         scan domain with mozilla observatory security tool
-        --ssllabs                             scan domain with ssllabs security tool
-        --mixed-content                       scan website for mixed content
-        --nse                                 scan website with nmap nse library
-        --waf                                 scan website with whatwaf
-        --dns                                 scan domain with sublist3r dns enumeration tool
+        --observatory                         analyze website (mozilla observatory)
+        --ssllabs                             deep analysis of the ssl web server (ssllabs)
+        --mixed-content                       scan website for non-secure resources (mixed-content-scan)
+        --nse                                 scan website and domain (nmap nse library)
+        --waf                                 detect and bypass web application firewalls (whatwaf)
+        --dns                                 enumerate subdomains of website (sublist3r)
+        --all-scans                           use all external security tools
+
+    Extended:
+
         --cache-bypass <value>                try (proxy) cache bypass
         --user-agent <value>                  set 'User-Agent' header
         --max-redirects <num>                 set max redirects (default: 10)
