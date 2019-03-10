@@ -30,7 +30,7 @@ function DomainScanWhatWaf() {
   _destination_host="$_host"
 
   local _whatwaf_desc="Detect and bypass WAF:https://github.com/Ekultek/WhatWaf"
-  local _whatwaf_cmd="eval whatwaf -u \"$_host\" --ra --hide"
+  local _whatwaf_cmd="eval whatwaf -u \"$_host\" --ra --hide --threaded 10 | grep --color=never -E '(INFO|WARN|SUCCESS)'"
 
   _msg_args+=(\
               "$_whatwaf_desc")
