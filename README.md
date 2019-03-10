@@ -105,6 +105,7 @@ Provides the following options:
         --mixed-content                       scan website for mixed content
         --nse                                 scan website with nmap nse library
         --waf                                 scan website with whatwaf
+        --dns                                 scan domain with sublist3r dns enumeration tool
         --cache-bypass <value>                try (proxy) cache bypass
         --user-agent <value>                  set 'User-Agent' header
         --max-redirects <num>                 set max redirects (default: 10)
