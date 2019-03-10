@@ -30,7 +30,7 @@ function DomainScanSublist3r() {
   _destination_host="$_host"
 
   local _sublist3r_desc="Subdomains enumeration:https://github.com/aboul3la/Sublist3r"
-  local _sublist3r_cmd="eval sublist3r.py --domain \"$_host\" --threads 2 --bruteforce"
+  local _sublist3r_cmd="eval sublist3r.py --domain \"$_host\" --threads 2"
 
   _msg_args+=(\
               "$_sublist3r_desc")
