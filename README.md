@@ -135,6 +135,8 @@ Sometimes it is very useful to redirect the output to a file. Default `htrace.sh
 export HTRACE_COLORS=off ; htrace.sh -u htrace.sh -u https://nmap.org -s -h
 ```
 
+  > This option does not affect for external tools.
+
 ## Contributing
 
 See **[this](CONTRIBUTING.md)**.
