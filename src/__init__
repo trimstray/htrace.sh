@@ -148,7 +148,7 @@ function __main__() {
   # unnecessarily run.
   readonly commands=(basename dirname stat ps date grep cut sed awk chown \
                      chmod mkdir curl openssl dig mmdblookup bc jq \
-                     python go testssl.sh observatory ssllabs-scan \
+                     testssl.sh observatory ssllabs-scan \
                      mixed-content-scan nmap whatwaf subfinder)
 
   # If you intend to specify the full path to the command we do it like:
