@@ -16,8 +16,8 @@ function _tread() {
          "os_name" "$_os_name" \
          "os_id" "$_os_id"
 
-  printf '  Please check golang variables or set them before start:\n'
-  printf '    GOROOT: %s\n    GOPATH %s\n\n' \
+  printf '  Please check golang variables or set them before start:\n\n'
+  printf '    GOROOT: %s\n    GOPATH: %s\n\n' \
          "$GOROOT" "$GOPATH"
 
   printf '  %s: ' "Please enter (Y) to continue"
