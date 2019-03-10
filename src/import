@@ -17,7 +17,7 @@ readonly _fd_stack=(DomainStrip DomainTrace DomainGeo PrintfHeaders \
                     DomainSslCheck DomainCertCheck DomainScanTestssl \
                     DomainScanObservatory DomainScanSsllabs \
                     DomainScanMixedContent DomainScanNmapNse DomainResolve \
-                    DomainScanWhatWaf)
+                    DomainScanWhatWaf DomainScanSublist3r)
 
 if [[ "${#_fd_stack[@]}" -ne 0 ]] ; then
 
