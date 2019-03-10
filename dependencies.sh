@@ -141,6 +141,13 @@ if [[ "$_os_name" == "darwin" ]] || \
   cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
   ./setup.sh uninstall
 
+  # For Sublist3r
+  git clone https://github.com/aboul3la/Sublist3r.git /opt/Sublist3r
+  cd /opt/Sublist3r
+  chmod +x sublist3r.py
+  pip install -r requirements.txt
+  ln -s /opt/Sublist3r/sublist3r.py /usr/bin/sublist3r.py
+
   geoipupdate
 
 elif [[ "$_os_name" == "debian" ]] || \
@@ -219,6 +226,13 @@ elif [[ "$_os_name" == "debian" ]] || \
   ./setup.sh install
   cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
   ./setup.sh uninstall
+
+  # For Sublist3r
+  git clone https://github.com/aboul3la/Sublist3r.git /opt/Sublist3r
+  cd /opt/Sublist3r
+  chmod +x sublist3r.py
+  pip install -r requirements.txt
+  ln -s /opt/Sublist3r/sublist3r.py /usr/bin/sublist3r.py
 
   geoipupdate
 
