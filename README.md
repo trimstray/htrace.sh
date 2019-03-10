@@ -32,9 +32,9 @@
 
 `htrace.sh` is a shell script for http/https troubleshooting and profiling. It's also a simple wrapper script around several open source security tools.
 
-## How To Use
+For a more detailed understanding of `htrace.sh`, its parameters, functions and how it all works, see the **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
 
-  > For a more detailed understanding of `htrace.sh`, its parameters, and how it all works, see the **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
+## How To Use
 
 To install `htrace.sh` itself:
 
