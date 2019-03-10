@@ -16,6 +16,10 @@ function _tread() {
          "os_name" "$_os_name" \
          "os_id" "$_os_id"
 
+  printf '  Please check golang variables or set them before start:\n'
+  printf '    GOROOT: %s\n    GOPATH %s\n\n' \
+         "$GOROOT" "$GOPATH"
+
   printf '  %s: ' "Please enter (Y) to continue"
 
   read _kvar
@@ -94,14 +98,11 @@ fi
 # Global variables.
 readonly _tmp="${_dir}/.tmp"
 
-export GOROOT="/usr/lib/go"
-export GOPATH="/opt/go"
-
 mkdir -p "${_tmp}" && cd "${_tmp}"
 
 printf "%s" "
 
-  Before start please read all communication on the screen!
+  Before start please read all on the screen!
 
 "
 
@@ -113,7 +114,7 @@ if [[ "$_os_name" == "darwin" ]] || \
 
   # System tools.
   brew install coreutils gnu-getopt gnu-sed openssl curl bc jq php72 \
-  libmaxminddb geoipupdate python rsync
+  libmaxminddb geoipupdate python rsync go
 
   brew install node composer
 
@@ -141,12 +142,9 @@ if [[ "$_os_name" == "darwin" ]] || \
   cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
   ./setup.sh uninstall
 
-  # For Sublist3r
-  git clone https://github.com/aboul3la/Sublist3r.git /opt/Sublist3r
-  cd /opt/Sublist3r
-  chmod +x sublist3r.py
-  pip install -r requirements.txt
-  ln -s /opt/Sublist3r/sublist3r.py /usr/bin/sublist3r.py
+  # For SubFinder
+  go get github.com/subfinder/subfinder && \
+  ln -s "${GOPATH}/bin/subfinder" /us/bin/subfinder
 
   geoipupdate
 
@@ -175,6 +173,7 @@ elif [[ "$_os_name" == "debian" ]] || \
   apt-get install -y nodejs
   npm install -g observatory-cli
 
+  go get github.com/subfinder/subfinder
   # For Ssllabs API.
   apt-get install -y golang
   go get github.com/ssllabs/ssllabs-scan
@@ -227,12 +226,9 @@ elif [[ "$_os_name" == "debian" ]] || \
   cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
   ./setup.sh uninstall
 
-  # For Sublist3r
-  git clone https://github.com/aboul3la/Sublist3r.git /opt/Sublist3r
-  cd /opt/Sublist3r
-  chmod +x sublist3r.py
-  pip install -r requirements.txt
-  ln -s /opt/Sublist3r/sublist3r.py /usr/bin/sublist3r.py
+  # For SubFinder
+  go get github.com/subfinder/subfinder && \
+  ln -s "${GOPATH}/bin/subfinder" /us/bin/subfinder
 
   geoipupdate
 

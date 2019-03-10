@@ -48,6 +48,7 @@ FROM golang:alpine AS golang
 RUN apk update && apk add --no-cache git
 RUN go get github.com/ssllabs/ssllabs-scan
 RUN go get github.com/maxmind/geoipupdate/cmd/geoipupdate
+RUN go get github.com/subfinder/subfinder
 
 FROM drwetter/testssl.sh:stable AS testssl
 
@@ -106,15 +107,9 @@ RUN \
   cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf && \
   ./setup.sh uninstall
 
-RUN \
-  git clone https://github.com/aboul3la/Sublist3r.git /opt/Sublist3r && \
-  cd /opt/Sublist3r && \
-  chmod +x sublist3r.py && \
-  pip install -r requirements.txt && \
-  ln -s /opt/Sublist3r/sublist3r.py /usr/bin/sublist3r.py
-
 COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
 COPY --from=golang /go/bin/geoipupdate /usr/bin/geoipupdate
+COPY --from=golang /go/bin/subfinder /usr/bin/subfinder
 COPY --from=testssl /usr/local/bin/testssl.sh /usr/bin/testssl.sh
 COPY --from=testssl /home/testssl/etc/ /etc/testssl/etc/
 

@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainScanSubFinder()
+#
+# Description:
+#   Subdomains enumeration with subfinder.
+#
+# Usage:
+#   DomainScanSubFinder domain
+#
+# Examples:
+#   DomainScanSubFinder example.com
+#
+
+function DomainScanSubFinder() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainScanSubFinder"
+  local _STATE=0
+
+  local _host="$1"
+
+  # shellcheck disable=SC2034
+  _scan_type="passive"
+
+  # shellcheck disable=SC2034
+  _destination_host="$_host"
+
+  local _subfinder_desc="Subdomains enumeration:https://github.com/subfinder/subfinder"
+  local _subfinder_cmd="eval subfinder -d \"$_host\" --silent -t 10 -no-color | grep -v \"canceled\|error\|warning\|fail\|timeout\""
+
+  _msg_args+=(\
+              "$_subfinder_desc")
+
+  _cmd_args+=(\
+              "$_subfinder_cmd")
+
+  return $_STATE
+
+}

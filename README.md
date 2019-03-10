@@ -115,7 +115,7 @@ Provides the following options:
         --mixed-content                       scan website for non-secure resources (mixed-content-scan)
         --nse                                 scan website and domain (nmap nse library)
         --waf                                 detect and bypass web application firewalls (whatwaf)
-        --dns                                 enumerate subdomains of website (sublist3r)
+        --dns                                 enumerate subdomains of website (subfinder)
         --all-scans                           use all external security tools
 
     Extended:

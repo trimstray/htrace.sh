@@ -115,8 +115,8 @@ function __main__() {
   # Default 'waf' variable.
   local waf_state="0"
 
-  # Default 'sublist3r' variable.
-  local sublist3r_state="0"
+  # Default 'subfinder' variable.
+  local subfinder_state="0"
 
   # Default 'cache-bypass' variable.
   local cache_bypass_state="0"
@@ -148,8 +148,8 @@ function __main__() {
   # unnecessarily run.
   readonly commands=(basename dirname stat ps date grep cut sed awk chown \
                      chmod mkdir curl openssl dig mmdblookup bc jq \
-                     testssl.sh observatory ssllabs-scan mixed-content-scan \
-                     nmap python whatwaf)
+                     python go testssl.sh observatory ssllabs-scan \
+                     mixed-content-scan nmap whatwaf subfinder)
 
   # If you intend to specify the full path to the command we do it like:
   # readonly exec_gzip="/bin/gzip"
@@ -330,7 +330,7 @@ function __main__() {
 
       --dns)
 
-        export sublist3r_state=1
+        export subfinder_state=1
 
         shift ;;
 
@@ -421,7 +421,7 @@ function __main__() {
     export mixed_content_state=1
     export nse_state=1
     export waf_state=1
-    export sublist3r_state=1
+    export subfinder_state=1
 
   fi
 
@@ -1161,12 +1161,12 @@ function __main__() {
 
   fi
 
-  if [[ "$sublist3r_state" -eq 1 ]] ; then
+  if [[ "$subfinder_state" -eq 1 ]] ; then
 
     DomainStrip "$_http_last"
 
     # shellcheck disable=SC2154
-    _init_function "DomainScanSublist3r \"${_domain_name}\""
+    _init_function "DomainScanSubFinder \"${_domain_name}\""
 
     _fstate="$?"
 
