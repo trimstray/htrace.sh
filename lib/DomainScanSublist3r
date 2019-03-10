@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainScanSublist3r()
+#
+# Description:
+#   Subdomains enumeration with sublist3r.
+#
+# Usage:
+#   DomainScanSublist3r domain
+#
+# Examples:
+#   DomainScanSublist3r example.com
+#
+
+function DomainScanSublist3r() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainScanSublist3r"
+  local _STATE=0
+
+  local _host="$1"
+
+  # shellcheck disable=SC2034
+  _scan_type="active/passive"
+
+  # shellcheck disable=SC2034
+  _destination_host="$_host"
+
+  local _sublist3r_desc="Subdomains enumeration:https://github.com/aboul3la/Sublist3r"
+  local _sublist3r_cmd="eval sublist3r.py --domain \"$_host\" --threads 2 --bruteforce"
+
+  _msg_args+=(\
+              "$_sublist3r_desc")
+
+  _cmd_args+=(\
+              "$_sublist3r_cmd")
+
+  return $_STATE
+
+}
