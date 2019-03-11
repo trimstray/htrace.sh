@@ -1015,12 +1015,13 @@ function __main__() {
           if [[ "$HTRACE_COLORS" == "off" ]] ; then
 
             # shellcheck disable=SC2086,SC2154
-            printf '\r         › %s\n' "Mixed content not found"
+            printf '\r         › %s\n' "Non-secure resources not found"
 
           else
 
             # shellcheck disable=SC2086,SC2154
-            printf '\r         \e['${_rd}'m›\e[m \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
+            # printf '\r         \e['${_rd}'m›\e[m \e['${g_trgb}'m%s\e[m\n' "Non-secure resources not found"
+            printf '\r         › %s\n' "Non-secure resources not found"
 
           fi
 
@@ -1054,12 +1055,13 @@ function __main__() {
           if [[ "$HTRACE_COLORS" == "off" ]] ; then
 
             # shellcheck disable=SC2086,SC2154
-            printf '\r         › %s\n' "Mixed content not found"
+            printf '\r         › %s\n' "Non-secure resources not found"
 
           else
 
             # shellcheck disable=SC2086,SC2154
-            printf '\r         \e['${_rd}'m›\e[m \e['${g_trgb}'m%s\e[m\n' "Mixed content not found"
+            # printf '\r         \e['${_rd}'m›\e[m \e['${g_trgb}'m%s\e[m\n' "Non-secure resources not found"
+            printf '\r         › %s\n' "Non-secure resources not found"
 
           fi
 
