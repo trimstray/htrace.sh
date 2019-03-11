@@ -110,13 +110,12 @@ Provides the following options:
     Security tools:
 
         --testssl                             test ssl protocols and ciphers with testssl.sh
-        --observatory                         analyze website (mozilla observatory)
+        --observatory                         analyze website headers (mozilla observatory)
         --ssllabs                             deep analysis of the ssl web server (ssllabs)
         --mixed-content                       scan website for non-secure resources (mixed-content-scan)
-        --nse                                 scan website and domain (nmap nse library)
+        --nse                                 scan website and domain with multiple scripts (nmap nse)
         --waf                                 detect and bypass web application firewalls (whatwaf)
         --dns                                 enumerate subdomains of website (subfinder)
-        --all-scans                           use all external security tools
 
     Extended:
 
