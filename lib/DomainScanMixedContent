@@ -32,6 +32,7 @@ function DomainScanMixedContent() {
   local _mixed_content_desc="Scan for non-secure resources:"
         _mixed_content_desc+="https://github.com/bramus/mixed-content-scan"
 
+  # shellcheck disable=SC2154
   local _mixed_content_cmd="eval mixed-content-scan \"$_host\" --user-agent \"$_user_agent\""
         _mixed_content_cmd+=" --format no-ansi --no-check-certificate"
         _mixed_content_cmd+=" | grep --color=never \"MCS.[E|W]\""
