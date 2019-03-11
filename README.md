@@ -113,7 +113,7 @@ Provides the following options:
         --observatory                         analyze website headers (mozilla observatory)
         --ssllabs                             deep analysis of the ssl web server (ssllabs)
         --mixed-content                       scan website for non-secure resources (mixed-content-scan)
-        --nse                                 scan website and domain with multiple scripts (nmap nse)
+        --nse                                 scan website and domain with nse library (nmap)
         --waf                                 detect and bypass web application firewalls (whatwaf)
         --dns                                 enumerate subdomains of website (subfinder)
 
