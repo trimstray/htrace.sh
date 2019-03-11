@@ -33,7 +33,7 @@ function DomainScanSubFinder() {
         _subfinder_desc+="https://github.com/subfinder/subfinder"
 
   local _subfinder_cmd="eval subfinder -d \"$_host\" --silent -t 10 -no-color | "
-        _subfinder_cmd+="grep -v \"canceled\|error\|warning\|fail\|timeout\""
+        _subfinder_cmd+="grep -v \"canceled\|error\|warning\|fail\|timeout\|NOTE\""
 
   _msg_args+=(\
               "$_subfinder_desc")
