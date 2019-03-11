@@ -630,11 +630,12 @@ function __main__() {
   # Show OpenSSL version.
   _openssl_version=$(openssl version -a | head -n 1 | grep 'OpenSSL\|LibreSSL' | awk '{print $2}')
 
-  if [[ "$_openssl_version" == "1.0.2g" ]]
+  if [[ "$_openssl_version" == "1.0.2g" ]] || \
      [[ "$_openssl_version" == "1.1.0g" ]] || \
      [[ "$_openssl_version" == "1.1.0h" ]] || \
      [[ "$_openssl_version" == "1.1.0j" ]] || \
-     [[ "$_openssl_version" == "1.1.1a" ]] ; then
+     [[ "$_openssl_version" == "1.1.1a" ]] || \
+     [[ "$_openssl_version" == "1.1.1b" ]] ; then
 
     _openssl_version_status="ok"
     _openssl_version_state="1"
