@@ -437,6 +437,7 @@ function _sprintf() {
 
   # shellcheck disable=SC2154
   sed 's/^/         › /' "$_scan_output" | \
+  sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" | \
   sed 's/\r//' | grep "› ."
 
   # shellcheck disable=SC2154
