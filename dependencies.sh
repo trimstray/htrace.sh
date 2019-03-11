@@ -114,7 +114,13 @@ if [[ "$_os_name" == "darwin" ]] || \
 
   # System tools.
   brew install coreutils gnu-getopt gnu-sed openssl curl bc jq php72 \
-  libmaxminddb geoipupdate python rsync go
+  libmaxminddb geoipupdate python rsync
+
+  # Install go.
+  wget https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz && \
+  tar -xvf go1.11.4.linux-amd64.tar.gz && \
+  mv go /usr/lib &&
+  ln -s /usr/lib/go/bin/go /usr/bin/go
 
   brew install node composer
 
@@ -160,6 +166,12 @@ elif [[ "$_os_name" == "debian" ]] || \
   # System tools.
   apt-get update
 
+  # Install go.
+  wget https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz && \
+  tar -xvf go1.11.4.linux-amd64.tar.gz && \
+  mv go /usr/lib &&
+  ln -s /usr/lib/go/bin/go /usr/bin/go
+
   apt-get install -y ca-certificates dnsutils gnupg apt-utils unzip openssl \
   curl bc jq mmdb-bin libmaxminddb0 libmaxminddb-dev python python-pip rsync
 
@@ -174,7 +186,6 @@ elif [[ "$_os_name" == "debian" ]] || \
   npm install -g observatory-cli
 
   # For Ssllabs API.
-  apt-get install -y golang
   go get github.com/ssllabs/ssllabs-scan
   # It's important - PATH is hardcoded in src/settings.
   ln -s /opt/go/bin/ssllabs-scan /usr/bin/ssllabs-scan
