@@ -173,7 +173,6 @@ elif [[ "$_os_name" == "debian" ]] || \
   apt-get install -y nodejs
   npm install -g observatory-cli
 
-  go get github.com/subfinder/subfinder
   # For Ssllabs API.
   apt-get install -y golang
   go get github.com/ssllabs/ssllabs-scan
