@@ -771,7 +771,7 @@ function __main__() {
   # shellcheck disable=SC2034
   local _hcounter=1
   # shellcheck disable=SC2034
-  local _scounter=5
+  local _scounter=1
 
   # Core mechanism of htrace.sh - redirects.
   while [[ ${_http_code} =~ ^3[0-9]{2}$ ]] ; do
