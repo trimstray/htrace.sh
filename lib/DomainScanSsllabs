@@ -29,7 +29,9 @@ function DomainScanSsllabs() {
   # shellcheck disable=SC2034
   _destination_host="$_host"
 
-  local _ssllabs_desc="Ssllabs API:https://www.ssllabs.com/ssltest/"
+  local _ssllabs_desc="Deep analysis of the ssl configuration:"
+        _ssllabs_desc+="https://www.ssllabs.com/ssltest/"
+
   local _ssllabs_cmd="eval ssllabs-scan -quiet -grade \"$_host\""
 
   _msg_args+=(\

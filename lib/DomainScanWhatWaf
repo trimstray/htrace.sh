@@ -29,8 +29,11 @@ function DomainScanWhatWaf() {
   # shellcheck disable=SC2034
   _destination_host="$_host"
 
-  local _whatwaf_desc="Detect and bypass WAF:https://github.com/Ekultek/WhatWaf"
-  local _whatwaf_cmd="eval whatwaf -u \"$_host\" --ra --hide --threaded 10 | grep --color=never -E '(INFO|WARN|SUCCESS)'"
+  local _whatwaf_desc="Detect and bypass WAFs:"
+        _whatwaf_desc+="https://github.com/Ekultek/WhatWaf"
+
+  local _whatwaf_cmd="eval echo N | whatwaf -u \"$_host\" --ra --hide --threaded 10 | "
+        _whatwaf_cmd+="grep -v "PROMPT" | grep --color=never -e INFO -e WARN -e SUCCESS"
 
   _msg_args+=(\
               "$_whatwaf_desc")

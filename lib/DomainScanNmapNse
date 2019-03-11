@@ -71,7 +71,7 @@ function DomainScanNmapNse() {
         _nmap_nse_scripts_args+="http-waf-detect.detectBodyChanges,"
         _nmap_nse_scripts_args+="http-waf-fingerprint.intensive=1"
 
-  local _nmap_nse_desc="Scan domain with Nmap NSE Library:"
+  local _nmap_nse_desc="Scan with Nmap NSE library:"
         _nmap_nse_desc+="https://nmap.org/book/nse.html"
 
   # shellcheck disable=SC2034,SC2154

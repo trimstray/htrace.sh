@@ -29,8 +29,11 @@ function DomainScanSubFinder() {
   # shellcheck disable=SC2034
   _destination_host="$_host"
 
-  local _subfinder_desc="Subdomains enumeration:https://github.com/subfinder/subfinder"
-  local _subfinder_cmd="eval subfinder -d \"$_host\" --silent -t 10 -no-color | grep -v \"canceled\|error\|warning\|fail\|timeout\""
+  local _subfinder_desc="Enumerate subdomains:"
+        _subfinder_desc+="https://github.com/subfinder/subfinder"
+
+  local _subfinder_cmd="eval subfinder -d \"$_host\" --silent -t 10 -no-color | "
+        _subfinder_cmd+="grep -v \"canceled\|error\|warning\|fail\|timeout\""
 
   _msg_args+=(\
               "$_subfinder_desc")
