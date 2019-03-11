@@ -109,7 +109,7 @@ Provides the following options:
 
     Security tools:
 
-        --testssl                             test ssl protocols and ciphers with testssl.sh
+        --testssl                             test ssl protocols and ciphers (testssl.sh)
         --observatory                         analyze website headers (mozilla observatory)
         --ssllabs                             deep analysis of the ssl web server (ssllabs)
         --mixed-content                       scan website for non-secure resources (mixed-content-scan)
