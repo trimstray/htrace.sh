@@ -144,7 +144,7 @@ if [[ "$_os_name" == "darwin" ]] || \
 
   # For SubFinder
   go get github.com/subfinder/subfinder && \
-  ln -s "${GOPATH}/bin/subfinder" /us/bin/subfinder
+  ln -s "${GOPATH}/bin/subfinder" /usr/bin/subfinder
 
   geoipupdate
 
@@ -227,7 +227,7 @@ elif [[ "$_os_name" == "debian" ]] || \
 
   # For SubFinder
   go get github.com/subfinder/subfinder && \
-  ln -s "${GOPATH}/bin/subfinder" /us/bin/subfinder
+  ln -s "${GOPATH}/bin/subfinder" /usr/bin/subfinder
 
   geoipupdate
 
