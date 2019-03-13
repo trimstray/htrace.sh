@@ -53,6 +53,9 @@ function __main__() {
   # shellcheck disable=SC2034
   s_color="true"
 
+  # Path to ssl certificates (CA).
+  local _ssl_ca_path="/etc/ssl/certs/"
+
   # Default 'curl' command.
   local _curl_base=""
   local _curl_base_remote=""
@@ -611,6 +614,8 @@ function __main__() {
   local x2_trgb="4;3;38"
   # shellcheck disable=SC2034
   local z_trgb="1;39;44"
+  # shellcheck disable=SC2034
+  local v_trgb="2;0;94"
 
   # shellcheck disable=SC2086,SC2154
   if [[ "$HTRACE_COLORS" == "off" ]] ; then
