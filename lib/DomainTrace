@@ -291,10 +291,12 @@ function DomainTrace() {
 
       DomainSslCheck "$_domain_name"
 
-      DomainCertCheck "$_domain_name"
-
       # shellcheck disable=SC2154
       if [[ "$ssl_state" -eq 1 ]] ; then
+
+        DomainCertCheck "$_domain_name"
+
+        DomainChainCheck "$_domain_name"
 
         # shellcheck disable=SC2154
         if [[ "$_ssl_params_verify" == "OK" ]] ; then
