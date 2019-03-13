@@ -1,0 +1,212 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainChainCheck()
+#
+# Description:
+#   Check domain certificates chain.
+#
+# Usage:
+#   DomainChainCheck domain
+#
+# Examples:
+#   DomainChainCheck example.com
+#
+
+function DomainChainCheck() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainChainCheck"
+  local _STATE=0
+
+  # shellcheck disable=SC2034,SC2154
+  _ssl_remote_socket="${_domain_ip}:${_domain_port}"
+  # shellcheck disable=SC2154
+  _ssl_domain_name="$_domain_name"
+
+  _ssl_domain_cert_chain=$(echo | \
+                     openssl s_client -verify 5 -servername "$_ssl_domain_name" \
+                     -connect "$_ssl_remote_socket" 2>&1 | \
+                     sed -ne '/Certificate chain/,/---/p')
+
+  _ssl_domain_cert_chain_verify=$(echo "$_ssl_domain_cert_chain" | \
+                     grep -e "s:/" -e "i:/" | \
+                     grep -o "/CN=.*" | \
+                     cut -d "=" -f2- | \
+                     cut -d "/" -f1 | \
+                     awk '{$1=$1};1')
+
+  _ssl_domain_cert_chain_verify_stack=()
+  _ssl_domain_cert_chain_verify_stack_complete=()
+
+  _ssl_domain_cert_chain_verify_num=$(echo "$_ssl_domain_cert_chain_verify" | wc -l)
+
+  for i in $(seq 1 $_ssl_domain_cert_chain_verify_num) ; do
+
+    _ssl_domain_cert_chain_verify_first=$(echo "$_ssl_domain_cert_chain_verify" | \
+                    sed -n "${i}p" | cut -d "/" -f2- | cut -d "=" -f2-)
+
+    _ssl_domain_cert_chain_verify_stack+=("${_ssl_domain_cert_chain_verify_first}")
+
+  done
+
+  _c_counter=1
+  _chain_status=0
+
+  _root_certificate_duplicate=0
+
+  for i in $(seq 0 $(($_ssl_domain_cert_chain_verify_num - 1))) ; do
+
+    _last_cert=$(($_ssl_domain_cert_chain_verify_num - 1))
+    _last_cert_2=$(($_ssl_domain_cert_chain_verify_num - 2))
+
+    if [[ "$i" -eq 0 ]] ; then
+
+      # Server Certificate.
+      _ssl_domain_cert_chain_verify_stack_complete+=("S:${_ssl_domain_cert_chain_verify_stack[$i]}")
+
+    elif [[ "$i" -eq 1 ]] ; then
+
+      if [[ "${_ssl_domain_cert_chain_verify_stack[$i]}" == "${_ssl_domain_cert_chain_verify_stack[$_c_counter]}" ]] ; then
+
+        _ssl_domain_cert_chain_verify_stack_complete+=("I:${_ssl_domain_cert_chain_verify_stack[$i]}")
+
+      fi
+
+    elif [[ "$i" -eq 3 ]] && [[ "$i" -ne $((_ssl_domain_cert_chain_verify_num - 1)) ]] ; then
+
+      if [[ "${_ssl_domain_cert_chain_verify_stack[$i]}" == "${_ssl_domain_cert_chain_verify_stack[$_c_counter]}" ]] ; then
+
+        _ssl_domain_cert_chain_verify_stack_complete+=("I:${_ssl_domain_cert_chain_verify_stack[$i]}")
+
+      fi
+
+    elif [[ "$i" -eq $((_ssl_domain_cert_chain_verify_num - 1)) ]] ; then
+
+      if [[ "${_ssl_domain_cert_chain_verify_stack[$i]}" == "${_ssl_domain_cert_chain_verify_stack[$_last_cert]}" ]] ; then
+
+        _root_certificate_status=1
+
+
+        if [[ "${_ssl_domain_cert_chain_verify_stack[$i]}" == "${_ssl_domain_cert_chain_verify_stack[$_last_cert_2]}" ]] ; then
+
+          _root_certificate_duplicate=1
+
+        fi
+
+      fi
+
+      # shellcheck disable=SC2044
+      for j in $(find "$_ssl_ca_path" -name "*.pem") ; do
+
+        _root_certificate_cn=$(echo "${_ssl_domain_cert_chain_verify_stack[$i]}")
+
+        # shellcheck disable=SC2154
+        if openssl x509 -noout -subject -in "$j" | grep -q "$_root_certificate_cn" ; then
+
+          _chain_status=1
+
+          _ssl_domain_cert_chain_verify_stack_complete+=("R:${_ssl_domain_cert_chain_verify_stack[$i]}")
+
+          # break
+
+        fi
+
+      done
+
+    fi
+
+    _c_counter=$((_c_counter + 1))
+
+  done
+
+  _chain_of_trust_num="${#_ssl_domain_cert_chain_verify_stack_complete[@]}"
+
+  if [[ "$_chain_status" -eq 1 ]] ; then
+
+    # shellcheck disable=SC2086,SC2154
+    if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         chain: %s' \
+             "complete"
+
+    else
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         chain: \e['${g2_trgb}'m%s\e[m' \
+             "complete"
+
+    fi
+
+  elif [[ "$_chain_status" -eq 0 ]] ; then
+
+    # shellcheck disable=SC2086,SC2154
+    if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         chain: %s' \
+             "incomplete"
+
+    else
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         chain: \e['${e2_trgb}'m%s\e[m' \
+             "incomplete"
+
+    fi
+
+  else
+
+    # shellcheck disable=SC2086,SC2154
+    printf '         chain: %s' \
+           "unknown"
+
+  fi
+
+  _last_cert_num=$(($_chain_of_trust_num - 1))
+
+  for k in $(seq 0 $(($_chain_of_trust_num - 1))) ; do
+
+    # shellcheck disable=SC2086,SC2154
+    if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+      if [[ "$_last_cert_num" -eq "$k" ]] && \
+         [[ "$_root_certificate_duplicate" -eq 1 ]] ; then
+
+        printf '\n          %s:%s (%s)' \
+               "$k" "${_ssl_domain_cert_chain_verify_stack_complete[$k]}" \
+               "duplicate"
+
+      else
+
+        printf '\n          %s:%s' \
+               "$k" "${_ssl_domain_cert_chain_verify_stack_complete[$k]}"
+
+      fi
+
+    else
+
+      if [[ "$_last_cert_num" -eq "$k" ]] && \
+         [[ "$_root_certificate_duplicate" -eq 1 ]] ; then
+
+        printf '\n          \e['${x_trgb}'m%s:%s\e[m (\e['${d2_trgb}'m%s\e[m)' \
+               "$k" "${_ssl_domain_cert_chain_verify_stack_complete[$k]}" \
+               "duplicate"
+
+      else
+
+        printf '\n          \e['${x_trgb}'m%s:%s\e[m' \
+               "$k" "${_ssl_domain_cert_chain_verify_stack_complete[$k]}"
+
+      fi
+
+    fi
+
+  done
+
+  echo
+
+}

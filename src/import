@@ -14,8 +14,8 @@
 #   - lib/kill_process - file with your function
 #   - _fd_stack=("kill_process") - says to include this file in the script
 readonly _fd_stack=(DomainStrip DomainTrace DomainGeo PrintfHeaders \
-                    DomainSslCheck DomainCertCheck DomainScanTestssl \
-                    DomainScanObservatory DomainScanSsllabs \
+                    DomainSslCheck DomainCertCheck DomainChainCheck \
+                    DomainScanTestssl DomainScanObservatory DomainScanSsllabs \
                     DomainScanMixedContent DomainScanNmapNse DomainResolve \
                     DomainScanWhatWaf DomainScanSubFinder)
 
