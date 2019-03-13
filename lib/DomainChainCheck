@@ -65,13 +65,13 @@ function DomainChainCheck() {
     if [[ "$i" -eq 0 ]] ; then
 
       # Server Certificate.
-      _ssl_domain_cert_chain_verify_stack_complete+=("S:${_ssl_domain_cert_chain_verify_stack[$i]}")
+      _ssl_domain_cert_chain_verify_stack_complete+=("${_ssl_domain_cert_chain_verify_stack[$i]}")
 
     elif [[ "$i" -eq 1 ]] ; then
 
       if [[ "${_ssl_domain_cert_chain_verify_stack[$i]}" == "${_ssl_domain_cert_chain_verify_stack[$_c_counter]}" ]] ; then
 
-        _ssl_domain_cert_chain_verify_stack_complete+=("I:${_ssl_domain_cert_chain_verify_stack[$i]}")
+        _ssl_domain_cert_chain_verify_stack_complete+=("${_ssl_domain_cert_chain_verify_stack[$i]}")
 
       fi
 
@@ -79,7 +79,7 @@ function DomainChainCheck() {
 
       if [[ "${_ssl_domain_cert_chain_verify_stack[$i]}" == "${_ssl_domain_cert_chain_verify_stack[$_c_counter]}" ]] ; then
 
-        _ssl_domain_cert_chain_verify_stack_complete+=("I:${_ssl_domain_cert_chain_verify_stack[$i]}")
+        _ssl_domain_cert_chain_verify_stack_complete+=("${_ssl_domain_cert_chain_verify_stack[$i]}")
 
       fi
 
@@ -110,9 +110,9 @@ function DomainChainCheck() {
 
           _chain_status=1
 
-          _ssl_domain_cert_chain_verify_stack_complete+=("R:${_ssl_domain_cert_chain_verify_stack[$i]}")
+          _ssl_domain_cert_chain_verify_stack_complete+=("${_ssl_domain_cert_chain_verify_stack[$i]}")
 
-          # break
+          break
 
         fi
 
@@ -170,6 +170,9 @@ function DomainChainCheck() {
 
   _last_cert_num=$((_chain_of_trust_num - 1))
 
+  _t_rst=' '
+  _x_rst='  '
+
   for k in $(seq 0 $((_chain_of_trust_num - 1))) ; do
 
     # shellcheck disable=SC2086,SC2154
@@ -178,14 +181,14 @@ function DomainChainCheck() {
       if [[ "$_last_cert_num" -eq "$k" ]] && \
          [[ "$_root_certificate_duplicate" -eq 1 ]] ; then
 
-        printf '\n          %s:%s (%s)' \
-               "$k" "${_ssl_domain_cert_chain_verify_stack_complete[$k]}" \
+        printf '\n%s         └─%s:%s (%s)' \
+               "$_t_rst" "$k" "${_ssl_domain_cert_chain_verify_stack_complete[$k]}" \
                "duplicate"
 
       else
 
-        printf '\n          %s:%s' \
-               "$k" "${_ssl_domain_cert_chain_verify_stack_complete[$k]}"
+        printf '\n%s         └─%s:%s' \
+               "$_t_rst" "$k" "${_ssl_domain_cert_chain_verify_stack_complete[$k]}"
 
       fi
 
@@ -194,18 +197,20 @@ function DomainChainCheck() {
       if [[ "$_last_cert_num" -eq "$k" ]] && \
          [[ "$_root_certificate_duplicate" -eq 1 ]] ; then
 
-        printf '\n          \e['${x_trgb}'m%s:%s\e[m (\e['${d2_trgb}'m%s\e[m)' \
-               "$k" "${_ssl_domain_cert_chain_verify_stack_complete[$k]}" \
+        printf '\n%s         └─\e['${x_trgb}'m%s:%s\e[m (\e['${d2_trgb}'m%s\e[m)' \
+               "$_t_rst" "$k" "${_ssl_domain_cert_chain_verify_stack_complete[$k]}" \
                "duplicate"
 
       else
 
-        printf '\n          \e['${x_trgb}'m%s:%s\e[m' \
-               "$k" "${_ssl_domain_cert_chain_verify_stack_complete[$k]}"
+        printf '\n%s         └─\e['${x_trgb}'m%s:%s\e[m' \
+               "$_t_rst" "$k" "${_ssl_domain_cert_chain_verify_stack_complete[$k]}"
 
       fi
 
     fi
+
+    _t_rst+="$_x_rst"
 
   done
 
