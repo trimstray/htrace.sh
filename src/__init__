@@ -54,6 +54,7 @@ function __main__() {
   s_color="true"
 
   # Path to ssl certificates (CA).
+  # shellcheck disable=SC2034
   local _ssl_ca_path="/etc/ssl/certs/"
 
   # Default 'curl' command.

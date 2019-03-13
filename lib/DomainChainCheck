@@ -43,7 +43,7 @@ function DomainChainCheck() {
 
   _ssl_domain_cert_chain_verify_num=$(echo "$_ssl_domain_cert_chain_verify" | wc -l)
 
-  for i in $(seq 1 $_ssl_domain_cert_chain_verify_num) ; do
+  for i in $(seq 1 "$_ssl_domain_cert_chain_verify_num") ; do
 
     _ssl_domain_cert_chain_verify_first=$(echo "$_ssl_domain_cert_chain_verify" | \
                     sed -n "${i}p" | cut -d "/" -f2- | cut -d "=" -f2-)
@@ -57,10 +57,10 @@ function DomainChainCheck() {
 
   _root_certificate_duplicate=0
 
-  for i in $(seq 0 $(($_ssl_domain_cert_chain_verify_num - 1))) ; do
+  for i in $(seq 0 $((_ssl_domain_cert_chain_verify_num - 1))) ; do
 
-    _last_cert=$(($_ssl_domain_cert_chain_verify_num - 1))
-    _last_cert_2=$(($_ssl_domain_cert_chain_verify_num - 2))
+    _last_cert=$((_ssl_domain_cert_chain_verify_num - 1))
+    _last_cert_2=$((_ssl_domain_cert_chain_verify_num - 2))
 
     if [[ "$i" -eq 0 ]] ; then
 
@@ -87,6 +87,7 @@ function DomainChainCheck() {
 
       if [[ "${_ssl_domain_cert_chain_verify_stack[$i]}" == "${_ssl_domain_cert_chain_verify_stack[$_last_cert]}" ]] ; then
 
+        # shellcheck disable=SC2034
         _root_certificate_status=1
 
 
@@ -98,9 +99,10 @@ function DomainChainCheck() {
 
       fi
 
-      # shellcheck disable=SC2044
+      # shellcheck disable=SC2044,SC2154
       for j in $(find "$_ssl_ca_path" -name "*.pem") ; do
 
+        # shellcheck disable=SC2116
         _root_certificate_cn=$(echo "${_ssl_domain_cert_chain_verify_stack[$i]}")
 
         # shellcheck disable=SC2154
@@ -166,9 +168,9 @@ function DomainChainCheck() {
 
   fi
 
-  _last_cert_num=$(($_chain_of_trust_num - 1))
+  _last_cert_num=$((_chain_of_trust_num - 1))
 
-  for k in $(seq 0 $(($_chain_of_trust_num - 1))) ; do
+  for k in $(seq 0 $((_chain_of_trust_num - 1))) ; do
 
     # shellcheck disable=SC2086,SC2154
     if [[ "$HTRACE_COLORS" == "off" ]] ; then
@@ -208,5 +210,7 @@ function DomainChainCheck() {
   done
 
   echo
+
+  return $_STATE
 
 }
