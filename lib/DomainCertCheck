@@ -226,7 +226,7 @@ function DomainCertCheck() {
              "$_ssl_domain_public_key"
 
       # shellcheck disable=SC2086,SC2154
-      printf 'signature(\e['${s_trgb}'m%s\e[m)\n' \
+      printf 'signature(\e['${v_trgb}'m%s\e[m)\n' \
              "$_ssl_domain_signature"
 
       # shellcheck disable=SC2086,SC2154
@@ -251,7 +251,7 @@ function DomainCertCheck() {
 
       else
 
-        printf '         issuer: \e['${x_trgb}'m%s\e[m\n' \
+        printf '         issuer: \e['${p_trgb}'m%s\e[m\n' \
                "$_ssl_domain_issuer_o"
 
       fi
@@ -268,7 +268,7 @@ function DomainCertCheck() {
       else
 
         # shellcheck disable=SC2086,SC2154
-        printf '         issuer: (\e['${p_trgb}'m%s\e[m)\n' \
+        printf '         issuer: (\e['${x_trgb}'m%s\e[m)\n' \
                "$_ssl_domain_issuer_cn"
 
       fi
@@ -285,7 +285,7 @@ function DomainCertCheck() {
       else
 
         # shellcheck disable=SC2086,SC2154
-        printf '         issuer: \e['${x_trgb}'m%s\e[m (\e['${p_trgb}'m%s\e[m)\n' \
+        printf '         issuer: \e['${p_trgb}'m%s\e[m (\e['${x_trgb}'m%s\e[m)\n' \
                "$_ssl_domain_issuer_o" "$_ssl_domain_issuer_cn"
 
       fi
@@ -310,7 +310,7 @@ function DomainCertCheck() {
       else
 
         # shellcheck disable=SC2086,SC2154
-        printf '         owner: \e['${x_trgb}'m%s\e[m\n' \
+        printf '         owner: \e['${p_trgb}'m%s\e[m\n' \
                "$_ssl_domain_subject_o"
 
       fi
@@ -327,7 +327,7 @@ function DomainCertCheck() {
       else
 
         # shellcheck disable=SC2086,SC2154
-        printf '         owner: (\e['${p_trgb}'m%s\e[m)\n' \
+        printf '         owner: (\e['${x_trgb}'m%s\e[m)\n' \
                "$_ssl_domain_subject_ou"
 
       fi
@@ -344,7 +344,7 @@ function DomainCertCheck() {
       else
 
         # shellcheck disable=SC2086,SC2154
-        printf '         owner: \e['${x_trgb}'m%s\e[m (\e['${p_trgb}'m%s\e[m)\n' \
+        printf '         owner: \e['${p_trgb}'m%s\e[m (\e['${x_trgb}'m%s\e[m)\n' \
                "$_ssl_domain_subject_o" "$_ssl_domain_subject_ou"
 
       fi
@@ -368,7 +368,7 @@ function DomainCertCheck() {
       else
 
         # shellcheck disable=SC2086,SC2154
-        printf '         cn: \e['${x_trgb}'m%s\e[m\n' \
+        printf '         cn: \e['${p_trgb}'m%s\e[m\n' \
                "$_ssl_domain_cn"
 
       fi
@@ -392,7 +392,7 @@ function DomainCertCheck() {
       else
 
         # shellcheck disable=SC2086,SC2154
-        printf '         san: \e['${p_trgb}'m%s\e[m\n' \
+        printf '         san: \e['${x_trgb}'m%s\e[m\n' \
                "$_ssl_domain_san"
 
       fi

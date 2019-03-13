@@ -106,7 +106,7 @@ function DomainSslCheck() {
       printf '         ssl: \e['${g_trgb}'m%s\e[m, ' "on"
 
       # shellcheck disable=SC2086,SC2154
-      printf 'version(\e['${_ssl_trgb}'m%s\e[m), cipher(\e['${s_trgb}'m%s\e[m)\n' \
+      printf 'version(\e['${_ssl_trgb}'m%s\e[m), cipher(\e['${v_trgb}'m%s\e[m)\n' \
              "$_ssl_params_proto" \
              "$_ssl_params_cipher"
 
