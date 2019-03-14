@@ -87,7 +87,7 @@ function DomainChainCheck() {
     # Verify the first certificate.
     if [[ "$i" -eq 0 ]] ; then
 
-      if [[ "${_ssl_domain_cert_chain_verify_subjects_stack[$i]}" == "$_ssl_domain_name" ]] ; then
+      if [[ "${_ssl_domain_cert_chain_verify_subjects_stack[$i]}" == "$_ssl_domain_cn" ]] ; then
 
         _chain_stack_complete+=("${_ssl_domain_cert_chain_verify_subjects_stack[$i]}")
 
@@ -107,7 +107,7 @@ function DomainChainCheck() {
 
         _last_certificate_duplicate_id="⊙"
 
-      elif [[ "i" -eq "$_last_subject" ]] ; then
+      elif [[ "$i" -eq "$_last_subject" ]] ; then
 
         _chain_stack_complete+=("${_ssl_domain_cert_chain_verify_subjects_stack[$i]}")
 
@@ -123,32 +123,44 @@ function DomainChainCheck() {
 
   _chain_stack_complete+=("${_ssl_domain_cert_chain_verify_issuers_stack[$i]}")
 
-  _last_certificate_status=1
+  if [[ "$i" -eq "$_last_subject" ]] ; then
 
-  if [[ "$_last_certificate_status" -eq 1 ]] ; then
+      _last_certificate_status=1
 
-    # shellcheck disable=SC2044,SC2154
-    for j in $(find "$_ssl_ca_path" -name "*.pem") ; do
+      # shellcheck disable=SC2044,SC2154
+      for j in $(find "$_ssl_ca_path" -name "*.pem") ; do
 
-      # shellcheck disable=SC2116
-      _root_certificate_cn=$(echo "${_ssl_domain_cert_chain_verify_issuers_stack[$i]}")
+        # shellcheck disable=SC2116
+        _root_certificate_cn=$(echo "${_ssl_domain_cert_chain_verify_issuers_stack[$i]}")
 
-      # shellcheck disable=SC2154
-      if openssl x509 -noout -subject -in "$j" | grep -q "$_root_certificate_cn" ; then
+        # shellcheck disable=SC2154
+        if openssl x509 -noout -subject -in "$j" | grep -q "$_root_certificate_cn" ; then
 
-        _root_in_local_store=1
+          _root_in_local_store=1
 
-        break
+          _root_certificate_issuer=$(openssl x509 -noout -issuer -in "$j" | \
+                     grep -o "CN =.*" | \
+                     cut -d "=" -f2- | \
+                     cut -d "/" -f1 | \
+                     awk '{$1=$1};1')
 
-      else
+          break
 
-        _root_in_local_store=0
+        else
 
-      fi
+          _root_in_local_store=0
 
-    done
+          _root_certificate_issuer=$(openssl x509 -noout -issuer -in "$j" | \
+                     grep -o "CN =.*" | \
+                     cut -d "=" -f2- | \
+                     cut -d "/" -f1 | \
+                     awk '{$1=$1};1')
 
-  fi
+        fi
+
+      done
+
+    fi
 
   _chain_of_trust_num="${#_chain_stack_complete[@]}"
 
@@ -176,7 +188,7 @@ function DomainChainCheck() {
     if [[ "$HTRACE_COLORS" == "off" ]] ; then
 
       printf '\n%s         └─%s:%s %s' \
-             "$_t_rst" "$k" "${_chain_stack_complete[$k]}" "${_ssl_domain_cert_chain_verify_subjects_stack[$k]}"
+             "$_t_rst" "$k" "${_chain_stack_complete[$k]}"
 
       if [[ "$_server_certificate_status" -eq 1 ]] && \
          [[ "$k" -eq 0 ]] ; then
@@ -247,10 +259,18 @@ function DomainChainCheck() {
 
       fi
 
+      echo "${_ssl_domain_cert_chain_verify_subjects_stack[$k]}"
+      echo "${_ssl_domain_cert_chain_verify_issuers_stack[$k]}"
+
       if [[ "${_ssl_domain_cert_chain_verify_subjects_stack[$k]}" != "${_ssl_domain_cert_chain_verify_issuers_stack[$k]}" ]] ; then
 
         printf '\n%s           ├   \e['${x_trgb}'m%s\e[m' \
                "$_t_rst" "${_ssl_domain_cert_chain_verify_issuers_stack[$k]}"
+
+      elif [[ "$_root_certificate_issuer" == "${_chain_stack_complete[$k]}" ]] ; then
+
+        printf '\n%s           └ \e['${x_trgb}'m%s\e[m' \
+               "$_t_rst" "$_root_certificate_issuer"
 
       fi
 
