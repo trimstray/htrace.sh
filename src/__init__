@@ -600,8 +600,6 @@ function __main__() {
   # shellcheck disable=SC2034
   local d2_trgb="0;0;33"
   # shellcheck disable=SC2034
-  local s_trgb="2;2;34"
-  # shellcheck disable=SC2034
   local h_trgb="1;2;36"
   # shellcheck disable=SC2034
   local p_trgb="2;2;37"
