@@ -476,13 +476,13 @@ function DomainCertCheck() {
       if [[ "$HTRACE_COLORS" == "off" ]] ; then
 
         # shellcheck disable=SC2086,SC2154
-        printf '         validity: \e['${e2_trgb}'m%s\e[m\n' \
+        printf '         validity: %s\n' \
                "is not valid (hostname mismatch)"
 
       else
 
         # shellcheck disable=SC2086,SC2154
-        printf '         validity: %s\n' \
+        printf '         validity: \e['${e2_trgb}'m%s\e[m\n' \
                "is not valid (hostname mismatch)"
 
       fi
