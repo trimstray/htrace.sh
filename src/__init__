@@ -54,8 +54,17 @@ function __main__() {
   s_color="true"
 
   # Path to ssl certificates (CA).
-  # shellcheck disable=SC2034
-  local _ssl_ca_path="/etc/ssl/certs/"
+  if [[ -n "$HTRACE_SSL_PATH" ]] ; then
+
+    # shellcheck disable=SC2034
+    local _ssl_ca_path="$HTRACE_SSL_PATH"
+
+  else
+
+    # shellcheck disable=SC2034
+    local _ssl_ca_path="/etc/ssl/certs/"
+
+  fi
 
   # Default 'curl' command.
   local _curl_base=""
