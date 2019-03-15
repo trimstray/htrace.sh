@@ -276,8 +276,6 @@ function DomainChainCheck() {
 
       fi
 
-      fi
-
     else
 
       if [[ "$_last_subject_num" -ne "$k" ]] || \
