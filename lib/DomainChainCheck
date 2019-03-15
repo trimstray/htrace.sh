@@ -31,6 +31,7 @@ function DomainChainCheck() {
                      -connect "$_ssl_remote_socket" 2>&1 | \
                      sed -ne '/Certificate chain/,/---/p')
 
+  # shellcheck disable=SC2154
   if [[ "$_openssl_version" == "1.1.1a" ]] || \
      [[ "$_openssl_version" == "1.1.1b" ]] ; then
 
