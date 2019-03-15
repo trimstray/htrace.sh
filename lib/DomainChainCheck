@@ -146,12 +146,6 @@ function DomainChainCheck() {
 
           _root_in_local_store=0
 
-          _root_certificate_issuer=$(openssl x509 -noout -issuer -in "$j" | \
-                     grep -o "CN =.*" | \
-                     cut -d "=" -f2- | \
-                     cut -d "/" -f1 | \
-                     awk '{$1=$1};1')
-
         fi
 
       done
@@ -175,11 +169,24 @@ function DomainChainCheck() {
 
     _c_counter=$((k + 1))
 
+    if [[ "$_root_in_local_store" -eq 0 ]] ; then
+
+      _root_certificate_issuer="$_chain_fa"
+
+    fi
+
     # shellcheck disable=SC2086,SC2154
     if [[ "$HTRACE_COLORS" == "off" ]] ; then
 
       if [[ "$_last_subject_num" -ne "$k" ]] || \
          [[ "$_root_in_local_store" -eq 1 ]] ; then
+
+        printf '\n%s         └─%s:%s' \
+               "$_t_rst" "$k" "${_chain_complete[$k]}"
+
+        _init_certificate=1
+
+      elif [[ "$_root_certificate_issuer" == "${_chain_complete[$k]}" ]] ; then
 
         printf '\n%s         └─%s:%s' \
                "$_t_rst" "$k" "${_chain_complete[$k]}"
@@ -262,12 +269,26 @@ function DomainChainCheck() {
         printf '\n%s           └ %s' \
                "$_t_rst" "$_root_certificate_issuer"
 
+      elif [[ "$_root_in_local_store" -eq 1 ]] ; then
+
+        printf '\n%s           └ %s' \
+               "$_t_rst" "$_root_certificate_issuer"
+
+      fi
+
       fi
 
     else
 
       if [[ "$_last_subject_num" -ne "$k" ]] || \
          [[ "$_root_in_local_store" -eq 1 ]] ; then
+
+        printf '\n%s         └─\e['${b2_trgb}'m%s:%s\e[m' \
+               "$_t_rst" "$k" "${_chain_complete[$k]}"
+
+        _init_certificate=1
+
+      elif [[ "$_root_certificate_issuer" == "${_chain_complete[$k]}" ]] ; then
 
         printf '\n%s         └─\e['${b2_trgb}'m%s:%s\e[m' \
                "$_t_rst" "$k" "${_chain_complete[$k]}"
@@ -348,7 +369,12 @@ function DomainChainCheck() {
       elif [[ "$_root_certificate_issuer" == "${_chain_complete[$k]}" ]] ; then
 
         printf '\n%s           └ \e['${x_trgb}'m%s\e[m' \
-               "$_t_rst" "$_root_certificate_issuer"
+               "$_t_rst" "${_chain_complete[$k]}"
+
+      elif [[ "$_root_in_local_store" -eq 1 ]] ; then
+
+        printf '\n%s           └ \e['${x_trgb}'m%s\e[m' \
+               "$_t_rst" "${_chain_complete[$k]}"
 
       fi
 
