@@ -31,89 +31,83 @@ function DomainChainCheck() {
                      -connect "$_ssl_remote_socket" 2>&1 | \
                      sed -ne '/Certificate chain/,/---/p')
 
-  _ssl_domain_cert_chain_verify_subjects=$(echo "$_ssl_domain_cert_chain" | \
+  _chain_verify_subjects=$(echo "$_ssl_domain_cert_chain" | \
                      grep -e "s:/" | \
                      grep -o "/CN=.*" | \
                      cut -d "=" -f2- | \
                      cut -d "/" -f1 | \
                      awk '{$1=$1};1')
 
-  _ssl_domain_cert_chain_verify_issuers=$(echo "$_ssl_domain_cert_chain" | \
+  _chain_verify_issuers=$(echo "$_ssl_domain_cert_chain" | \
                      grep -e "i:/" | \
                      grep -o "/CN=.*" | \
                      cut -d "=" -f2- | \
                      cut -d "/" -f1 | \
                      awk '{$1=$1};1')
 
-  _chain_stack_complete=()
+  _chain_complete=()
 
-  _ssl_domain_cert_chain_verify_subjects_stack=()
-  _ssl_domain_cert_chain_verify_issuers_stack=()
+  _chain_verify_subjects_stack=()
+  _chain_verify_issuers_stack=()
 
-  _ssl_domain_cert_chain_verify_subjects_num=$(echo "$_ssl_domain_cert_chain_verify_subjects" | wc -l)
-  _ssl_domain_cert_chain_verify_issuers_num=$(echo "$_ssl_domain_cert_chain_verify_issuers" | wc -l)
+  _chain_verify_subjects_stack_num=$(echo "$_chain_verify_subjects" | wc -l)
+  _chain_verify_issuers_stack_num=$(echo "$_chain_verify_issuers" | wc -l)
 
-  for i in $(seq 1 "$_ssl_domain_cert_chain_verify_subjects_num") ; do
+  for i in $(seq 1 "$_chain_verify_subjects_stack_num") ; do
 
-    _ssl_domain_cert_chain_verify_subjects_first=$(echo "$_ssl_domain_cert_chain_verify_subjects" | \
+    _chain_verify_subjects_first=$(echo "$_chain_verify_subjects" | \
                     sed -n "${i}p" | cut -d "/" -f2- | cut -d "=" -f2-)
 
-    _ssl_domain_cert_chain_verify_subjects_stack+=("${_ssl_domain_cert_chain_verify_subjects_first}")
+    _chain_verify_subjects_stack+=("${_chain_verify_subjects_first}")
 
   done
 
-  for i in $(seq 1 "$_ssl_domain_cert_chain_verify_issuers_num") ; do
+  for i in $(seq 1 "$_chain_verify_issuers_stack_num") ; do
 
-    _ssl_domain_cert_chain_verify_issuers_first=$(echo "$_ssl_domain_cert_chain_verify_issuers" | \
+    _chain_verify_issuers_first=$(echo "$_chain_verify_issuers" | \
                     sed -n "${i}p" | cut -d "/" -f2- | cut -d "=" -f2-)
 
-    _ssl_domain_cert_chain_verify_issuers_stack+=("${_ssl_domain_cert_chain_verify_issuers_first}")
+    _chain_verify_issuers_stack+=("${_chain_verify_issuers_first}")
 
   done
 
-  _server_certificate_status=0
+  _first_certificate_status=0
   _last_certificate_status=0
   _last_certificate_duplicate=0
   _root_in_local_store=0
 
-  _last_subject=$((_ssl_domain_cert_chain_verify_subjects_num - 1))
-  _last_subject_2=$((_ssl_domain_cert_chain_verify_subjects_num - 2))
-
-  _last_issuer=$((_ssl_domain_cert_chain_verify_issuers_num - 1))
-  _last_issuer_2=$((_ssl_domain_cert_chain_verify_issuers_num - 2))
+  _last_subject=$((_chain_verify_subjects_stack_num - 1))
 
   for i in $(seq 0 "$_last_subject") ; do
 
     # Verify the first certificate.
     if [[ "$i" -eq 0 ]] ; then
 
-      if [[ "${_ssl_domain_cert_chain_verify_subjects_stack[$i]}" == "$_ssl_domain_cn" ]] ; then
+      if [[ "${_chain_verify_subjects_stack[$i]}" == "$_ssl_domain_cn" ]] ; then
 
-        _chain_stack_complete+=("${_ssl_domain_cert_chain_verify_subjects_stack[$i]}")
+        _chain_complete+=("${_chain_verify_subjects_stack[$i]}")
 
-        _server_certificate_status=1
+        _first_certificate_status=1
 
       else
 
-        _chain_stack_complete+=("${_ssl_domain_cert_chain_verify_subjects_stack[$i]}")
+        _chain_complete+=("${_chain_verify_subjects_stack[$i]}")
 
       fi
 
     else
 
-      if [[ "${_ssl_domain_cert_chain_verify_subjects_stack[$i]}" == "${_ssl_domain_cert_chain_verify_issuers_stack[$i]}" ]] ; then
+      if [[ "${_chain_verify_subjects_stack[$i]}" == "${_chain_verify_issuers_stack[$i]}" ]] ; then
 
         _last_certificate_duplicate=1
 
-        _last_certificate_duplicate_id="⊙"
-
       elif [[ "$i" -eq "$_last_subject" ]] ; then
 
-        _chain_stack_complete+=("${_ssl_domain_cert_chain_verify_subjects_stack[$i]}")
+        _chain_complete+=("${_chain_verify_subjects_stack[$i]}")
 
       else
 
-        _chain_stack_complete+=("${_ssl_domain_cert_chain_verify_subjects_stack[$i]}")
+        _chain_complete+=("${_chain_verify_subjects_stack[$i]}")
 
       fi
 
@@ -121,7 +115,7 @@ function DomainChainCheck() {
 
   done
 
-  _chain_stack_complete+=("${_ssl_domain_cert_chain_verify_issuers_stack[$i]}")
+  _chain_complete+=("${_chain_verify_issuers_stack[$i]}")
 
   if [[ "$i" -eq "$_last_subject" ]] ; then
 
@@ -131,7 +125,7 @@ function DomainChainCheck() {
       for j in $(find "$_ssl_ca_path" -name "*.pem") ; do
 
         # shellcheck disable=SC2116
-        _root_certificate_cn=$(echo "${_ssl_domain_cert_chain_verify_issuers_stack[$i]}")
+        _root_certificate_cn=$(echo "${_chain_verify_issuers_stack[$i]}")
 
         # shellcheck disable=SC2154
         if openssl x509 -noout -subject -in "$j" | grep -q "$_root_certificate_cn" ; then
@@ -162,7 +156,7 @@ function DomainChainCheck() {
 
     fi
 
-  _chain_of_trust_num="${#_chain_stack_complete[@]}"
+  _chain_of_trust_num="${#_chain_complete[@]}"
 
   # shellcheck disable=SC2086,SC2154
   if [[ "$HTRACE_COLORS" == "off" ]] ; then
@@ -182,92 +176,196 @@ function DomainChainCheck() {
   _t_rst=' '
   _x_rst='  '
 
+  _c_counter="0"
+  _init_certificate=0
+
   for k in $(seq 0 $((_chain_of_trust_num - 1))) ; do
+
+    _c_counter=$((k + 1))
 
     # shellcheck disable=SC2086,SC2154
     if [[ "$HTRACE_COLORS" == "off" ]] ; then
 
-      printf '\n%s         └─%s:%s %s' \
-             "$_t_rst" "$k" "${_chain_stack_complete[$k]}"
+      if [[ "$_last_subject_num" -ne "$k" ]] ; then
 
-      if [[ "$_server_certificate_status" -eq 1 ]] && \
-         [[ "$k" -eq 0 ]] ; then
+        printf '\n%s         └─%s:%s %s' \
+               "$_t_rst" "$k" "${_chain_complete[$k]}"
 
-        printf '%s ' \
-               "✓"
+        _init_certificate=1
 
-      elif [[ "$_server_certificate_status" -eq 0 ]] && \
-           [[ "$k" -eq 0 ]] ; then
+      elif [[ "$_root_in_local_store" -eq 1 ]] ; then
 
-        printf '%s ' \
-               "×"
+        printf '\n%s         └─%s:%s %s' \
+               "$_t_rst" "$k" "${_chain_complete[$k]}"
+
+        _init_certificate=1
+
+      else
+
+        _init_certificate=0
 
       fi
 
-      if [[ "$_root_in_local_store" -eq 1 ]] && \
-         [[ "$_last_subject_num" -eq "$k" ]] ; then
+      if [[ "$_init_certificate" -eq 1 ]] ; then
 
-        printf '%s ' \
-               "$_root_in_local_store_id"
+        if [[ "$_first_certificate_status" -eq 1 ]] && \
+           [[ "$k" -eq 0 ]] ; then
 
-      elif [[ "$_root_in_local_store" -eq 0 ]] && \
+          printf '%s ' \
+                 "★"
+
+        fi
+
+        if [[ "$_chain_fa" == "$_chain_fb" ]] ; then
+
+          printf '%s ' \
+                 "✓"
+
+        elif [[ "$_root_certificate_issuer" == "$_chain_fb" ]] ; then
+
+          printf '%s ' \
+                 "✓"
+
+        else
+
+          printf '%s ' \
+                 "×"
+
+        fi
+
+        if [[ "$_root_in_local_store" -eq 1 ]] && \
            [[ "$_last_subject_num" -eq "$k" ]] ; then
 
-        printf '%s ' \
-               "$_root_in_local_store_id"
+          printf '%s ' \
+                 "⊙"
+
+        elif [[ "$_root_in_local_store" -eq 0 ]] && \
+             [[ "$_last_subject_num" -eq "$k" ]] ; then
+
+          printf '%s ' \
+                 "⊙"
+
+        fi
+
+        if [[ "$_last_certificate_duplicate" -eq 1 ]] && \
+           [[ "$_last_subject_num" -eq "$k" ]] ; then
+
+          printf '%s ' \
+                 "2x"
+
+        fi
+
+      fi
+
+      if [[ "${_chain_verify_subjects_stack[$k]}" != "${_chain_verify_issuers_stack[$k]}" ]] ; then
+
+        if [[ "$_root_in_local_store" -eq 1 ]] ; then
+
+        printf '\n%s           ├   %s' \
+               "$_t_rst" "${_chain_verify_issuers_stack[$k]}"
+
+        elif [[ "$_root_in_local_store" -eq 0 ]] ; then
+
+          printf '\n%s           ├   %s' \
+                 "$_t_rst" "${_chain_verify_issuers_stack[$k]}"
+
+        fi
+
+      elif [[ "$_root_certificate_issuer" == "${_chain_complete[$k]}" ]] ; then
+
+        printf '\n%s           └ %s' \
+               "$_t_rst" "$_root_certificate_issuer"
 
       fi
 
     else
 
-      printf '\n%s         └─\e['${b2_trgb}'m%s:%s\e[m \e['${d2_trgb}'m%s\e[m' \
-             "$_t_rst" "$k" "${_chain_stack_complete[$k]}"
+      if [[ "$_last_subject_num" -ne "$k" ]] ; then
 
-      if [[ "$_server_certificate_status" -eq 1 ]] && \
-         [[ "$k" -eq 0 ]] ; then
+        printf '\n%s         └─\e['${b2_trgb}'m%s:%s\e[m \e['${d2_trgb}'m%s\e[m' \
+               "$_t_rst" "$k" "${_chain_complete[$k]}"
 
-        printf '\e['${g2_trgb}'m%s\e[m ' \
-               "✓"
+        _init_certificate=1
 
-      elif [[ "$_server_certificate_status" -eq 0 ]] && \
+      elif [[ "$_root_in_local_store" -eq 1 ]] ; then
+
+        printf '\n%s         └─\e['${b2_trgb}'m%s:%s\e[m \e['${d2_trgb}'m%s\e[m' \
+               "$_t_rst" "$k" "${_chain_complete[$k]}"
+
+        _init_certificate=1
+
+      else
+
+        _init_certificate=0
+
+      fi
+
+      if [[ "$_init_certificate" -eq 1 ]] ; then
+
+        if [[ "$_first_certificate_status" -eq 1 ]] && \
            [[ "$k" -eq 0 ]] ; then
 
-        printf '\e['${e2_trgb}'m%s\e[m ' \
-               "×"
+          printf '\e['${d2_trgb}'m%s\e[m ' \
+                 "★"
 
-      fi
+        fi
 
-      if [[ "$_root_in_local_store" -eq 1 ]] && \
-         [[ "$_last_subject_num" -eq "$k" ]] ; then
+        if [[ "$_chain_fa" == "$_chain_fb" ]] ; then
 
-        printf '\e['${d2_trgb}'m%s\e[m ' \
-               "✓"
+          printf '\e['${g2_trgb}'m%s\e[m ' \
+                 "✓"
 
-      elif [[ "$_root_in_local_store" -eq 0 ]] && \
+        elif [[ "$_root_certificate_issuer" == "$_chain_fb" ]] ; then
+
+          printf '\e['${g2_trgb}'m%s\e[m ' \
+                 "✓"
+
+        else
+
+          printf '\e['${e2_trgb}'m%s\e[m ' \
+                 "×"
+
+        fi
+
+        if [[ "$_root_in_local_store" -eq 1 ]] && \
            [[ "$_last_subject_num" -eq "$k" ]] ; then
 
-        printf '\e['${e2_trgb}'m%s\e[m ' \
-               "×"
+          printf '\e['${d2_trgb}'m%s\e[m ' \
+                 "⊙"
+
+        elif [[ "$_root_in_local_store" -eq 0 ]] && \
+             [[ "$_last_subject_num" -eq "$k" ]] ; then
+
+          printf '\e['${e2_trgb}'m%s\e[m ' \
+                 "⊙"
+
+        fi
+
+        if [[ "$_last_certificate_duplicate" -eq 1 ]] && \
+           [[ "$_last_subject_num" -eq "$k" ]] ; then
+
+          printf '\e['${d2_trgb}'m%s\e[m ' \
+                 "2x"
+
+        fi
 
       fi
 
-      if [[ "$_last_certificate_duplicate" -eq 1 ]] && \
-         [[ "$_last_subject_num" -eq "$k" ]] ; then
+      if [[ "${_chain_verify_subjects_stack[$k]}" != "${_chain_verify_issuers_stack[$k]}" ]] ; then
 
-        printf '\e['${d2_trgb}'m%s\e[m ' \
-               "⊙"
-
-      fi
-
-      echo "${_ssl_domain_cert_chain_verify_subjects_stack[$k]}"
-      echo "${_ssl_domain_cert_chain_verify_issuers_stack[$k]}"
-
-      if [[ "${_ssl_domain_cert_chain_verify_subjects_stack[$k]}" != "${_ssl_domain_cert_chain_verify_issuers_stack[$k]}" ]] ; then
+        if [[ "$_root_in_local_store" -eq 1 ]] ; then
 
         printf '\n%s           ├   \e['${x_trgb}'m%s\e[m' \
-               "$_t_rst" "${_ssl_domain_cert_chain_verify_issuers_stack[$k]}"
+               "$_t_rst" "${_chain_verify_issuers_stack[$k]}"
 
-      elif [[ "$_root_certificate_issuer" == "${_chain_stack_complete[$k]}" ]] ; then
+        elif [[ "$_root_in_local_store" -eq 0 ]] ; then
+
+          printf '\n%s           ├   \e['${x_trgb}'m%s\e[m' \
+                 "$_t_rst" "${_chain_verify_issuers_stack[$k]}"
+
+        fi
+
+      elif [[ "$_root_certificate_issuer" == "${_chain_complete[$k]}" ]] ; then
 
         printf '\n%s           └ \e['${x_trgb}'m%s\e[m' \
                "$_t_rst" "$_root_certificate_issuer"
@@ -275,6 +373,9 @@ function DomainChainCheck() {
       fi
 
     fi
+
+    _chain_fa="${_chain_complete[$_c_counter]}"
+    _chain_fb="${_chain_verify_issuers_stack[$k]}"
 
     _t_rst+="$_x_rst"
 
