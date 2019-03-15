@@ -83,6 +83,7 @@ function DomainChainCheck() {
     # Verify the first certificate.
     if [[ "$i" -eq 0 ]] ; then
 
+      # shellcheck disable=SC2154
       if [[ "${_chain_verify_subjects_stack[$i]}" == "$_ssl_domain_cn" ]] ; then
 
         _chain_complete+=("${_chain_verify_subjects_stack[$i]}")
@@ -119,6 +120,7 @@ function DomainChainCheck() {
 
   if [[ "$i" -eq "$_last_subject" ]] ; then
 
+      # shellcheck disable=SC2034
       _last_certificate_status=1
 
       # shellcheck disable=SC2044,SC2154
@@ -159,17 +161,7 @@ function DomainChainCheck() {
   _chain_of_trust_num="${#_chain_complete[@]}"
 
   # shellcheck disable=SC2086,SC2154
-  if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-    # shellcheck disable=SC2086,SC2154
-    printf '         chain of trust: %s'
-
-  else
-
-    # shellcheck disable=SC2086,SC2154
-    printf '         chain of trust: \e['${g2_trgb}'m%s\e[m'
-
-  fi
+  printf '         chain of trust:'
 
   _last_subject_num=$((_chain_of_trust_num - 1))
 
@@ -186,16 +178,10 @@ function DomainChainCheck() {
     # shellcheck disable=SC2086,SC2154
     if [[ "$HTRACE_COLORS" == "off" ]] ; then
 
-      if [[ "$_last_subject_num" -ne "$k" ]] ; then
+      if [[ "$_last_subject_num" -ne "$k" ]] || \
+         [[ "$_root_in_local_store" -eq 1 ]] ; then
 
-        printf '\n%s         └─%s:%s %s' \
-               "$_t_rst" "$k" "${_chain_complete[$k]}"
-
-        _init_certificate=1
-
-      elif [[ "$_root_in_local_store" -eq 1 ]] ; then
-
-        printf '\n%s         └─%s:%s %s' \
+        printf '\n%s         └─%s:%s' \
                "$_t_rst" "$k" "${_chain_complete[$k]}"
 
         _init_certificate=1
@@ -211,24 +197,24 @@ function DomainChainCheck() {
         if [[ "$_first_certificate_status" -eq 1 ]] && \
            [[ "$k" -eq 0 ]] ; then
 
-          printf '%s ' \
+          printf ' %s' \
                  "★"
 
         fi
 
         if [[ "$_chain_fa" == "$_chain_fb" ]] ; then
 
-          printf '%s ' \
+          printf ' %s' \
                  "✓"
 
         elif [[ "$_root_certificate_issuer" == "$_chain_fb" ]] ; then
 
-          printf '%s ' \
+          printf ' %s' \
                  "✓"
 
         else
 
-          printf '%s ' \
+          printf ' %s' \
                  "×"
 
         fi
@@ -236,13 +222,13 @@ function DomainChainCheck() {
         if [[ "$_root_in_local_store" -eq 1 ]] && \
            [[ "$_last_subject_num" -eq "$k" ]] ; then
 
-          printf '%s ' \
+          printf ' %s' \
                  "⊙"
 
         elif [[ "$_root_in_local_store" -eq 0 ]] && \
              [[ "$_last_subject_num" -eq "$k" ]] ; then
 
-          printf '%s ' \
+          printf ' %s' \
                  "⊙"
 
         fi
@@ -250,7 +236,7 @@ function DomainChainCheck() {
         if [[ "$_last_certificate_duplicate" -eq 1 ]] && \
            [[ "$_last_subject_num" -eq "$k" ]] ; then
 
-          printf '%s ' \
+          printf ' %s' \
                  "2x"
 
         fi
@@ -280,16 +266,10 @@ function DomainChainCheck() {
 
     else
 
-      if [[ "$_last_subject_num" -ne "$k" ]] ; then
+      if [[ "$_last_subject_num" -ne "$k" ]] || \
+         [[ "$_root_in_local_store" -eq 1 ]] ; then
 
-        printf '\n%s         └─\e['${b2_trgb}'m%s:%s\e[m \e['${d2_trgb}'m%s\e[m' \
-               "$_t_rst" "$k" "${_chain_complete[$k]}"
-
-        _init_certificate=1
-
-      elif [[ "$_root_in_local_store" -eq 1 ]] ; then
-
-        printf '\n%s         └─\e['${b2_trgb}'m%s:%s\e[m \e['${d2_trgb}'m%s\e[m' \
+        printf '\n%s         └─\e['${b2_trgb}'m%s:%s\e[m' \
                "$_t_rst" "$k" "${_chain_complete[$k]}"
 
         _init_certificate=1
@@ -305,24 +285,24 @@ function DomainChainCheck() {
         if [[ "$_first_certificate_status" -eq 1 ]] && \
            [[ "$k" -eq 0 ]] ; then
 
-          printf '\e['${d2_trgb}'m%s\e[m ' \
+          printf ' \e['${d2_trgb}'m%s\e[m' \
                  "★"
 
         fi
 
         if [[ "$_chain_fa" == "$_chain_fb" ]] ; then
 
-          printf '\e['${g2_trgb}'m%s\e[m ' \
+          printf ' \e['${g2_trgb}'m%s\e[m' \
                  "✓"
 
         elif [[ "$_root_certificate_issuer" == "$_chain_fb" ]] ; then
 
-          printf '\e['${g2_trgb}'m%s\e[m ' \
+          printf ' \e['${g2_trgb}'m%s\e[m' \
                  "✓"
 
         else
 
-          printf '\e['${e2_trgb}'m%s\e[m ' \
+          printf ' \e['${e2_trgb}'m%s\e[m' \
                  "×"
 
         fi
@@ -330,13 +310,13 @@ function DomainChainCheck() {
         if [[ "$_root_in_local_store" -eq 1 ]] && \
            [[ "$_last_subject_num" -eq "$k" ]] ; then
 
-          printf '\e['${d2_trgb}'m%s\e[m ' \
+          printf ' \e['${d2_trgb}'m%s\e[m' \
                  "⊙"
 
         elif [[ "$_root_in_local_store" -eq 0 ]] && \
              [[ "$_last_subject_num" -eq "$k" ]] ; then
 
-          printf '\e['${e2_trgb}'m%s\e[m ' \
+          printf ' \e['${e2_trgb}'m%s\e[m' \
                  "⊙"
 
         fi
@@ -344,7 +324,7 @@ function DomainChainCheck() {
         if [[ "$_last_certificate_duplicate" -eq 1 ]] && \
            [[ "$_last_subject_num" -eq "$k" ]] ; then
 
-          printf '\e['${d2_trgb}'m%s\e[m ' \
+          printf ' \e['${d2_trgb}'m%s\e[m' \
                  "2x"
 
         fi
