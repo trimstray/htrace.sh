@@ -231,7 +231,12 @@ function DomainChainCheck() {
 
         fi
 
-        if [[ "$_chain_fa" == "$_chain_fb" ]] ; then
+        if [[ "${_chain_verify_subjects_stack[$k]}" == "$_ssl_domain_cn" ]] ; then
+
+          printf ' %s' \
+                 "✓"
+
+        elif [[ "$_chain_fa" == "$_chain_fb" ]] ; then
 
           printf ' %s' \
                  "✓"
@@ -331,7 +336,12 @@ function DomainChainCheck() {
 
         fi
 
-        if [[ "$_chain_fa" == "$_chain_fb" ]] ; then
+        if [[ "${_chain_verify_subjects_stack[$k]}" == "$_ssl_domain_cn" ]] ; then
+
+          printf ' \e['${g2_trgb}'m%s\e[m' \
+                 "✓"
+
+        elif [[ "$_chain_fa" == "$_chain_fb" ]] ; then
 
           printf ' \e['${g2_trgb}'m%s\e[m' \
                  "✓"
