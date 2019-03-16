@@ -224,7 +224,7 @@ function __main__() {
 
   # Ends an error if the parameter or its argument is not valid.
   _getopt_state="$?"
-  if [ "$_getopt_state" != 0 ] ; then
+  if [[ "$_getopt_state" != 0 ]] ; then
     _exit_ "1"
   # Ends if no parameter is specified.
   elif [[ "${#__script_params[@]}" -eq 0 ]] ; then
