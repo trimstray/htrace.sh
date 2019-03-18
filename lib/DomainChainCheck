@@ -39,14 +39,14 @@ function DomainChainCheck() {
                       grep -e "s:" | \
                       grep -o "CN =.*" | \
                       cut -d "=" -f2- | \
-                      cut -d "/" -f1 | \
+                      cut -d "," -f1 | \
                       awk '{$1=$1};1')
 
     _chain_verify_issuers=$(echo "$_ssl_domain_cert_chain" | \
                       grep -e "i:" | \
                       grep -o "CN =.*" | \
                       cut -d "=" -f2- | \
-                      cut -d "/" -f1 | \
+                      cut -d "," -f1 | \
                       awk '{$1=$1};1')
 
   else
