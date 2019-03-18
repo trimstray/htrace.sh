@@ -168,6 +168,7 @@ function DomainCertCheck() {
   if [[ "$ssl_state" -eq 1 ]] ; then
 
     local _equal_state="0"
+    export _validity_state="0"
     local _all_common_names="$_ssl_domain_cn $_ssl_domain_san"
 
     IFS=" " read -r -a _common_names <<< "$(sort <<<"$_all_common_names")"
@@ -486,6 +487,8 @@ function DomainCertCheck() {
                "is not valid (hostname mismatch)"
 
       fi
+
+      _validity_state="1"
 
     fi
 
