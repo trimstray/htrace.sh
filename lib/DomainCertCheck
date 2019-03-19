@@ -210,7 +210,7 @@ function DomainCertCheck() {
     # shellcheck disable=SC2004
     _now_epoch=$(date +%s)
     _expiry_epoch=$(date -d "$_ssl_domain_not_after_expr" +%s)
-    _expiry_epoch_to_end="$((($_expiry_epoch - $_now_epoch) / (3600 * 24)))"
+    _expiry_epoch_to_end="$(((_expiry_epoch - _now_epoch) / (3600 * 24)))"
 
     if [[ "$_expiry_epoch" -gt "$_now_epoch" ]] ; then
 
