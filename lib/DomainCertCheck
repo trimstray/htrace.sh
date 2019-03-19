@@ -144,6 +144,8 @@ function DomainCertCheck() {
                      cut -d ":" -f2- | \
                      tr '\n' ' ')
 
+  _ssl_domain_not_after_expr="$_ssl_domain_not_after"
+
   if [[ "$_ssl_domain_public_key" == "4096 bit" ]] || \
      [[ "$_ssl_domain_public_key" == "256 bit" ]] ; then
 
@@ -205,6 +207,37 @@ function DomainCertCheck() {
 
     unset IFS
 
+    # shellcheck disable=SC2004
+    _now_epoch=$(date +%s)
+    _expiry_epoch=$(date -d "$_ssl_domain_not_after_expr" +%s)
+    _expiry_epoch_to_end="$((($_expiry_epoch - $_now_epoch) / (3600 * 24)))"
+
+    if [[ "$_expiry_epoch" -gt "$_now_epoch" ]] ; then
+
+      if [[ "$_expiry_epoch_to_end" -le 7 ]] ; then
+
+        _expr_time_msg="$_expiry_epoch_to_end days to expired"
+        _expr_time_trgb="$d2_trgb"
+
+      elif [[ "$_expiry_epoch_to_end" -le 2 ]] ; then
+
+        _expr_time_msg="$_expiry_epoch_to_end days to expired"
+        _expr_time_trgb="$i_trgb"
+
+      else
+
+        _expr_time_msg="$_expiry_epoch_to_end days to expired"
+        _expr_time_trgb="$g2_trgb"
+
+      fi
+
+    else
+
+      _expr_time_msg="expired"
+      _expr_time_trgb="$e2_trgb"
+
+    fi
+
     # shellcheck disable=SC2086,SC2154
     if [[ "$HTRACE_COLORS" == "off" ]] ; then
 
@@ -217,8 +250,8 @@ function DomainCertCheck() {
              "$_ssl_domain_signature"
 
       # shellcheck disable=SC2086,SC2154
-      printf '         date: %s / %s\n' \
-             "$_ssl_domain_not_before" "$_ssl_domain_not_after"
+      printf '         date: %s / %s (%s)\n' \
+             "$_ssl_domain_not_before" "$_ssl_domain_not_after" "$_expr_time_msg"
 
     else
 
@@ -231,8 +264,8 @@ function DomainCertCheck() {
              "$_ssl_domain_signature"
 
       # shellcheck disable=SC2086,SC2154
-      printf '         date: \e['${p_trgb}'m%s / %s\e[m\n' \
-             "$_ssl_domain_not_before" "$_ssl_domain_not_after"
+      printf '         date: \e['${p_trgb}'m%s / %s\e[m (\e['${_expr_time_trgb}'m%s\e[m)\n' \
+             "$_ssl_domain_not_before" "$_ssl_domain_not_after" "$_expr_time_msg"
 
     fi
 
