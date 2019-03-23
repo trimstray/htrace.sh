@@ -23,6 +23,7 @@ function DomainTrace() {
 
   local _host="$1"
   local _via_ip=""
+  local _via_ip_status="0"
 
   # shellcheck disable=SC2154
   if [[ "$dump_headers_state" -eq 1 ]] ; then
@@ -123,6 +124,7 @@ function DomainTrace() {
        [[ "$_domain_name" == "localhost" ]] ; then
 
       _via_ip="<int_link>"
+      _via_ip_status="1"
 
     else
 
@@ -131,6 +133,7 @@ function DomainTrace() {
       if [[ ! "$_via_ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
 
         _via_ip="unknown"
+        _via_ip_status="1"
 
       else
 
@@ -139,6 +142,7 @@ function DomainTrace() {
           if [[ "$_remote_socket" = *"$_ip"* ]] ; then
 
             _via_ip="<int_link>"
+            _via_ip_status="1"
 
           fi
 
@@ -150,11 +154,19 @@ function DomainTrace() {
 
     if [[ "$proxy_state" -eq 1 ]] ; then
 
-      DomainGeo "$_host_ip"
+      if [[ "$_via_ip_status" -eq "0" ]] ; then
+
+        DomainGeo "$_host_ip"
+
+      fi
 
     else
 
-      DomainGeo "$_remote_ip"
+      if [[ "$_via_ip_status" -eq "0" ]] ; then
+
+        DomainGeo "$_remote_ip"
+
+      fi
 
     fi
 
