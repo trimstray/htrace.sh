@@ -154,8 +154,8 @@ function _logger() {
   _conv_type=$(echo "$_type" | tr '[:lower:]' '[:upper:]')
 
   # shellcheck disable=SC2154
-  if [[ ! -d "$_log_directory" && ! -L "$_log_directory" ]] ; then
-    mkdir -p "$_log_directory" ; fi
+  if [[ ! -d "$_log" && ! -L "$_log" ]] ; then
+    mkdir -p "$_log" ; fi
 
   # Normal debug mode (output the same as the contents of the log file).
   # shellcheck disable=SC2154
@@ -785,6 +785,8 @@ function _before_init() {
 
   local _FUNCTION_ID="_before_init"
   local _STATE=0
+
+  mkdir -p "$_log"
 
   # shellcheck disable=2154
   cd "$_init_directory" || \

@@ -17,13 +17,11 @@ function __main__() {
   # Variables related to the log file. Divided into three parts due
   # to the better possibility of manipulation for the user.
   # shellcheck disable=SC2154
-  readonly _log_directory="${_rel}/log"
-  # shellcheck disable=SC2154
   readonly _log_file="${_init_name}.${_cdate}.log"
-  readonly _log_stdout="${_log_directory}/stdout.log"
-  readonly _log_path="${_log_directory}/${_log_file}"
+  readonly _log_stdout="${_log}/stdout.log"
+  readonly _log_path="${_log}/${_log_file}"
 
-  readonly _scan_output="${_log_directory}/scan.out"
+  readonly _scan_output="${_log}/scan.out"
 
   # shellcheck disable=SC2154
   readonly _user_agent_fd="${_src}/useragents"
@@ -146,7 +144,7 @@ function __main__() {
   # Set default User-Agent.
   # shellcheck disable=SC2034
   local user_agent_state="0"
-  local _user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
+  local _user_agent=""
 
   # Set redirects limit.
   local max_redirects_state="0"
@@ -244,6 +242,9 @@ function __main__() {
     _exit_ "1"
 
   fi
+
+  # Running tasks before start user functions.
+  _before_init
 
   # shellcheck disable=SC2154
   _logger "init" \
@@ -465,9 +466,6 @@ function __main__() {
       "starting debug mode"
 
   fi
-
-  # Running tasks before start user functions.
-  _before_init
 
   ################################# USER SPACE #################################
   # ````````````````````````````````````````````````````````````````````````````

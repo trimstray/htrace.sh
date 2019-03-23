@@ -75,11 +75,12 @@ readonly _rel="${_init_directory}/.."
 readonly _src="${_rel}/src"
 readonly _lib="${_rel}/lib"
 readonly _tmp="${_rel}/tmp"
+readonly _log="${_rel}/log"
 
+# shellcheck disable=SC1090
+source "${_src}/../config"
 # shellcheck disable=SC1090,SC1091
 source "${_src}/settings"
-# shellcheck disable=SC1090
-source "${_src}/config"
 # shellcheck disable=SC1090
 source "${_src}/helpers"
 # shellcheck disable=SC1090
