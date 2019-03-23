@@ -888,7 +888,7 @@ function __main__() {
       _http_last="$_http_redirect"
 
       # Init trace function.
-      DomainTrace "$_http_redirect"
+      InitTrace "$_http_redirect"
 
       _rcounter=$((_rcounter + 1))
 

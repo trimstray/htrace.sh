@@ -41,7 +41,7 @@ function DomainSslCheck() {
                        cut -d ":" -f2- | \
                        tr -d "[:space:]")
 
-  # This variable is used in DomainTrace().
+  # This variable is used in InitTrace().
   # shellcheck disable=SC2034
   _ssl_params_verify=$(echo "$_ssl_params_default" | \
                        grep "Verification: \\|Verification error: " | \

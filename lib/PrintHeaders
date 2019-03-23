@@ -3,22 +3,22 @@
 # shellcheck shell=bash
 
 # ``````````````````````````````````````````````````````````````````````````````
-# Function name: PrintfHeaders()
+# Function name: PrintHeaders()
 #
 # Description:
 #   Printf headers.
 #
 # Usage:
-#   PrintfHeaders domain
+#   PrintHeaders domain
 #
 # Examples:
-#   PrintfHeaders example.com
+#   PrintHeaders example.com
 #
 
-function PrintfHeaders() {
+function PrintHeaders() {
 
   # shellcheck disable=SC2034
-  local _FUNCTION_ID="PrintfHeaders"
+  local _FUNCTION_ID="PrintHeaders"
   local _STATE=0
 
   # shellcheck disable=SC2086,SC2154

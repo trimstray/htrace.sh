@@ -3,22 +3,22 @@
 # shellcheck shell=bash
 
 # ``````````````````````````````````````````````````````````````````````````````
-# Function name: DomainTrace()
+# Function name: InitTrace()
 #
 # Description:
 #   Trace domain.
 #
 # Usage:
-#   DomainTrace domain
+#   InitTrace domain
 #
 # Examples:
-#   DomainTrace example.com
+#   InitTrace example.com
 #
 
-function DomainTrace() {
+function InitTrace() {
 
   # shellcheck disable=SC2034
-  local _FUNCTION_ID="DomainTrace"
+  local _FUNCTION_ID="InitTrace"
   local _STATE=0
 
   local _host="$1"
@@ -228,13 +228,13 @@ function DomainTrace() {
     # shellcheck disable=SC2154
     if [[ "$dump_headers_state" -eq 1 ]] ; then
 
-      PrintfHeaders
+      PrintHeaders
 
     else
 
       if [[ "$_hcounter" -eq 1 ]] ; then
 
-        PrintfHeaders
+        PrintHeaders
 
         _hcounter=0
 
