@@ -87,6 +87,20 @@ function InitTrace() {
     _http_scheme=$(echo "$_http_output" | cut -d ":" -f9 | tr '[:upper:]' '[:lower:]')
     _http_redirect=$(echo "$_http_output" | cut -d ":" -f10-)
 
+    if [[ -z "$_http_code" ]] || \
+       [[ "$_http_code" == "000" ]] ; then
+
+      _http_code=""
+
+    fi
+
+    if [[ -z "$_http_version" ]] || \
+       [[ "$_http_version" == "0" ]] ; then
+
+      _http_version=""
+
+    fi
+
     # shellcheck disable=SC2154
     if [[ "$proxy_state" -eq 1 ]] ; then
 
@@ -121,14 +135,35 @@ function InitTrace() {
 
     # Get external IP (set https connection).
     # shellcheck disable=SC2154,SC2155
+    if [[ "$resolve_state" -eq 1 ]] ; then
+
+      if [[ "$resolve_type_ip" = "127."* ]] || \
+         [[ "$resolve_type_ip" == "localhost" ]] ; then
+
+        _via_ip_status="1"
+
+      else
+
+        _via_ip_status="0"
+
+      fi
+
+    fi
+
     if [[ "$_domain_name" = "127."* ]] || \
        [[ "$_domain_name" == "localhost" ]] ; then
 
-      _via_ip="<int_link>"
       _via_ip_status="1"
 
     else
 
+      _via_ip_status="0"
+
+    fi
+
+    if [[ "$_via_ip_status" -eq 0 ]] ; then
+
+      # shellcheck disable=SC2154
       _via_ip_tmp=$($_curl_base_remote -ks -m "$_timeout" http://whatismyip.akamai.com/)
 
       if [[ ! "$_via_ip_tmp" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
@@ -142,18 +177,19 @@ function InitTrace() {
 
           if [[ "$_remote_socket" = *"$_ip"* ]] ; then
 
-            _via_ip="<int_link>"
+            _via_ip="<local_net>"
             _via_ip_status="1"
-
-          else
-
-            _via_ip_status="0"
 
           fi
 
         done
 
       fi
+
+    else
+
+      _via_ip="<int_link>"
+      _via_ip_status="1"
 
     fi
 
