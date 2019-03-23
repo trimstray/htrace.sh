@@ -25,7 +25,8 @@ function DomainStrip() {
 
   # Extract the protocol (includes trailing "://").
   _http_proto=$(echo "$_uri" | sed -nr 's,^(.*://).*,\1,p')
-  _http_proto_only=$(echo $_http_proto | cut -d ':' -f1)
+  # shellcheck disable=SC2034
+  _http_proto_only=$(echo "$_http_proto" | cut -d ':' -f1)
 
   # shellcheck disable=SC2116
   # Remove the protocol from the URL.

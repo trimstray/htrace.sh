@@ -714,6 +714,7 @@ function __main__() {
   if [[ "$resolve_state" -eq 1 ]] ; then
 
     resolve_type_ip=$(echo "$resolve_type" | awk -v FS="(:|:)" '{print $1}')
+    # shellcheck disable=SC2154
     resolve_type_port="$_http_proto_only"
 
     if [[ "$resolve_type_port" == "http" ]] ; then
@@ -726,6 +727,7 @@ function __main__() {
 
     fi
 
+    # shellcheck disable=SC2154
     _resolve_type_data="--resolve ${_domain_name}:${resolve_type_port_num}:${resolve_type_ip}"
 
   else
