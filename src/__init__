@@ -714,30 +714,40 @@ function __main__() {
   if [[ "$resolve_state" -eq 1 ]] ; then
 
     resolve_type_ip=$(echo "$resolve_type" | awk -v FS="(:|:)" '{print $1}')
-    # shellcheck disable=SC2154
-    resolve_type_port="$_http_proto_only"
+    resolve_type_port=$(echo "$resolve_type" | awk -v FS="(:|:)" '{print $2}')
 
-    if [[ "$resolve_type_port" == "http" ]] ; then
+    if [[ -z "$resolve_type_port" ]] ; then
 
-      resolve_type_port_num="80"
+      # shellcheck disable=SC2154
+      if [[ "$_http_proto_only" == "http" ]] ; then
+
+        resolve_type_port_num="80"
+
+      else
+
+        resolve_type_port_num="443"
+
+      fi
 
     else
 
-      resolve_type_port_num="443"
+      resolve_type_port_num="$resolve_type_port"
 
     fi
 
     # shellcheck disable=SC2154
-    _resolve_type_data="--resolve ${_domain_name}:${resolve_type_port_num}:${resolve_type_ip}"
+    _resolve_type_data="${_domain_name}:${resolve_type_port_num}:${resolve_type_ip}"
+    _resolve_type_curl="--resolve $_resolve_type_data"
 
   else
 
     _resolve_type_data=""
+    _resolve_type_curl="$_resolve_type_data"
 
   fi
 
-  _curl_base+=" $_resolve_type_data "
-  _curl_base_remote+=" $_resolve_type_data "
+  _curl_base+=" $_resolve_type_curl "
+  _curl_base_remote+=" $_resolve_type_curl "
 
   # shellcheck disable=SC2086,SC2154
   if [[ "$HTRACE_COLORS" == "off" ]] ; then
@@ -785,6 +795,23 @@ function __main__() {
 
     fi
 
+    if [[ "$resolve_state" -eq 1 ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+        printf '         - resolve: %s\n' \
+               "$_resolve_type_data"
+
+      else
+
+        printf '         - resolve: \e['${b2_trgb}'m%s\e[m\n' \
+               "$_resolve_type_data"
+
+      fi
+
+    fi
+
   else
 
     # shellcheck disable=SC2086,SC2154
@@ -812,6 +839,23 @@ function __main__() {
 
         printf '         - cache-bypass-value: \e['${b2_trgb}'m%s\e[m\n' \
                "$cache_bypass_type"
+
+      fi
+
+    fi
+
+    if [[ "$resolve_state" -eq 1 ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      if [[ "$HTRACE_COLORS" == "off" ]] ; then
+
+        printf '         - resolve: %s\n' \
+               "$_resolve_type_data"
+
+      else
+
+        printf '         - resolve: \e['${b2_trgb}'m%s\e[m\n' \
+               "$_resolve_type_data"
 
       fi
 
