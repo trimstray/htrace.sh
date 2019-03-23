@@ -78,7 +78,7 @@ docker run --rm -it --name htrace.sh htrace.sh -u https://nmap.org -s -h
 Provides the following options:
 
 ```
-    htrace.sh v1.1.3
+    htrace.sh v1.1.4
 
   Usage:
 
