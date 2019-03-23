@@ -106,6 +106,7 @@ Provides the following options:
         -M|--req-method <value>               set request method (default: GET)
         -H|--req-header <value>               set request header(s)
         -p|--proxy <value>                    set proxy server (not for external tools)
+        -r|--resolve <value>                  resolve the host+port to this address
 
     Security tools:
 

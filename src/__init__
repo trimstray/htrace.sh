@@ -110,6 +110,14 @@ function __main__() {
   local proxy_state="0"
   local proxy_type=""
 
+  # Default 'resolve' variable.
+  local resolve_state="0"
+  local resolve_type=""
+  local resolve_type_ip=""
+  local resolve_type_port=""
+  local resolve_type_port_num=""
+  local _resolve_type_data=""
+
   # Default state for all external security tools.
   local all_scans_state="0"
 
@@ -211,8 +219,9 @@ function __main__() {
 
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
-  local _short_opt="u:shbM:H:p:a"
-  local _long_opt="help,version,url:,ssl,headers,body,req-method:,req-header:,proxy:,all-scans,testssl,observatory,ssllabs,mixed-content,nse,waf,dns,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
+  local _short_opt="u:shbM:H:p:r:a"
+  local _long_opt="help,version,url:,ssl,headers,body,req-method:,req-header:,proxy:,resolve:,all-scans,"
+        _long_opt+="testssl,observatory,ssllabs,mixed-content,nse,waf,dns,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -296,6 +305,14 @@ function __main__() {
         export proxy_state=1
 
         export proxy_type="${2}"
+
+        shift 2 ;;
+
+      -r|--resolve)
+
+        export resolve_state=1
+
+        export resolve_type="${2}"
 
         shift 2 ;;
 
@@ -693,6 +710,32 @@ function __main__() {
     fi
 
   fi
+
+  if [[ "$resolve_state" -eq 1 ]] ; then
+
+    resolve_type_ip=$(echo "$resolve_type" | awk -v FS="(:|:)" '{print $1}')
+    resolve_type_port="$_http_proto_only"
+
+    if [[ "$resolve_type_port" == "http" ]] ; then
+
+      resolve_type_port_num="80"
+
+    else
+
+      resolve_type_port_num="443"
+
+    fi
+
+    _resolve_type_data="--resolve ${_domain_name}:${resolve_type_port_num}:${resolve_type_ip}"
+
+  else
+
+    _resolve_type_data=""
+
+  fi
+
+  _curl_base+=" $_resolve_type_data "
+  _curl_base_remote+=" $_resolve_type_data "
 
   # shellcheck disable=SC2086,SC2154
   if [[ "$HTRACE_COLORS" == "off" ]] ; then
