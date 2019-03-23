@@ -1,0 +1,7 @@
+# Set output colors.
+# shellcheck disable=SC2034
+HTRACE_COLORS="on"
+
+# Set path to certificates.
+# shellcheck disable=SC2034
+HTRACE_SSL_PATH="/etc/ssl/certs/"

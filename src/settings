@@ -34,11 +34,3 @@ trap "_get_trap_SIG EXIT" EXIT
 
 # shellcheck disable=SC2173
 # trap "_get_trap_SIG SIGS" SIGHUP SIGTERM SIGKILL SIGINT
-
-# Set output colors.
-# shellcheck disable=SC2034
-HTRACE_COLORS="on"
-
-# Set path to certificates.
-# shellcheck disable=SC2034
-HTRACE_SSL_PATH="/etc/ssl/certs/"
