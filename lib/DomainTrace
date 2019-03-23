@@ -23,6 +23,7 @@ function DomainTrace() {
 
   local _host="$1"
   local _via_ip=""
+  local _via_ip_tmp=""
   local _via_ip_status="0"
 
   # shellcheck disable=SC2154
@@ -128,9 +129,9 @@ function DomainTrace() {
 
     else
 
-      _via_ip=$($_curl_base_remote -ks -m "$_timeout" http://whatismyip.akamai.com/)
+      _via_ip_tmp=$($_curl_base_remote -ks -m "$_timeout" http://whatismyip.akamai.com/)
 
-      if [[ ! "$_via_ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
+      if [[ ! "$_via_ip_tmp" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
 
         _via_ip="unknown"
         _via_ip_status="1"
@@ -144,11 +145,21 @@ function DomainTrace() {
             _via_ip="<int_link>"
             _via_ip_status="1"
 
+          else
+
+            _via_ip_status="0"
+
           fi
 
         done
 
       fi
+
+    fi
+
+    if [[ "$_via_ip_status" -eq "0" ]] ; then
+
+      _via_ip="$_via_ip_tmp"
 
     fi
 
