@@ -82,7 +82,7 @@ function _get_trap_SIG() {
     local _to_unset=("$PATH")
 
     # Running tasks before the end of the script.
-    _after_init
+    # _after_init
 
     # shellcheck disable=SC2034
     for i in "${_to_unset[@]}" ; do unset i ; done
@@ -112,6 +112,9 @@ function _get_trap_SIG() {
 
   # Normal cursor.
   tput cnorm
+
+  # Running tasks before the end of the script.
+  _after_init
 
   _logger "exit" \
     "$_FUNCTION_ID > ${_SIG_type} (${_STATE})"
