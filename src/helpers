@@ -817,8 +817,8 @@ function _before_init() {
 
     export HTRACE_COLORS="on"
 
-  if [[ "$HTRACE_COLORS" != "on" ]] || \
-     [[ "$HTRACE_COLORS" != "off" ]] ; then
+  elif [[ "$HTRACE_COLORS" != "on" ]] || \
+       [[ "$HTRACE_COLORS" != "off" ]] ; then
 
     export HTRACE_COLORS="on"
 
