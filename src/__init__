@@ -232,6 +232,12 @@ function __main__() {
 
   fi
 
+  if [[ "$HIDE_SRC_IP" == "on" ]] ; then
+
+    _hide_src_ip_state="1"
+
+  fi
+
   # We place here used commands at script runtime, as strings to anything
   # unnecessarily run.
   readonly commands=(basename dirname stat ps date grep cut sed awk chown \

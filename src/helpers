@@ -764,6 +764,17 @@ function _before_init() {
 
   fi
 
+  if [[ -z "$HIDE_SRC_IP" ]] ; then
+
+    export HIDE_SRC_IP="off"
+
+  elif [[ "$HIDE_SRC_IP" != "on" ]] || \
+       [[ "$HIDE_SRC_IP" != "off" ]] ; then
+
+    export HIDE_SRC_IP="off"
+
+  fi
+
   # Invisible cursor.
   # tput civis
 

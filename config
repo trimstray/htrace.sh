@@ -12,3 +12,8 @@ MAX_WIDTH="auto"
 # shellcheck disable=SC2034
 #   - /path/to/certs
 HTRACE_SSL_PATH="/etc/ssl/certs/"
+
+# Hide source ip addresses from output.
+# shellcheck disable=SC2034
+#   - on, off
+HIDE_SRC_IP="off"
