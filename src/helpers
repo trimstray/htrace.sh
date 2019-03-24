@@ -436,7 +436,7 @@ function _sprintf() {
   tput sgr0
 
   # shellcheck disable=SC2154
-  sed 's/^/         › /' "$_scan_output" | \
+  fmt -w "$MAX_WIDTH" -s "$_scan_output" | sed 's/^/         › /' | \
   sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" | \
   sed 's/\r//' | grep "› ."
 
@@ -812,6 +812,30 @@ function _before_init() {
     fi
 
   done
+
+  if [[ -z "$HTRACE_COLORS" ]] ; then
+
+    export HTRACE_COLORS="on"
+
+  if [[ "$HTRACE_COLORS" != "on" ]] || \
+     [[ "$HTRACE_COLORS" != "off" ]] ; then
+
+    export HTRACE_COLORS="on"
+
+  fi
+
+  # Path to ssl certificates (CA).
+  if [[ -n "$HTRACE_SSL_PATH" ]] ; then
+
+    # shellcheck disable=SC2034
+    local _ssl_ca_path="$HTRACE_SSL_PATH"
+
+  else
+
+    # shellcheck disable=SC2034
+    local _ssl_ca_path="/etc/ssl/certs/"
+
+  fi
 
   # Invisible cursor.
   # tput civis

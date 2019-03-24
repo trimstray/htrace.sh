@@ -53,19 +53,6 @@ function __main__() {
   # shellcheck disable=SC2034
   s_color="true"
 
-  # Path to ssl certificates (CA).
-  if [[ -n "$HTRACE_SSL_PATH" ]] ; then
-
-    # shellcheck disable=SC2034
-    local _ssl_ca_path="$HTRACE_SSL_PATH"
-
-  else
-
-    # shellcheck disable=SC2034
-    local _ssl_ca_path="/etc/ssl/certs/"
-
-  fi
-
   # Default 'curl' command.
   local _curl_base=""
   local _curl_base_remote=""
@@ -206,7 +193,7 @@ function __main__() {
   # We place here used commands at script runtime, as strings to anything
   # unnecessarily run.
   readonly commands=(basename dirname stat ps date grep cut sed awk chown \
-                     chmod mkdir curl openssl dig mmdblookup bc jq \
+                     chmod mkdir curl openssl dig mmdblookup bc jq fmt \
                      testssl.sh observatory ssllabs-scan \
                      mixed-content-scan nmap whatwaf subfinder)
 
