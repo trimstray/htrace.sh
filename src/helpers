@@ -825,15 +825,32 @@ function _before_init() {
   fi
 
   # Path to ssl certificates (CA).
-  if [[ -n "$HTRACE_SSL_PATH" ]] ; then
+  if [[ -z "$HTRACE_SSL_PATH" ]] ; then
 
     # shellcheck disable=SC2034
-    local _ssl_ca_path="$HTRACE_SSL_PATH"
+    local _ssl_ca_path="/etc/ssl/certs/"
 
   else
 
     # shellcheck disable=SC2034
-    local _ssl_ca_path="/etc/ssl/certs/"
+    local _ssl_ca_path="$HTRACE_SSL_PATH"
+
+  fi
+
+  _max_width_current=$(tput cols)
+
+  if [[ -z "$MAX_WIDTH" ]] || \
+     [[ "$MAX_WIDTH" == "auto" ]] ; then
+
+    if [[ "$_max_width_current" -gt 150 ]] ; then
+
+      export MAX_WIDTH="150"
+
+    else
+
+      export MAX_WIDTH=$((_max_width_current - 5))
+
+    fi
 
   fi
 

@@ -1,7 +1,14 @@
 # Set output colors.
 # shellcheck disable=SC2034
+#   - on, off
 HTRACE_COLORS="on"
+
+# Maximum output line width.
+# shellcheck disable=SC2034
+#   - <num>, auto
+MAX_WIDTH="auto"
 
 # Set path to certificates.
 # shellcheck disable=SC2034
+#   - /path/to/certs
 HTRACE_SSL_PATH="/etc/ssl/certs/"
