@@ -52,28 +52,15 @@ function DomainSslCheck() {
      # [[ "$_ssl_params_default" == *"No client certificate CA names sent"* ]] ; then
 
     # shellcheck disable=SC2086,SC2154
-    if [[ "$HTRACE_COLORS" == "off" ]] ; then
+    printf '\n    \e['${e_trgb}'m%s\e[m:\n\n\t%s\n\n' \
+           "SSL error" \
+           "- no peer certificate available"
+           # "- no client certificate CA names sent"
 
-      # shellcheck disable=SC2086,SC2154
-      printf '\n    %s:\n\n\t%s\n\n' \
-             "SSL error" \
-             "- no peer certificate available"
-             # "- no client certificate CA names sent"
-
-    else
-
-      # shellcheck disable=SC2086,SC2154
-      printf '\n    \e['${e_trgb}'m%s\e[m:\n\n\t%s\n\n' \
-             "SSL error" \
-             "- no peer certificate available"
-             # "- no client certificate CA names sent"
-
-    fi
-
-      _logger "stop" \
-        "${_FUNCTION_ID}()" \
-        "no peer certificate available"
-        # "no peer certificate available/no client certificate CA names sent"
+    _logger "stop" \
+      "${_FUNCTION_ID}()" \
+      "no peer certificate available"
+      # "no peer certificate available/no client certificate CA names sent"
 
   fi
 
@@ -91,26 +78,12 @@ function DomainSslCheck() {
   # shellcheck disable=SC2154
   if [[ "$ssl_state" -eq 1 ]] ; then
 
+    printf '         ssl: \e['${g_trgb}'m%s\e[m, ' "on"
+
     # shellcheck disable=SC2086,SC2154
-    if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-      printf '         ssl: %s, ' "on"
-
-      # shellcheck disable=SC2086,SC2154
-      printf 'version(%s), cipher(%s)\n' \
-             "$_ssl_params_proto" \
-             "$_ssl_params_cipher"
-
-    else
-
-      printf '         ssl: \e['${g_trgb}'m%s\e[m, ' "on"
-
-      # shellcheck disable=SC2086,SC2154
-      printf 'version(\e['${_ssl_trgb}'m%s\e[m), cipher(\e['${v_trgb}'m%s\e[m)\n' \
-             "$_ssl_params_proto" \
-             "$_ssl_params_cipher"
-
-    fi
+    printf 'version(\e['${_ssl_trgb}'m%s\e[m), cipher(\e['${v_trgb}'m%s\e[m)\n' \
+           "$_ssl_params_proto" \
+           "$_ssl_params_cipher"
 
   fi
 

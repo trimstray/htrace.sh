@@ -269,18 +269,8 @@ function _sprintf() {
 
         _n=$(( ( _n + 1 ) % 4 ))
 
-        # shellcheck disable=SC2086,SC2154
-        if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-          # shellcheck disable=SC2086
-          printf '\r » %s' "${_sc:_n:1}" ; tput sgr0
-
-        else
-
-          # shellcheck disable=SC2086
-          printf '\r » \e['${c_trgb}'m%s\e[m' "${_sc:_n:1}" ; tput sgr0
-
-        fi
+        # shellcheck disable=SC2086
+        printf '\r » \e['${c_trgb}'m%s\e[m' "${_sc:_n:1}" ; tput sgr0
 
         sleep 0.1
 
@@ -307,16 +297,7 @@ function _sprintf() {
       # shellcheck disable=SC2154
       if [[ "$printf_mode" == "verbose" ]] && [[ "$_s_type" == "info" ]] ; then
 
-        # shellcheck disable=SC2086,SC2154
-        if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-          printf '[%s] %s\n' "$s_char" "$_s_info"
-
-        else
-
-          printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
-
-        fi
+        printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
 
       else
 
@@ -328,29 +309,11 @@ function _sprintf() {
 
             c_trgb="1;39"
 
-            # shellcheck disable=SC2086,SC2154
-            if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-              printf '[%s] %s\n' "$s_char" "$_s_info"
-
-            else
-
-              printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
-
-            fi
+            printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
 
           else
 
-            # shellcheck disable=SC2086,SC2154
-            if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-              printf '[%s] %s\n' "$s_char" "$_s_info"
-
-            else
-
-              printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
-
-            fi
+            printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
 
           fi
 
@@ -360,29 +323,11 @@ function _sprintf() {
 
             c_trgb="1;43"
 
-            # shellcheck disable=SC2086,SC2154
-            if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-              printf '[%s] %s\n' "$s_char" "$_s_info"
-
-            else
-
-              printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
-
-            fi
+            printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
 
           else
 
-            # shellcheck disable=SC2086,SC2154
-            if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-              printf '[%s] %s\n' "$s_char" "$_s_info"
-
-            else
-
-              printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
-
-            fi
+            printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
 
           fi
 
@@ -392,29 +337,11 @@ function _sprintf() {
 
             c_trgb="1;41"
 
-            # shellcheck disable=SC2086,SC2154
-            if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-              printf '[%s] %s\n' "$s_char" "$_s_info"
-
-            else
-
-              printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
-
-            fi
+            printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
 
           else
 
-            # shellcheck disable=SC2086,SC2154
-            if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-              printf '[%s] %s\n' "$s_char" "$_s_info"
-
-            else
-
-              printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
-
-            fi
+            printf '[\e['${s_trgb}'m%s\e[m] %s\n' "$s_char" "$_s_info"
 
           fi
 
@@ -559,48 +486,27 @@ function _init_function() {
     _msg_y=$(echo "$_msg" | cut -d ":" -f2-)
 
     # shellcheck disable=SC2086,SC2154
-    if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-      # shellcheck disable=SC2086,SC2154
-      printf '    %s (%s)\n\n' \
-             "$_msg_x" "$_msg_y"
-
-    else
-
-      # shellcheck disable=SC2086,SC2154
-      printf '    \e['${c_trgb}'m%s\e[m \e['${p_trgb}'m(%s)\e[m\n\n' \
-             "$_msg_x" "$_msg_y"
-
-    fi
+    printf '    \e['${c_trgb}'m%s\e[m \e['${p_trgb}'m(%s)\e[m\n\n' \
+           "$_msg_x" "$_msg_y"
 
     _logger "info" \
       "${_FUNCTION_ID}()" \
       "$_msg"
 
-    # shellcheck disable=SC2086,SC2154
-    if [[ "$HTRACE_COLORS" == "off" ]] ; then
+    if [[ "$_scan_type" == "active" ]] ; then
 
       # shellcheck disable=SC2154
-      printf '       - scan-type: %s\n\n' "$_scan_type"
+      printf '       - scan-type: \e['${e2_trgb}'m%s\e[m\n\n' "$_scan_type"
+
+    elif [[ "$_scan_type" == "passive" ]] ; then
+
+      # shellcheck disable=SC2154
+      printf '       - scan-type: \e['${g2_trgb}'m%s\e[m\n\n' "$_scan_type"
 
     else
 
-      if [[ "$_scan_type" == "active" ]] ; then
-
-        # shellcheck disable=SC2154
-        printf '       - scan-type: \e['${e2_trgb}'m%s\e[m\n\n' "$_scan_type"
-
-      elif [[ "$_scan_type" == "passive" ]] ; then
-
-        # shellcheck disable=SC2154
-        printf '       - scan-type: \e['${g2_trgb}'m%s\e[m\n\n' "$_scan_type"
-
-      else
-
-        # shellcheck disable=SC2154
-        printf '       - scan-type: \e['${d2_trgb}'m%s\e[m\n\n' "$_scan_type"
-
-      fi
+      # shellcheck disable=SC2154
+      printf '       - scan-type: \e['${d2_trgb}'m%s\e[m\n\n' "$_scan_type"
 
     fi
 

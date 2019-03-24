@@ -239,35 +239,16 @@ function DomainCertCheck() {
     fi
 
     # shellcheck disable=SC2086,SC2154
-    if [[ "$HTRACE_COLORS" == "off" ]] ; then
+    printf '         public-key(\e['${_pkey_trgb}'m%s\e[m), ' \
+           "$_ssl_domain_public_key"
 
-      # shellcheck disable=SC2086,SC2154
-      printf '         public-key(%s), ' \
-             "$_ssl_domain_public_key"
+    # shellcheck disable=SC2086,SC2154
+    printf 'signature(\e['${v_trgb}'m%s\e[m)\n' \
+           "$_ssl_domain_signature"
 
-      # shellcheck disable=SC2086,SC2154
-      printf 'signature(%s)\n' \
-             "$_ssl_domain_signature"
-
-      # shellcheck disable=SC2086,SC2154
-      printf '         date: %s / %s (%s)\n' \
-             "$_ssl_domain_not_before" "$_ssl_domain_not_after" "$_expr_time_msg"
-
-    else
-
-      # shellcheck disable=SC2086,SC2154
-      printf '         public-key(\e['${_pkey_trgb}'m%s\e[m), ' \
-             "$_ssl_domain_public_key"
-
-      # shellcheck disable=SC2086,SC2154
-      printf 'signature(\e['${v_trgb}'m%s\e[m)\n' \
-             "$_ssl_domain_signature"
-
-      # shellcheck disable=SC2086,SC2154
-      printf '         date: \e['${p_trgb}'m%s / %s\e[m (\e['${_expr_time_trgb}'m%s\e[m)\n' \
-             "$_ssl_domain_not_before" "$_ssl_domain_not_after" "$_expr_time_msg"
-
-    fi
+    # shellcheck disable=SC2086,SC2154
+    printf '         date: \e['${p_trgb}'m%s / %s\e[m (\e['${_expr_time_trgb}'m%s\e[m)\n' \
+           "$_ssl_domain_not_before" "$_ssl_domain_not_after" "$_expr_time_msg"
 
     if [[ -z "$_ssl_domain_issuer_o" ]] && \
        [[ -z "$_ssl_domain_issuer_cn" ]] ; then
@@ -277,52 +258,20 @@ function DomainCertCheck() {
 
     elif [[ -z "$_ssl_domain_issuer_o" ]] ; then
 
-      # shellcheck disable=SC2086,SC2154
-      if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-        printf '         issuer: %s\n' \
-               "$_ssl_domain_issuer_o"
-
-      else
-
-        printf '         issuer: \e['${p_trgb}'m%s\e[m\n' \
-               "$_ssl_domain_issuer_o"
-
-      fi
+      printf '         issuer: \e['${p_trgb}'m%s\e[m\n' \
+             "$_ssl_domain_issuer_o"
 
     elif [[ -z "$_ssl_domain_issuer_cn" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         issuer: (%s)\n' \
-               "$_ssl_domain_issuer_cn"
-
-      else
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         issuer: (\e['${x_trgb}'m%s\e[m)\n' \
-               "$_ssl_domain_issuer_cn"
-
-      fi
+      printf '         issuer: (\e['${x_trgb}'m%s\e[m)\n' \
+             "$_ssl_domain_issuer_cn"
 
     else
 
       # shellcheck disable=SC2086,SC2154
-      if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         issuer: %s (%s)\n' \
-               "$_ssl_domain_issuer_o" "$_ssl_domain_issuer_cn"
-
-      else
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         issuer: \e['${p_trgb}'m%s\e[m (\e['${x_trgb}'m%s\e[m)\n' \
-               "$_ssl_domain_issuer_o" "$_ssl_domain_issuer_cn"
-
-      fi
+      printf '         issuer: \e['${p_trgb}'m%s\e[m (\e['${x_trgb}'m%s\e[m)\n' \
+             "$_ssl_domain_issuer_o" "$_ssl_domain_issuer_cn"
 
     fi
 
@@ -335,53 +284,20 @@ function DomainCertCheck() {
     elif [[ -z "$_ssl_domain_subject_ou" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         owner: %s\n' \
-               "$_ssl_domain_subject_o"
-
-      else
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         owner: \e['${p_trgb}'m%s\e[m\n' \
-               "$_ssl_domain_subject_o"
-
-      fi
+      printf '         owner: \e['${p_trgb}'m%s\e[m\n' \
+             "$_ssl_domain_subject_o"
 
     elif [[ -z "$_ssl_domain_subject_o" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         owner: (%s)\n' \
-               "$_ssl_domain_subject_ou"
-
-      else
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         owner: (\e['${x_trgb}'m%s\e[m)\n' \
-               "$_ssl_domain_subject_ou"
-
-      fi
+      printf '         owner: (\e['${x_trgb}'m%s\e[m)\n' \
+             "$_ssl_domain_subject_ou"
 
     else
 
       # shellcheck disable=SC2086,SC2154
-      if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         owner: %s (%s)\n' \
-               "$_ssl_domain_subject_o" "$_ssl_domain_subject_ou"
-
-      else
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         owner: \e['${p_trgb}'m%s\e[m (\e['${x_trgb}'m%s\e[m)\n' \
-               "$_ssl_domain_subject_o" "$_ssl_domain_subject_ou"
-
-      fi
+      printf '         owner: \e['${p_trgb}'m%s\e[m (\e['${x_trgb}'m%s\e[m)\n' \
+             "$_ssl_domain_subject_o" "$_ssl_domain_subject_ou"
 
     fi
 
@@ -393,19 +309,8 @@ function DomainCertCheck() {
     else
 
       # shellcheck disable=SC2086,SC2154
-      if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         cn: %s\n' \
-               "$_ssl_domain_cn"
-
-      else
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         cn: \e['${p_trgb}'m%s\e[m\n' \
-               "$_ssl_domain_cn"
-
-      fi
+      printf '         cn: \e['${p_trgb}'m%s\e[m\n' \
+             "$_ssl_domain_cn"
 
     fi
 
@@ -417,19 +322,8 @@ function DomainCertCheck() {
     else
 
       # shellcheck disable=SC2086,SC2154
-      if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         san: %s\n' \
-               "$_ssl_domain_san"
-
-      else
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         san: \e['${x_trgb}'m%s\e[m\n' \
-               "$_ssl_domain_san"
-
-      fi
+      printf '         san: \e['${x_trgb}'m%s\e[m\n' \
+             "$_ssl_domain_san"
 
     fi
 
@@ -437,89 +331,34 @@ function DomainCertCheck() {
     if [[ "$_ssl_domain_names" == "$_ssl_domain_names_non_sni" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         sni: %s\n' \
-               "match"
-
-      else
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         sni: \e['${g2_trgb}'m%s\e[m\n' \
-               "match"
-
-      fi
+      printf '         sni: \e['${g2_trgb}'m%s\e[m\n' \
+             "match"
 
     elif [[ -z "$_ssl_domain_cert_non_sni" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         sni: %s\n' \
-               "no peer certificate available"
-
-      else
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         sni: \e['${e2_trgb}'m%s\e[m\n' \
-               "no peer certificate available"
-
-      fi
+      printf '         sni: \e['${e2_trgb}'m%s\e[m\n' \
+             "no peer certificate available"
 
     else
 
       # shellcheck disable=SC2086,SC2154
-      if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         sni: %s\n' \
-               "not match"
-
-      else
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         sni: \e['${e2_trgb}'m%s\e[m\n' \
-               "not match"
-
-      fi
+      printf '         sni: \e['${e2_trgb}'m%s\e[m\n' \
+             "not match"
 
     fi
 
     if [[ "$_equal_state" -eq 1 ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         validity: %s\n' \
-               "match"
-
-      else
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         validity: \e['${g2_trgb}'m%s\e[m\n' \
-               "match"
-
-      fi
+      printf '         validity: \e['${g2_trgb}'m%s\e[m\n' \
+             "match"
 
     else
 
       # shellcheck disable=SC2086,SC2154
-      if [[ "$HTRACE_COLORS" == "off" ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         validity: %s\n' \
-               "is not valid (hostname mismatch)"
-
-      else
-
-        # shellcheck disable=SC2086,SC2154
-        printf '         validity: \e['${e2_trgb}'m%s\e[m\n' \
-               "is not valid (hostname mismatch)"
-
-      fi
+      printf '         validity: \e['${e2_trgb}'m%s\e[m\n' \
+             "is not valid (hostname mismatch)"
 
       _validity_state="1"
 
