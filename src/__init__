@@ -152,43 +152,85 @@ function __main__() {
   # Default ip-mask value.
   local _hide_src_ip_state="0"
 
+  # shellcheck disable=SC2034
+  local _rd="0;0;0"
+
   # Set default colors for printf.
-  # shellcheck disable=SC2034
-  local _rd="0;0;29"
-  # shellcheck disable=SC2034
-  local b_trgb="1;2;30"
-  # shellcheck disable=SC2034
-  local b2_trgb="2;1;30"
-  # shellcheck disable=SC2034
-  local e_trgb="1;1;31"
-  # shellcheck disable=SC2034
-  local e2_trgb="0;0;31"
-  # shellcheck disable=SC2034
-  local g_trgb="1;1;32"
-  # shellcheck disable=SC2034
-  local g2_trgb="0;0;32"
-  # shellcheck disable=SC2034
-  local d_trgb="4;1;33"
-  # shellcheck disable=SC2034
-  local d2_trgb="0;0;33"
-  # shellcheck disable=SC2034
-  local i_trgb="1;2;93"
-  # shellcheck disable=SC2034
-  local h_trgb="1;2;36"
-  # shellcheck disable=SC2034
-  local p_trgb="2;2;37"
-  # shellcheck disable=SC2034
-  local p2_trgb="2;0;37"
-  # shellcheck disable=SC2034
-  local c_trgb="1;1;38"
-  # shellcheck disable=SC2034
-  local x_trgb="1;2;38"
-  # shellcheck disable=SC2034
-  local x2_trgb="4;3;38"
-  # shellcheck disable=SC2034
-  local z_trgb="1;39;44"
-  # shellcheck disable=SC2034
-  local v_trgb="2;0;94"
+  if [[ "$HTRACE_COLORS" == "on" ]] ; then
+
+    # shellcheck disable=SC2034
+    local b_trgb="1;2;30"
+    # shellcheck disable=SC2034
+    local b2_trgb="2;1;30"
+    # shellcheck disable=SC2034
+    local e_trgb="1;1;31"
+    # shellcheck disable=SC2034
+    local e2_trgb="0;0;31"
+    # shellcheck disable=SC2034
+    local g_trgb="1;1;32"
+    # shellcheck disable=SC2034
+    local g2_trgb="0;0;32"
+    # shellcheck disable=SC2034
+    local d_trgb="4;1;33"
+    # shellcheck disable=SC2034
+    local d2_trgb="0;0;33"
+    # shellcheck disable=SC2034
+    local i_trgb="1;2;93"
+    # shellcheck disable=SC2034
+    local h_trgb="1;2;36"
+    # shellcheck disable=SC2034
+    local p_trgb="2;2;37"
+    # shellcheck disable=SC2034
+    local p2_trgb="2;0;37"
+    # shellcheck disable=SC2034
+    local c_trgb="1;1;38"
+    # shellcheck disable=SC2034
+    local x_trgb="1;2;38"
+    # shellcheck disable=SC2034
+    local x2_trgb="4;3;38"
+    # shellcheck disable=SC2034
+    local z_trgb="1;39;44"
+    # shellcheck disable=SC2034
+    local v_trgb="2;0;94"
+
+  else
+
+    # shellcheck disable=SC2034
+    local b_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local b2_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local e_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local e2_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local g_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local g2_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local d_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local d2_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local i_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local h_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local p_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local p2_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local c_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local x_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local x2_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local z_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local v_trgb="$_rd"
+
+  fi
 
   # We place here used commands at script runtime, as strings to anything
   # unnecessarily run.
