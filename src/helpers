@@ -436,9 +436,9 @@ function _sprintf() {
   tput sgr0
 
   # shellcheck disable=SC2154
-  fmt -w "$MAX_WIDTH" -s "$_scan_output" | sed 's/^/         › /' | \
+  sed 's/^/         › /' "$_scan_output" | \
   sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" | \
-  sed 's/\r//' | grep "› ."
+  sed 's/\r//' | grep "› ." | fmt -w "$MAX_WIDTH" -s
 
   # shellcheck disable=SC2154
   : >"$_scan_output"

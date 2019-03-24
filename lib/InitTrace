@@ -447,7 +447,7 @@ function InitTrace() {
       echo
 
       < "${_tmp}/headers.dump" sed -e 's/^[ \t]*/         › /' | \
-      sed 's/\r//' | grep "› ."
+      sed 's/\r//' | grep "› ." | fmt -w "$MAX_WIDTH" -s
 
     fi
 
@@ -457,7 +457,7 @@ function InitTrace() {
       echo
 
       < "${_tmp}/body.dump" sed -e 's/^[ \t]*/         › /' | \
-      sed 's/\r//' | grep "› ."
+      sed 's/\r//' | grep "› ." | fmt -w "$MAX_WIDTH" -s
 
     fi
 
