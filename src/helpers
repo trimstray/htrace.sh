@@ -738,12 +738,12 @@ function _before_init() {
   if [[ -z "$HTRACE_SSL_PATH" ]] ; then
 
     # shellcheck disable=SC2034
-    local _ssl_ca_path="/etc/ssl/certs/"
+    export _ssl_ca_path="/etc/ssl/certs/"
 
   else
 
     # shellcheck disable=SC2034
-    local _ssl_ca_path="$HTRACE_SSL_PATH"
+    export _ssl_ca_path="$HTRACE_SSL_PATH"
 
   fi
 
