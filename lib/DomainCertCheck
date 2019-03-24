@@ -258,6 +258,7 @@ function DomainCertCheck() {
 
     elif [[ -z "$_ssl_domain_issuer_o" ]] ; then
 
+      # shellcheck disable=SC2086,SC2154
       printf '         issuer: \e['${p_trgb}'m%s\e[m\n' \
              "$_ssl_domain_issuer_o"
 

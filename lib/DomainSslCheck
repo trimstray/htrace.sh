@@ -78,6 +78,7 @@ function DomainSslCheck() {
   # shellcheck disable=SC2154
   if [[ "$ssl_state" -eq 1 ]] ; then
 
+    # shellcheck disable=SC2086
     printf '         ssl: \e['${g_trgb}'m%s\e[m, ' "on"
 
     # shellcheck disable=SC2086,SC2154
