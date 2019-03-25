@@ -189,6 +189,12 @@ function __main__() {
     # shellcheck disable=SC2034
     local x2_trgb="4;3;38"
     # shellcheck disable=SC2034
+    local k_trgb="6;31;40"
+    # shellcheck disable=SC2034
+    local k2_trgb="3;37;40"
+    # shellcheck disable=SC2034
+    local k3_trgb="6;36;40"
+    # shellcheck disable=SC2034
     local z_trgb="1;39;44"
     # shellcheck disable=SC2034
     local v_trgb="2;0;94"
@@ -224,7 +230,11 @@ function __main__() {
     # shellcheck disable=SC2034
     local x_trgb="$_rd"
     # shellcheck disable=SC2034
-    local x2_trgb="$_rd"
+    local k_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local k2_trgb="$_rd"
+    # shellcheck disable=SC2034
+    local k3_trgb="$_rd"
     # shellcheck disable=SC2034
     local z_trgb="$_rd"
     # shellcheck disable=SC2034
@@ -759,41 +769,27 @@ function __main__() {
   # Show http(s) domain trace.
   if [[ "$req_method_type" == "POST" ]] ; then
 
-    printf '\n         - request-method: \e['${b2_trgb}'m%s\e[m (payload: \e['${p_trgb}'m%s\e[m)\n' \
-           "$req_method_type" "$req_method_post_value"
-
-    if [[ "$cache_bypass_state" -eq 1 ]] ; then
-
-      printf '         - cache-bypass-value: \e['${b2_trgb}'m%s\e[m\n' \
-             "$cache_bypass_type"
-
-    fi
-
-    if [[ "$resolve_state" -eq 1 ]] ; then
-
-      printf '         - resolve: \e['${b2_trgb}'m%s\e[m\n' \
-             "$_resolve_type_data"
-
-    fi
+    printf '\n         » request-method: \e['${k_trgb}'m%s\e[m\n                           \e['${k2_trgb}'m%s\e[m\n' \
+           "$req_method_type" "$(echo "$req_method_post_value" | tr -d "'")"
 
   else
 
-    printf '\n         - request-method: \e['${b2_trgb}'m%s\e[m\n' \
+    printf '\n         » request-method: \e['${k_trgb}'m%s\e[m\n' \
            "$req_method_type"
 
-    if [[ "$cache_bypass_state" -eq 1 ]] ; then
+  fi
 
-      printf '         - cache-bypass-value: \e['${b2_trgb}'m%s\e[m\n' \
-             "$cache_bypass_type"
+  if [[ "$cache_bypass_state" -eq 1 ]] ; then
 
-    fi
+    printf '         » cache-bypass:   \e['${k2_trgb}'m%s\e[m\n' \
+           "$cache_bypass_type"
 
-    if [[ "$resolve_state" -eq 1 ]] ; then
+  fi
 
-      printf '         - resolve: \e['${b2_trgb}'m%s\e[m\n' \
-             "$_resolve_type_data"
+  if [[ "$resolve_state" -eq 1 ]] ; then
 
-    fi
+    printf '         » force-resolve:  \e['${k2_trgb}'m%s\e[m\n' \
+           "$_resolve_type_data"
 
   fi
 
