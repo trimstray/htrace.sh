@@ -132,7 +132,7 @@ COPY bin /opt/htrace.sh/bin/
 COPY lib /opt/htrace.sh/lib/
 COPY src /opt/htrace.sh/src/
 COPY static /opt/htrace.sh/static/
-COPY dependencies.sh setup.sh /opt/htrace.sh/
+COPY dependencies.sh setup.sh config /opt/htrace.sh/
 
 RUN ./setup.sh install
 
