@@ -130,7 +130,6 @@ WORKDIR /opt/htrace.sh
 
 COPY bin /opt/htrace.sh/bin/
 COPY lib /opt/htrace.sh/lib/
-COPY log /opt/htrace.sh/log/
 COPY src /opt/htrace.sh/src/
 COPY static /opt/htrace.sh/static/
 COPY dependencies.sh setup.sh /opt/htrace.sh/
