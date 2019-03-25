@@ -254,25 +254,26 @@ function DomainCertCheck() {
        [[ -z "$_ssl_domain_issuer_cn" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         issuer: <empty>\n'
+      printf '         issuer: \e['${x_trgb}'m%s\e[m\n' \
+             "<empty>"
 
     elif [[ -z "$_ssl_domain_issuer_o" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
       printf '         issuer: \e['${p_trgb}'m%s\e[m\n' \
-             "$_ssl_domain_issuer_o"
+             "$_ssl_domain_issuer_cn"
 
     elif [[ -z "$_ssl_domain_issuer_cn" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
       printf '         issuer: (\e['${x_trgb}'m%s\e[m)\n' \
-             "$_ssl_domain_issuer_cn"
+             "$_ssl_domain_issuer_o"
 
     else
 
       # shellcheck disable=SC2086,SC2154
       printf '         issuer: \e['${p_trgb}'m%s\e[m (\e['${x_trgb}'m%s\e[m)\n' \
-             "$_ssl_domain_issuer_o" "$_ssl_domain_issuer_cn"
+             "$_ssl_domain_issuer_cn" "$_ssl_domain_issuer_o"
 
     fi
 
@@ -280,7 +281,8 @@ function DomainCertCheck() {
        [[ -z "$_ssl_domain_subject_ou" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         owner: <empty>\n'
+      printf '         owner: \e['${x_trgb}'m%s\e[m\n' \
+             "<empty>"
 
     elif [[ -z "$_ssl_domain_subject_ou" ]] ; then
 
