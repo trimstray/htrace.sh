@@ -261,19 +261,22 @@ function DomainCertCheck() {
 
       # shellcheck disable=SC2086,SC2154
       printf '         issuer: \e['${p_trgb}'m%s\e[m\n' \
-             "$_ssl_domain_issuer_cn"
+             "$_ssl_domain_issuer_cn" | \
+             fmt -w "$MAX_WIDTH" -s
 
     elif [[ -z "$_ssl_domain_issuer_cn" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
       printf '         issuer: (\e['${x_trgb}'m%s\e[m)\n' \
-             "$_ssl_domain_issuer_o"
+             "$_ssl_domain_issuer_o" | \
+             fmt -w "$MAX_WIDTH" -s
 
     else
 
       # shellcheck disable=SC2086,SC2154
       printf '         issuer: \e['${p_trgb}'m%s\e[m (\e['${x_trgb}'m%s\e[m)\n' \
-             "$_ssl_domain_issuer_cn" "$_ssl_domain_issuer_o"
+             "$_ssl_domain_issuer_cn" "$_ssl_domain_issuer_o" | \
+             fmt -w "$MAX_WIDTH" -s
 
     fi
 
@@ -288,19 +291,22 @@ function DomainCertCheck() {
 
       # shellcheck disable=SC2086,SC2154
       printf '         owner: \e['${p_trgb}'m%s\e[m\n' \
-             "$_ssl_domain_subject_o"
+             "$_ssl_domain_subject_o" | \
+             fmt -w "$MAX_WIDTH" -s
 
     elif [[ -z "$_ssl_domain_subject_o" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
       printf '         owner: (\e['${x_trgb}'m%s\e[m)\n' \
-             "$_ssl_domain_subject_ou"
+             "$_ssl_domain_subject_ou" | \
+             fmt -w "$MAX_WIDTH" -s
 
     else
 
       # shellcheck disable=SC2086,SC2154
       printf '         owner: \e['${p_trgb}'m%s\e[m (\e['${x_trgb}'m%s\e[m)\n' \
-             "$_ssl_domain_subject_o" "$_ssl_domain_subject_ou"
+             "$_ssl_domain_subject_o" "$_ssl_domain_subject_ou" | \
+             fmt -w "$MAX_WIDTH" -s
 
     fi
 
@@ -313,7 +319,8 @@ function DomainCertCheck() {
 
       # shellcheck disable=SC2086,SC2154
       printf '         cn: \e['${p_trgb}'m%s\e[m\n' \
-             "$_ssl_domain_cn"
+             "$_ssl_domain_cn" | \
+             fmt -w "$MAX_WIDTH" -s
 
     fi
 
@@ -326,7 +333,8 @@ function DomainCertCheck() {
 
       # shellcheck disable=SC2086,SC2154
       printf '         san: \e['${x_trgb}'m%s\e[m\n' \
-             "$_ssl_domain_san"
+             "$_ssl_domain_san" | \
+             fmt -w "$MAX_WIDTH" -s
 
     fi
 
