@@ -87,6 +87,7 @@ function __main__() {
   local req_method_type="GET"
   local req_method_post=""
   local req_method_post_value=""
+  local req_method_post_value_status="0"
 
   # Default 'header' variable.
   local req_header_state="0"
@@ -550,9 +551,11 @@ function __main__() {
 
     fi
 
-    if [[ -z "$req_method_post_value" ]] ; then
+    if [[ -z "$req_method_post_value" ]] || \
+       [[ "$req_method_post" == "$req_method_post_value" ]] ; then
 
       req_method_post_value=""
+      req_method_post_value_status="1"
 
     fi
 
@@ -769,8 +772,17 @@ function __main__() {
   # Show http(s) domain trace.
   if [[ "$req_method_type" == "POST" ]] ; then
 
-    printf '\n         » request-method: \e['${k_trgb}'m%s\e[m\n                           \e['${k2_trgb}'m%s\e[m\n' \
-           "$req_method_type" "$(echo "$req_method_post_value" | tr -d "'")"
+    if [[ "$req_method_post_value_status" -eq 1 ]] ; then
+
+      printf '\n         » request-method: \e['${k_trgb}'m%s\e[m\n' \
+             "$req_method_type"
+
+    else
+
+      printf '\n         » request-method: \e['${k_trgb}'m%s\e[m\n                           \e['${k2_trgb}'m%s\e[m\n' \
+             "$req_method_type" "$(echo "$req_method_post_value" | tr -d "'")"
+
+    fi
 
   else
 
