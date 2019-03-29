@@ -178,8 +178,6 @@ function __main__() {
     # shellcheck disable=SC2034
     local trgb_3300="0;0;33"
     # shellcheck disable=SC2034
-    local trgb_9312="1;2;93"
-    # shellcheck disable=SC2034
     local trgb_3612="1;2;36"
     # shellcheck disable=SC2034
     local trgb_3722="2;2;37"
@@ -199,6 +197,8 @@ function __main__() {
     local trgb_40636="6;36;40"
     # shellcheck disable=SC2034
     local trgb_44139="1;39;44"
+    # shellcheck disable=SC2034
+    local trgb_9312="1;2;93"
     # shellcheck disable=SC2034
     local trgb_9420="2;0;94"
 
@@ -221,8 +221,6 @@ function __main__() {
     # shellcheck disable=SC2034
     local trgb_3300="$_rd"
     # shellcheck disable=SC2034
-    local trgb_9312="$_rd"
-    # shellcheck disable=SC2034
     local trgb_3612="$_rd"
     # shellcheck disable=SC2034
     local trgb_3722="$_rd"
@@ -240,6 +238,8 @@ function __main__() {
     local trgb_40636="$_rd"
     # shellcheck disable=SC2034
     local trgb_44139="$_rd"
+    # shellcheck disable=SC2034
+    local trgb_9312="$_rd"
     # shellcheck disable=SC2034
     local trgb_9420="$_rd"
 
