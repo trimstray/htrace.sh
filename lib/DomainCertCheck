@@ -150,19 +150,19 @@ function DomainCertCheck() {
      [[ "$_ssl_domain_public_key" == "256 bit" ]] ; then
 
     # shellcheck disable=SC2154
-    local _pkey_trgb="$g2_trgb"
+    local _pkey_trgb="$trgb_3200"
 
   elif [[ "$_ssl_domain_public_key" == "2048 bit" ]] || \
        [[ "$_ssl_domain_public_key" == "224 bit" ]] || \
        [[ "$_ssl_domain_public_key" == "192 bit" ]] ; then
 
     # shellcheck disable=SC2154
-    local _pkey_trgb="$d2_trgb"
+    local _pkey_trgb="$trgb_3300"
 
   else
 
     # shellcheck disable=SC2154
-    local _pkey_trgb="$e2_trgb"
+    local _pkey_trgb="$trgb_3100"
 
   fi
 
@@ -217,24 +217,24 @@ function DomainCertCheck() {
       if [[ "$_expiry_epoch_to_end" -le 7 ]] ; then
 
         _expr_time_msg="$_expiry_epoch_to_end days to expired"
-        _expr_time_trgb="$d2_trgb"
+        _expr_timtrgb_3111="$trgb_3300"
 
       elif [[ "$_expiry_epoch_to_end" -le 2 ]] ; then
 
         _expr_time_msg="$_expiry_epoch_to_end days to expired"
-        _expr_time_trgb="$i_trgb"
+        _expr_timtrgb_3111="$trgb_9312"
 
       else
 
         _expr_time_msg="$_expiry_epoch_to_end days to expired"
-        _expr_time_trgb="$g2_trgb"
+        _expr_timtrgb_3111="$trgb_3200"
 
       fi
 
     else
 
       _expr_time_msg="expired"
-      _expr_time_trgb="$e2_trgb"
+      _expr_timtrgb_3111="$trgb_3100"
 
     fi
 
@@ -243,38 +243,38 @@ function DomainCertCheck() {
            "$_ssl_domain_public_key"
 
     # shellcheck disable=SC2086,SC2154
-    printf 'signature(\e['${v_trgb}'m%s\e[m)\n' \
+    printf 'signature(\e['${trgb_9420}'m%s\e[m)\n' \
            "$_ssl_domain_signature"
 
     # shellcheck disable=SC2086,SC2154
-    printf '         date: \e['${p_trgb}'m%s / %s\e[m (\e['${_expr_time_trgb}'m%s\e[m)\n' \
+    printf '         date: \e['${trgb_3722}'m%s / %s\e[m (\e['${_expr_timtrgb_3111}'m%s\e[m)\n' \
            "$_ssl_domain_not_before" "$_ssl_domain_not_after" "$_expr_time_msg"
 
     if [[ -z "$_ssl_domain_issuer_o" ]] && \
        [[ -z "$_ssl_domain_issuer_cn" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         issuer: \e['${x_trgb}'m%s\e[m\n' \
+      printf '         issuer: \e['${trgb_3812}'m%s\e[m\n' \
              "<empty>"
 
     elif [[ -z "$_ssl_domain_issuer_o" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         issuer: \e['${p_trgb}'m%s\e[m\n' \
+      printf '         issuer: \e['${trgb_3722}'m%s\e[m\n' \
              "$_ssl_domain_issuer_cn" | \
              fmt -w "$MAX_WIDTH" -s
 
     elif [[ -z "$_ssl_domain_issuer_cn" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         issuer: (\e['${x_trgb}'m%s\e[m)\n' \
+      printf '         issuer: (\e['${trgb_3812}'m%s\e[m)\n' \
              "$_ssl_domain_issuer_o" | \
              fmt -w "$MAX_WIDTH" -s
 
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '         issuer: \e['${p_trgb}'m%s\e[m (\e['${x_trgb}'m%s\e[m)\n' \
+      printf '         issuer: \e['${trgb_3722}'m%s\e[m (\e['${trgb_3812}'m%s\e[m)\n' \
              "$_ssl_domain_issuer_cn" "$_ssl_domain_issuer_o" | \
              fmt -w "$MAX_WIDTH" -s
 
@@ -284,27 +284,27 @@ function DomainCertCheck() {
        [[ -z "$_ssl_domain_subject_ou" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         owner: \e['${x_trgb}'m%s\e[m\n' \
+      printf '         owner: \e['${trgb_3812}'m%s\e[m\n' \
              "<empty>"
 
     elif [[ -z "$_ssl_domain_subject_ou" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         owner: \e['${p_trgb}'m%s\e[m\n' \
+      printf '         owner: \e['${trgb_3722}'m%s\e[m\n' \
              "$_ssl_domain_subject_o" | \
              fmt -w "$MAX_WIDTH" -s
 
     elif [[ -z "$_ssl_domain_subject_o" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         owner: (\e['${x_trgb}'m%s\e[m)\n' \
+      printf '         owner: (\e['${trgb_3812}'m%s\e[m)\n' \
              "$_ssl_domain_subject_ou" | \
              fmt -w "$MAX_WIDTH" -s
 
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '         owner: \e['${p_trgb}'m%s\e[m (\e['${x_trgb}'m%s\e[m)\n' \
+      printf '         owner: \e['${trgb_3722}'m%s\e[m (\e['${trgb_3812}'m%s\e[m)\n' \
              "$_ssl_domain_subject_o" "$_ssl_domain_subject_ou" | \
              fmt -w "$MAX_WIDTH" -s
 
@@ -318,7 +318,7 @@ function DomainCertCheck() {
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '         cn: \e['${p_trgb}'m%s\e[m\n' \
+      printf '         cn: \e['${trgb_3722}'m%s\e[m\n' \
              "$_ssl_domain_cn" | \
              fmt -w "$MAX_WIDTH" -s
 
@@ -332,7 +332,7 @@ function DomainCertCheck() {
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '         san: \e['${x_trgb}'m%s\e[m\n' \
+      printf '         san: \e['${trgb_3812}'m%s\e[m\n' \
              "$_ssl_domain_san" | \
              fmt -w "$MAX_WIDTH" -s
 
@@ -342,19 +342,19 @@ function DomainCertCheck() {
     if [[ "$_ssl_domain_names" == "$_ssl_domain_names_non_sni" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         sni: \e['${g2_trgb}'m%s\e[m\n' \
+      printf '         sni: \e['${trgb_3200}'m%s\e[m\n' \
              "match"
 
     elif [[ -z "$_ssl_domain_cert_non_sni" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         sni: \e['${e2_trgb}'m%s\e[m\n' \
+      printf '         sni: \e['${trgb_3100}'m%s\e[m\n' \
              "no peer certificate available"
 
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '         sni: \e['${e2_trgb}'m%s\e[m\n' \
+      printf '         sni: \e['${trgb_3100}'m%s\e[m\n' \
              "not match"
 
     fi
@@ -362,13 +362,13 @@ function DomainCertCheck() {
     if [[ "$_equal_state" -eq 1 ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         validity: \e['${g2_trgb}'m%s\e[m\n' \
+      printf '         validity: \e['${trgb_3200}'m%s\e[m\n' \
              "match"
 
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '         validity: \e['${e2_trgb}'m%s\e[m\n' \
+      printf '         validity: \e['${trgb_3100}'m%s\e[m\n' \
              "is not valid (hostname mismatch)"
 
       _validity_state="1"

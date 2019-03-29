@@ -52,7 +52,7 @@ function DomainSslCheck() {
      # [[ "$_ssl_params_default" == *"No client certificate CA names sent"* ]] ; then
 
     # shellcheck disable=SC2086,SC2154
-    printf '\n    \e['${e_trgb}'m%s\e[m:\n\n\t%s\n\n' \
+    printf '\n    \e['${trgb_3111}'m%s\e[m:\n\n\t%s\n\n' \
            "SSL error" \
            "- no peer certificate available"
            # "- no client certificate CA names sent"
@@ -79,10 +79,10 @@ function DomainSslCheck() {
   if [[ "$ssl_state" -eq 1 ]] ; then
 
     # shellcheck disable=SC2086
-    printf '         ssl: \e['${g_trgb}'m%s\e[m, ' "on"
+    printf '         ssl: \e['${trgb_3211}'m%s\e[m, ' "on"
 
     # shellcheck disable=SC2086,SC2154
-    printf 'version(\e['${_ssl_trgb}'m%s\e[m), cipher(\e['${v_trgb}'m%s\e[m)\n' \
+    printf 'version(\e['${_ssl_trgb}'m%s\e[m), cipher(\e['${trgb_9420}'m%s\e[m)\n' \
            "$_ssl_params_proto" \
            "$_ssl_params_cipher"
 

@@ -201,7 +201,7 @@ function DomainChainCheck() {
        [[ "$_root_in_local_store" -eq 1 ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '\n%s         └─\e['${b2_trgb}'m%s:%s\e[m' \
+      printf '\n%s         └─\e['${trgb_3021}'m%s:%s\e[m' \
              "$_t_rst" "$k" "${_chain_complete[$k]}"
 
       _init_certificate=1
@@ -209,7 +209,7 @@ function DomainChainCheck() {
     elif [[ "$_root_certificate_issuer" == "${_chain_complete[$k]}" ]] ; then
 
       # shellcheck disable=SC2086
-      printf '\n%s         └─\e['${b2_trgb}'m%s:%s\e[m' \
+      printf '\n%s         └─\e['${trgb_3021}'m%s:%s\e[m' \
              "$_t_rst" "$k" "${_chain_complete[$k]}"
 
       _init_certificate=1
@@ -226,7 +226,7 @@ function DomainChainCheck() {
          [[ "$k" -eq 0 ]] ; then
 
         # shellcheck disable=SC2086,SC2154
-        printf ' \e['${d2_trgb}'m%s\e[m' \
+        printf ' \e['${trgb_3300}'m%s\e[m' \
                "★"
 
       fi
@@ -237,13 +237,13 @@ function DomainChainCheck() {
         if [[ "$_validity_state" -eq 0 ]] ; then
 
           # shellcheck disable=SC2086,SC2154
-          printf ' \e['${g2_trgb}'m%s\e[m' \
+          printf ' \e['${trgb_3200}'m%s\e[m' \
                  "✓"
 
         else
 
           # shellcheck disable=SC2086
-          printf ' \e['${e2_trgb}'m%s\e[m' \
+          printf ' \e['${trgb_3100}'m%s\e[m' \
                  "!"
 
         fi
@@ -251,19 +251,19 @@ function DomainChainCheck() {
       elif [[ "$_chain_fa" == "$_chain_fb" ]] ; then
 
         # shellcheck disable=SC2086
-        printf ' \e['${g2_trgb}'m%s\e[m' \
+        printf ' \e['${trgb_3200}'m%s\e[m' \
                "✓"
 
       elif [[ "$_root_certificate_issuer" == "$_chain_fb" ]] ; then
 
         # shellcheck disable=SC2086
-        printf ' \e['${g2_trgb}'m%s\e[m' \
+        printf ' \e['${trgb_3200}'m%s\e[m' \
                "✓"
 
       else
 
         # shellcheck disable=SC2086
-        printf ' \e['${e2_trgb}'m%s\e[m' \
+        printf ' \e['${trgb_3100}'m%s\e[m' \
                "×"
 
       fi
@@ -272,14 +272,14 @@ function DomainChainCheck() {
          [[ "$_last_subject_num" -eq "$k" ]] ; then
 
         # shellcheck disable=SC2086
-        printf ' \e['${d2_trgb}'m%s\e[m' \
+        printf ' \e['${trgb_3300}'m%s\e[m' \
                "⊙"
 
       elif [[ "$_root_in_local_store" -eq 0 ]] && \
            [[ "$_last_subject_num" -eq "$k" ]] ; then
 
         # shellcheck disable=SC2086
-        printf ' \e['${e2_trgb}'m%s\e[m' \
+        printf ' \e['${trgb_3100}'m%s\e[m' \
                "⊙"
 
       fi
@@ -288,7 +288,7 @@ function DomainChainCheck() {
          [[ "$_last_subject_num" -eq "$k" ]] ; then
 
         # shellcheck disable=SC2086
-        printf ' \e['${d2_trgb}'m%s\e[m' \
+        printf ' \e['${trgb_3300}'m%s\e[m' \
                  "2x"
 
       fi
@@ -300,13 +300,13 @@ function DomainChainCheck() {
       if [[ "$_root_in_local_store" -eq 1 ]] ; then
 
         # shellcheck disable=SC2086,SC2154
-        printf '\n%s           ├   \e['${x_trgb}'m%s\e[m' \
+        printf '\n%s           ├   \e['${trgb_3812}'m%s\e[m' \
                "$_t_rst" "${_chain_verify_issuers_stack[$k]}"
 
       elif [[ "$_root_in_local_store" -eq 0 ]] ; then
 
         # shellcheck disable=SC2086
-        printf '\n%s           ├   \e['${x_trgb}'m%s\e[m' \
+        printf '\n%s           ├   \e['${trgb_3812}'m%s\e[m' \
                "$_t_rst" "${_chain_verify_issuers_stack[$k]}"
 
       fi
@@ -314,13 +314,13 @@ function DomainChainCheck() {
     elif [[ "$_root_certificate_issuer" == "${_chain_complete[$k]}" ]] ; then
 
       # shellcheck disable=SC2086
-      printf '\n%s           └ \e['${x_trgb}'m%s\e[m' \
+      printf '\n%s           └ \e['${trgb_3812}'m%s\e[m' \
              "$_t_rst" "${_chain_complete[$k]}"
 
     elif [[ "$_root_in_local_store" -eq 1 ]] ; then
 
       # shellcheck disable=SC2086
-      printf '\n%s           └ \e['${x_trgb}'m%s\e[m' \
+      printf '\n%s           └ \e['${trgb_3812}'m%s\e[m' \
              "$_t_rst" "${_chain_complete[$k]}"
 
     fi

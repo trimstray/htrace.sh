@@ -273,7 +273,7 @@ function _sprintf() {
         _n=$(( ( _n + 1 ) % 4 ))
 
         # shellcheck disable=SC2086
-        printf '\r » \e['${c_trgb}'m%s\e[m' "${_sc:_n:1}" ; tput sgr0
+        printf '\r » \e['${trgb_3811}'m%s\e[m' "${_sc:_n:1}" ; tput sgr0
 
         sleep 0.1
 
@@ -310,9 +310,9 @@ function _sprintf() {
 
           if [[ "$s_color" == "true" ]] ; then
 
-            c_trgb="1;39"
+            trgb_3811="1;39"
 
-            printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
+            printf '[\e['${s_trgb}'m%s\e[m] \e['${trgb_3811}'m%s\e[m\n' "$s_char" "$_s_info"
 
           else
 
@@ -324,9 +324,9 @@ function _sprintf() {
 
           if [[ "$s_color" == "true" ]] ; then
 
-            c_trgb="1;43"
+            trgb_3811="1;43"
 
-            printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
+            printf '[\e['${s_trgb}'m%s\e[m] \e['${trgb_3811}'m%s\e[m\n' "$s_char" "$_s_info"
 
           else
 
@@ -338,9 +338,9 @@ function _sprintf() {
 
           if [[ "$s_color" == "true" ]] ; then
 
-            c_trgb="1;41"
+            trgb_3811="1;41"
 
-            printf '[\e['${s_trgb}'m%s\e[m] \e['${c_trgb}'m%s\e[m\n' "$s_char" "$_s_info"
+            printf '[\e['${s_trgb}'m%s\e[m] \e['${trgb_3811}'m%s\e[m\n' "$s_char" "$_s_info"
 
           else
 
@@ -489,7 +489,7 @@ function _init_function() {
     _msg_y=$(echo "$_msg" | cut -d ":" -f2-)
 
     # shellcheck disable=SC2086,SC2154
-    printf '    \e['${c_trgb}'m%s\e[m \e['${p_trgb}'m(%s)\e[m\n\n' \
+    printf '    \e['${trgb_3811}'m%s\e[m \e['${trgb_3722}'m(%s)\e[m\n\n' \
            "$_msg_x" "$_msg_y"
 
     _logger "info" \
@@ -500,17 +500,17 @@ function _init_function() {
     if [[ "$_scan_type" == "active" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '       - scan-type: \e['${e2_trgb}'m%s\e[m\n\n' "$_scan_type"
+      printf '       - scan-type: \e['${trgb_3100}'m%s\e[m\n\n' "$_scan_type"
 
     elif [[ "$_scan_type" == "passive" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '       - scan-type: \e['${g2_trgb}'m%s\e[m\n\n' "$_scan_type"
+      printf '       - scan-type: \e['${trgb_3200}'m%s\e[m\n\n' "$_scan_type"
 
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '       - scan-type: \e['${d2_trgb}'m%s\e[m\n\n' "$_scan_type"
+      printf '       - scan-type: \e['${trgb_3300}'m%s\e[m\n\n' "$_scan_type"
 
     fi
 

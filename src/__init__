@@ -157,89 +157,91 @@ function __main__() {
   local _rd="0;0;0"
 
   # Set default colors for printf.
+  # For more info please see:
+  #   - https://github.com/trimstray/htrace.sh/wiki/Colors
   if [[ "$HTRACE_COLORS" == "on" ]] ; then
 
     # shellcheck disable=SC2034
-    local b_trgb="1;2;30"
+    local trgb_3012="1;2;30"
     # shellcheck disable=SC2034
-    local b2_trgb="2;1;30"
+    local trgb_3021="2;1;30"
     # shellcheck disable=SC2034
-    local e_trgb="1;1;31"
+    local trgb_3111="1;1;31"
     # shellcheck disable=SC2034
-    local e2_trgb="0;0;31"
+    local trgb_3100="0;0;31"
     # shellcheck disable=SC2034
-    local g_trgb="1;1;32"
+    local trgb_3211="1;1;32"
     # shellcheck disable=SC2034
-    local g2_trgb="0;0;32"
+    local trgb_3200="0;0;32"
     # shellcheck disable=SC2034
-    local d_trgb="4;1;33"
+    local trgb_3341="4;1;33"
     # shellcheck disable=SC2034
-    local d2_trgb="0;0;33"
+    local trgb_3300="0;0;33"
     # shellcheck disable=SC2034
-    local i_trgb="1;2;93"
+    local trgb_9312="1;2;93"
     # shellcheck disable=SC2034
-    local h_trgb="1;2;36"
+    local trgb_3612="1;2;36"
     # shellcheck disable=SC2034
-    local p_trgb="2;2;37"
+    local trgb_3722="2;2;37"
     # shellcheck disable=SC2034
-    local p2_trgb="2;0;37"
+    local trgb_3720="2;0;37"
     # shellcheck disable=SC2034
-    local c_trgb="1;1;38"
+    local trgb_3811="1;1;38"
     # shellcheck disable=SC2034
-    local x_trgb="1;2;38"
+    local trgb_3812="1;2;38"
     # shellcheck disable=SC2034
-    local x2_trgb="4;3;38"
+    local trgb_3843="4;3;38"
     # shellcheck disable=SC2034
-    local k_trgb="6;31;40"
+    local trgb_40631="6;31;40"
     # shellcheck disable=SC2034
-    local k2_trgb="3;37;40"
+    local trgb_40337="3;37;40"
     # shellcheck disable=SC2034
-    local k3_trgb="6;36;40"
+    local trgb_40636="6;36;40"
     # shellcheck disable=SC2034
-    local z_trgb="1;39;44"
+    local trgb_44139="1;39;44"
     # shellcheck disable=SC2034
-    local v_trgb="2;0;94"
+    local trgb_9420="2;0;94"
 
   else
 
     # shellcheck disable=SC2034
-    local b_trgb="$_rd"
+    local trgb_3012="$_rd"
     # shellcheck disable=SC2034
-    local b2_trgb="$_rd"
+    local trgb_3021="$_rd"
     # shellcheck disable=SC2034
-    local e_trgb="$_rd"
+    local trgb_3111="$_rd"
     # shellcheck disable=SC2034
-    local e2_trgb="$_rd"
+    local trgb_3100="$_rd"
     # shellcheck disable=SC2034
-    local g_trgb="$_rd"
+    local trgb_3211="$_rd"
     # shellcheck disable=SC2034
-    local g2_trgb="$_rd"
+    local trgb_3200="$_rd"
     # shellcheck disable=SC2034
-    local d_trgb="$_rd"
+    local trgb_3341="$_rd"
     # shellcheck disable=SC2034
-    local d2_trgb="$_rd"
+    local trgb_3300="$_rd"
     # shellcheck disable=SC2034
-    local i_trgb="$_rd"
+    local trgb_9312="$_rd"
     # shellcheck disable=SC2034
-    local h_trgb="$_rd"
+    local trgb_3612="$_rd"
     # shellcheck disable=SC2034
-    local p_trgb="$_rd"
+    local trgb_3722="$_rd"
     # shellcheck disable=SC2034
-    local p2_trgb="$_rd"
+    local trgb_3720="$_rd"
     # shellcheck disable=SC2034
-    local c_trgb="$_rd"
+    local trgb_3811="$_rd"
     # shellcheck disable=SC2034
-    local x_trgb="$_rd"
+    local trgb_3812="$_rd"
     # shellcheck disable=SC2034
-    local k_trgb="$_rd"
+    local trgb_40631="$_rd"
     # shellcheck disable=SC2034
-    local k2_trgb="$_rd"
+    local trgb_40337="$_rd"
     # shellcheck disable=SC2034
-    local k3_trgb="$_rd"
+    local trgb_40636="$_rd"
     # shellcheck disable=SC2034
-    local z_trgb="$_rd"
+    local trgb_44139="$_rd"
     # shellcheck disable=SC2034
-    local v_trgb="$_rd"
+    local trgb_9420="$_rd"
 
   fi
 
@@ -693,7 +695,7 @@ function __main__() {
   local _http_redirect="${_http_proto}${_http_url_with_args}"
 
   # shellcheck disable=SC2154
-  printf '\n    \e['${z_trgb}'m %s %s \e[m' \
+  printf '\n    \e['${trgb_44139}'m %s %s \e[m' \
          "$_init_name" "$_version"
 
   # Show OpenSSL version.
@@ -718,12 +720,12 @@ function __main__() {
 
   if [[ "$_openssl_version_state" -eq 1 ]] ; then
 
-    printf ' (openssl %s: \e['${g_trgb}'m%s\e[m)\n\n' \
+    printf ' (openssl %s: \e['${trgb_3211}'m%s\e[m)\n\n' \
            "$_openssl_version" "$_openssl_version_status"
 
   else
 
-    printf ' (openssl %s: \e['${e_trgb}'m%s\e[m)\n\n' \
+    printf ' (openssl %s: \e['${trgb_3111}'m%s\e[m)\n\n' \
            "$_openssl_version" "$_openssl_version_status"
 
   fi
@@ -766,7 +768,7 @@ function __main__() {
   _curl_base+=" $_resolve_type_curl "
   _curl_base_remote+=" $_resolve_type_curl "
 
-  printf '\n    URI: \e['${d_trgb}'m%s\e['${d_trgb}'m%s\e[m\n' \
+  printf '\n    URI: \e['${trgb_3341}'m%s\e['${trgb_3341}'m%s\e[m\n' \
          "$_http_proto" "$_http_url_with_args"
 
   # Show http(s) domain trace.
@@ -774,33 +776,33 @@ function __main__() {
 
     if [[ "$req_method_post_value_status" -eq 1 ]] ; then
 
-      printf '\n         » request-method: \e['${k_trgb}'m%s\e[m\n' \
+      printf '\n         » request-method: \e['${trgb_40631}'m%s\e[m\n' \
              "$req_method_type"
 
     else
 
-      printf '\n         » request-method: \e['${k_trgb}'m%s\e[m\n                           \e['${k2_trgb}'m%s\e[m\n' \
+      printf '\n         » request-method: \e['${trgb_40631}'m%s\e[m\n                           \e['${trgb_40337}'m%s\e[m\n' \
              "$req_method_type" "$(echo "$req_method_post_value" | tr -d "'")"
 
     fi
 
   else
 
-    printf '\n         » request-method: \e['${k_trgb}'m%s\e[m\n' \
+    printf '\n         » request-method: \e['${trgb_40631}'m%s\e[m\n' \
            "$req_method_type"
 
   fi
 
   if [[ "$cache_bypass_state" -eq 1 ]] ; then
 
-    printf '         » cache-bypass:   \e['${k2_trgb}'m%s\e[m\n' \
+    printf '         » cache-bypass:   \e['${trgb_40337}'m%s\e[m\n' \
            "$cache_bypass_type"
 
   fi
 
   if [[ "$resolve_state" -eq 1 ]] ; then
 
-    printf '         » force-resolve:  \e['${k2_trgb}'m%s\e[m\n' \
+    printf '         » force-resolve:  \e['${trgb_40337}'m%s\e[m\n' \
            "$_resolve_type_data"
 
   fi
@@ -889,7 +891,7 @@ function __main__() {
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+      printf '\r\n    \e['${trgb_3111}'m%s\e[m\n\n' "Connection error (https not detected)"
 
       tput sgr0
 
@@ -908,7 +910,7 @@ function __main__() {
       if [[ "$_fstate" -ne 0 ]] ; then
 
         # shellcheck disable=SC2086,SC2154
-        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+        printf '\r\n    \e['${trgb_3111}'m%s\e[m\n\n' "Connection error"
 
         tput sgr0
 
@@ -932,7 +934,7 @@ function __main__() {
       if [[ "$_fstate" -ne 0 ]] ; then
 
         # shellcheck disable=SC2086,SC2154
-        printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+        printf '\r\n    \e['${trgb_3111}'m%s\e[m\n\n' "Connection error"
 
         tput sgr0
 
@@ -949,7 +951,7 @@ function __main__() {
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+      printf '\r\n    \e['${trgb_3111}'m%s\e[m\n\n' "Connection error (https not detected)"
 
       tput sgr0
 
@@ -978,7 +980,7 @@ function __main__() {
         if [[ "$_fd_empty" -eq "0" ]] ; then
 
           # shellcheck disable=SC2086,SC2154
-          # printf '\r         \e['${_rd}'m›\e[m \e['${g_trgb}'m%s\e[m\n' "Non-secure resources not found"
+          # printf '\r         \e['${_rd}'m›\e[m \e['${trgb_3211}'m%s\e[m\n' "Non-secure resources not found"
           printf '\r         › %s\n' "Non-secure resources not found"
 
           tput sgr0
@@ -986,7 +988,7 @@ function __main__() {
         else
 
           # shellcheck disable=SC2086,SC2154
-          printf '\r         \e['${_rd}'m›\e[m \e['${e_trgb}'m%s\e[m\n' "Connection error"
+          printf '\r         \e['${_rd}'m›\e[m \e['${trgb_3111}'m%s\e[m\n' "Connection error"
 
           tput sgr0
 
@@ -998,7 +1000,7 @@ function __main__() {
         if [[ "$_fd_empty" -eq "0" ]] ; then
 
           # shellcheck disable=SC2086,SC2154
-          # printf '\r         \e['${_rd}'m›\e[m \e['${g_trgb}'m%s\e[m\n' "Non-secure resources not found"
+          # printf '\r         \e['${_rd}'m›\e[m \e['${trgb_3211}'m%s\e[m\n' "Non-secure resources not found"
           printf '\r         › %s\n' "Non-secure resources not found"
 
           tput sgr0
@@ -1015,7 +1017,7 @@ function __main__() {
     else
 
       # shellcheck disable=SC2086,SC2154
-      printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error (https not detected)"
+      printf '\r\n    \e['${trgb_3111}'m%s\e[m\n\n' "Connection error (https not detected)"
 
       tput sgr0
 
@@ -1037,7 +1039,7 @@ function __main__() {
     if [[ "$_fstate" -ne 0 ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+      printf '\r\n    \e['${trgb_3111}'m%s\e[m\n\n' "Connection error"
 
       tput sgr0
 
@@ -1059,7 +1061,7 @@ function __main__() {
     if [[ "$_fstate" -ne 0 ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+      printf '\r\n    \e['${trgb_3111}'m%s\e[m\n\n' "Connection error"
 
       tput sgr0
 
@@ -1081,7 +1083,7 @@ function __main__() {
     if [[ "$_fstate" -ne 0 ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '\r\n    \e['${e_trgb}'m%s\e[m\n\n' "Connection error"
+      printf '\r\n    \e['${trgb_3111}'m%s\e[m\n\n' "Connection error"
 
       tput sgr0
 

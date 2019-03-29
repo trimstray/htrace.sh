@@ -228,7 +228,7 @@ function InitTrace() {
     if [[ -z "$_remote_ip" ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '\n    \e['${e_trgb}'m%s\e[m:\n\n\t%s\n\t%s\n\n' \
+      printf '\n    \e['${trgb_3111}'m%s\e[m:\n\n\t%s\n\t%s\n\n' \
              "Connection error" \
              "- domain not resolved" \
              "- http or https not responding"
@@ -282,7 +282,7 @@ function InitTrace() {
     fi
 
     # shellcheck disable=SC2086,SC2154
-    printf ' \e['${e_trgb}'m•\e[m \e['${c_trgb}'m %-4.6s %-12.10s %-15.12s %-22.22s %-16.22s %-21.22s %-5.7s %-7.7s %-5.5s %-8.10s %s\e[m\n' \
+    printf ' \e['${trgb_3111}'m•\e[m \e['${trgb_3811}'m %-4.6s %-12.10s %-15.12s %-22.22s %-16.22s %-21.22s %-5.7s %-7.7s %-5.5s %-8.10s %s\e[m\n' \
            " $_req_num" \
            "$_full_conn_time" \
            "$_time_total" \
@@ -298,7 +298,7 @@ function InitTrace() {
     if [[ "$proxy_state" -eq 1 ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '  %-4.6s %-12.10s %-15.12s %-22.22s └\e['${x_trgb}'m%-16.22s\e[m\n' \
+      printf '  %-4.6s %-12.10s %-15.12s %-22.22s └\e['${trgb_3812}'m%-16.22s\e[m\n' \
              "       " \
              "       " \
              "       " \
@@ -326,17 +326,17 @@ function InitTrace() {
           _ssl_params_verify="ok"
 
           # shellcheck disable=SC2086,SC2154
-          printf '         verification: \e['${g_trgb}'m%s\e[m\n' "$_ssl_params_verify"
+          printf '         verification: \e['${trgb_3211}'m%s\e[m\n' "$_ssl_params_verify"
 
         elif [[ "$_ssl_params_verify" == "self signed certificate" ]] ; then
 
           # shellcheck disable=SC2086,SC2154
-          printf '         verification: \e['${d2_trgb}'m%s\e[m\n' "$_ssl_params_verify"
+          printf '         verification: \e['${trgb_3300}'m%s\e[m\n' "$_ssl_params_verify"
 
         else
 
           # shellcheck disable=SC2086,SC2154
-          printf '         verification: \e['${e2_trgb}'m%s\e[m\n' "$_ssl_params_verify"
+          printf '         verification: \e['${trgb_3100}'m%s\e[m\n' "$_ssl_params_verify"
 
         fi
 
@@ -348,7 +348,7 @@ function InitTrace() {
     elif [[ "$_http_scheme" == "http" ]] && [[ "$ssl_state" -eq 1 ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '         ssl: \e['${e_trgb}'m%s\e[m\n' "off"
+      printf '         ssl: \e['${trgb_3111}'m%s\e[m\n' "off"
 
     fi
 
