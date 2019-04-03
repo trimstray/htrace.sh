@@ -564,14 +564,16 @@ function __main__() {
   fi
 
   # shellcheck disable=SC2154
-  if [[ "$req_method_type" != "GET" ]] && \
-     [[ "$req_method_type" != "HEAD" ]] && \
-     [[ "$req_method_type" != "POST" ]] && \
-     [[ "$req_method_type" != "PUT" ]] && \
-     [[ "$req_method_type" != "DELETE" ]] && \
-     [[ "$req_method_type" != "CONNECT" ]] && \
-     [[ "$req_method_type" != "OPTIONS" ]] && \
-     [[ "$req_method_type" != "TRACE" ]] ; then
+  # if [[ "$req_method_type" != "GET" ]] && \
+  #    [[ "$req_method_type" != "HEAD" ]] && \
+  #    [[ "$req_method_type" != "POST" ]] && \
+  #    [[ "$req_method_type" != "PUT" ]] && \
+  #    [[ "$req_method_type" != "DELETE" ]] && \
+  #    [[ "$req_method_type" != "CONNECT" ]] && \
+  #    [[ "$req_method_type" != "OPTIONS" ]] && \
+  #    [[ "$req_method_type" != "TRACE" ]] ; then
+
+  if [[ -z "$req_method_type" ]] ; then
 
     req_method_type="GET"
 
