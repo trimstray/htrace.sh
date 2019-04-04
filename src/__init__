@@ -136,6 +136,12 @@ function __main__() {
   local user_agent_state="0"
   local _user_agent=""
 
+  # Default 'authentication' variable.
+  # shellcheck disable=SC2034
+  local auth_state="0"
+  local _auth_type=""
+  local _auth_type_curl=""
+
   # Set redirects limit.
   local max_redirects_state="0"
   local _redirects=10
@@ -310,7 +316,8 @@ function __main__() {
   # can be found in _help_ and file README.md.
   local _short_opt="u:shbM:H:p:r:a"
   local _long_opt="help,version,url:,ssl,headers,body,req-method:,req-header:,proxy:,resolve:,all-scans,"
-        _long_opt+="testssl,observatory,ssllabs,mixed-content,nse,waf,dns,cache-bypass:,user-agent:,max-redirects:,timeout:,hide-src-ip"
+        _long_opt+="testssl,observatory,ssllabs,mixed-content,nse,waf,dns,cache-bypass:,user-agent:,auth:,"
+        _long_opt+="max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -466,6 +473,14 @@ function __main__() {
         export user_agent_state=1
 
         export _user_agent="${2}"
+
+        shift 2 ;;
+
+      --auth)
+
+        export auth_state=1
+
+        export _auth_type="${2}"
 
         shift 2 ;;
 
@@ -767,8 +782,69 @@ function __main__() {
 
   fi
 
+  if [[ "$auth_state" -eq 1 ]] ; then
+
+    _h_auth_type=$(echo "${_auth_type}" | cut -d ":" -f1 | sed 's/ //g')
+    _h_auth_key=$(echo "${_auth_type}" | cut -d ":" -f2 | sed 's/ //g')
+    _h_auth_value=$(echo "${_auth_type}" | cut -d ":" -f3 | sed 's/ //g')
+
+    if [[ ! -z "$_h_auth_key" ]] && \
+       [[ ! -z "$_h_auth_value" ]] ; then
+
+      if [[ "$_h_auth_type" == "basic" ]] ; then
+
+        _auth_type_curl="--user ${_h_auth_key}:${_h_auth_value}"
+
+      elif [[ "$_h_auth_type" == "proxy" ]] ; then
+
+        if [[ "$proxy_state" -eq 1 ]] ; then
+
+          _auth_type_curl="--proxy-user ${_h_auth_key}:${_h_auth_value}"
+
+        else
+
+          _auth_type_curl="--user ${_h_auth_key}:${_h_auth_value}"
+
+        fi
+
+      fi
+
+    elif [[ ! -z "$_h_auth_key" ]] && \
+         [[ -z "$_h_auth_value" ]] ; then
+
+      if [[ "$_h_auth_type" == "cookie" ]] ; then
+
+        if [[ -e "$_h_auth_key" ]] ; then
+
+          _auth_type_curl="--cookie ${_h_auth_key}"
+
+        else
+
+          _auth_type_curl=""
+
+        fi
+
+      fi
+
+    else
+
+      _auth_type_curl=""
+
+    fi
+
+  else
+
+    _auth_type_curl=""
+
+  fi
+
+  # For -r|--resolve:
   _curl_base+=" $_resolve_type_curl "
   _curl_base_remote+=" $_resolve_type_curl "
+
+  # For --auth:
+  _curl_base+=" $_auth_type_curl "
+  _curl_base_remote+=" $_auth_type_curl "
 
   printf '\n    URI: \e['${trgb_3341}'m%s\e['${trgb_3341}'m%s\e[m\n' \
          "$_http_proto" "$_http_url_with_args"
@@ -795,10 +871,14 @@ function __main__() {
 
   fi
 
-  if [[ "$cache_bypass_state" -eq 1 ]] ; then
+  if [[ "$auth_state" -eq 1 ]] ; then
 
-    printf '         » cache-bypass:   \e['${trgb_40337}'m%s\e[m\n' \
-           "$cache_bypass_type"
+    if [[ ! -z "$_auth_type_curl" ]] ; then
+
+      printf '         » authentication: \e['${trgb_40631}'m%s\e[m\n                           \e['${trgb_40337}'m%s:%s\e[m\n' \
+             "$_h_auth_type" "$_h_auth_key" "$_h_auth_value"
+
+    fi
 
   fi
 
@@ -806,6 +886,13 @@ function __main__() {
 
     printf '         » force-resolve:  \e['${trgb_40337}'m%s\e[m\n' \
            "$_resolve_type_data"
+
+  fi
+
+  if [[ "$cache_bypass_state" -eq 1 ]] ; then
+
+    printf '         » cache-bypass:   \e['${trgb_40337}'m%s\e[m\n' \
+           "$cache_bypass_type"
 
   fi
 
