@@ -826,6 +826,23 @@ function __main__() {
 
       fi
 
+    elif [[ -z "$_h_auth_key" ]] && \
+         [[ -z "$_h_auth_value" ]] ; then
+
+      if [[ "$_h_auth_type" == "cookie" ]] ; then
+
+        if [[ -e "$HTRACE_COOKIE_PATH" ]] ; then
+
+          _auth_type_curl="--cookie ${HTRACE_COOKIE_PATH}"
+
+        else
+
+          _auth_type_curl=""
+
+        fi
+
+      fi
+
     else
 
       _auth_type_curl=""
