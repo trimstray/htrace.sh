@@ -87,8 +87,9 @@ Provides the following options:
     htrace.sh -u https://example.com --all-scans
     htrace.sh -u https://example.com -s -h --testssl --ssllabs
     htrace.sh -u https://example.com -h -M 'POST:password=123&name=Admin'
-    htrace.sh --url https://example.com --cache-bypass "?${RANDOM}"
-    htrace.sh --url https://example.com --ssl --headers --proxy "socks5h://127.0.0.1:9501"
+    htrace.sh -u https://example.com -h --auth 'basic:user:pass'
+    htrace.sh -u https://example.com --cache-bypass "?${RANDOM}"
+    htrace.sh -u https://example.com --ssl --headers --proxy "socks5h://127.0.0.1:9501"
 
   Options:
 
@@ -121,6 +122,7 @@ Provides the following options:
 
         --cache-bypass <value>                try (proxy) cache bypass
         --user-agent <value>                  set 'User-Agent' header
+        --auth <value>                        set authentication method
         --max-redirects <num>                 set max redirects (default: 10)
         --timeout <num>                       set max timeout (default: 15)
         --hide-src-ip                         hide source ip from output
