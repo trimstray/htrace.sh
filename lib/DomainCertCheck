@@ -209,31 +209,68 @@ function DomainCertCheck() {
     # shellcheck disable=SC2004
     _now_epoch=$(date +%s)
     _expiry_epoch=$(date -d "$_ssl_domain_not_after_expr" +%s)
-    _expiry_epoch_to_end="$(((_expiry_epoch - _now_epoch) / (3600 * 24)))"
+    _expiry_epoch_to_end="$((_expiry_epoch - _now_epoch))"
+    _expiry_epoch_to_end_days="$((_expiry_epoch_to_end / (3600 * 24)))"
 
     if [[ "$_expiry_epoch" -gt "$_now_epoch" ]] ; then
 
-      if [[ "$_expiry_epoch_to_end" -le 7 ]] ; then
+      _time_to_expire=$(date -d @$_expiry_epoch_to_end +"%H:%M:%S")
 
-        _expr_time_msg="$_expiry_epoch_to_end days to expired"
-        _expr_timtrgb_3111="$trgb_3300"
+      if [[ "$_expiry_epoch_to_end_days" -eq 0 ]] ; then
 
-      elif [[ "$_expiry_epoch_to_end" -le 2 ]] ; then
+        # Less then 1h
+        if [[ "$_expiry_epoch_to_end" -lt 3600 ]] ; then
 
-        _expr_time_msg="$_expiry_epoch_to_end days to expired"
-        _expr_timtrgb_3111="$trgb_9312"
+          _expr_time_msg="$_time_to_expire to expired"
+          _expr_timtrgb="$trgb_3310"
+
+        # Less then 3h
+        elif [[ "$_expiry_epoch_to_end" -lt 10800 ]] ; then
+
+          _expr_time_msg="$_time_to_expire to expired"
+          _expr_timtrgb="$trgb_3310"
+
+        # Less then 6h
+        elif [[ "$_expiry_epoch_to_end" -lt 21600 ]] ; then
+
+          _expr_time_msg="$_time_to_expire to expired"
+          _expr_timtrgb="$trgb_3310"
+
+        # Less then 12h
+        elif [[ "$_expiry_epoch_to_end" -lt 43200 ]] ; then
+
+          _expr_time_msg="$_time_to_expire to expired"
+          _expr_timtrgb="$trgb_3310"
+
+        # Less then 24h
+        else
+
+          _expr_time_msg="$_time_to_expire to expired"
+          _expr_timtrgb="$trgb_3310"
+
+        fi
+
+      elif [[ "$_expiry_epoch_to_end_days" -le 7 ]] ; then
+
+        _expr_time_msg="$_expiry_epoch_to_end_days days to expired"
+        _expr_timtrgb="$trgb_3310"
+
+      elif [[ "$_expiry_epoch_to_end_days" -le 14 ]] ; then
+
+        _expr_time_msg="$_expiry_epoch_to_end_days days to expired"
+        _expr_timtrgb="$trgb_3300"
 
       else
 
-        _expr_time_msg="$_expiry_epoch_to_end days to expired"
-        _expr_timtrgb_3111="$trgb_3200"
+        _expr_time_msg="$_expiry_epoch_to_end_days days to expired"
+        _expr_timtrgb="$trgb_3200"
 
       fi
 
     else
 
       _expr_time_msg="expired"
-      _expr_timtrgb_3111="$trgb_3100"
+      _expr_timtrgb="$trgb_3100"
 
     fi
 
@@ -246,7 +283,7 @@ function DomainCertCheck() {
            "$_ssl_domain_signature"
 
     # shellcheck disable=SC2086,SC2154
-    printf '         date: \e['${trgb_3722}'m%s / %s\e[m (\e['${_expr_timtrgb_3111}'m%s\e[m)\n' \
+    printf '         date: \e['${trgb_3722}'m%s / %s\e[m (\e['${_expr_timtrgb}'m%s\e[m)\n' \
            "$_ssl_domain_not_before" "$_ssl_domain_not_after" "$_expr_time_msg"
 
     if [[ -z "$_ssl_domain_issuer_o" ]] && \

@@ -184,6 +184,8 @@ function __main__() {
     # shellcheck disable=SC2034
     local trgb_3300="0;0;33"
     # shellcheck disable=SC2034
+    local trgb_3310="0;1;33"
+    # shellcheck disable=SC2034
     local trgb_3612="1;2;36"
     # shellcheck disable=SC2034
     local trgb_3722="2;2;37"
@@ -226,6 +228,8 @@ function __main__() {
     local trgb_3341="$_rd"
     # shellcheck disable=SC2034
     local trgb_3300="$_rd"
+    # shellcheck disable=SC2034
+    local trgb_3310="$_rd"
     # shellcheck disable=SC2034
     local trgb_3612="$_rd"
     # shellcheck disable=SC2034
