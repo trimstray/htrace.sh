@@ -2,6 +2,11 @@
 layout: default
 ---
 
+<p align="center">
+    <img src="https://trimstray.github.io/htrace.sh/assets/img/logo.png"
+        alt="Master">
+</p>
+
 ## About Project
 
 **[htrace.sh](https://github.com/trimstray/htrace.sh)** is a shell script for http/https troubleshooting and profiling. It's also a simple wrapper around several open source security tools.
@@ -29,6 +34,13 @@ Several functions of this script:
 - detect and bypass web application firewalls with **WhatWaf**
 - enumerate subdomains of website with **SubFinder**
   - perform zone transfer attack (with `api.hackertarget.com` or `dig`)
+
+## Preview
+
+<p align="center">
+    <img src="https://github.com/trimstray/htrace.sh/blob/master/static/img/htrace.sh_preview.png"
+        alt="Master">
+</p>
 
 ## About Me
 
