@@ -38,19 +38,21 @@ function DomainZoneTransfer() {
     local _zone_transfer_desc="Trying Zone Transfer:"
           _zone_transfer_desc+="https://hackertarget.com/zone-transfer/"
 
+    # shellcheck disable=SC2154
     local _zone_transfer_cmd="eval $_curl_base_remote -ks "
           _zone_transfer_cmd+="\"https://api.hackertarget.com/zonetransfer/?q=$_destination_host\""
 
   elif [[ "$ZONE_TRANSFER_TYPE" == "active" ]] ; then
 
+    # shellcheck disable=SC2034
     _scan_type="active"
 
     _ns_record=$(\
-              dig @$DNS_SERVER +short NS $_destination_host | \
+              dig @"$DNS_SERVER" +short NS "$_destination_host" | \
               sed 's/\.$//g' | \
               sed ':a;N;$!ba;s/\n/ /g')
 
-    _ns_record_array=($(echo $_ns_record))
+    _ns_record_array=($_ns_record)
 
     local _zone_transfer_desc="Trying Zone Transfer:"
           _zone_transfer_desc+="dig command"
