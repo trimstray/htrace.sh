@@ -4,7 +4,7 @@ layout: default
 
 <p align="center">
     <img src="https://trimstray.github.io/htrace.sh/assets/img/logo.png"
-        alt="Master">
+        alt="Logo">
 </p>
 
 ## About Project
@@ -38,7 +38,7 @@ Several functions of this script:
 ## Preview
 
 <p align="center">
-    <img src="https://github.com/trimstray/htrace.sh/blob/master/static/img/htrace.sh_preview.png"
+    <img src="https://trimstray.github.io/htrace.sh/assets/img/htrace.sh_preview.png"
         alt="Master">
 </p>
 
