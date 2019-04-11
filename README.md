@@ -1,3 +1,14 @@
+<p align="left">
+  <a href="https://travis-ci.org/trimstray/htrace.sh">
+    <img src="https://travis-ci.org/trimstray/htrace.sh.svg?branch=master" alt="Travis-CI">
+  </a>
+  <a href="https://github.com/trimstray/htrace.sh/tree/master/build">
+    <img src="https://img.shields.io/badge/Docker-Support-blue.svg" alt="Docker">
+  </a>
+</p>
+
+<br>
+
 <p align="center">
   <a href="https://github.com/trimstray/htrace.sh">
     <img src="https://github.com/trimstray/htrace.sh/blob/master/static/img/htrace.sh_logo.png" alt="Master">
@@ -14,24 +25,14 @@
 
 ## Description
 
-<p align="left">
-  <a href="https://travis-ci.org/trimstray/htrace.sh">
-    <img src="https://travis-ci.org/trimstray/htrace.sh.svg?branch=master" alt="Travis-CI">
-  </a>
-  <a href="https://github.com/trimstray/htrace.sh/tree/master/build">
-    <img src="https://img.shields.io/badge/Docker-Support-blue.svg" alt="Docker">
-  </a>
-</p>
-
-<code><b>[htrace.sh](https://trimstray.github.io/htrace.sh/)</b></code> is a shell script for http/https troubleshooting and profiling. It's also a simple wrapper around several open source security tools.
+`htrace.sh` is a shell script for http/https troubleshooting and profiling. It's also a simple wrapper around several open source security tools.
 
 For a more detailed understanding of `htrace.sh`, its parameters, functions and how it all works, see the **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
 
 ## Preview
 
 <p align="center">
-    <img src="https://github.com/trimstray/htrace.sh/blob/master/static/img/htrace.sh_preview.png"
-        alt="Master">
+  <img src="https://github.com/trimstray/htrace.sh/blob/master/static/img/htrace.sh_preview.png" alt="Master">
 </p>
 
 ## How To Use
