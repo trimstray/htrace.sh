@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainZoneTransfer()
+#
+# Description:
+#   Subdomains enumeration with subfinder.
+#
+# Usage:
+#   DomainZoneTransfer domain
+#
+# Examples:
+#   DomainZoneTransfer example.com
+#
+
+function DomainZoneTransfer() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainZoneTransfer"
+  local _STATE=0
+
+  local _host="$1"
+
+  # shellcheck disable=SC2034
+  _scan_type="passive"
+
+  # shellcheck disable=SC2034
+  _destination_host="$_host"
+
+  local _zone_transfer_state="0"
+
+  if [[ "$ZONE_TRANSFER_TYPE" == "passive" ]] ; then
+
+    _scan_type="passive"
+
+    local _zone_transfer_desc="Trying Zone Transfer:"
+          _zone_transfer_desc+="https://hackertarget.com/zone-transfer/"
+
+    local _zone_transfer_cmd="eval $_curl_base_remote -ks "
+          _zone_transfer_cmd+="\"https://api.hackertarget.com/zonetransfer/?q=$_destination_host\""
+
+  elif [[ "$ZONE_TRANSFER_TYPE" == "active" ]] ; then
+
+    _scan_type="active"
+
+    _ns_record=$(\
+              dig @$DNS_SERVER +short NS $_destination_host | \
+              sed 's/\.$//g' | \
+              sed ':a;N;$!ba;s/\n/ /g')
+
+    _ns_record_array=($(echo $_ns_record))
+
+    local _zone_transfer_desc="Trying Zone Transfer:"
+          _zone_transfer_desc+="dig command"
+
+    local _zone_transfer_cmd
+
+    for _ns_r in "${_ns_record_array[@]}" ; do
+
+      _zone_transfer_cmd+="eval dig axfr \"$_destination_host\" @\"$_ns_r\";"
+
+    done
+
+  else
+
+    _zone_transfer_state=1
+
+  fi
+
+  if [[ "$_zone_transfer_state" -eq "0" ]] ; then
+
+    _msg_args+=(\
+                "$_zone_transfer_desc")
+
+    _cmd_args+=(\
+                "$_zone_transfer_cmd")
+
+  fi
+
+  return $_STATE
+
+}

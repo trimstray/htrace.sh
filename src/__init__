@@ -1201,6 +1201,26 @@ function __main__() {
 
     echo
 
+    if [[ "$ZONE_TRANSFER_TYPE" != "null" ]] ; then
+
+      # shellcheck disable=SC2154
+      _init_function "DomainZoneTransfer \"${_domain_name}\""
+
+      _fstate="$?"
+
+      if [[ "$_fstate" -ne 0 ]] ; then
+
+        # shellcheck disable=SC2086,SC2154
+        printf '\r\n    \e['${trgb_3111}'m%s\e[m\n\n' "Connection error"
+
+        tput sgr0
+
+      fi
+
+      echo
+
+    fi
+
   fi
 
   # ````````````````````````````````````````````````````````````````````````````
