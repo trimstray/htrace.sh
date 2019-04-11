@@ -1,6 +1,7 @@
 <p align="center">
-    <img src="https://github.com/trimstray/htrace.sh/blob/master/static/img/logo.png"
-        alt="Master">
+  <a href="https://github.com/trimstray/htrace.sh">
+    <img src="https://github.com/trimstray/htrace.sh/blob/master/static/img/htrace.sh_logo.png" alt="Master">
+  </a>
 </p>
 
 <div align="center">
@@ -15,12 +16,10 @@
 
 <p align="left">
   <a href="https://travis-ci.org/trimstray/htrace.sh">
-    <img src="https://travis-ci.org/trimstray/htrace.sh.svg?branch=master"
-        alt="Travis-CI">
+    <img src="https://travis-ci.org/trimstray/htrace.sh.svg?branch=master" alt="Travis-CI">
   </a>
   <a href="https://github.com/trimstray/htrace.sh/tree/master/build">
-    <img src="https://img.shields.io/badge/Docker-Support-blue.svg"
-        alt="Docker">
+    <img src="https://img.shields.io/badge/Docker-Support-blue.svg" alt="Docker">
   </a>
 </p>
 

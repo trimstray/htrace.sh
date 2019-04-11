@@ -3,8 +3,9 @@ layout: default
 ---
 
 <p align="center">
-    <img src="https://trimstray.github.io/htrace.sh/assets/img/logo.png"
-        alt="Logo">
+  <a href="https://github.com/trimstray/htrace.sh">
+    <img src="https://trimstray.github.io/htrace.sh/assets/img/htrace.sh_logo.png" alt="Master">
+  </a>
 </p>
 
 ## About Project
