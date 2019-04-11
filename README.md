@@ -14,7 +14,7 @@
 <br>
 
 <p align="center">
-    <img src="https://github.com/trimstray/htrace.sh/blob/master/static/img/htrace.sh_preview.png"
+    <img src="https://github.com/trimstray/htrace.sh/blob/master/static/img/logo.png"
         alt="Master">
 </p>
 
@@ -31,6 +31,13 @@
 `htrace.sh` is a shell script for http/https troubleshooting and profiling. It's also a simple wrapper around several open source security tools.
 
 For a more detailed understanding of `htrace.sh`, its parameters, functions and how it all works, see the **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
+
+## Preview
+
+<p align="center">
+    <img src="https://github.com/trimstray/htrace.sh/blob/master/static/img/htrace.sh_preview.png"
+        alt="Master">
+</p>
 
 ## How To Use
 
