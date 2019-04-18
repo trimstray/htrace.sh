@@ -126,6 +126,7 @@ Provides the following options:
         --cache-bypass <value>                try (proxy) cache bypass
         --user-agent <value>                  set 'User-Agent' header
         --auth <value>                        set authentication method
+        --tlsv <value>                        set tls version
         --max-redirects <num>                 set max redirects (default: 10)
         --timeout <num>                       set max timeout (default: 15)
         --hide-src-ip                         hide source ip from output

@@ -142,6 +142,14 @@ function __main__() {
   local _auth_type=""
   local _auth_type_curl=""
 
+  # Set default ssl/tls.
+  # shellcheck disable=SC2034
+  local ssl_version_state="0"
+  local _ssl_version=""
+  local _ssl_version_type_sep="-"
+  local _ssl_type_curl=""
+  local _ssl_version_openssl_curl=""
+
   # Set redirects limit.
   local max_redirects_state="0"
   local _redirects=10
@@ -321,7 +329,7 @@ function __main__() {
   local _short_opt="u:shbM:H:p:r:a"
   local _long_opt="help,version,url:,ssl,headers,body,req-method:,req-header:,proxy:,resolve:,all-scans,"
         _long_opt+="testssl,observatory,ssllabs,mixed-content,nse,waf,dns,cache-bypass:,user-agent:,auth:,"
-        _long_opt+="max-redirects:,timeout:,hide-src-ip"
+        _long_opt+="sslv:,max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -485,6 +493,14 @@ function __main__() {
         export auth_state=1
 
         export _auth_type="${2}"
+
+        shift 2 ;;
+
+      --sslv)
+
+        export _ssl_version_state=1
+
+        export _ssl_version="${2}"
 
         shift 2 ;;
 
@@ -859,6 +875,57 @@ function __main__() {
 
   fi
 
+  if [[ "$_ssl_version_state" -eq 1 ]] ; then
+
+    if [[ "$_ssl_version" == "ssl2" ]] || \
+       [[ "$_ssl_version" == "ssl3" ]] ; then
+
+      # Default values:
+      _ssl_version_type_sep=""
+      _ssl_version_type=""
+      _ssl_version_openssl_type=""
+
+    elif [[ "$_ssl_version" == "tls1.0" ]] ; then
+
+      _ssl_version_type="tlsv1.0"
+      _ssl_version_openssl_type="tls1"
+
+    elif [[ "$_ssl_version" == "tls1.1" ]] || \
+         [[ "$_ssl_version" == "tls1.2" ]] ; then
+
+      _ssl_version_type="${_ssl_version:0:3}v${_ssl_version:3}"
+      _ssl_version_openssl_type="${_ssl_version//./_}"
+
+    elif [[ "$_ssl_version" == "tls1.3" ]] ; then
+
+      if [[ "$_openssl_version" == "1.1.1"* ]] ; then
+
+        _ssl_version_type="${_ssl_version:0:3}v${_ssl_version:3}"
+        _ssl_version_openssl_type="${_ssl_version//./_}"
+
+      else
+
+        # Default values:
+        _ssl_version_type_sep=""
+        _ssl_version_type=""
+        _ssl_version_openssl_type=""
+
+      fi
+
+    else
+
+      # Default values:
+      _ssl_version_type_sep=""
+      _ssl_version_type=""
+      _ssl_version_openssl_type=""
+
+    fi
+
+    _ssl_type_curl="${_ssl_version_type_sep}${_ssl_version_type}"
+    _ssl_version_openssl_curl="${_ssl_version_type_sep}${_ssl_version_openssl_type}"
+
+  fi
+
   # For -r|--resolve:
   _curl_base+=" $_resolve_type_curl "
   _curl_base_remote+=" $_resolve_type_curl "
@@ -866,6 +933,10 @@ function __main__() {
   # For --auth:
   _curl_base+=" $_auth_type_curl "
   _curl_base_remote+=" $_auth_type_curl "
+
+  # For --sslv:
+  _curl_base+=" $_ssl_type_curl "
+  _curl_base_remote+=" $_ssl_type_curl "
 
   printf '\n    URI: \e['${trgb_3341}'m%s\e['${trgb_3341}'m%s\e[m\n' \
          "$_http_proto" "$_http_url_with_args"
@@ -907,6 +978,17 @@ function __main__() {
 
     printf '         » force-resolve:  \e['${trgb_40337}'m%s\e[m\n' \
            "$_resolve_type_data"
+
+  fi
+
+  if [[ "$_ssl_version_state" -eq 1 ]] ; then
+
+    if [[ ! -z "$_ssl_version_type" ]] ; then
+
+      printf '         » tls-version:    \e['${trgb_40337}'m%s\e[m\n' \
+             "$_ssl_version_type"
+
+    fi
 
   fi
 

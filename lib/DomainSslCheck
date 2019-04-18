@@ -27,9 +27,18 @@ function DomainSslCheck() {
   _ssl_domain_name="$_domain_name"
 
   # Default ssl params.
-  _ssl_params_default=$(echo | \
-                       openssl s_client -servername "$_ssl_domain_name" \
-                       -connect "$_ssl_remote_socket" 2>/dev/null)
+  if [[ -z "$_ssl_version_openssl_curl" ]] ; then
+
+    _ssl_params_default=$(echo | \
+                         openssl s_client -servername "$_ssl_domain_name" \
+                         -connect "$_ssl_remote_socket" 2>/dev/null)
+
+  else
+
+    _ssl_params_default=$(echo | \
+                         openssl s_client "$_ssl_version_openssl_curl" -servername "$_ssl_domain_name" \
+                         -connect "$_ssl_remote_socket" 2>/dev/null)
+  fi
 
   _ssl_params_proto=$(echo "$_ssl_params_default" | \
                        grep "Protocol  :" | \
