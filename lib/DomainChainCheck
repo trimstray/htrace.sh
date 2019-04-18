@@ -26,10 +26,21 @@ function DomainChainCheck() {
   # shellcheck disable=SC2154
   _ssl_domain_name="$_domain_name"
 
-  _ssl_domain_cert_chain=$(echo | \
-                     openssl s_client -verify 5 -servername "$_ssl_domain_name" \
-                     -connect "$_ssl_remote_socket" 2>&1 | \
-                     sed -ne '/Certificate chain/,/---/p')
+  if [[ -z "$_ssl_version_openssl_curl" ]] ; then
+
+    _ssl_domain_cert_chain=$(echo | \
+                       openssl s_client -verify 5 -servername "$_ssl_domain_name" \
+                       -connect "$_ssl_remote_socket" 2>&1 | \
+                       sed -ne '/Certificate chain/,/---/p')
+
+  else
+
+    _ssl_domain_cert_chain=$(echo | \
+                       openssl s_client "$_ssl_version_openssl_curl" -verify 5 -servername "$_ssl_domain_name" \
+                       -connect "$_ssl_remote_socket" 2>&1 | \
+                       sed -ne '/Certificate chain/,/---/p')
+
+  fi
 
   # shellcheck disable=SC2154
   if [[ "$_openssl_version" == "1.1.1a" ]] || \

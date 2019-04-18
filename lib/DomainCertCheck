@@ -30,15 +30,31 @@ function DomainCertCheck() {
   #   echo | \
   #   openssl s_client -servername "$_ssl_domain_name" \
   #   -connect "$_ssl_remote_socket" 2>/dev/null | openssl x509 -text -noout
-  _ssl_domain_cert=$(echo | \
-                     openssl s_client -servername "$_ssl_domain_name" \
-                     -connect "$_ssl_remote_socket" 2>/dev/null | \
-                     sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p')
+  if [[ -z "$_ssl_version_openssl_curl" ]] ; then
 
-  _ssl_domain_cert_non_sni=$(echo | \
-                     openssl s_client \
-                     -connect "$_ssl_remote_socket" 2>/dev/null | \
-                     sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p')
+    _ssl_domain_cert=$(echo | \
+                       openssl s_client -servername "$_ssl_domain_name" \
+                       -connect "$_ssl_remote_socket" 2>/dev/null | \
+                       sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p')
+
+    _ssl_domain_cert_non_sni=$(echo | \
+                       openssl s_client \
+                       -connect "$_ssl_remote_socket" 2>/dev/null | \
+                       sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p')
+
+  else
+
+    _ssl_domain_cert=$(echo | \
+                       openssl s_client "$_ssl_version_openssl_curl" -servername "$_ssl_domain_name" \
+                       -connect "$_ssl_remote_socket" 2>/dev/null | \
+                       sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p')
+
+    _ssl_domain_cert_non_sni=$(echo | \
+                      openssl s_client "$_ssl_version_openssl_curl" \
+                      -connect "$_ssl_remote_socket" 2>/dev/null | \
+                      sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p')
+
+  fi
 
   _ssl_domain_names=$(echo "$_ssl_domain_cert" | \
                      openssl x509 -noout -text | \
