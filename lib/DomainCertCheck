@@ -26,10 +26,7 @@ function DomainCertCheck() {
   # shellcheck disable=SC2154
   _ssl_domain_name="$_domain_name"
 
-  # Alternative:
-  #   echo | \
-  #   openssl s_client -servername "$_ssl_domain_name" \
-  #   -connect "$_ssl_remote_socket" 2>/dev/null | openssl x509 -text -noout
+  # shellcheck disable=SC2154
   if [[ -z "$_ssl_version_openssl_curl" ]] ; then
 
     _ssl_domain_cert=$(echo | \

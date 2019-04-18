@@ -932,6 +932,7 @@ function __main__() {
     fi
 
     _ssl_version_type_curl="${_ssl_version_type_sep}${_ssl_version_type}"
+    # shellcheck disable=SC2034
     _ssl_version_openssl_curl="${_ssl_version_type_sep}${_ssl_version_openssl_type}"
 
   fi

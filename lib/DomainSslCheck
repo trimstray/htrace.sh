@@ -27,6 +27,7 @@ function DomainSslCheck() {
   _ssl_domain_name="$_domain_name"
 
   # Default ssl params.
+  # shellcheck disable=SC2154
   if [[ -z "$_ssl_version_openssl_curl" ]] ; then
 
     _ssl_params_default=$(echo | \

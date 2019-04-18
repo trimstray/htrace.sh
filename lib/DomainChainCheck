@@ -26,6 +26,7 @@ function DomainChainCheck() {
   # shellcheck disable=SC2154
   _ssl_domain_name="$_domain_name"
 
+  # shellcheck disable=SC2154
   if [[ -z "$_ssl_version_openssl_curl" ]] ; then
 
     _ssl_domain_cert_chain=$(echo | \
