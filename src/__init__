@@ -951,6 +951,7 @@ function __main__() {
 
   fi
 
+  # shellcheck disable=2154
   if [[ "$_ciphers_state" -eq 1 ]] ; then
 
     if [[ -n "$_ciphers_type" ]] ; then
