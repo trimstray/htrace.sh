@@ -154,6 +154,11 @@ function __main__() {
   local _ssl_version_type_curl=""
   local _ssl_version_openssl_curl=""
 
+  # Set default ciphers.
+  # shellcheck disable=SC2034
+  local ciphers_state="0"
+  local _ciphers_type=""
+
   # Set redirects limit.
   local max_redirects_state="0"
   local _redirects=10
@@ -333,7 +338,7 @@ function __main__() {
   local _short_opt="u:shbM:H:p:r:a"
   local _long_opt="help,version,url:,ssl,headers,body,req-method:,req-header:,proxy:,resolve:,all-scans,"
         _long_opt+="testssl,observatory,ssllabs,mixed-content,nse,waf,dns,cache-bypass:,user-agent:,auth:,"
-        _long_opt+="tlsv:,max-redirects:,timeout:,hide-src-ip"
+        _long_opt+="tlsv:,ciph:,max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -505,6 +510,14 @@ function __main__() {
         export _ssl_version_state=1
 
         export _ssl_version="${2}"
+
+        shift 2 ;;
+
+      --ciph)
+
+        export ciphers_state=1
+
+        export _ciphers_type="${2}"
 
         shift 2 ;;
 
@@ -937,6 +950,20 @@ function __main__() {
 
   fi
 
+  if [[ "$_ciphers_state" -eq 1 ]] ; then
+
+    if [[ -n "$_ciphers_type" ]] ; then
+
+      _ciphers_type_curl="--ciphers $_ciphers_type"
+
+    else
+
+      _ciphers_type_curl=""
+
+    fi
+
+  fi
+
   # For -r|--resolve:
   _curl_base+=" $_resolve_type_curl "
   _curl_base_remote+=" $_resolve_type_curl "
@@ -948,6 +975,10 @@ function __main__() {
   # For --tlsv:
   _curl_base+=" $_ssl_version_type_curl "
   _curl_base_remote+=" $_ssl_version_type_curl "
+
+  # For --ciph:
+  _curl_base+=" $_ciphers_type_curl "
+  _curl_base_remote+=" $_ciphers_type_curl "
 
   printf '\n    URI: \e['${trgb_3341}'m%s\e['${trgb_3341}'m%s\e[m\n' \
          "$_http_proto" "$_http_url_with_args"

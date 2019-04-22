@@ -663,6 +663,7 @@ function _help_() {
         --user-agent <value>                  set 'User-Agent' header
         --auth <value>                        set authentication method
         --tlsv <value>                        set tls version
+        --ciph <value>                        set of cryptographic algorithm
         --max-redirects <num>                 set max redirects (default: 10)
         --timeout <num>                       set max timeout (default: 15)
         --hide-src-ip                         hide source ip from output
