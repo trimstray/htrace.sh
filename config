@@ -20,13 +20,15 @@ HIDE_SRC_IP="off"
 
 # Set absolute path to cookie file.
 # shellcheck disable=SC2034
+#   - /path/to/cookie
 HTRACE_COOKIE_PATH="/tmp/htrace.sh.cookie"
 
 # DNS server for remote dns requests.
 # shellcheck disable=SC2034
+#   - <ip-addr>
 DNS_SERVER="8.8.8.8"
 
 # Type of zone transfer attack.
 # shellcheck disable=SC2034
-#   - passive, active, null
+#   - passive, active, off
 ZONE_TRANSFER_TYPE="passive"
