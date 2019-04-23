@@ -106,6 +106,10 @@ function __main__() {
   local resolve_type_port_num=""
   local _resolve_type_data=""
 
+  # Default 'interface' variable.
+  local iface_state="0"
+  local iface_type=""
+
   # Default state for all external security tools.
   local all_scans_state="0"
 
@@ -335,9 +339,9 @@ function __main__() {
 
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
-  local _short_opt="u:shbM:H:p:r:a"
+  local _short_opt="u:shbM:H:p:r:i:a"
   local _long_opt="help,version,url:,ssl,headers,body,req-method:,req-header:,"
-        _long_opt+="proxy:,resolve:,all-scans,testssl,observatory,ssllabs,"
+        _long_opt+="proxy:,resolve:,iface:,all-scans,testssl,observatory,ssllabs,"
         _long_opt+="mixed-content,nse,waf,dns,cache-bypass:,user-agent:,auth:,"
         _long_opt+="tlsv:,ciph:,max-redirects:,timeout:,hide-src-ip"
 
@@ -431,6 +435,14 @@ function __main__() {
         export resolve_state=1
 
         export resolve_type="${2}"
+
+        shift 2 ;;
+
+      -i|--iface)
+
+        export iface_state=1
+
+        export iface_type="${2}"
 
         shift 2 ;;
 
@@ -816,7 +828,17 @@ function __main__() {
   else
 
     _resolve_type_data=""
-    _resolve_type_curl="$_resolve_type_data"
+    _resolve_type_curl=""
+
+  fi
+
+  if [[ "$iface_state" -eq 1 ]] ; then
+
+    _interface_type_curl="--interface $iface_type"
+
+  else
+
+    _interface_type_curl=""
 
   fi
 
@@ -952,7 +974,7 @@ function __main__() {
   fi
 
   # shellcheck disable=2154
-  if [[ "$_ciphers_state" -eq 1 ]] ; then
+  if [[ "$ciphers_state" -eq 1 ]] ; then
 
     if [[ -n "$_ciphers_type" ]] ; then
 
@@ -969,6 +991,10 @@ function __main__() {
   # For -r|--resolve:
   _curl_base+=" $_resolve_type_curl "
   _curl_base_remote+=" $_resolve_type_curl "
+
+  # For --iface:
+  _curl_base+=" $_interface_type_curl "
+  _curl_base_remote+=" $_interface_type_curl "
 
   # For --auth:
   _curl_base+=" $_auth_type_curl "
@@ -1007,14 +1033,10 @@ function __main__() {
 
   fi
 
-  if [[ "$auth_state" -eq 1 ]] ; then
+  if [[ "$iface_state" -eq 1 ]] ; then
 
-    if [[ ! -z "$_auth_type_curl" ]] ; then
-
-      printf '         » authentication: \e['${trgb_40631}'m%s\e[m\n                           \e['${trgb_40337}'m%s:%s\e[m\n' \
-             "$_h_auth_type" "$_h_auth_key" "$_h_auth_value"
-
-    fi
+    printf '         » interface:      \e['${trgb_40337}'m%s\e[m\n' \
+           "$iface_type"
 
   fi
 
@@ -1032,6 +1054,28 @@ function __main__() {
 
       printf '         » tls-version:    \e['${trgb_40337}'m%s\e[m\n' \
              "$_ssl_version_msg"
+
+    fi
+
+  fi
+
+  if [[ "$ciphers_state" -eq 1 ]] ; then
+
+    if [[ ! -z "$_ciphers_type" ]] ; then
+
+      printf '         » ciphersuite:    \e['${trgb_40337}'m%s\e[m\n' \
+             "$_ciphers_type"
+
+    fi
+
+  fi
+
+  if [[ "$auth_state" -eq 1 ]] ; then
+
+    if [[ ! -z "$_auth_type_curl" ]] ; then
+
+      printf '         » authentication: \e['${trgb_40631}'m%s\e[m\n                           \e['${trgb_40337}'m%s:%s\e[m\n' \
+             "$_h_auth_type" "$_h_auth_key" "$_h_auth_value"
 
     fi
 
