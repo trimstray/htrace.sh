@@ -110,7 +110,7 @@ Provides the following options:
         -H|--req-header <value>               set request header(s)
         -p|--proxy <value>                    set proxy server (not for external tools)
         -r|--resolve <value>                  resolve the host+port to this address
-        -i|--iface                            set network interface (or address)
+        -i|--iface <value>                    set network interface (or address)
         -a|--all-scans                        use all external security tools
 
     Security tools:
