@@ -619,22 +619,18 @@ function _help_() {
 
   Usage:
 
-    $_init_name <option|long-option>
+    $_init_name <option|long-option> [value]
 
   Examples:
 
     $_init_name -u https://example.com -s -h -b
     $_init_name -u https://example.com --all-scans
-    $_init_name -u https://example.com --testssl --ssllabs
-    $_init_name -u https://example.com -h -M 'POST:name=admin&num=12'
-    $_init_name -u https://example.com -h --auth 'basic:user:pass'
-    $_init_name -u https://example.com --cache-bypass \"?\${RANDOM}\"
-    $_init_name -u https://example.com --ssl --headers --proxy \"socks5h://127.0.0.1:9501\"
 
   Options:
 
         --help                                show this message
         --version                             show script version
+        --examples                            show script examples
 
     Standard:
 
@@ -675,6 +671,73 @@ function _help_() {
   This is free software, and you are welcome to redistribute it
   under certain conditions; for more details please see
   <http://www.gnu.org/licenses/>.
+
+"
+
+  return $_STATE
+
+}
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: _examples_()
+#
+# Description:
+#   Show htrace.sh examples.
+#
+# Usage:
+#   _examples_
+#
+# Examples:
+#   _examples_
+#
+
+function _examples_() {
+
+  local _FUNCTION_ID="_examples_"
+  local _STATE=0
+
+  # shellcheck disable=SC2154
+  printf "%s" "
+  Original: https://github.com/trimstray/htrace.sh/wiki/One-liners
+
+  Check redirects
+    › htrace.sh -u https://example.com
+
+  Show basic ssl info and response headers
+    › htrace.sh -u https://example.com -s -h
+
+  Show response body
+    › htrace.sh -u https://example.com -b
+
+  Set POST request method
+    › htrace.sh -u https://example.com -h -M \"POST:'{\"username\":\"xyz\",\"password\":\"xyz\"}'\"
+                                              ^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                               /                    \\
+                                              /                      \\
+                                         POST method          POST method value
+
+  Pin a single request to a specified IP address
+    › htrace.sh -u https://example.com -h --resolve \"xxx.xxx.xxx.xxx\"
+
+  Scan SSL domain configuration
+    › htrace.sh -u https://example.com --ssllabs --testssl
+
+  Show and analyse HTTP response headers
+    › htrace.sh -u https://example.com -h --observatory
+
+  Enumerate subdomains and perform zone transfer
+    › htrace.sh -u https://example.com --dns
+
+  Set credentials to access a URL
+    # Standard authentication:
+    › htrace.sh -u https://example.com -h --auth \"basic:foo:bar\"
+    # Proxy authentication:
+    › htrace.sh -u https://example.com -h --auth \"proxy:foo:bar\"
+    # Cookie authentication:
+    › htrace.sh -u https://example.com -h --auth \"cookie:/tmp/example.com.cookie\"
+
+  Set specific TLS version and Ciphersuite
+    › htrace.sh -u https://example.com -s --tlsv 1.1 --ciph \"TLS_DHE_RSA_WITH_AES_256_CBC_SHA\"
 
 "
 

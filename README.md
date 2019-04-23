@@ -83,22 +83,18 @@ Provides the following options:
 
   Usage:
 
-    htrace.sh <option|long-option>
+    htrace.sh <option|long-option> [value]
 
   Examples:
 
     htrace.sh -u https://example.com -s -h -b
     htrace.sh -u https://example.com --all-scans
-    htrace.sh -u https://example.com --testssl --ssllabs
-    htrace.sh -u https://example.com -h -M 'POST:password=123&name=Admin'
-    htrace.sh -u https://example.com -h --auth 'basic:user:pass'
-    htrace.sh -u https://example.com --cache-bypass "?${RANDOM}"
-    htrace.sh -u https://example.com --ssl --headers --proxy "socks5h://127.0.0.1:9501"
 
   Options:
 
         --help                                show this message
         --version                             show script version
+        --examples                            show script examples
 
     Standard:
 
