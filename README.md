@@ -87,8 +87,9 @@ Provides the following options:
 
   Examples:
 
+    htrace.sh -u https://example.com -s -h -b
     htrace.sh -u https://example.com --all-scans
-    htrace.sh -u https://example.com -s -h --testssl --ssllabs
+    htrace.sh -u https://example.com --testssl --ssllabs
     htrace.sh -u https://example.com -h -M 'POST:password=123&name=Admin'
     htrace.sh -u https://example.com -h --auth 'basic:user:pass'
     htrace.sh -u https://example.com --cache-bypass "?${RANDOM}"

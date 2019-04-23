@@ -623,8 +623,9 @@ function _help_() {
 
   Examples:
 
+    $_init_name -u https://example.com -s -h -b
     $_init_name -u https://example.com --all-scans
-    $_init_name -u https://example.com -s -h --testssl --ssllabs
+    $_init_name -u https://example.com --testssl --ssllabs
     $_init_name -u https://example.com -h -M 'POST:name=admin&num=12'
     $_init_name -u https://example.com -h --auth 'basic:user:pass'
     $_init_name -u https://example.com --cache-bypass \"?\${RANDOM}\"
