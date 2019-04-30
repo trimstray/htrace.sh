@@ -523,6 +523,8 @@ function __main__() {
 
         export _user_agent="${2}"
 
+        HTTP_USER_AGENT="off"
+
         shift 2 ;;
 
       --referer)
@@ -530,6 +532,8 @@ function __main__() {
         export referer_state=1
 
         export _referer="${2}"
+
+        HTTP_REFERER="off"
 
         shift 2 ;;
 
@@ -1116,27 +1120,29 @@ function __main__() {
 
   fi
 
-  if [[ "$HTTP_USER_AGENT" == "on" ]] ; then
+  if [[ "$user_agent_state" -eq 1 ]] ; then
 
-    if [[ "$user_agent_state" -eq 0 ]] || \
-       [[ "$user_agent_state" -eq 1 ]] ; then
+    printf '         » user-agent:     \e['${trgb_40337}'m%s\e[m\n' \
+           "$_user_agent"
 
-      printf '         » user-agent:     \e['${trgb_40337}'m%s\e[m\n' \
-             "$_user_agent"
+  elif [[ "$user_agent_state" -eq 0 ]] && \
+       [[ "$HTTP_USER_AGENT" == "on" ]] ; then
 
-    fi
+    printf '         » user-agent:     \e['${trgb_40337}'m%s\e[m\n' \
+           "$_user_agent"
 
   fi
 
-  if [[ "$HTTP_REFERER" == "on" ]] ; then
+  if [[ "$referer_state" -eq 1 ]] ; then
 
-    if [[ "$referer_state" -eq 0 ]] || \
-       [[ "$referer_state" -eq 1 ]] ; then
+    printf '         » referer:        \e['${trgb_40337}'m%s\e[m\n' \
+           "$_referer"
 
-      printf '         » referer:        \e['${trgb_40337}'m%s\e[m\n' \
-             "$_referer"
+  elif [[ "$referer_state" -eq 0 ]] && \
+       [[ "$HTTP_REFERER" == "on" ]] ; then
 
-    fi
+    printf '         » referer:        \e['${trgb_40337}'m%s\e[m\n' \
+           "$_referer"
 
   fi
 
