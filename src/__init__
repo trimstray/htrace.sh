@@ -140,6 +140,11 @@ function __main__() {
   local user_agent_state="0"
   local _user_agent=""
 
+  # Set Referer.
+  # shellcheck disable=SC2034
+  local referer_state="0"
+  local _referer=""
+
   # Default 'authentication' variable.
   # shellcheck disable=SC2034
   local auth_state="0"
@@ -343,7 +348,7 @@ function __main__() {
   local _long_opt="help,version,examples,url:,ssl,headers,body,"
         _long_opt+="req-method:,req-header:,proxy:,resolve:,iface:,"
         _long_opt+="all-scans,testssl,observatory,ssllabs,mixed-content,"
-        _long_opt+="nse,waf,dns,cache-bypass:,user-agent:,auth:,"
+        _long_opt+="nse,waf,dns,cache-bypass:,user-agent:,referer:,auth:,"
         _long_opt+="tlsv:,ciph:,max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
@@ -514,6 +519,14 @@ function __main__() {
         export user_agent_state=1
 
         export _user_agent="${2}"
+
+        shift 2 ;;
+
+      --referer)
+
+        export referer_state=1
+
+        export _referer_type="${2}"
 
         shift 2 ;;
 
@@ -849,6 +862,12 @@ function __main__() {
 
   fi
 
+  if [[ "$referer_state" -eq 1 ]] ; then
+
+    _referer_type_curl="--referer $_referer_type"
+
+  fi
+
   if [[ "$auth_state" -eq 1 ]] ; then
 
     _h_auth_type=$(echo "${_auth_type}" | cut -d ":" -f1 | sed 's/ //g')
@@ -1003,6 +1022,10 @@ function __main__() {
   _curl_base+=" $_interface_type_curl "
   _curl_base_remote+=" $_interface_type_curl "
 
+  # For --referer:
+  _curl_base+=" $_referer_type_curl "
+  _curl_base_remote+=" $_referer_type_curl "
+
   # For --auth:
   _curl_base+=" $_auth_type_curl "
   _curl_base_remote+=" $_auth_type_curl "
@@ -1040,17 +1063,35 @@ function __main__() {
 
   fi
 
-  if [[ "$iface_state" -eq 1 ]] ; then
+  if [[ "$auth_state" -eq 1 ]] ; then
 
-    printf '         » interface:      \e['${trgb_40337}'m%s\e[m\n' \
-           "$iface_type"
+    if [[ ! -z "$_auth_type_curl" ]] ; then
+
+      printf '         » authentication: \e['${trgb_40631}'m%s\e[m\n                           \e['${trgb_40337}'m%s:%s\e[m\n' \
+             "$_h_auth_type" "$_h_auth_key" "$_h_auth_value"
+
+    fi
 
   fi
 
-  if [[ "$resolve_state" -eq 1 ]] ; then
+  if [[ "$user_agent_state" -eq 1 ]] ; then
 
-    printf '         » force-resolve:  \e['${trgb_40337}'m%s\e[m\n' \
-           "$_resolve_type_data"
+    printf '         » user-agent:     \e['${trgb_40337}'m%s\e[m\n' \
+           "$_user_agent"
+
+  fi
+
+  if [[ "$referer_state" -eq 1 ]] ; then
+
+    printf '         » referer:        \e['${trgb_40337}'m%s\e[m\n' \
+           "$_referer_type"
+
+  fi
+
+  if [[ "$cache_bypass_state" -eq 1 ]] ; then
+
+    printf '         » cache-bypass:   \e['${trgb_40337}'m%s\e[m\n' \
+           "$cache_bypass_type"
 
   fi
 
@@ -1077,21 +1118,17 @@ function __main__() {
 
   fi
 
-  if [[ "$auth_state" -eq 1 ]] ; then
+  if [[ "$resolve_state" -eq 1 ]] ; then
 
-    if [[ ! -z "$_auth_type_curl" ]] ; then
-
-      printf '         » authentication: \e['${trgb_40631}'m%s\e[m\n                           \e['${trgb_40337}'m%s:%s\e[m\n' \
-             "$_h_auth_type" "$_h_auth_key" "$_h_auth_value"
-
-    fi
+    printf '         » force-resolve:  \e['${trgb_40337}'m%s\e[m\n' \
+           "$_resolve_type_data"
 
   fi
 
-  if [[ "$cache_bypass_state" -eq 1 ]] ; then
+  if [[ "$iface_state" -eq 1 ]] ; then
 
-    printf '         » cache-bypass:   \e['${trgb_40337}'m%s\e[m\n' \
-           "$cache_bypass_type"
+    printf '         » interface:      \e['${trgb_40337}'m%s\e[m\n' \
+           "$iface_type"
 
   fi
 

@@ -123,6 +123,7 @@ Provides the following options:
 
         --cache-bypass <value>                try (proxy) cache bypass
         --user-agent <value>                  set 'User-Agent' header
+        --referer <value>                     set 'Referer' header
         --auth <value>                        set authentication method
         --tlsv <value>                        set tls version
         --ciph <value>                        set of cryptographic algorithm
