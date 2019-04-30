@@ -28,6 +28,9 @@ function __main__() {
   # shellcheck disable=SC2154
   readonly _user_agent_fd="${_src}/useragents"
 
+  # shellcheck disable=SC2154
+  readonly _referer_fd="${_src}/referers"
+
   # We check if we are a root user.
   # if [[ "$EUID" -ne 0 ]] ; then
   #
@@ -526,7 +529,7 @@ function __main__() {
 
         export referer_state=1
 
-        export _referer_type="${2}"
+        export _referer="${2}"
 
         shift 2 ;;
 
@@ -730,13 +733,52 @@ function __main__() {
 
   fi
 
-  # Load user-agents file.
-  if [[ "$user_agent_state" -eq 0 ]] ; then
+  if [[ "$HTTP_USER_AGENT" == "on" ]] ; then
 
-    _load "null" "$_user_agent_fd"
+    # Load user-agents file.
+    if [[ "$user_agent_state" -eq 0 ]] ; then
 
-    # Pick a random entry from the user agents list.
-    _user_agent=${USER_AGENTS[$_random % ${#USER_AGENTS[@]}]}
+      _load "null" "$_user_agent_fd"
+
+      # Pick a random entry from the user agents list.
+      _user_agent=${USER_AGENTS[$_random % ${#USER_AGENTS[@]}]}
+
+    fi
+
+  fi
+
+  if [[ "$HTTP_REFERER" == "on" ]] ; then
+
+    # Load referers file.
+    if [[ "$referer_state" -eq 0 ]] ; then
+
+      RND_STRING=(\
+        "bing" \
+        "duckduckgo" \
+        "wiki" \
+        "twitter" \
+        "search.creativecommons" \
+        "gibiru" \
+        "archive" \
+        "searchencrypt" \
+        "yandex" \
+        "stargpage" \
+        "swisscows" \
+        "google" \
+        "boardreader" \
+        "feedly" \
+        "slideshare"
+        )
+
+      # shellcheck disable=SC2034
+      _referer_string=${RND_STRING[$_random % ${#RND_STRING[@]}]}
+
+      _load "null" "$_referer_fd"
+
+      # Pick a random entry from the user agents list.
+      _referer=${REFERERS[$_random % ${#REFERERS[@]}]}
+
+    fi
 
   fi
 
@@ -864,7 +906,7 @@ function __main__() {
 
   if [[ "$referer_state" -eq 1 ]] ; then
 
-    _referer_type_curl="--referer $_referer_type"
+    _referer_curl="--referer $_referer"
 
   fi
 
@@ -1023,8 +1065,8 @@ function __main__() {
   _curl_base_remote+=" $_interface_type_curl "
 
   # For --referer:
-  _curl_base+=" $_referer_type_curl "
-  _curl_base_remote+=" $_referer_type_curl "
+  _curl_base+=" $_referer_curl "
+  _curl_base_remote+=" $_referer_curl "
 
   # For --auth:
   _curl_base+=" $_auth_type_curl "
@@ -1074,17 +1116,27 @@ function __main__() {
 
   fi
 
-  if [[ "$user_agent_state" -eq 1 ]] ; then
+  if [[ "$HTTP_USER_AGENT" == "on" ]] ; then
 
-    printf '         » user-agent:     \e['${trgb_40337}'m%s\e[m\n' \
-           "$_user_agent"
+    if [[ "$user_agent_state" -eq 0 ]] || \
+       [[ "$user_agent_state" -eq 1 ]] ; then
+
+      printf '         » user-agent:     \e['${trgb_40337}'m%s\e[m\n' \
+             "$_user_agent"
+
+    fi
 
   fi
 
-  if [[ "$referer_state" -eq 1 ]] ; then
+  if [[ "$HTTP_REFERER" == "on" ]] ; then
 
-    printf '         » referer:        \e['${trgb_40337}'m%s\e[m\n' \
-           "$_referer_type"
+    if [[ "$referer_state" -eq 0 ]] || \
+       [[ "$referer_state" -eq 1 ]] ; then
+
+      printf '         » referer:        \e['${trgb_40337}'m%s\e[m\n' \
+             "$_referer"
+
+    fi
 
   fi
 

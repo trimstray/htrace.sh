@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# shellcheck disable=SC2034
+REFERERS=(\
+"http://$RND_STRING.net/" \
+"http://www.$RND_STRING.com/" \
+"http://cdn.$RND_STRING.com/aunt.php" \
+"http://www.$RND_STRING.com/#actor" \
+"http://baseball.$RND_STRING.com/?arch=random" \
+"https://$RND_STRING.com/boundary.php" \
+"https://www.$RND_STRING.com/endpoint/v2" \
+"https://$RND_STRING.net/#border" \
+"http://$RND_STRING.com/back" \
+"https://www.$RND_STRING.org/airplane/init.php#case" \
+"http://$RND_STRING.com/alarm" \
+"https://www.$RND_STRING.com/endpoint/v1" \
+"https://$RND_STRING.com/#box" \
+"http://www.$RND_STRING.com/bed/bag.html" \
+"https://www.$RND_STRING.com/" \
+"https://act.$RND_STRING.com/" \
+"http://api.$RND_STRING.com/" \
+"https://static.$RND_STRING.com/brother?bait=attack" \
+"https://$RND_STRING.com/" \
+"https://www.$RND_STRING.edu/" \
+"https://www.$RND_STRING.net/arch.php?bell=afternoon&behavior=boot" \
+"http://cdn.$RND_STRING.com/bag/act" \
+"https://$RND_STRING.com/agreement.php" \
+"http://www.$RND_STRING.com/cdn/back" \
+"https://www.$RND_STRING.com/?behavior=apparel" \
+"https://www.$RND_STRING.com/endpoint.php" \
+"https://www.$RND_STRING.com/#beds" \
+"http://$RND_STRING.com/" \
+"https://www.$RND_STRING.com/" \
+"http://www.$RND_STRING.com/advice/badge" \
+"http://www.$RND_STRING.edu/bag" \
+"https://www.$RND_STRING.edu/addition/endpoint" \
+"https://www.$RND_STRING.com/bit.php" \
+"http://$RND_STRING.com/birth.aspx" \
+"http://www.$RND_STRING.com/bed/angle" \
+"https://$RND_STRING.net/api" \
+"http://static.$RND_STRING.com/split.php" \
+"http://cdn.$RND_STRING.com/account" \
+"http://www.$RND_STRING.org/" \
+"http://www.$RND_STRING.com/" \
+"https://www.$RND_STRING.com/arch?afternoon=arch" \
+"http://$RND_STRING.edu/beef" \
+"http://api.$RND_STRING.com/" \
+"https://endpoint.$RND_STRING.com/" \
+"https://www.$RND_STRING.com/aftermath.html" \
+"http://www.$RND_STRING.com/#air" \
+"https://$RND_STRING.com/blood/actor.html" \
+"https://book.$RND_STRING.net/" \
+"https://www.$RND_STRING.org/branch.php" \
+"http://www.$RND_STRING.com/?actor=blade"
+)

@@ -18,6 +18,16 @@ HTRACE_SSL_PATH="/etc/ssl/certs/"
 #   - on, off
 HIDE_SRC_IP="off"
 
+# Set random http user-agent.
+# shellcheck disable=SC2034
+#   - on, off
+HTTP_USER_AGENT="on"
+
+# Set random http referer.
+# shellcheck disable=SC2034
+#   - on, off
+HTTP_REFERER="off"
+
 # Set absolute path to cookie file.
 # shellcheck disable=SC2034
 #   - /path/to/cookie
