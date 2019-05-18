@@ -175,7 +175,7 @@ function InitTrace() {
 
         for _ip in "${_class_pattern[@]}" ; do
 
-          if [[ "$_remote_socket" = *"$_ip"* ]] ; then
+          if [[ "$_remote_socket" = "$_ip"* ]] ; then
 
             _via_ip="<local_net>"
             _via_ip_status="1"
