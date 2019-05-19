@@ -193,6 +193,8 @@ elif [[ "$_os_name" == "debian" ]] || \
   # PHP 7.0
   wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
   echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
+  # alternative:
+  #   add-apt-repository ppa:ondrej/php
   apt-get update
   apt-get install -y php7.0-curl php7.0-xml php7.0-cli php7.0-mbstring
 
