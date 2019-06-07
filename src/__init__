@@ -702,7 +702,7 @@ function __main__() {
   if [[ "$proxy_state" -eq 1 ]] ; then
 
     # shellcheck disable=SC2034
-    if [[ "$_req_method_type" == "POST" ]] ; then
+    if [[ "$req_method_type" == "POST" ]] ; then
 
       # shellcheck disable=SC2034
       _curl_base="curl --proxy $proxy_type --request $req_method_type -d \"$req_method_post_value\""
@@ -720,7 +720,7 @@ function __main__() {
   else
 
     # shellcheck disable=SC2034
-    if [[ "$_req_method_type" == "POST" ]] ; then
+    if [[ "$req_method_type" == "POST" ]] ; then
 
       # shellcheck disable=SC2034
       _curl_base="curl --request $req_method_type -d \"$req_method_post_value\""
