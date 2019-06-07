@@ -639,10 +639,10 @@ function __main__() {
   # shellcheck disable=SC2154
   if [[ "${req_method_type[*]}" == *"POST"* ]] ; then
 
-    req_method_post=$(echo "${req_method_type[@]}" | awk -v FS="(:|:)" '{print $1}')
+    req_method_post=($(echo "${req_method_type[@]}" | awk -v FS="(:|:)" '{print $1}'))
     req_method_post_value=($(echo "${req_method_type[@]}" | cut -d ':' -f2-))
 
-    if [[ "${req_method_type[*]}" == "POST" ]] ; then
+    if [[ "${req_method_post[*]}" == "POST" ]] ; then
 
       req_method_type=("POST")
 
