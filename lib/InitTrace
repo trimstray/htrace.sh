@@ -53,17 +53,26 @@ function InitTrace() {
 
   fi
 
+  if [[ -z "${req_header_type_all[@]}" ]] ; then
+
+    _ccmd=$(echo "${_curl_base[@]} $_host_arg")
+
+  else
+
+    _ccmd=$(echo "${_curl_base[@]} '${req_header_type_all[@]}' $_host_arg")
+
+  fi
+
   # shellcheck disable=SC2034,SC2154
-  _http_output=$($_curl_base -ks -m "$_timeout" \
-    "${req_header_type_all[@]}" \
-    -H 'Connection: keep-alive' \
-    -H 'Upgrade-Insecure-Requests: 1' \
-    -H "User-Agent: $_user_agent" \
-    -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
-    -H 'Accept-Encoding: gzip, deflate, br' \
-    -H 'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7' \
+  _http_output=$(eval "$_ccmd" -ks -m "$_timeout" \
+    -H "'Connection: keep-alive'" \
+    -H "'Upgrade-Insecure-Requests: 1'" \
+    -H "'User-Agent: $_user_agent'" \
+    -H "'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'" \
+    -H "'Accept-Encoding: gzip, deflate, br'" \
+    -H "'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7'" \
     -w '%{time_total}:%{time_connect}:%{local_ip}:%{local_port}:%{remote_ip}:%{remote_port}:%{http_version}:%{http_code}:%{scheme}:%{redirect_url}' \
-    -D "${_tmp}/headers.dump" -o "${_tmp}/body.dump" --compressed "$_host_arg")
+    -D "${_tmp}/headers.dump" -o "${_tmp}/body.dump" --compressed)
 
   if [[ -z "$_http_output" ]] ; then
 

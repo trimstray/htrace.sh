@@ -57,8 +57,8 @@ function __main__() {
   s_color="true"
 
   # Default 'curl' command.
-  local _curl_base=""
-  local _curl_base_remote=""
+  local _curl_base=()
+  local _curl_base_remote=()
 
   # Default 'domain' variables.
   local url_state="0"
@@ -87,9 +87,9 @@ function __main__() {
 
   # Default 'method' variable.
   local req_method_state="0"
-  local req_method_type="GET"
+  local req_method_type=("GET")
   local req_method_post=""
-  local req_method_post_value=""
+  local req_method_post_value=()
   local req_method_post_value_status="0"
 
   # Default 'header' variable.
@@ -425,7 +425,7 @@ function __main__() {
 
         export req_method_state=1
 
-        export req_method_type="${2}"
+        export req_method_type=("${2}")
 
         shift 2 ;;
 
@@ -634,10 +634,12 @@ function __main__() {
   fi
 
   # shellcheck disable=SC2154
-  if [[ "$req_method_type" == *"POST"* ]] ; then
+  if [[ "${req_method_type[@]}" == *"POST"* ]] ; then
 
-    req_method_post=$(echo "$req_method_type" | awk -v FS="(:|:)" '{print $1}')
-    req_method_post_value=$(echo "$req_method_type" | cut -d ':' -f2-)
+    req_method_post=$(echo "${req_method_type[@]}" | awk -v FS="(:|:)" '{print $1}')
+    req_method_post_value=($(echo "${req_method_type[@]}" | cut -d ':' -f2-))
+
+    echo "${req_method_post_value[@]}"
 
     if [[ "$req_method_post" == "POST" ]] ; then
 
@@ -645,10 +647,10 @@ function __main__() {
 
     fi
 
-    if [[ -z "$req_method_post_value" ]] || \
-       [[ "$req_method_post" == "$req_method_post_value" ]] ; then
+    if [[ -z "${req_method_post_value[@]}" ]] || \
+       [[ "$req_method_post" == "${req_method_post_value[@]}" ]] ; then
 
-      req_method_post_value=""
+      req_method_post_value=()
       req_method_post_value_status="1"
 
     fi
@@ -656,18 +658,18 @@ function __main__() {
   fi
 
   # shellcheck disable=SC2154
-  # if [[ "$req_method_type" != "GET" ]] && \
-  #    [[ "$req_method_type" != "HEAD" ]] && \
-  #    [[ "$req_method_type" != "POST" ]] && \
-  #    [[ "$req_method_type" != "PUT" ]] && \
-  #    [[ "$req_method_type" != "DELETE" ]] && \
-  #    [[ "$req_method_type" != "CONNECT" ]] && \
-  #    [[ "$req_method_type" != "OPTIONS" ]] && \
-  #    [[ "$req_method_type" != "TRACE" ]] ; then
+  # if [[ "${req_method_type[@]}" != "GET" ]] && \
+  #    [[ "${req_method_type[@]}" != "HEAD" ]] && \
+  #    [[ "${req_method_type[@]}" != "POST" ]] && \
+  #    [[ "${req_method_type[@]}" != "PUT" ]] && \
+  #    [[ "${req_method_type[@]}" != "DELETE" ]] && \
+  #    [[ "${req_method_type[@]}" != "CONNECT" ]] && \
+  #    [[ "${req_method_type[@]}" != "OPTIONS" ]] && \
+  #    [[ "${req_method_type[@]}" != "TRACE" ]] ; then
 
-  if [[ -z "$req_method_type" ]] ; then
+  if [[ -z "${req_method_type[@]}" ]] ; then
 
-    req_method_type="GET"
+    req_method_type=("GET")
 
   fi
 
@@ -705,17 +707,17 @@ function __main__() {
     if [[ "$req_method_type" == "POST" ]] ; then
 
       # shellcheck disable=SC2034
-      _curl_base="curl --proxy $proxy_type --request $req_method_type -d \"$req_method_post_value\""
+      _curl_base=("curl --proxy $proxy_type --request $req_method_type -d ${req_method_post_value[@]}")
 
     else
 
       # shellcheck disable=SC2034
-      _curl_base="curl --proxy $proxy_type --request $req_method_type"
+      _curl_base=("curl --proxy $proxy_type --request $req_method_type")
 
     fi
 
     # shellcheck disable=SC2034
-    _curl_base_remote="curl --proxy $proxy_type"
+    _curl_base_remote=("curl --proxy $proxy_type")
 
   else
 
@@ -723,17 +725,17 @@ function __main__() {
     if [[ "$req_method_type" == "POST" ]] ; then
 
       # shellcheck disable=SC2034
-      _curl_base="curl --request $req_method_type -d \"$req_method_post_value\""
+      _curl_base=("curl --request $req_method_type -d ${req_method_post_value[@]}")
 
     else
 
       # shellcheck disable=SC2034
-      _curl_base="curl --request $req_method_type"
+      _curl_base=("curl --request $req_method_type")
 
     fi
 
     # shellcheck disable=SC2034
-    _curl_base_remote="curl"
+    _curl_base_remote=("curl")
 
   fi
 
