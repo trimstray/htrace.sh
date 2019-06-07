@@ -191,6 +191,9 @@ function __main__() {
   # shellcheck disable=SC2034
   local _rd="0;0;0"
 
+  # shellcheck disable=SC2034
+  local _ccmd=()
+
   # Set default colors for printf.
   # For more info please see:
   #   - https://github.com/trimstray/htrace.sh/wiki/Colors
@@ -634,19 +637,19 @@ function __main__() {
   fi
 
   # shellcheck disable=SC2154
-  if [[ "${req_method_type[@]}" == *"POST"* ]] ; then
+  if [[ "${req_method_type[*]}" == *"POST"* ]] ; then
 
     req_method_post=$(echo "${req_method_type[@]}" | awk -v FS="(:|:)" '{print $1}')
     req_method_post_value=($(echo "${req_method_type[@]}" | cut -d ':' -f2-))
 
-    if [[ "$req_method_post" == "POST" ]] ; then
+    if [[ "${req_method_type[*]}" == "POST" ]] ; then
 
-      req_method_type="POST"
+      req_method_type=("POST")
 
     fi
 
-    if [[ -z "${req_method_post_value[@]}" ]] || \
-       [[ "$req_method_post" == "${req_method_post_value[@]}" ]] ; then
+    if [[ -z "${req_method_post_value[*]}" ]] || \
+       [[ "$req_method_post" == "${req_method_post_value[*]}" ]] ; then
 
       req_method_post_value=()
       req_method_post_value_status="1"
@@ -665,7 +668,7 @@ function __main__() {
   #    [[ "${req_method_type[@]}" != "OPTIONS" ]] && \
   #    [[ "${req_method_type[@]}" != "TRACE" ]] ; then
 
-  if [[ -z "${req_method_type[@]}" ]] ; then
+  if [[ -z "${req_method_type[*]}" ]] ; then
 
     req_method_type=("GET")
 
@@ -702,15 +705,15 @@ function __main__() {
   if [[ "$proxy_state" -eq 1 ]] ; then
 
     # shellcheck disable=SC2034
-    if [[ "$req_method_type" == "POST" ]] ; then
+    if [[ "${req_method_type[*]}" == "POST" ]] ; then
 
       # shellcheck disable=SC2034
-      _curl_base=("curl --proxy $proxy_type --request $req_method_type -d ${req_method_post_value[@]}")
+      _curl_base=("curl --proxy $proxy_type --request ${req_method_type[@]} -d ${req_method_post_value[@]}")
 
     else
 
       # shellcheck disable=SC2034
-      _curl_base=("curl --proxy $proxy_type --request $req_method_type")
+      _curl_base=("curl --proxy $proxy_type --request ${req_method_type[@]}")
 
     fi
 
@@ -720,15 +723,15 @@ function __main__() {
   else
 
     # shellcheck disable=SC2034
-    if [[ "$req_method_type" == "POST" ]] ; then
+    if [[ "${req_method_type[*]}" == "POST" ]] ; then
 
       # shellcheck disable=SC2034
-      _curl_base=("curl --request $req_method_type -d ${req_method_post_value[@]}")
+      _curl_base=("curl --request ${req_method_type[@]} -d ${req_method_post_value[@]}")
 
     else
 
       # shellcheck disable=SC2034
-      _curl_base=("curl --request $req_method_type")
+      _curl_base=("curl --request ${req_method_type[@]}")
 
     fi
 
@@ -1061,51 +1064,51 @@ function __main__() {
   fi
 
   # For -r|--resolve:
-  _curl_base+=" $_resolve_type_curl "
-  _curl_base_remote+=" $_resolve_type_curl "
+  _curl_base+=("$_resolve_type_curl")
+  _curl_base_remote+=("$_resolve_type_curl")
 
   # For --iface:
-  _curl_base+=" $_interface_type_curl "
-  _curl_base_remote+=" $_interface_type_curl "
+  _curl_base+=("$_interface_type_curl")
+  _curl_base_remote+=("$_interface_type_curl")
 
   # For --referer:
-  _curl_base+=" $_referer_curl "
-  _curl_base_remote+=" $_referer_curl "
+  _curl_base+=("$_referer_curl")
+  _curl_base_remote+=("$_referer_curl")
 
   # For --auth:
-  _curl_base+=" $_auth_type_curl "
-  _curl_base_remote+=" $_auth_type_curl "
+  _curl_base+=("$_auth_type_curl")
+  _curl_base_remote+=("$_auth_type_curl")
 
   # For --tlsv:
-  _curl_base+=" $_ssl_version_type_curl "
-  _curl_base_remote+=" $_ssl_version_type_curl "
+  _curl_base+=("$_ssl_version_type_curl")
+  _curl_base_remote+=("$_ssl_version_type_curl")
 
   # For --ciph:
-  _curl_base+=" $_ciphers_type_curl "
-  _curl_base_remote+=" $_ciphers_type_curl "
+  _curl_base+=("$_ciphers_type_curl")
+  _curl_base_remote+=("$_ciphers_type_curl ")
 
   printf '\n    URI: \e['${trgb_3341}'m%s\e['${trgb_3341}'m%s\e[m\n' \
          "$_http_proto" "$_http_url_with_args"
 
   # Show http(s) domain trace.
-  if [[ "$req_method_type" == "POST" ]] ; then
+  if [[ "${req_method_type[*]}" == "POST" ]] ; then
 
     if [[ "$req_method_post_value_status" -eq 1 ]] ; then
 
       printf '\n         » request-method: \e['${trgb_40631}'m%s\e[m\n' \
-             "$req_method_type"
+             "${req_method_type[@]}"
 
     else
 
       printf '\n         » request-method: \e['${trgb_40631}'m%s\e[m\n                           \e['${trgb_40337}'m%s\e[m\n' \
-             "$req_method_type" "$(echo "$req_method_post_value" | tr -d "'")"
+             "${req_method_type[@]}" "$(echo "${req_method_post_value[@]}" | tr -d "'")"
 
     fi
 
   else
 
     printf '\n         » request-method: \e['${trgb_40631}'m%s\e[m\n' \
-           "$req_method_type"
+           "${req_method_type[@]}"
 
   fi
 

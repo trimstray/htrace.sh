@@ -53,18 +53,19 @@ function InitTrace() {
 
   fi
 
-  if [[ -z "${req_header_type_all[@]}" ]] ; then
+  # shellcheck disable=SC2154
+  if [[ -z "${req_header_type_all[*]}" ]] ; then
 
-    _ccmd=$(echo "${_curl_base[@]} $_host_arg")
+    _ccmd=("${_curl_base[@]} $_host_arg")
 
   else
 
-    _ccmd=$(echo "${_curl_base[@]} '${req_header_type_all[@]}' $_host_arg")
+    _ccmd=("${_curl_base[@]} '${req_header_type_all[@]}' $_host_arg")
 
   fi
 
   # shellcheck disable=SC2034,SC2154
-  _http_output=$(eval "$_ccmd" -ks -m "$_timeout" \
+  _http_output=$(eval "${_ccmd[@]}" -ks -m "$_timeout" \
     -H "'Connection: keep-alive'" \
     -H "'Upgrade-Insecure-Requests: 1'" \
     -H "'User-Agent: $_user_agent'" \
