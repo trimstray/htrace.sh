@@ -639,8 +639,6 @@ function __main__() {
     req_method_post=$(echo "${req_method_type[@]}" | awk -v FS="(:|:)" '{print $1}')
     req_method_post_value=($(echo "${req_method_type[@]}" | cut -d ':' -f2-))
 
-    echo "${req_method_post_value[@]}"
-
     if [[ "$req_method_post" == "POST" ]] ; then
 
       req_method_type="POST"
