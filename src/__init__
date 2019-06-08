@@ -649,7 +649,7 @@ function __main__() {
     fi
 
     if [[ -z "${req_method_post_value[*]}" ]] || \
-       [[ "$req_method_post" == "${req_method_post_value[*]}" ]] ; then
+       [[ "${req_method_post[*]}" == "${req_method_post_value[*]}" ]] ; then
 
       req_method_post_value=()
       req_method_post_value_status="1"
