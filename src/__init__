@@ -654,6 +654,8 @@ function __main__() {
       req_method_post_value=()
       req_method_post_value_status="1"
 
+      req_method_type=("GET")
+
     fi
 
   fi
