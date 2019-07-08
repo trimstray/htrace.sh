@@ -96,6 +96,7 @@ function __main__() {
   local req_header_state="0"
   local req_header_type=()
   local req_header_type_all=()
+  local req_header_type_all_info=""
 
   # Default 'proxy' variable.
   local proxy_state="0"
@@ -676,30 +677,25 @@ function __main__() {
 
   fi
 
+  IFS_ORIG="$IFS"
+
   if [[ "$req_header_state" -eq 1 ]] ; then
 
-    for i in "${req_header_type[@]}" ; do
+    IFS=$'\n'
 
-      IFS_ORIG="$IFS"
+    req_header_type_raw=($(echo "${req_header_type[@]}" | sed 's/ ; /\n/g'))
 
-      IFS=$'\n'
-      # shellcheck disable=SC2001
-      _xarr=($(echo "$i" | sed 's/ ; /\n/g'))
+    IFS=$IFS_ORIG
 
-      IFS=$IFS_ORIG
+    for i in "${req_header_type_raw[@]}" ; do
 
-      for j in "${_xarr[@]}" ; do
+      req_header_type_all_info+="$i, "
 
-        _header_key=$(echo "$j" | cut -d ":" -f1 | sed 's/ //g')
-        _header_value=$(echo "$j" | cut -d ":" -f2- | sed 's/ //g')
-
-        req_header_type_all+=('-H' "${_header_key}: ${_header_value}")
-
-      done
-
-      # echo "${req_header_type_all[@]}"
+      req_header_type_all+=("-H '${i}'")
 
     done
+
+    req_header_type_all_info=$(echo $req_header_type_all_info | sed s'/.$//')
 
   fi
 
@@ -1122,6 +1118,13 @@ function __main__() {
              "$_h_auth_type" "$_h_auth_key" "$_h_auth_value"
 
     fi
+
+  fi
+
+  if [[ "$req_header_state" -eq 1 ]] ; then
+
+    printf '         » request-header: \e['${trgb_40337}'m%s\e[m\n' \
+           "${req_header_type_all_info}"
 
   fi
 

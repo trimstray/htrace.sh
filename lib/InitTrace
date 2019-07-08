@@ -26,6 +26,8 @@ function InitTrace() {
   local _via_ip_tmp=""
   local _via_ip_status="0"
 
+  local req_header_type_all_p=()
+
   # shellcheck disable=SC2154
   if [[ "$dump_headers_state" -eq 1 ]] ; then
 
@@ -60,7 +62,13 @@ function InitTrace() {
 
   else
 
-    _ccmd=("${_curl_base[@]} '${req_header_type_all[@]}' $_host_arg")
+    for _head in "${req_header_type_all[*]}" ; do
+
+      req_header_type_all_p=("$_head")
+
+    done
+
+    _ccmd=("${_curl_base[@]} ${req_header_type_all_p[@]} $_host_arg")
 
   fi
 
