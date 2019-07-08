@@ -2,7 +2,7 @@
 
 function _bye() {
 
-  printf '  %s\n\n  \e[1;1;31m%s\e[m\n\n' \
+  printf '  %s\n\n  \e[1;1;31m%s\e[m\n\n\n' \
          "Autoinstaller is not available on your system." \
          "For more info please see https://github.com/trimstray/htrace.sh/wiki/Requirements."
 
@@ -177,8 +177,8 @@ elif [[ "$_os_name" == "debian" ]] || \
 
   apt-get install -y --reinstall procps
 
-  wget -c https://github.com/maxmind/geoipupdate/releases/download/v4.0.2/geoipupdate_4.0.2_linux_amd64.deb &&
-  dpkg -i geoipupdate_4.0.2_linux_amd64.deb
+  wget -c https://github.com/maxmind/geoipupdate/releases/download/v4.0.3/geoipupdate_4.0.3_linux_amd64.deb &&
+  dpkg -i geoipupdate_4.0.3_linux_amd64.deb
 
   # For Mozilla-Observatory.
   curl -sL https://deb.nodesource.com/setup_10.x | bash -
@@ -243,6 +243,92 @@ elif [[ "$_os_name" == "debian" ]] || \
   ln -s "${GOPATH}/bin/subfinder" /usr/bin/subfinder
 
   geoipupdate
+
+elif [[ "$_os_name" == "CentOS Linux" ]] || \
+     [[ "$_os_id" == "centos" ]] || \
+     [[ "$_os_id_like" == "rhel fedora" ]] ; then
+
+  _tread
+
+  # Install curl.
+  rpm -Uvh http://www.city-fan.org/ftp/contrib/yum-repo/city-fan.org-release-2-1.rhel7.noarch.rpm && \
+  yum-config-manager --enable city-fan.org && \
+  yum update -y curl
+
+  # Install go.
+  wget https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz && \
+  tar -xvf go1.11.4.linux-amd64.tar.gz && \
+  mv go /usr/lib &&
+  ln -s /usr/lib/go/bin/go /usr/bin/go
+
+  yum install -y ca-certificates bind-utils gnupg unzip openssl \
+  bc jq mmdb2 mmdb2-devel libmaxminddb libmaxminddb-devel python python-pip rsync
+
+  # wget -c https://github.com/maxmind/geoipupdate/releases/download/v4.0.3/geoipupdate_4.0.3_linux_amd64.rpm &&
+  # rpm -Uvh geoipupdate_4.0.3_linux_amd64.rpm
+
+  # For Mozilla-Observatory.
+  wget http://nodejs.org/dist/v0.10.30/node-v0.10.30-linux-x64.tar.gz
+  tar --strip-components 1 -xzvf node-v* -C /usr/local
+  npm install -g observatory-cli
+
+  # For Ssllabs API.
+  go get github.com/ssllabs/ssllabs-scan
+  # It's important - PATH is hardcoded in src/settings.
+  ln -s /opt/go/bin/ssllabs-scan /usr/bin/ssllabs-scan
+
+  # PHP 7.0
+  yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+  yum-config-manager --enable remi-php70
+
+  yum install -y php-curl php-xml php-cli php-mbstring
+
+  # For mixed-content-scan.
+  curl -sS https://getcomposer.org/installer -o composer-setup.php
+  php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+  composer global require bramus/mixed-content-scan
+
+  # It's important - PATH is hardcoded in src/settings.
+  if [[ -d ${HOME}/.composer ]] ; then
+
+    ln -s /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan \
+    /usr/bin/mixed-content-scan
+
+  elif [[ -d ${HOME}/.config/composer ]] ; then
+
+    ln -s /root/.config/composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan \
+    /usr/bin/mixed-content-scan
+
+  fi
+
+  # For testssl.sh.
+  git clone --depth 1 https://github.com/drwetter/testssl.sh.git /opt/testssl.sh
+  chmod +x /opt/testssl.sh/testssl.sh
+  ln -s /opt/testssl.sh/testssl.sh /usr/bin/testssl.sh
+
+  # For Nmap NSE Library.
+  # apt-get install nmap
+  wget https://nmap.org/dist/nmap-7.70-1.x86_64.rpm
+  rpm -Uvh nmap-7.70-1.x86_64.rpm
+
+  # For WhatWaf.
+  git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
+  cd /opt/whatwaf
+  chmod +x whatwaf.py
+  pip install -r requirements.txt
+  ./setup.sh install
+  cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
+  ./setup.sh uninstall
+
+  # For SubFinder
+  go get github.com/subfinder/subfinder && \
+  ln -s "${GOPATH}/bin/subfinder" /usr/bin/subfinder
+
+  wget -P /usr/share/GeoIP https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz && \
+  gunzip /usr/share/GeoIP2/*.mmdb.gz
+
+  # geoipupdate
 
 else
 
