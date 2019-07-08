@@ -62,7 +62,7 @@ function InitTrace() {
 
   else
 
-    for _head in "${req_header_type_all[*]}" ; do
+    for _head in "${req_header_type_all[@]}" ; do
 
       req_header_type_all_p=("$_head")
 
