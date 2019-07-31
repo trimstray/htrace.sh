@@ -828,8 +828,8 @@ function __main__() {
   DomainStrip "$url_type"
 
   # shellcheck disable=SC2154
-  # Set -d|--domain value to variable.
-  local _http_redirect="${_http_proto}${_http_url_with_args}"
+  # Set -u|--url value to variable.
+  local _http_redirect="${_http_proto}${_http_url_with_args_p}"
 
   # shellcheck disable=SC2154
   printf '\n    \e['${trgb_44139}'m %s %s \e[m' \
@@ -1090,7 +1090,7 @@ function __main__() {
   _curl_base_remote+=("$_ciphers_type_curl ")
 
   printf '\n    URI: \e['${trgb_3341}'m%s\e['${trgb_3341}'m%s\e[m\n' \
-         "$_http_proto" "$_http_url_with_args"
+         "$_http_proto" "$_http_url_with_args_p"
 
   # Show http(s) domain trace.
   if [[ "${req_method_type[*]}" == "POST" ]] ; then
