@@ -829,7 +829,7 @@ function __main__() {
 
   # shellcheck disable=SC2154
   # Set -u|--url value to variable.
-  local _http_redirect="${_http_proto}${_http_url_with_args_p}"
+  local _http_redirect="${_http_proto}${_http_url_with_args}"
 
   # shellcheck disable=SC2154
   printf '\n    \e['${trgb_44139}'m %s %s \e[m' \
@@ -1090,7 +1090,7 @@ function __main__() {
   _curl_base_remote+=("$_ciphers_type_curl ")
 
   printf '\n    URI: \e['${trgb_3341}'m%s\e['${trgb_3341}'m%s\e[m\n' \
-         "$_http_proto" "$_http_url_with_args_p"
+         "$_http_proto" "$_http_url_with_args"
 
   # Show http(s) domain trace.
   if [[ "${req_method_type[*]}" == "POST" ]] ; then

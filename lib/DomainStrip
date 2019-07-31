@@ -56,11 +56,6 @@ function DomainStrip() {
   # Remove the path from the URL.
   _domain_port="$_remote_port"
 
-  # shellcheck disable=SC2034,SC2154
-  # Add '\' to before a special chars pattern.
-  _http_url_with_args_p=$(sed 's/&/\\&/g' <<<"$_http_url_with_args")
-  _http_url_with_args_p=$(sed 's/?/\\?/g' <<<"$_http_url_with_args_p")
-
   # printf "\\n%s: %s , %s: %s , %s: %s , %s: %s , %s: %s , %s: %s , %s: %s\\n\\n" \
   #        "_uri" "$_uri" \
   #        "_http_proto" "$_http_proto" \

@@ -28,16 +28,21 @@ function InitTrace() {
 
   local req_header_type_all_p=()
 
+  # shellcheck disable=SC2034,SC2154
+  # Add '\' to before a special chars pattern.
+  _host_p=$(sed 's/&/\\&/g' <<<"$_host")
+  _host_p=$(sed 's/?/\\?/g' <<<"$_host_p")
+
   # shellcheck disable=SC2154
   if [[ "$dump_headers_state" -eq 1 ]] ; then
 
     if [[ "$cache_bypass_state" -eq 0 ]] ; then
 
-      _host_arg="$_host"
+      _host_arg="$_host_p"
 
     else
 
-      _host_arg="${_host}${cache_bypass_type}"
+      _host_arg="${_host_p}${cache_bypass_type}"
 
     fi
 
@@ -45,11 +50,11 @@ function InitTrace() {
 
     if [[ "$cache_bypass_state" -eq 0 ]] ; then
 
-      _host_arg="$_host"
+      _host_arg="$_host_p"
 
     else
 
-      _host_arg="${_host}${cache_bypass_type}"
+      _host_arg="${_host_p}${cache_bypass_type}"
 
     fi
 
