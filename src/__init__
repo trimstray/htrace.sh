@@ -842,6 +842,7 @@ function __main__() {
      [[ "$_openssl_version" == "1.1.0g" ]] || \
      [[ "$_openssl_version" == "1.1.0h" ]] || \
      [[ "$_openssl_version" == "1.1.0j" ]] || \
+     [[ "$_openssl_version" == "1.1.1" ]] || \
      [[ "$_openssl_version" == "1.1.1a" ]] || \
      [[ "$_openssl_version" == "1.1.1b" ]] || \
      [[ "$_openssl_version" == "1.1.1c" ]] ; then

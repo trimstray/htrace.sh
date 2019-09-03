@@ -44,7 +44,8 @@ function DomainChainCheck() {
   fi
 
   # shellcheck disable=SC2154
-  if [[ "$_openssl_version" == "1.1.1a" ]] || \
+  if [[ "$_openssl_version" == "1.1.1" ]] || \
+     [[ "$_openssl_version" == "1.1.1a" ]] || \
      [[ "$_openssl_version" == "1.1.1b" ]] || \
      [[ "$_openssl_version" == "1.1.1c" ]] ; then
 
