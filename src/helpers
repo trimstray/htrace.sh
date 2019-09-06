@@ -877,8 +877,12 @@ function _after_init() {
     "${_FUNCTION_ID}()" \
     "directory change error: '$_init_directory'"
 
-  # shellcheck disable=SC2154
-  : >"$_scan_output"
+  # shellcheck disable=SC2066,SC2154
+  if [[ -d "$_log" ]] ; then
+
+    : >"$_scan_output"
+
+  fi
 
   # shellcheck disable=SC2066,SC2154
   for i in "$_tmp" ; do
