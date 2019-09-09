@@ -54,6 +54,9 @@ sudo ./setup.sh install
 #   - before init please see what it does and which packages are available on your repository
 sudo ./dependencies.sh
 
+# Show examples
+htrace.sh --examples
+
 # Run the app
 htrace.sh -u https://nmap.org -s -h
 ```
@@ -121,7 +124,7 @@ Provides the following options:
 
     Extended:
 
-        --ssl-dump                            debug ssl connection
+        --ssl-debug                           debug ssl connection
         --cache-bypass <value>                try (proxy) cache bypass
         --user-agent <value>                  set 'User-Agent' header
         --referer <value>                     set 'Referer' header

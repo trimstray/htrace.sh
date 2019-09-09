@@ -362,7 +362,7 @@ function __main__() {
   local _long_opt="help,version,examples,url:,ssl,headers,body,"
         _long_opt+="req-method:,req-header:,proxy:,resolve:,iface:,"
         _long_opt+="all-scans,testssl,observatory,ssllabs,mixed-content,"
-        _long_opt+="nse,waf,dns,ssl-dump,cache-bypass:,user-agent:,referer:,"
+        _long_opt+="nse,waf,dns,ssl-debug,cache-bypass:,user-agent:,referer:,"
         _long_opt+="auth:,tlsv:,ciph:,max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
@@ -520,7 +520,7 @@ function __main__() {
 
         shift ;;
 
-      --ssl-dump)
+      --ssl-debug)
 
         export debug_ssl_state=1
 
@@ -1107,13 +1107,6 @@ function __main__() {
   printf '\n    URI: \e['${trgb_3341}'m%s\e['${trgb_3341}'m%s\e[m\n' \
          "$_http_proto" "$_http_url_with_args"
 
-  if [[ "$debug_ssl_state" -eq 1 ]] ; then
-
-    printf '         » dump-ssl:   \e['${trgb_40337}'m%s\e[m\n' \
-           "$debug_ssl_state"
-
-  fi
-
   # Show http(s) domain trace.
   if [[ "${req_method_type[*]}" == "POST" ]] ; then
 
@@ -1133,6 +1126,13 @@ function __main__() {
 
     printf '\n         » request-method: \e['${trgb_40631}'m%s\e[m\n' \
            "${req_method_type[@]}"
+
+  fi
+
+  if [[ "$debug_ssl_state" -eq 1 ]] ; then
+
+    printf '         » ssl-debug:      \e['${trgb_40337}'m%s\e[m\n' \
+           "on"
 
   fi
 
@@ -1275,13 +1275,29 @@ function __main__() {
       # Init trace function.
       InitTrace "$_http_redirect"
 
+      # shellcheck disable=SC2154
+      if [[ "$debug_ssl_state" -eq 1 ]] && [[ "$_http_scheme" == "https" ]] ; then
+
+        echo
+
+      fi
+
       _rcounter=$((_rcounter + 1))
 
     fi
 
   done
 
-  echo
+  # shellcheck disable=SC2154
+  if [[ "$debug_ssl_state" -eq 1 ]] && [[ "$_http_scheme" == "https" ]] ; then
+
+    true
+
+  else
+
+    echo
+
+  fi
 
   # shellcheck disable=SC2154
   if [[ "$ssl_test_state" -eq 1 ]] ; then

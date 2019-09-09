@@ -657,7 +657,7 @@ function _help_() {
 
     Extended:
 
-        --ssl-dump                            debug ssl connection
+        --ssl-debug                           debug ssl connection
         --cache-bypass <value>                try (proxy) cache bypass
         --user-agent <value>                  set 'User-Agent' header
         --referer <value>                     set 'Referer' header
@@ -726,6 +726,10 @@ function _examples_() {
 
   Show and analyse HTTP response headers
     › htrace.sh -u https://example.com -h --observatory
+
+  Send one or multiple request headers
+    › htrace.sh -u https://example.com -h -H 'Host: example.com'
+    › htrace.sh -u https://example.com -h -H 'Host: example.com ; x-debug-mode: true'
 
   Enumerate subdomains and perform zone transfer
     › htrace.sh -u https://example.com --dns

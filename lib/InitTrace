@@ -373,10 +373,15 @@ function InitTrace() {
       # shellcheck disable=SC2086,SC2154
       printf '         ssl: \e['${trgb_3111}'m%s\e[m\n' "off"
 
+    elif [[ "$_http_scheme" == "http" ]] && [[ "$_http_scheme" == "https" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '         ssl: \e['${trgb_3111}'m%s\e[m\n' "off"
+
     fi
 
     # shellcheck disable=SC2154
-    if [[ "$debug_ssl_state" -eq 1 ]] ; then
+    if [[ "$debug_ssl_state" -eq 1 ]] && [[ "$_http_scheme" == "https" ]] ; then
 
       echo
 
