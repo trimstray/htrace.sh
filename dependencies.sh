@@ -196,6 +196,7 @@ elif [[ "$_os_name" == "debian" ]] || \
   # alternative:
   #   add-apt-repository ppa:ondrej/php
   apt-get update
+  # apt-get install -y php7.3-curl php7.3-xml php7.3-cli php7.3-mbstring
   apt-get install -y php7.0-curl php7.0-xml php7.0-cli php7.0-mbstring
 
   # For mixed-content-scan.
