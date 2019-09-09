@@ -41,6 +41,7 @@ function DomainSslCheck() {
                          -connect "$_ssl_remote_socket" 2>/dev/null)
   fi
 
+  # shellcheck disable=SC2034,SC2116
   _ssl_connect_debug=$(echo "$_ssl_params_default")
 
   _ssl_params_proto=$(echo "$_ssl_params_default" | \

@@ -42,10 +42,10 @@ __script_params=("$@")
 # Tasks for specific system version.
 if [[ "$OSTYPE" == "darwin"* ]] ; then
 
-  [ ! -z "$(brew --prefix)" ] && \
+  [ -n "$(brew --prefix)" ] && \
   PATH=$(brew --prefix)/opt/gnu-getopt/bin:$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
 
-  [ ! -z "$(composer global config bin-dir --absolute 2>/dev/null)" ] && \
+  [ -n "$(composer global config bin-dir --absolute 2>/dev/null)" ] && \
   PATH=$(composer global config bin-dir --absolute 2>/dev/null):$PATH
 
   # Store the name of the script and directory call.

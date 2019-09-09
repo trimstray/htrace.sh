@@ -253,7 +253,7 @@ function _sprintf() {
   # If you run the tool in verbose mode do not display output using _sprintf.
   if [[ "$stdout_mode" != "debug" ]] ; then
 
-    if [[ "$_s_type" == "spin" ]] && [[ ! -z "$_s_info" ]] ; then
+    if [[ "$_s_type" == "spin" ]] && [[ -n "$_s_info" ]] ; then
 
       # Process id of the previous running command.
       local _pid="$_s_info"
@@ -551,7 +551,7 @@ function _load() {
   local _type="$1"
   local _filename="$2"
 
-  if [[ ! -z "$_filename" ]] && [[ -e "$_filename" ]] ; then
+  if [[ -n "$_filename" ]] && [[ -e "$_filename" ]] ; then
 
     # If we do not want to inform that the file is loaded,
     # the value is 'null', otherwise:

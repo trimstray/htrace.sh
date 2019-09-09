@@ -26,7 +26,7 @@ if [[ "${#_fd_stack[@]}" -ne 0 ]] ; then
     # shellcheck disable=SC2154
     _fd_full_path="${_lib}/${_fd}"
 
-    if [[ ! -z "$_fd_full_path" ]] && [[ -e "$_fd_full_path" ]] ; then
+    if [[ -n "$_fd_full_path" ]] && [[ -e "$_fd_full_path" ]] ; then
 
       # If the file exists is loaded.
       # shellcheck disable=SC1090

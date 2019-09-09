@@ -52,6 +52,7 @@ function DomainZoneTransfer() {
               sed 's/\.$//g' | \
               sed ':a;N;$!ba;s/\n/ /g')
 
+    # shellcheck disable=SC2206
     _ns_record_array=($_ns_record)
 
     local _zone_transfer_desc="Trying Zone Transfer:"

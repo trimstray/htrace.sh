@@ -60,7 +60,7 @@ function DomainCertCheck() {
                      sed -e 's/^[ \t]*//' | \
                      tr -d '"')
 
-  if [[ ! -z "$_ssl_domain_cert_non_sni" ]] ; then
+  if [[ -n "$_ssl_domain_cert_non_sni" ]] ; then
 
     _ssl_domain_names_non_sni=$(echo "$_ssl_domain_cert_non_sni" | \
                        openssl x509 -noout -text | \

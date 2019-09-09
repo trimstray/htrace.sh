@@ -171,6 +171,7 @@ function __main__() {
   local _ssl_version_type_curl=""
   local _ssl_version_openssl_curl=""
 
+  # shellcheck disable=SC2034
   local _ssl_connect_debug=""
 
   # Set default ciphers.
@@ -316,7 +317,7 @@ function __main__() {
 
   for i in "${commands[@]}" ; do
 
-    if [[ ! -z "$i" ]] ; then
+    if [[ -n "$i" ]] ; then
 
       hash "$i" >/dev/null 2>&1 ; state="$?"
 
@@ -601,7 +602,7 @@ function __main__() {
 
       *)
 
-        if [[ "$2" == "-" ]] || [[ ! -z "$2" ]] ; then
+        if [[ "$2" == "-" ]] || [[ -n "$2" ]] ; then
 
           printf "%s: invalid option -- '%s'\\n" "$_init_name" "$2"
           _exit_ "1"
@@ -652,7 +653,9 @@ function __main__() {
   # shellcheck disable=SC2154
   if [[ "${req_method_type[*]}" == *"POST"* ]] ; then
 
+    # shellcheck disable=SC2207
     req_method_post=($(echo "${req_method_type[@]}" | awk -v FS="(:|:)" '{print $1}'))
+    # shellcheck disable=SC2207
     req_method_post_value=($(echo "${req_method_type[@]}" | cut -d ':' -f2-))
 
     if [[ "${req_method_post[*]}" == "POST" ]] ; then
@@ -695,7 +698,7 @@ function __main__() {
 
     IFS=$'\n'
 
-    # shellcheck disable=SC2001
+    # shellcheck disable=SC2001,SC2207
     req_header_type_raw=($(echo "${req_header_type[@]}" | sed 's/ ; /\n/g'))
 
     IFS=$IFS_ORIG
@@ -937,8 +940,8 @@ function __main__() {
     _h_auth_key=$(echo "${_auth_type}" | cut -d ":" -f2 | sed 's/ //g')
     _h_auth_value=$(echo "${_auth_type}" | cut -d ":" -f3 | sed 's/ //g')
 
-    if [[ ! -z "$_h_auth_key" ]] && \
-       [[ ! -z "$_h_auth_value" ]] ; then
+    if [[ -n "$_h_auth_key" ]] && \
+       [[ -n "$_h_auth_value" ]] ; then
 
       if [[ "$_h_auth_type" == "basic" ]] ; then
 
@@ -958,7 +961,7 @@ function __main__() {
 
       fi
 
-    elif [[ ! -z "$_h_auth_key" ]] && \
+    elif [[ -n "$_h_auth_key" ]] && \
          [[ -z "$_h_auth_value" ]] ; then
 
       if [[ "$_h_auth_type" == "cookie" ]] ; then
@@ -1135,7 +1138,7 @@ function __main__() {
 
   if [[ "$auth_state" -eq 1 ]] ; then
 
-    if [[ ! -z "$_auth_type_curl" ]] ; then
+    if [[ -n "$_auth_type_curl" ]] ; then
 
       printf '         » authentication: \e['${trgb_40631}'m%s\e[m\n                           \e['${trgb_40337}'m%s:%s\e[m\n' \
              "$_h_auth_type" "$_h_auth_key" "$_h_auth_value"
@@ -1186,7 +1189,7 @@ function __main__() {
 
   if [[ "$_ssl_version_state" -eq 1 ]] ; then
 
-    if [[ ! -z "$_ssl_version_type" ]] || \
+    if [[ -n "$_ssl_version_type" ]] || \
        [[ "$_ssl_version_msg" == "not supported" ]] ; then
 
       printf '         » tls-version:    \e['${trgb_40337}'m%s\e[m\n' \
@@ -1198,7 +1201,7 @@ function __main__() {
 
   if [[ "$ciphers_state" -eq 1 ]] ; then
 
-    if [[ ! -z "$_ciphers_type" ]] ; then
+    if [[ -n "$_ciphers_type" ]] ; then
 
       printf '         » ciphersuite:    \e['${trgb_40337}'m%s\e[m\n' \
              "$_ciphers_type"
