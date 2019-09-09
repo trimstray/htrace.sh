@@ -79,6 +79,9 @@ function __main__() {
   local ssl_test_state="0"
   local _last_http_scheme="http"
 
+  # Default 'ssl' variable.
+  local debug_ssl_state="0"
+
   # Default 'headers' variable.
   local dump_headers_state="0"
 
@@ -167,6 +170,8 @@ function __main__() {
 
   local _ssl_version_type_curl=""
   local _ssl_version_openssl_curl=""
+
+  local _ssl_connect_debug=""
 
   # Set default ciphers.
   # shellcheck disable=SC2034
@@ -356,8 +361,8 @@ function __main__() {
   local _long_opt="help,version,examples,url:,ssl,headers,body,"
         _long_opt+="req-method:,req-header:,proxy:,resolve:,iface:,"
         _long_opt+="all-scans,testssl,observatory,ssllabs,mixed-content,"
-        _long_opt+="nse,waf,dns,cache-bypass:,user-agent:,referer:,auth:,"
-        _long_opt+="tlsv:,ciph:,max-redirects:,timeout:,hide-src-ip"
+        _long_opt+="nse,waf,dns,ssl-dump,cache-bypass:,user-agent:,referer:,"
+        _long_opt+="auth:,tlsv:,ciph:,max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -511,6 +516,12 @@ function __main__() {
       --dns)
 
         export subfinder_state=1
+
+        shift ;;
+
+      --ssl-dump)
+
+        export debug_ssl_state=1
 
         shift ;;
 
@@ -1092,6 +1103,13 @@ function __main__() {
 
   printf '\n    URI: \e['${trgb_3341}'m%s\e['${trgb_3341}'m%s\e[m\n' \
          "$_http_proto" "$_http_url_with_args"
+
+  if [[ "$debug_ssl_state" -eq 1 ]] ; then
+
+    printf '         » dump-ssl:   \e['${trgb_40337}'m%s\e[m\n' \
+           "$debug_ssl_state"
+
+  fi
 
   # Show http(s) domain trace.
   if [[ "${req_method_type[*]}" == "POST" ]] ; then

@@ -41,6 +41,8 @@ function DomainSslCheck() {
                          -connect "$_ssl_remote_socket" 2>/dev/null)
   fi
 
+  _ssl_connect_debug=$(echo "$_ssl_params_default")
+
   _ssl_params_proto=$(echo "$_ssl_params_default" | \
                        grep "Protocol  :" | \
                        cut -d ":" -f2- | \
@@ -59,7 +61,7 @@ function DomainSslCheck() {
                        awk '{$1=$1};1')
 
   if [[ "$_ssl_params_default" == *"no peer certificate available"* ]] ; then
-     # [[ "$_ssl_params_default" == *"No client certificate CA names sent"* ]] ; then
+   # [[ "$_ssl_params_default" == *"No client certificate CA names sent"* ]] ; then
 
     # shellcheck disable=SC2086,SC2154
     printf '\n    \e['${trgb_3111}'m%s\e[m:\n\n\t%s\n\n' \

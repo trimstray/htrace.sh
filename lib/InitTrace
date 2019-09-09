@@ -376,6 +376,16 @@ function InitTrace() {
     fi
 
     # shellcheck disable=SC2154
+    if [[ "$debug_ssl_state" -eq 1 ]] ; then
+
+      echo
+
+      echo "$_ssl_connect_debug" | sed -e 's/^[ \t]*/         › /' | \
+      sed 's/\r//' | grep "› ." | fmt -w "$MAX_WIDTH" -s
+
+    fi
+
+    # shellcheck disable=SC2154
     if [[ "$dump_headers_state" -eq 1 ]] ; then
 
       echo

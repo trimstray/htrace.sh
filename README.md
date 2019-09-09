@@ -121,6 +121,7 @@ Provides the following options:
 
     Extended:
 
+        --ssl-dump                            debug ssl connection
         --cache-bypass <value>                try (proxy) cache bypass
         --user-agent <value>                  set 'User-Agent' header
         --referer <value>                     set 'Referer' header
