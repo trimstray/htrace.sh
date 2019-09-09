@@ -204,7 +204,7 @@ function __main__() {
     # shellcheck disable=SC2034
     local trgb_3012="1;2;30"
     # shellcheck disable=SC2034
-    local trgb_3021="2;1;30"
+    local trgb_3021="0;1;30"
     # shellcheck disable=SC2034
     local trgb_3111="1;1;31"
     # shellcheck disable=SC2034
