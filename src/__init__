@@ -205,6 +205,8 @@ function __main__() {
   # Set default colors for printf.
   # For more info please see:
   #   - https://github.com/trimstray/htrace.sh/wiki/Colors
+  #   - recommended terminal color schemes:
+  #     - deep (https://github.com/mbadolato/iTerm2-Color-Schemes#deep)
   if [[ "$HTRACE_COLORS" == "on" ]] ; then
 
     # shellcheck disable=SC2034
@@ -228,13 +230,17 @@ function __main__() {
     # shellcheck disable=SC2034
     local trgb_3612="1;2;36"
     # shellcheck disable=SC2034
-    local trgb_3722="2;2;37"
+    # local trgb_3722="2;2;37"
+    local trgb_3722="$trgb_3021"
+    # shellcheck disable=SC2034
+    local trgb_3722b="2;2;37"
     # shellcheck disable=SC2034
     local trgb_3720="2;0;37"
     # shellcheck disable=SC2034
     local trgb_3811="1;1;38"
     # shellcheck disable=SC2034
-    local trgb_3812="1;2;38"
+    # local trgb_3812="1;2;32"
+    local trgb_3812="$trgb_3722b"
     # shellcheck disable=SC2034
     local trgb_3843="4;3;38"
     # shellcheck disable=SC2034
