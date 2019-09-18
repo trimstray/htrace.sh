@@ -720,6 +720,7 @@ function _examples_() {
 
   Pin a single request to a specified IP address
     › htrace.sh -u https://example.com -h --resolve \"xxx.xxx.xxx.xxx\"
+    › htrace.sh -u https://example.com -h --resolve \"xxx.xxx.xxx.xxx:443\"
 
   Scan SSL domain configuration
     › htrace.sh -u https://example.com --ssllabs --testssl
