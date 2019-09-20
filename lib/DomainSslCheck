@@ -139,6 +139,7 @@ function DomainSslCheck() {
 
     _ssl_ext_tools_stop=1
 
+    # shellcheck disable=2154
     if [[ "$ssl_test_state" -eq 1 ]] ; then
 
       _ssl_ext_tools_stop=0

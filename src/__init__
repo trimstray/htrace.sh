@@ -1027,7 +1027,7 @@ function __main__() {
 
   fi
 
-  _openssl=$(which openssl)
+  _openssl=$(command -v openssl)
 
   # shellcheck disable=2154
   if [[ "$openssl_bin_state" -eq 1 ]] ; then
@@ -1041,7 +1041,7 @@ function __main__() {
 
       if [[ "$_openssl_status" -eq 1 ]] ; then
 
-        _openssl=$(which openssl)
+        _openssl=$(command -v openssl)
         openssl_bin_state=0
 
       fi
@@ -1050,7 +1050,7 @@ function __main__() {
 
   else
 
-    _openssl=$(which openssl)
+    _openssl=$(command -v openssl)
     openssl_bin_state=0
 
   fi
