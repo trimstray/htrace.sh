@@ -96,15 +96,24 @@ function DomainSslCheck() {
 
   fi
 
-  _ssl_params_proto=$(echo "$_ssl_params_default" | \
-                       grep "Protocol  :" | \
+  _ssl_params_proto_stack=$(echo "$_ssl_params_default" | \
+                       grep "New, " | \
                        cut -d ":" -f2- | \
                        tr -d "[:space:]")
 
-  _ssl_params_cipher=$(echo "$_ssl_params_default" | \
-                       grep "Cipher    :" | \
-                       cut -d ":" -f2- | \
-                       tr -d "[:space:]")
+  _ssl_params_proto=$(echo $_ssl_params_proto_stack | cut -d ',' -f2)
+
+  _ssl_params_cipher=$(echo $_ssl_params_proto_stack | cut -d ',' -f3 | sed -e s/Cipheris//g)
+
+  # _ssl_params_proto=$(echo "$_ssl_params_default" | \
+  #                      grep "Protocol  :" | \
+  #                      cut -d ":" -f2- | \
+  #                      tr -d "[:space:]")
+
+  # _ssl_params_cipher=$(echo "$_ssl_params_default" | \
+  #                      grep "Cipher    :" | \
+  #                      cut -d ":" -f2- | \
+  #                      tr -d "[:space:]")
 
   _ssl_params_temp_key=$(echo "$_ssl_params_default" | \
                        grep "Server Temp Key:" | \

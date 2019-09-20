@@ -249,9 +249,10 @@ function __main__() {
     # shellcheck disable=SC2034
     local trgb_3843="4;3;38"
     # shellcheck disable=SC2034
-    local trgb_40631="6;31;40"
+    local trgb_40631="1;31;40"
     # shellcheck disable=SC2034
-    local trgb_40337="3;37;40"
+    # local trgb_40337="3;37;40"
+    local trgb_40337="3;37;20"
     # shellcheck disable=SC2034
     local trgb_40636="6;36;40"
     # shellcheck disable=SC2034
@@ -858,6 +859,47 @@ function __main__() {
 
   fi
 
+  _openssl=$(command -v openssl)
+
+  # shellcheck disable=2154
+  if [[ "$openssl_bin_state" -eq 1 ]] ; then
+
+    _openssl="$openssl_bin_path"
+
+    if [[ -e "$_openssl" ]] ; then
+
+      # OpenSSL version.
+      _openssl_version=$($_openssl version -a | head -n 1 | grep 'OpenSSL\|LibreSSL' | awk '{print $2}')
+      _openssl_status="$?"
+
+      if [[ "$_openssl_status" -eq 1 ]] ; then
+
+        _openssl=$(command -v openssl)
+        openssl_bin_state=0
+
+      fi
+
+    else
+
+      printf '\n  %s %s\n\n' \
+              "Not found openssl binary in" "$_openssl"
+
+      _logger "stop" \
+        "${_FUNCTION_ID}()" \
+        "Not found openssl binary in $_openssl"
+
+    fi
+
+  else
+
+    # OpenSSL version.
+    _openssl_version=$($_openssl version -a | head -n 1 | grep 'OpenSSL\|LibreSSL' | awk '{print $2}')
+    _openssl_status="$?"
+
+    openssl_bin_state=0
+
+  fi
+
   # Strip domain name - first check.
   DomainStrip "$url_type"
 
@@ -868,9 +910,6 @@ function __main__() {
   # shellcheck disable=SC2154
   printf '\n    \e['${trgb_44139}'m %s %s \e[m' \
          "$_init_name" "$_version"
-
-  # Show OpenSSL version.
-  _openssl_version=$(openssl version -a | head -n 1 | grep 'OpenSSL\|LibreSSL' | awk '{print $2}')
 
   if [[ "$_openssl_version" == "1.0.2g" ]] || \
      [[ "$_openssl_version" == "1.1.0g" ]] || \
@@ -893,12 +932,14 @@ function __main__() {
 
   if [[ "$_openssl_version_state" -eq 1 ]] ; then
 
-    printf ' (openssl %s: \e['${trgb_3211}'m%s\e[m)\n\n' \
+    # printf ' (%s, %s : \e['${trgb_3211}'m%s\e[m)\n\n' \
+    #        "$_openssl" "$_openssl_version" "$_openssl_version_status"
+    printf ' (openssl %s : \e['${trgb_3211}'m%s\e[m)\n\n' \
            "$_openssl_version" "$_openssl_version_status"
 
   else
 
-    printf ' (openssl %s: \e['${trgb_3111}'m%s\e[m)\n\n' \
+    printf ' (openssl %s : \e['${trgb_3111}'m%s\e[m)\n\n' \
            "$_openssl_version" "$_openssl_version_status"
 
   fi
@@ -1024,34 +1065,6 @@ function __main__() {
   else
 
     _auth_type_curl=""
-
-  fi
-
-  _openssl=$(command -v openssl)
-
-  # shellcheck disable=2154
-  if [[ "$openssl_bin_state" -eq 1 ]] ; then
-
-    _openssl="$openssl_bin_path"
-
-    if [[ -e "$_openssl" ]] ; then
-
-      _openssl_version=$($_openssl version 2>/dev/null)
-      _openssl_status="$?"
-
-      if [[ "$_openssl_status" -eq 1 ]] ; then
-
-        _openssl=$(command -v openssl)
-        openssl_bin_state=0
-
-      fi
-
-    fi
-
-  else
-
-    _openssl=$(command -v openssl)
-    openssl_bin_state=0
 
   fi
 
@@ -1238,20 +1251,6 @@ function __main__() {
 
     printf '         » cache-bypass:   \e['${trgb_40337}'m%s\e[m\n' \
            "$cache_bypass_type"
-
-  fi
-
-  if [[ "$openssl_bin_state" -eq 1 ]] ; then
-
-    printf '         » ssl-bin:        \e['${trgb_40337}'m%s (%s)\e[m\n' \
-           "$_openssl" \
-           "$_openssl_version"
-
-  else
-
-    printf '         » ssl-bin:        \e['${trgb_40337}'m%s (%s - default)\e[m\n' \
-           "$_openssl" \
-           "$_openssl_version"
 
   fi
 
