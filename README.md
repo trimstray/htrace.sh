@@ -124,6 +124,7 @@ Provides the following options:
 
     Extended:
 
+        --ssl-bin <path>                      set path to the openssl bin
         --ssl-debug                           debug ssl connection
         --cache-bypass <value>                try (proxy) cache bypass
         --user-agent <value>                  set 'User-Agent' header

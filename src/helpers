@@ -657,6 +657,7 @@ function _help_() {
 
     Extended:
 
+        --ssl-bin <path>                      set path to the openssl bin
         --ssl-debug                           debug ssl connection
         --cache-bypass <value>                try (proxy) cache bypass
         --user-agent <value>                  set 'User-Agent' header
@@ -745,6 +746,9 @@ function _examples_() {
 
   Set specific TLS version and Ciphersuite
     › htrace.sh -u https://example.com -s --tlsv 1.1 --ciph \"TLS_DHE_RSA_WITH_AES_256_CBC_SHA\"
+
+  Set path to the OpenSSL binary
+    › htrace.sh -u https://example.com -s --ssl-bin /usr/bin/openssl-v1.1.1b
 
 "
 

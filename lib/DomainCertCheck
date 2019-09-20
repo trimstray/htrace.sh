@@ -30,31 +30,31 @@ function DomainCertCheck() {
   if [[ -z "$_ssl_version_openssl_curl" ]] ; then
 
     _ssl_domain_cert=$(echo | \
-                       openssl s_client -servername "$_ssl_domain_name" \
+                       $_openssl s_client -servername "$_ssl_domain_name" \
                        -connect "$_ssl_remote_socket" 2>/dev/null | \
                        sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p')
 
     _ssl_domain_cert_non_sni=$(echo | \
-                       openssl s_client \
+                       $_openssl s_client \
                        -connect "$_ssl_remote_socket" 2>/dev/null | \
                        sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p')
 
   else
 
     _ssl_domain_cert=$(echo | \
-                       openssl s_client "$_ssl_version_openssl_curl" -servername "$_ssl_domain_name" \
+                       $_openssl s_client "$_ssl_version_openssl_curl" -servername "$_ssl_domain_name" \
                        -connect "$_ssl_remote_socket" 2>/dev/null | \
                        sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p')
 
     _ssl_domain_cert_non_sni=$(echo | \
-                      openssl s_client "$_ssl_version_openssl_curl" \
+                      $_openssl s_client "$_ssl_version_openssl_curl" \
                       -connect "$_ssl_remote_socket" 2>/dev/null | \
                       sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p')
 
   fi
 
   _ssl_domain_names=$(echo "$_ssl_domain_cert" | \
-                     openssl x509 -noout -text | \
+                     $_openssl x509 -noout -text | \
                      sed -ne 's/^\( *\)Subject:/\1/p;/X509v3 Subject Alternative Name/{
                      N;s/^.*\n//;:a;s/^\( *\)\(.*\), /\1\2\n\1/;ta;p;q; }' | \
                      sed -e 's/^[ \t]*//' | \
@@ -63,7 +63,7 @@ function DomainCertCheck() {
   if [[ -n "$_ssl_domain_cert_non_sni" ]] ; then
 
     _ssl_domain_names_non_sni=$(echo "$_ssl_domain_cert_non_sni" | \
-                       openssl x509 -noout -text | \
+                       $_openssl x509 -noout -text | \
                        sed -ne 's/^\( *\)Subject:/\1/p;/X509v3 Subject Alternative Name/{
                        N;s/^.*\n//;:a;s/^\( *\)\(.*\), /\1\2\n\1/;ta;p;q; }' | \
                        sed -e 's/^[ \t]*//' | \
@@ -72,42 +72,42 @@ function DomainCertCheck() {
   fi
 
   _ssl_domain_issuer=$(echo "$_ssl_domain_cert" | \
-                     openssl x509 -noout -text | \
+                     $_openssl x509 -noout -text | \
                      grep "Issuer:" | \
                      cut -d ":" -f2- | tr -s ' ' | \
                      sed -e 's/^[ \t]*//' | \
                      tr -d '"')
 
   _ssl_domain_subject=$(echo "$_ssl_domain_cert" | \
-                     openssl x509 -noout -text | \
+                     $_openssl x509 -noout -text | \
                      grep "Subject:" | \
                      cut -d ":" -f2- | tr -s ' ' | \
                      sed -e 's/^[ \t]*//' | \
                      tr -d '"')
 
   _ssl_domain_not_before=$(echo "$_ssl_domain_cert" | \
-                     openssl x509 -noout -text | \
+                     $_openssl x509 -noout -text | \
                      grep "Not Before:" | \
                      cut -d ":" -f2- | tr -s ' ' | \
                      sed -e 's/^[ \t]*//' | \
                      tr -d '"')
 
   _ssl_domain_not_after=$(echo "$_ssl_domain_cert" | \
-                     openssl x509 -noout -text | \
+                     $_openssl x509 -noout -text | \
                      grep "Not After :" | \
                      cut -d ":" -f2- | tr -s ' ' | \
                      sed -e 's/^[ \t]*//' | \
                      tr -d '"')
 
   _ssl_domain_public_key=$(echo "$_ssl_domain_cert" | \
-                     openssl x509 -noout -text | \
+                     $_openssl x509 -noout -text | \
                      grep "Public-Key:" | \
                      cut -d ":" -f2- | tr -s ' ' | tr -d '()' | \
                      sed -e 's/^[ \t]*//' | \
                      tr -d '"')
 
   _ssl_domain_signature=$(echo "$_ssl_domain_cert" | \
-                     openssl x509 -noout -text | \
+                     $_openssl x509 -noout -text | \
                      grep "Signature Algorithm:" | head -n 1 | \
                      cut -d ":" -f2- | tr -s ' ' | tr -d '()' | \
                      sed -e 's/^[ \t]*//' | \

@@ -34,7 +34,7 @@ function DomainSslCheck() {
     if [[ "$ciphers_state" -eq 1 ]] ; then
 
       _ssl_params_default=$(echo | \
-                           openssl s_client "$_ciphers_openssl_curl" \
+                           $_openssl s_client "$_ciphers_openssl_curl" \
                            -servername "$_ssl_domain_name" \
                            -connect "$_ssl_remote_socket" 2>/dev/null)
 
@@ -43,7 +43,7 @@ function DomainSslCheck() {
     else
 
       _ssl_params_default=$(echo | \
-                           openssl s_client -servername "$_ssl_domain_name" \
+                           $_openssl s_client -servername "$_ssl_domain_name" \
                            -connect "$_ssl_remote_socket" 2>/dev/null)
 
       _ssl_params_default_state="$?"
@@ -57,7 +57,7 @@ function DomainSslCheck() {
 
       # shellcheck disable=2034,2086
       _ssl_params_default=$(echo | \
-                           openssl s_client $_ssl_version_openssl_curl $_ciphers_openssl_curl \
+                           $_openssl s_client $_ssl_version_openssl_curl $_ciphers_openssl_curl \
                            -servername "$_ssl_domain_name" \
                            -connect "$_ssl_remote_socket" 2>/dev/null)
 
@@ -66,7 +66,7 @@ function DomainSslCheck() {
     else
 
       _ssl_params_default=$(echo | \
-                           openssl s_client "$_ssl_version_openssl_curl" -servername "$_ssl_domain_name" \
+                           $_openssl s_client "$_ssl_version_openssl_curl" -servername "$_ssl_domain_name" \
                            -connect "$_ssl_remote_socket" 2>/dev/null)
 
       _ssl_params_default_state="$?"

@@ -68,45 +68,45 @@ function __main__() {
   # Default remote 'ip'.
   local _host_ip=""
 
-  # Default destination host variable.
+  # Default destination host variables.
   # shellcheck disable=SC2034
   local _destination_host=""
 
-  # Default 'ssl' variable.
+  # Default 'ssl' variables.
   local ssl_state="0"
 
-  # Default 'ssl test' variable.
+  # Default 'ssl test' variables.
   local ssl_test_state="0"
   local _last_http_scheme="http"
 
-  # Default 'ssl' variable.
+  # Default 'ssl' variables.
   local debug_ssl_state="0"
 
-  # Default 'headers' variable.
+  # Default 'headers' variables.
   local dump_headers_state="0"
 
-  # Default 'body' variable.
+  # Default 'body' variables.
   local dump_body_state="0"
 
-  # Default 'method' variable.
+  # Default 'method' variables.
   local req_method_state="0"
   local req_method_type=("GET")
   local req_method_post=""
   local req_method_post_value=()
   local req_method_post_value_status="0"
 
-  # Default 'header' variable.
+  # Default 'header' variables.
   local req_header_state="0"
   local req_header_type=()
   local req_header_type_all=()
   local req_header_type_all_info=""
   local req_header_type_all_info_fin=""
 
-  # Default 'proxy' variable.
+  # Default 'proxy' variables.
   local proxy_state="0"
   local proxy_type=""
 
-  # Default 'resolve' variable.
+  # Default 'resolve' variables.
   local resolve_state="0"
   local resolve_type=""
   local resolve_type_ip=""
@@ -114,7 +114,7 @@ function __main__() {
   local resolve_type_port_num=""
   local _resolve_type_data=""
 
-  # Default 'interface' variable.
+  # Default 'interface' variables.
   local iface_state="0"
   local iface_type=""
 
@@ -127,19 +127,24 @@ function __main__() {
   # Default 'ssllabs' variables.
   local ssllabs_state="0"
 
-  # Default 'mixed-content' variable.
+  # Default 'mixed-content' variables.
   local mixed_content_state="0"
 
-  # Default 'nmap-nse' variable.
+  # Default 'nmap-nse' variables.
   local nse_state="0"
 
-  # Default 'waf' variable.
+  # Default 'waf' variables.
   local waf_state="0"
 
-  # Default 'subfinder' variable.
+  # Default 'subfinder' variables.
   local subfinder_state="0"
 
-  # Default 'cache-bypass' variable.
+  # Default 'openssl' variables.
+  local openssl_bin_state=0
+  local openssl_bin_path=""
+  local _openssl=""
+
+  # Default 'cache-bypass' variables.
   local cache_bypass_state="0"
   local cache_bypass_type=""
 
@@ -368,8 +373,9 @@ function __main__() {
   local _long_opt="help,version,examples,url:,ssl,headers,body,"
         _long_opt+="req-method:,req-header:,proxy:,resolve:,iface:,"
         _long_opt+="all-scans,testssl,observatory,ssllabs,mixed-content,"
-        _long_opt+="nse,waf,dns,ssl-debug,cache-bypass:,user-agent:,referer:,"
-        _long_opt+="auth:,tlsv:,ciph:,max-redirects:,timeout:,hide-src-ip"
+        _long_opt+="nse,waf,dns,ssl-bin:,ssl-debug,cache-bypass:,"
+        _long_opt+="user-agent:,referer:,auth:,tlsv:,ciph:,max-redirects:,"
+        _long_opt+="timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -525,6 +531,14 @@ function __main__() {
         export subfinder_state=1
 
         shift ;;
+
+      --ssl-bin)
+
+        export openssl_bin_state=1
+
+        export openssl_bin_path="${2}"
+
+        shift 2 ;;
 
       --ssl-debug)
 
@@ -1013,6 +1027,34 @@ function __main__() {
 
   fi
 
+  _openssl=$(which openssl)
+
+  # shellcheck disable=2154
+  if [[ "$openssl_bin_state" -eq 1 ]] ; then
+
+    _openssl="$openssl_bin_path"
+
+    if [[ -e "$_openssl" ]] ; then
+
+      _openssl_version=$($_openssl version 2>/dev/null)
+      _openssl_status="$?"
+
+      if [[ "$_openssl_status" -eq 1 ]] ; then
+
+        _openssl=$(which openssl)
+        openssl_bin_state=0
+
+      fi
+
+    fi
+
+  else
+
+    _openssl=$(which openssl)
+    openssl_bin_state=0
+
+  fi
+
   if [[ "$_ssl_version_state" -eq 1 ]] ; then
 
     if [[ "$_ssl_version" == "ssl2" ]] || \
@@ -1196,6 +1238,20 @@ function __main__() {
 
     printf '         » cache-bypass:   \e['${trgb_40337}'m%s\e[m\n' \
            "$cache_bypass_type"
+
+  fi
+
+  if [[ "$openssl_bin_state" -eq 1 ]] ; then
+
+    printf '         » ssl-bin:        \e['${trgb_40337}'m%s (%s)\e[m\n' \
+           "$_openssl" \
+           "$_openssl_version"
+
+  else
+
+    printf '         » ssl-bin:        \e['${trgb_40337}'m%s (%s - default)\e[m\n' \
+           "$_openssl" \
+           "$_openssl_version"
 
   fi
 

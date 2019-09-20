@@ -30,14 +30,14 @@ function DomainChainCheck() {
   if [[ -z "$_ssl_version_openssl_curl" ]] ; then
 
     _ssl_domain_cert_chain=$(echo | \
-                       openssl s_client -verify 5 -servername "$_ssl_domain_name" \
+                       $_openssl s_client -verify 5 -servername "$_ssl_domain_name" \
                        -connect "$_ssl_remote_socket" 2>&1 | \
                        sed -ne '/Certificate chain/,/---/p')
 
   else
 
     _ssl_domain_cert_chain=$(echo | \
-                       openssl s_client "$_ssl_version_openssl_curl" -verify 5 -servername "$_ssl_domain_name" \
+                       $_openssl s_client "$_ssl_version_openssl_curl" -verify 5 -servername "$_ssl_domain_name" \
                        -connect "$_ssl_remote_socket" 2>&1 | \
                        sed -ne '/Certificate chain/,/---/p')
 
@@ -166,11 +166,11 @@ function DomainChainCheck() {
         _root_certificate_cn=$(echo "${_chain_verify_issuers_stack[$i]}")
 
         # shellcheck disable=SC2154
-        if openssl x509 -noout -subject -in "$j" | grep -q "$_root_certificate_cn" ; then
+        if $_openssl x509 -noout -subject -in "$j" | grep -q "$_root_certificate_cn" ; then
 
           _root_in_local_store=1
 
-          _root_certificate_issuer=$(openssl x509 -noout -issuer -in "$j" | \
+          _root_certificate_issuer=$($_openssl x509 -noout -issuer -in "$j" | \
                      grep -o "CN =.*" | \
                      cut -d "=" -f2- | \
                      cut -d "/" -f1 | \
