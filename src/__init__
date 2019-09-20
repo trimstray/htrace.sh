@@ -1076,11 +1076,17 @@ function __main__() {
 
     if [[ -n "$_ciphers_type" ]] ; then
 
+      # shellcheck disable=2034
       _ciphers_type_curl="--ciphers $_ciphers_type"
+      # shellcheck disable=2034
+      _ciphers_openssl_curl="-cipher $_ciphers_type"
 
     else
 
+      # shellcheck disable=2034
       _ciphers_type_curl=""
+      # shellcheck disable=2034
+      _ciphers_openssl_curl=""
 
     fi
 

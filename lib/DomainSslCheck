@@ -30,19 +30,71 @@ function DomainSslCheck() {
   # shellcheck disable=SC2154
   if [[ -z "$_ssl_version_openssl_curl" ]] ; then
 
-    _ssl_params_default=$(echo | \
-                         openssl s_client -servername "$_ssl_domain_name" \
-                         -connect "$_ssl_remote_socket" 2>/dev/null)
+    # shellcheck disable=2154
+    if [[ "$ciphers_state" -eq 1 ]] ; then
+
+      _ssl_params_default=$(echo | \
+                           openssl s_client "$_ciphers_openssl_curl" \
+                           -servername "$_ssl_domain_name" \
+                           -connect "$_ssl_remote_socket" 2>/dev/null)
+
+      _ssl_params_default_state="$?"
+
+    else
+
+      _ssl_params_default=$(echo | \
+                           openssl s_client -servername "$_ssl_domain_name" \
+                           -connect "$_ssl_remote_socket" 2>/dev/null)
+
+      _ssl_params_default_state="$?"
+
+    fi
 
   else
 
-    _ssl_params_default=$(echo | \
-                         openssl s_client "$_ssl_version_openssl_curl" -servername "$_ssl_domain_name" \
-                         -connect "$_ssl_remote_socket" 2>/dev/null)
+    # shellcheck disable=2154
+    if [[ "$ciphers_state" -eq 1 ]] ; then
+
+      # shellcheck disable=2034,2086
+      _ssl_params_default=$(echo | \
+                           openssl s_client $_ssl_version_openssl_curl $_ciphers_openssl_curl \
+                           -servername "$_ssl_domain_name" \
+                           -connect "$_ssl_remote_socket" 2>/dev/null)
+
+      _ssl_params_default_state="$?"
+
+    else
+
+      _ssl_params_default=$(echo | \
+                           openssl s_client "$_ssl_version_openssl_curl" -servername "$_ssl_domain_name" \
+                           -connect "$_ssl_remote_socket" 2>/dev/null)
+
+      _ssl_params_default_state="$?"
+
+    fi
+
   fi
 
   # shellcheck disable=SC2034,SC2116
   _ssl_connect_debug=$(echo "$_ssl_params_default")
+
+  if [[ "$_ssl_params_default_state" -eq 1 ]] ; then
+
+    if [[ -z "$_ssl_params_default" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '\n    \e['${trgb_3111}'m%s\e[m:\n\n\t%s\n\t%s\n\n' \
+             "SSL error" \
+             "- an error occurred" \
+             "- run to debug: 'openssl s_client $_ciphers_openssl_curl -servername $_ssl_domain_name -connect $_ssl_remote_socket'"
+
+        _logger "stop" \
+          "${_FUNCTION_ID}()" \
+          "an error occurred"
+
+    fi
+
+  fi
 
   _ssl_params_proto=$(echo "$_ssl_params_default" | \
                        grep "Protocol  :" | \
@@ -64,6 +116,16 @@ function DomainSslCheck() {
   if [[ "$_ssl_params_default" == *"no peer certificate available"* ]] ; then
    # [[ "$_ssl_params_default" == *"No client certificate CA names sent"* ]] ; then
 
+    # shellcheck disable=SC2154
+    if [[ "$debug_ssl_state" -eq 1 ]] && [[ "$_http_scheme" == "https" ]] ; then
+
+      echo
+
+      echo "$_ssl_connect_debug" | sed -e 's/^[ \t]*/         › /' | \
+      sed 's/\r//' | grep "› ." | fmt -w "$MAX_WIDTH" -s
+
+    fi
+
     # shellcheck disable=SC2086,SC2154
     printf '\n    \e['${trgb_3111}'m%s\e[m:\n\n\t%s\n\n' \
            "SSL error" \
@@ -77,13 +139,19 @@ function DomainSslCheck() {
 
   fi
 
-  if [[ "$_ssl_params_proto" = *"TLSv1"* ]] ; then
+  if [[ "$_ssl_params_proto" = *"TLSv1.3"* ]] ; then
+
+    # shellcheck disable=SC2154
+    local _ssl_trgb="0;0;32"
+
+  elif [[ "$_ssl_params_proto" = *"TLSv1.2"* ]] ; then
 
     # shellcheck disable=SC2154
     local _ssl_trgb="0;0;32"
 
   else
 
+    # shellcheck disable=SC2154
     local _ssl_trgb="0;0;31"
 
   fi
