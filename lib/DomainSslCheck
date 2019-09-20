@@ -137,10 +137,28 @@ function DomainSslCheck() {
            "- no peer certificate available"
            # "- no client certificate CA names sent"
 
-    _logger "stop" \
-      "${_FUNCTION_ID}()" \
-      "no peer certificate available"
-      # "no peer certificate available/no client certificate CA names sent"
+    _ssl_ext_tools_stop=1
+
+    if [[ "$ssl_test_state" -eq 1 ]] ; then
+
+      _ssl_ext_tools_stop=0
+
+    fi
+
+    if [[ "$ssl_test_state" -eq 1 ]] ; then
+
+      _ssl_ext_tools_stop=0
+
+    fi
+
+    if [[ "$_ssl_ext_tools_stop" -eq 1 ]] ; then
+
+      _logger "stop" \
+        "${_FUNCTION_ID}()" \
+        "no peer certificate available"
+        # "no peer certificate available/no client certificate CA names sent"
+
+    fi
 
   fi
 
