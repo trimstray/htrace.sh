@@ -101,9 +101,11 @@ function DomainSslCheck() {
                        cut -d ":" -f2- | \
                        tr -d "[:space:]")
 
-  _ssl_params_proto=$(echo $_ssl_params_proto_stack | cut -d ',' -f2)
+  # shellcheck disable=SC2034
+  _ssl_params_proto=$(echo "$_ssl_params_proto_stack" | cut -d ',' -f2)
 
-  _ssl_params_cipher=$(echo $_ssl_params_proto_stack | cut -d ',' -f3 | sed -e s/Cipheris//g)
+  # shellcheck disable=SC2034
+  _ssl_params_cipher=$(echo "$_ssl_params_proto_stack" | cut -d ',' -f3 | sed -e s/Cipheris//g)
 
   # _ssl_params_proto=$(echo "$_ssl_params_default" | \
   #                      grep "Protocol  :" | \
