@@ -133,19 +133,19 @@ function DomainSslCheck() {
 
   # This variable is used in InitTrace().
   # shellcheck disable=SC2034
-  _ssl_params_verify=$(echo "$_ssl_params_default" | \
-                       grep "Verification: \\|Verification error: " | \
-                       cut -d ":" -f2- | \
-                       awk '{$1=$1};1')
+  # _ssl_params_verify=$(echo "$_ssl_params_default" | \
+  #                      grep "Verification: \\|Verification error: " | \
+  #                      cut -d ":" -f2- | \
+  #                      awk '{$1=$1};1')
 
-  if [[ -z "$_ssl_params_verify" ]] ; then
+  # if [[ -z "$_ssl_params_verify" ]] ; then
 
     _ssl_params_verify=$(echo "$_ssl_params_default" | \
                        grep "Verify return code:" | \
                        cut -d ":" -f2- | \
                        awk '{$1=$1};1')
 
-  fi
+  # fi
 
   if [[ "$_ssl_params_default" == *"no peer certificate available"* ]] ; then
    # [[ "$_ssl_params_default" == *"No client certificate CA names sent"* ]] ; then
