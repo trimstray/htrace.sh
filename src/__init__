@@ -859,7 +859,19 @@ function __main__() {
 
   fi
 
-  _openssl=$(command -v openssl)
+  if [[ "$openssl_bin_state" -eq 0 ]] ; then
+
+    if [[ -z "$HTRACE_SSL_BIN_PATH" ]] ; then
+
+      _openssl=$(command -v openssl)
+
+    else
+
+      _openssl="$HTRACE_SSL_BIN_PATH"
+
+    fi
+
+  fi
 
   # shellcheck disable=2154
   if [[ "$openssl_bin_state" -eq 1 ]] ; then

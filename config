@@ -8,6 +8,11 @@ HTRACE_COLORS="on"
 #   - <num>, auto
 MAX_WIDTH="auto"
 
+# Set path to the OpenSSL.
+# shellcheck disable=SC2034
+#   - /path/to/openssl
+HTRACE_SSL_BIN_PATH="$(command -v openssl)"
+
 # Set path to certificates.
 # shellcheck disable=SC2034
 #   - /path/to/certs
