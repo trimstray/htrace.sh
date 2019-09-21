@@ -96,26 +96,35 @@ function DomainSslCheck() {
 
   fi
 
+  _ssl_params_proto=$(echo "$_ssl_params_default" | \
+                       grep "Protocol  :" | \
+                       cut -d ":" -f2- | \
+                       tr -d "[:space:]")
+
+  _ssl_params_cipher=$(echo "$_ssl_params_default" | \
+                       grep "Cipher    :" | \
+                       cut -d ":" -f2- | \
+                       tr -d "[:space:]")
+
   _ssl_params_proto_stack=$(echo "$_ssl_params_default" | \
                        grep "New, " | \
                        cut -d ":" -f2- | \
                        tr -d "[:space:]")
 
-  # shellcheck disable=SC2034
-  _ssl_params_proto=$(echo "$_ssl_params_proto_stack" | cut -d ',' -f2)
+  if [[ -z "$_ssl_params_proto" ]] ; then
 
-  # shellcheck disable=SC2034
-  _ssl_params_cipher=$(echo "$_ssl_params_proto_stack" | cut -d ',' -f3 | sed -e s/Cipheris//g)
 
-  # _ssl_params_proto=$(echo "$_ssl_params_default" | \
-  #                      grep "Protocol  :" | \
-  #                      cut -d ":" -f2- | \
-  #                      tr -d "[:space:]")
+    # shellcheck disable=SC2034
+    _ssl_params_proto=$(echo "$_ssl_params_proto_stack" | cut -d ',' -f2)
 
-  # _ssl_params_cipher=$(echo "$_ssl_params_default" | \
-  #                      grep "Cipher    :" | \
-  #                      cut -d ":" -f2- | \
-  #                      tr -d "[:space:]")
+  fi
+
+  if [[ -z "$_ssl_params_cipher" ]] ; then
+
+    # shellcheck disable=SC2034
+    _ssl_params_cipher=$(echo "$_ssl_params_proto_stack" | cut -d ',' -f3 | sed -e s/Cipheris//g)
+
+  fi
 
   _ssl_params_temp_key=$(echo "$_ssl_params_default" | \
                        grep "Server Temp Key:" | \
@@ -128,6 +137,15 @@ function DomainSslCheck() {
                        grep "Verification: \\|Verification error: " | \
                        cut -d ":" -f2- | \
                        awk '{$1=$1};1')
+
+  if [[ -z "$_ssl_params_verify" ]] ; then
+
+    _ssl_params_verify=$(echo "$_ssl_params_default" | \
+                       grep "Verify return code:" | \
+                       cut -d ":" -f2- | \
+                       awk '{$1=$1};1')
+
+  fi
 
   if [[ "$_ssl_params_default" == *"no peer certificate available"* ]] ; then
    # [[ "$_ssl_params_default" == *"No client certificate CA names sent"* ]] ; then

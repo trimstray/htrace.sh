@@ -923,14 +923,16 @@ function __main__() {
   printf '\n    \e['${trgb_44139}'m %s %s \e[m' \
          "$_init_name" "$_version"
 
-  if [[ "$_openssl_version" == "1.0.2g" ]] || \
+  if [[ "$_openssl_version" == "1.0.2-chacha" ]] || \
+     [[ "$_openssl_version" == "1.0.2g" ]] || \
      [[ "$_openssl_version" == "1.1.0g" ]] || \
      [[ "$_openssl_version" == "1.1.0h" ]] || \
      [[ "$_openssl_version" == "1.1.0j" ]] || \
      [[ "$_openssl_version" == "1.1.1" ]] || \
      [[ "$_openssl_version" == "1.1.1a" ]] || \
      [[ "$_openssl_version" == "1.1.1b" ]] || \
-     [[ "$_openssl_version" == "1.1.1c" ]] ; then
+     [[ "$_openssl_version" == "1.1.1c" ]] || \
+     [[ "$_openssl_version" == "1.1.1d" ]]; then
 
     _openssl_version_status="ok"
     _openssl_version_state="1"
