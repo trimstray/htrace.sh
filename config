@@ -41,7 +41,7 @@ HTRACE_COOKIE_PATH="/tmp/htrace.sh.cookie"
 # DNS server for remote dns requests.
 # shellcheck disable=SC2034
 #   - <ip-addr>
-DNS_SERVER="8.8.8.8"
+DNS_SERVER="1.1.1.1"
 
 # Type of zone transfer attack.
 # shellcheck disable=SC2034
