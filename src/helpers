@@ -703,21 +703,26 @@ function _examples_() {
   printf "%s" "
   Original: https://github.com/trimstray/htrace.sh/wiki/One-liners
 
+  Look also at {PATH_TO_HTRACE.SH}/config.
+
   Check redirects
     › htrace.sh -u https://example.com
 
-  Show basic ssl info and response headers
+  Show basic SSL configuration and response headers
     › htrace.sh -u https://example.com -s -h
+
+  Show basic SSL configuration and enable SSL debug mode
+    › htrace.sh -u https://example.com -s --ssl-debug
 
   Show response body
     › htrace.sh -u https://example.com -b
 
   Set POST request method
     › htrace.sh -u https://example.com -h -M \"POST:'{\"username\":\"xyz\",\"password\":\"xyz\"}'\"
-                                              ^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                                               /                    \\
-                                              /                      \\
-                                         POST method          POST method value
+                                               ^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                                /                       \\
+                                               /                         \\
+                                          POST method              POST method value
 
   Pin a single request to a specified IP address
     › htrace.sh -u https://example.com -h --resolve \"xxx.xxx.xxx.xxx\"
@@ -729,19 +734,21 @@ function _examples_() {
   Show and analyse HTTP response headers
     › htrace.sh -u https://example.com -h --observatory
 
-  Send one or multiple request headers
+  Send request headers
+   # One request header
     › htrace.sh -u https://example.com -h -H 'Host: example.com'
+   # Multiple request headers
     › htrace.sh -u https://example.com -h -H 'Host: example.com ; x-debug-mode: true'
 
   Enumerate subdomains and perform zone transfer
     › htrace.sh -u https://example.com --dns
 
   Set credentials to access a URL
-    # Standard authentication:
+   # Standard authentication
     › htrace.sh -u https://example.com -h --auth \"basic:foo:bar\"
-    # Proxy authentication:
+   # Proxy authentication
     › htrace.sh -u https://example.com -h --auth \"proxy:foo:bar\"
-    # Cookie authentication:
+   # Cookie authentication
     › htrace.sh -u https://example.com -h --auth \"cookie:/tmp/example.com.cookie\"
 
   Set specific TLS version and Ciphersuite
