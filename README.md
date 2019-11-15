@@ -139,7 +139,7 @@ Provides the following options:
 
 ## Contributing
 
-See **[this](CONTRIBUTING.md)**.
+See **[this](.github/CONTRIBUTING.md)**.
 
 ## License
 
