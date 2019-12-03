@@ -3,7 +3,7 @@
     <img src="https://travis-ci.org/trimstray/htrace.sh.svg?branch=master" alt="Travis-CI">
   </a>
   <a href="https://github.com/trimstray/htrace.sh/tree/master/build">
-    <img src="https://img.shields.io/badge/Docker-Support-blue.svg" alt="Docker">
+    <img src="https://img.shields.io/badge/Dockerfile-Available-blue.svg" alt="Dockerfile">
   </a>
 </p>
 
@@ -12,6 +12,14 @@
 <p align="center">
   <a href="https://github.com/trimstray/htrace.sh">
     <img src="https://github.com/trimstray/htrace.sh/blob/master/static/img/htrace.sh_logo.png" alt="Master">
+  </a>
+</p>
+
+<br>
+
+<p align="center">
+  <a href="https://twitter.com/trimstray" target="_blank">
+    <img src="https://img.shields.io/twitter/follow/trimstray.svg?logo=twitter">
   </a>
 </p>
 
