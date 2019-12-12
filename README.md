@@ -149,6 +149,44 @@ Provides the following options:
 
 See **[this](.github/CONTRIBUTING.md)**.
 
+### Code Contributors
+
+This project exists thanks to all the people who contribute.
+
+<a href="https://github.com/trimstray/htracesh/graphs/contributors"><img src="https://opencollective.com/htracesh/contributors.svg?width=890&button=false"></a>
+
+### Financial Contributors
+
+<p align="left">
+  <a href="https://opencollective.com/htracesh" alt="Financial Contributors on Open Collective">
+    <img src="https://img.shields.io/opencollective/backers/htracesh?style=for-the-badge&color=orange&labelColor=C0C0C0"></a>
+  </a>
+  <a href="https://opencollective.com/htracesh" alt="Financial Contributors on Open Collective">
+    <img src="https://img.shields.io/opencollective/sponsors/htracesh?style=for-the-badge&color=orange&labelColor=C0C0C0"></a>
+  </a>
+</p>
+
+#### Individuals
+
+Become a financial contributor and help us sustain our community **[» contribute](https://opencollective.com/htracesh/contribute)**.
+
+<a href="https://opencollective.com/htracesh"><img src="https://opencollective.com/htracesh/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website **[» contribute](https://opencollective.com/htracesh/contribute)**.
+
+<a href="https://opencollective.com/htracesh/organization/0/website"><img src="https://opencollective.com/htracesh/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/htracesh/organization/1/website"><img src="https://opencollective.com/htracesh/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/htracesh/organization/2/website"><img src="https://opencollective.com/htracesh/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/htracesh/organization/3/website"><img src="https://opencollective.com/htracesh/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/htracesh/organization/4/website"><img src="https://opencollective.com/htracesh/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/htracesh/organization/5/website"><img src="https://opencollective.com/htracesh/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/htracesh/organization/6/website"><img src="https://opencollective.com/htracesh/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/htracesh/organization/7/website"><img src="https://opencollective.com/htracesh/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/htracesh/organization/8/website"><img src="https://opencollective.com/htracesh/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/htracesh/organization/9/website"><img src="https://opencollective.com/htracesh/organization/9/avatar.svg"></a>
+
 ## License
 
 GPLv3 : <http://www.gnu.org/licenses/>
