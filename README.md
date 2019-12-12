@@ -3,7 +3,7 @@
     <img src="https://travis-ci.org/trimstray/htrace.sh.svg?branch=master" alt="Travis-CI">
   </a>
   <a href="https://github.com/trimstray/htrace.sh/tree/master/build">
-    <a href="https://opencollective.com/htracesh" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/htracesh/all/badge.svg?label=financial+contributors" /></a> <img src="https://img.shields.io/badge/Dockerfile-Available-blue.svg" alt="Dockerfile">
+    <img src="https://img.shields.io/badge/Dockerfile-Available-blue.svg" alt="Dockerfile">
   </a>
 </p>
 
@@ -149,24 +149,32 @@ Provides the following options:
 
 See **[this](.github/CONTRIBUTING.md)**.
 
-## Contributors
-
 ### Code Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-<a href="https://github.com/trimstray/htrace.sh/graphs/contributors"><img src="https://opencollective.com/htracesh/contributors.svg?width=890&button=false" /></a>
+This project exists thanks to all the people who contribute.
+
+<a href="https://github.com/trimstray/htracesh/graphs/contributors"><img src="https://opencollective.com/htracesh/contributors.svg?width=890&button=false"></a>
 
 ### Financial Contributors
 
-Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/htracesh/contribute)]
+<p align="left">
+  <a href="https://opencollective.com/htracesh" alt="Financial Contributors on Open Collective">
+    <img src="https://img.shields.io/opencollective/backers/htracesh?style=for-the-badge&color=orange&labelColor=C0C0C0"></a>
+  </a>
+  <a href="https://opencollective.com/htracesh" alt="Financial Contributors on Open Collective">
+    <img src="https://img.shields.io/opencollective/sponsors/htracesh?style=for-the-badge&color=orange&labelColor=C0C0C0"></a>
+  </a>
+</p>
 
 #### Individuals
+
+Become a financial contributor and help us sustain our community **[» contribute](https://opencollective.com/htracesh/contribute)**.
 
 <a href="https://opencollective.com/htracesh"><img src="https://opencollective.com/htracesh/individuals.svg?width=890"></a>
 
 #### Organizations
 
-Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/htracesh/contribute)]
+Support this project with your organization. Your logo will show up here with a link to your website **[» contribute](https://opencollective.com/htracesh/contribute)**.
 
 <a href="https://opencollective.com/htracesh/organization/0/website"><img src="https://opencollective.com/htracesh/organization/0/avatar.svg"></a>
 <a href="https://opencollective.com/htracesh/organization/1/website"><img src="https://opencollective.com/htracesh/organization/1/avatar.svg"></a>
