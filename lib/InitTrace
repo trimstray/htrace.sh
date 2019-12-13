@@ -394,19 +394,31 @@ function InitTrace() {
     # shellcheck disable=SC2154
     if [[ "$dump_headers_state" -eq 1 ]] ; then
 
-      echo
+      if [[ -e "${_tmp}/headers.dump" ]] ; then
 
-      < "${_tmp}/headers.dump" sed -e 's/^[ \t]*/         › /' | \
-      sed 's/\r//' | grep "› ." | fmt -w "$MAX_WIDTH" -s
+        if [[ -s "${_tmp}/headers.dump" ]] ; then
+
+          echo
+
+        fi
+
+        < "${_tmp}/headers.dump" sed -e 's/^[ \t]*/         › /' | \
+        sed 's/\r//' | grep "› ." | fmt -w "$MAX_WIDTH" -s
+
+      fi
 
     fi
 
     # shellcheck disable=SC2154
     if [[ "$dump_body_state" -eq 1 ]] ; then
 
-      echo
-
       if [[ -e "${_tmp}/body.dump" ]] ; then
+
+        if [[ -s "${_tmp}/body.dump" ]] ; then
+
+          echo
+
+        fi
 
         < "${_tmp}/body.dump" sed -e 's/^[ \t]*/         › /' | \
         sed 's/\r//' | grep "› ." | fmt -w "$MAX_WIDTH" -s
