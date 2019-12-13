@@ -117,8 +117,8 @@ if [[ "$_os_name" == "darwin" ]] || \
   libmaxminddb geoipupdate python rsync
 
   # Install go.
-  wget https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz && \
-  tar -xvf go1.11.4.linux-amd64.tar.gz && \
+  wget https://dl.google.com/go/go1.13.5.linux-amd64.tar.gz && \
+  tar -xvf go1.13.5.linux-amd64.tar.gz && \
   mv go /usr/lib &&
   ln -s /usr/lib/go/bin/go /usr/bin/go
 
@@ -142,14 +142,17 @@ if [[ "$_os_name" == "darwin" ]] || \
   # For WhatWaf.
   git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
   cd /opt/whatwaf
-  chmod +x whatwaf.py
+  # chmod +x whatwaf.py
+  # pip install -r requirements.txt
+  # ./setup.sh install
+  # cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
+  # ./setup.sh uninstall
   pip install -r requirements.txt
-  ./setup.sh install
-  cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
-  ./setup.sh uninstall
+  ln -s /opt/whatwaf/whatwaf /usr/bin/whatwaf
 
   # For SubFinder
-  go get github.com/subfinder/subfinder && \
+  # go get github.com/subfinder/subfinder && \
+  go get -v github.com/projectdiscovery/subfinder/cmd/subfinder && \
   ln -s "${GOPATH}/bin/subfinder" /usr/bin/subfinder
 
   geoipupdate
@@ -167,8 +170,8 @@ elif [[ "$_os_name" == "debian" ]] || \
   apt-get update
 
   # Install go.
-  wget https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz && \
-  tar -xvf go1.11.4.linux-amd64.tar.gz && \
+  wget https://dl.google.com/go/go1.13.5.linux-amd64.tar.gz && \
+  tar -xvf go1.13.5.linux-amd64.tar.gz && \
   mv go /usr/lib &&
   ln -s /usr/lib/go/bin/go /usr/bin/go
 
@@ -233,14 +236,17 @@ elif [[ "$_os_name" == "debian" ]] || \
   # For WhatWaf.
   git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
   cd /opt/whatwaf
-  chmod +x whatwaf.py
+  # chmod +x whatwaf.py
+  # pip install -r requirements.txt
+  # ./setup.sh install
+  # cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
+  # ./setup.sh uninstall
   pip install -r requirements.txt
-  ./setup.sh install
-  cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
-  ./setup.sh uninstall
+  ln -s /opt/whatwaf/whatwaf /usr/bin/whatwaf
 
   # For SubFinder
-  go get github.com/subfinder/subfinder && \
+  # go get github.com/subfinder/subfinder && \
+  go get -v github.com/projectdiscovery/subfinder/cmd/subfinder && \
   ln -s "${GOPATH}/bin/subfinder" /usr/bin/subfinder
 
   geoipupdate
@@ -257,8 +263,8 @@ elif [[ "$_os_name" == "CentOS Linux" ]] || \
   yum update -y curl
 
   # Install go.
-  wget https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz && \
-  tar -xvf go1.11.4.linux-amd64.tar.gz && \
+  wget https://dl.google.com/go/go1.13.5.linux-amd64.tar.gz && \
+  tar -xvf go1.13.5.linux-amd64.tar.gz && \
   mv go /usr/lib &&
   ln -s /usr/lib/go/bin/go /usr/bin/go
 
@@ -316,14 +322,17 @@ elif [[ "$_os_name" == "CentOS Linux" ]] || \
   # For WhatWaf.
   git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
   cd /opt/whatwaf
-  chmod +x whatwaf.py
+  # chmod +x whatwaf.py
+  # pip install -r requirements.txt
+  # ./setup.sh install
+  # cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
+  # ./setup.sh uninstall
   pip install -r requirements.txt
-  ./setup.sh install
-  cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
-  ./setup.sh uninstall
+  ln -s /opt/whatwaf/whatwaf /usr/bin/whatwaf
 
   # For SubFinder
-  go get github.com/subfinder/subfinder && \
+  # go get github.com/subfinder/subfinder && \
+  go get -v github.com/projectdiscovery/subfinder/cmd/subfinder && \
   ln -s "${GOPATH}/bin/subfinder" /usr/bin/subfinder
 
   wget -P /usr/share/GeoIP https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz && \
