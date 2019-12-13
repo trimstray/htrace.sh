@@ -406,8 +406,12 @@ function InitTrace() {
 
       echo
 
-      < "${_tmp}/body.dump" sed -e 's/^[ \t]*/         › /' | \
-      sed 's/\r//' | grep "› ." | fmt -w "$MAX_WIDTH" -s
+      if [[ -e "${_tmp}/body.dump" ]] ; then
+
+        < "${_tmp}/body.dump" sed -e 's/^[ \t]*/         › /' | \
+        sed 's/\r//' | grep "› ." | fmt -w "$MAX_WIDTH" -s
+
+      fi
 
     fi
 
