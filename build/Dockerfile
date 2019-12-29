@@ -99,13 +99,9 @@ RUN \
   npm install -g observatory-cli
 
 RUN \
-  git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf && \
-  cd /opt/whatwaf && \
-  chmod +x whatwaf.py && \
-  pip install -r requirements.txt && \
-  ./setup.sh install && \
-  cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf && \
-  ./setup.sh uninstall
+  git clone https://github.com/EnableSecurity/wafw00f /opt/wafw00f && \
+  cd /opt/wafw00f && \
+  python setup.py install
 
 COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
 COPY --from=golang /go/bin/geoipupdate /usr/bin/geoipupdate

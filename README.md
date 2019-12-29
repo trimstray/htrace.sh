@@ -127,7 +127,7 @@ Provides the following options:
         --ssllabs                             deep analysis of the ssl web server (ssllabs)
         --mixed-content                       scan website for non-secure resources (mixed-content-scan)
         --nse                                 scan website and domain with nse library (nmap)
-        --waf                                 detect and bypass web application firewalls (whatwaf)
+        --waf                                 detect and bypass web application firewalls (wafw00f)
         --dns                                 enumerate subdomains (subfinder) and perform zone transfer
 
     Extended:

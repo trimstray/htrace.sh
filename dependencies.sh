@@ -140,15 +140,22 @@ if [[ "$_os_name" == "darwin" ]] || \
   brew install nmap
 
   # For WhatWaf.
-  git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
-  cd /opt/whatwaf
+  # git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
+  # cd /opt/whatwaf
+
   # chmod +x whatwaf.py
   # pip install -r requirements.txt
   # ./setup.sh install
   # cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
   # ./setup.sh uninstall
-  pip install -r requirements.txt
-  ln -s /opt/whatwaf/whatwaf /usr/bin/whatwaf
+
+  # pip install -r requirements.txt
+  # ln -s /opt/whatwaf/whatwaf /usr/bin/whatwaf
+
+  # For Wafw00f.
+  git clone https://github.com/EnableSecurity/wafw00f /opt/wafw00f
+  cd /opt/wafw00f
+  python setup.py install
 
   # For SubFinder
   # go get github.com/subfinder/subfinder && \
@@ -234,15 +241,22 @@ elif [[ "$_os_name" == "debian" ]] || \
   dpkg -i nmap_7.70-2_amd64.deb
 
   # For WhatWaf.
-  git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
-  cd /opt/whatwaf
+  # git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
+  # cd /opt/whatwaf
+
   # chmod +x whatwaf.py
   # pip install -r requirements.txt
   # ./setup.sh install
   # cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
   # ./setup.sh uninstall
-  pip install -r requirements.txt
-  ln -s /opt/whatwaf/whatwaf /usr/bin/whatwaf
+
+  # pip install -r requirements.txt
+  # ln -s /opt/whatwaf/whatwaf /usr/bin/whatwaf
+
+  # For Wafw00f.
+  git clone https://github.com/EnableSecurity/wafw00f /opt/wafw00f
+  cd /opt/wafw00f
+  python setup.py install
 
   # For SubFinder
   # go get github.com/subfinder/subfinder && \
@@ -320,15 +334,22 @@ elif [[ "$_os_name" == "CentOS Linux" ]] || \
   rpm -Uvh nmap-7.70-1.x86_64.rpm
 
   # For WhatWaf.
-  git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
-  cd /opt/whatwaf
+  # git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
+  # cd /opt/whatwaf
+
   # chmod +x whatwaf.py
   # pip install -r requirements.txt
   # ./setup.sh install
   # cp ~/.whatwaf/.install/bin/whatwaf /usr/bin/whatwaf
   # ./setup.sh uninstall
-  pip install -r requirements.txt
-  ln -s /opt/whatwaf/whatwaf /usr/bin/whatwaf
+
+  # pip install -r requirements.txt
+  # ln -s /opt/whatwaf/whatwaf /usr/bin/whatwaf
+
+  # For Wafw00f.
+  git clone https://github.com/EnableSecurity/wafw00f /opt/wafw00f
+  cd /opt/wafw00f
+  python setup.py install
 
   # For SubFinder
   # go get github.com/subfinder/subfinder && \

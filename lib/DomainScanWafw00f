@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainScanWafw00f()
+#
+# Description:
+#   Detect and bypass web application firewalls with WhatWaf.
+#
+# Usage:
+#   DomainScanWafw00f domain
+#
+# Examples:
+#   DomainScanWafw00f example.com
+#
+
+function DomainScanWafw00f() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainScanWafw00f"
+  local _STATE=0
+
+  local _host="$1"
+
+  # shellcheck disable=SC2034
+  _scan_type="active"
+
+  # shellcheck disable=SC2034
+  _destination_host="$_host"
+
+  local _waf_desc="Detect and bypass WAFs:"
+        _waf_desc+="https://github.com/EnableSecurity/wafw00f"
+
+  # WhatWaf:
+  # local _waf_cmd="eval echo N | whatwaf -u \"$_host\" --ra --hide --threaded 10 | "
+  #       _waf_cmd+="grep -v \"PROMPT\" | grep -e INFO -e WARN -e SUCCESS"
+
+  local _waf_cmd="eval wafw00f -v \"$_host\""
+
+  _msg_args+=(\
+              "$_waf_desc")
+
+  _cmd_args+=(\
+              "$_waf_cmd")
+
+  return $_STATE
+
+}
