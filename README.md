@@ -35,7 +35,7 @@
 
 `htrace.sh` is a shell script for http/https troubleshooting and profiling. It's also a simple wrapper around several open source security tools.
 
-For a more detailed understanding of `htrace.sh`, its parameters, functions and how it all works, see the **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
+For a more detailed understanding of `htrace.sh`, its parameters, functions and how it all works, run `htrace.sh --examples` or see the **[Wiki](https://github.com/trimstray/htrace.sh/wiki)**.
 
 ## Preview
 
@@ -154,25 +154,6 @@ See **[this](.github/CONTRIBUTING.md)**.
 This project exists thanks to all the people who contribute.
 
 <a href="https://github.com/trimstray/htracesh/graphs/contributors"><img src="https://opencollective.com/htracesh/contributors.svg?width=890&button=false"></a>
-
-### Financial Contributors
-
-<p align="left">
-  <a href="https://opencollective.com/htracesh" alt="Financial Contributors on Open Collective">
-    <img src="https://img.shields.io/opencollective/backers/htracesh?style=for-the-badge&color=FF4500&labelColor=A9A9A9"></a>
-  </a>
-  <a href="https://opencollective.com/htracesh" alt="Financial Contributors on Open Collective">
-    <img src="https://img.shields.io/opencollective/sponsors/htracesh?style=for-the-badge&color=FF4500&labelColor=A9A9A9"></a>
-  </a>
-</p>
-
-#### Individuals
-
-Become a financial contributor and help us sustain our community **[» contribute](https://opencollective.com/htracesh/contribute)**.
-
-#### Organizations
-
-Support this project with your organization. Your logo will show up here with a link to your website **[» contribute](https://opencollective.com/htracesh/contribute)**.
 
 ## License
 
