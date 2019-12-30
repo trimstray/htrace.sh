@@ -129,6 +129,7 @@ Provides the following options:
         --nse                                 scan website and domain with nse library (nmap)
         --waf                                 detect and bypass web application firewalls (wafw00f)
         --dns                                 enumerate subdomains (subfinder) and perform zone transfer
+        --http2                               test HTTP/2 (nghttp2)
 
     Extended:
 
