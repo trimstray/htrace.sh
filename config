@@ -69,7 +69,7 @@ NMAP_SCRIPT_ARGS=""
 WAFW00F_OPT="-v"
 
 # Subfinder options.
-SUBFINDER_OPT="--silent -t 10 -no-color | grep -v \"canceled\|error\|warning\|fail\|timeout\|NOTE\""
+SUBFINDER_OPT="--silent -t 10 | grep -v \"canceled\|error\|warning\|fail\|timeout\|NOTE\""
 
 # Nghttp2 options.
 NGHTTP2_OPT="-nu -v"
