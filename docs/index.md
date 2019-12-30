@@ -29,7 +29,7 @@ Several functions of this script:
   - **verification** ssl connection
 - test extended ssl configuration (protocols and ciphers) with **testssl.sh**
 - scan website for **Mixed Content** (non-secure resources)
-- scan website and domain using **Nmap NSE Library** (35 scripts)
+- scan website and domain using **Nmap NSE Library** (40 scripts)
   - support advanced vulnerability scanning with [Vulscan](https://github.com/scipag/vulscan)
 - analyze website with **Mozilla Observatory**
 - deep analysis of the ssl web server with **SSL Labs API**
