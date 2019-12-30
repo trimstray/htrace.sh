@@ -32,9 +32,10 @@ Several functions of this script:
 - scan website and domain using **Nmap NSE Library** (34 scripts)
 - analyze website with **Mozilla Observatory**
 - deep analysis of the ssl web server with **SSL Labs API**
-- detect and bypass web application firewalls with **WhatWaf**
+- detect and bypass web application firewalls with **wafw00f**
 - enumerate subdomains of website with **SubFinder**
   - perform zone transfer attack (with `api.hackertarget.com` or `dig`)
+- test HTTP/2 connection with **nghttp2**
 
 ## Preview
 
