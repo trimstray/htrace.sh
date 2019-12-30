@@ -162,6 +162,9 @@ if [[ "$_os_name" == "darwin" ]] || \
   go get -v github.com/projectdiscovery/subfinder/cmd/subfinder && \
   ln -s "${GOPATH}/bin/subfinder" /usr/bin/subfinder
 
+  # For Nghttp2
+  brew install nghttp2
+
   geoipupdate
 
 elif [[ "$_os_name" == "debian" ]] || \
@@ -263,6 +266,9 @@ elif [[ "$_os_name" == "debian" ]] || \
   go get -v github.com/projectdiscovery/subfinder/cmd/subfinder && \
   ln -s "${GOPATH}/bin/subfinder" /usr/bin/subfinder
 
+  # For Nghttp2
+  apt-get install nghttp2
+
   geoipupdate
 
 elif [[ "$_os_name" == "CentOS Linux" ]] || \
@@ -358,6 +364,9 @@ elif [[ "$_os_name" == "CentOS Linux" ]] || \
 
   wget -P /usr/share/GeoIP https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz && \
   gunzip /usr/share/GeoIP2/*.mmdb.gz
+
+  # For Nghttp2
+  yum install nghttp2
 
   # geoipupdate
 

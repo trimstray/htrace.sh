@@ -77,6 +77,7 @@ RUN \
   python \
   py-pip \
   rsync \
+  nghttp2
   && rm -rf /var/cache/apk/*
 
 RUN \
