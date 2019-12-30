@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# shellcheck shell=bash
+
+# ``````````````````````````````````````````````````````````````````````````````
+# Function name: DomainNghttp2()
+#
+# Description:
+#   Detect and bypass web application firewalls with WhatWaf.
+#
+# Usage:
+#   DomainNghttp2 domain
+#
+# Examples:
+#   DomainNghttp2 example.com
+#
+
+function DomainNghttp2() {
+
+  # shellcheck disable=SC2034
+  local _FUNCTION_ID="DomainNghttp2"
+  local _STATE=0
+
+  local _host="$1"
+
+  # shellcheck disable=SC2034
+  _scan_type="active"
+
+  # shellcheck disable=SC2034
+  _destination_host="$_host"
+
+  local _nghttp_desc="Testing HTTP/2:"
+        _nghttp_desc+="https://nghttp2.org/"
+
+  local _nghttp_cmd="eval nghttp -nu -v \"$_host\""
+
+  _msg_args+=(\
+              "$_nghttp_desc")
+
+  _cmd_args+=(\
+              "$_nghttp_cmd")
+
+  return $_STATE
+
+}

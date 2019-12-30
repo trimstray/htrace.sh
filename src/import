@@ -17,7 +17,8 @@ readonly _fd_stack=(DomainStrip InitTrace DomainGeo PrintHeaders \
                     DomainSslCheck DomainCertCheck DomainChainCheck \
                     DomainScanTestssl DomainScanObservatory DomainScanSsllabs \
                     DomainScanMixedContent DomainScanNmapNse DomainResolve \
-                    DomainScanWafw00f DomainScanSubFinder DomainZoneTransfer)
+                    DomainScanWafw00f DomainScanSubFinder DomainZoneTransfer \
+                    DomainNghttp2)
 
 if [[ "${#_fd_stack[@]}" -ne 0 ]] ; then
 

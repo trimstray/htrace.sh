@@ -139,6 +139,9 @@ function __main__() {
   # Default 'subfinder' variables.
   local subfinder_state="0"
 
+  # Default 'nghttp' variables.
+  local nghttp2_state="0"
+
   # Default 'openssl' variables.
   local openssl_bin_state=0
   local openssl_bin_path=""
@@ -374,7 +377,7 @@ function __main__() {
   local _long_opt="help,version,examples,url:,ssl,headers,body,"
         _long_opt+="req-method:,req-header:,proxy:,resolve:,iface:,"
         _long_opt+="all-scans,testssl,observatory,ssllabs,mixed-content,"
-        _long_opt+="nse,waf,dns,ssl-bin:,ssl-debug,cache-bypass:,"
+        _long_opt+="nse,waf,dns,http2,ssl-bin:,ssl-debug,cache-bypass:,"
         _long_opt+="user-agent:,referer:,auth:,tlsv:,ciph:,max-redirects:,"
         _long_opt+="timeout:,hide-src-ip"
 
@@ -533,6 +536,12 @@ function __main__() {
 
         shift ;;
 
+      --http2)
+
+        export nghttp2_state=1
+
+        shift ;;
+
       --ssl-bin)
 
         export openssl_bin_state=1
@@ -668,6 +677,7 @@ function __main__() {
     export nse_state=1
     export waf_state=1
     export subfinder_state=1
+    export nghttp2_state=1
 
   fi
 
@@ -1625,6 +1635,28 @@ function __main__() {
       echo
 
     fi
+
+  fi
+
+  if [[ "$nghttp2_state" -eq 1 ]] ; then
+
+    DomainStrip "$_http_last"
+
+    # shellcheck disable=SC2154
+    _init_function "DomainNghttp2 \"${_http_proto}${_domain_name}\""
+
+    _fstate="$?"
+
+    if [[ "$_fstate" -ne 0 ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '\r\n    \e['${trgb_3111}'m%s\e[m\n\n' "Connection error"
+
+      tput sgr0
+
+    fi
+
+    echo
 
   fi
 

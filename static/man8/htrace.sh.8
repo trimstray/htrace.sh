@@ -1,6 +1,6 @@
 .\" Manpage for htrace.sh.
 .\" Contact trimstray@gmail.com.
-.TH man 8 "12.07.2018" "1.1.6" "htrace.sh man page"
+.TH man 8 "12.07.2018" "1.1.7" "htrace.sh man page"
 .SH NAME
 htrace.sh \- shell script for http/https troubleshooting and profiling.
 .SH SYNOPSIS
@@ -64,6 +64,9 @@ htrace.sh is a shell script for http/https troubleshooting and profiling. It's a
 
 --dns
         enumerate subdomains (subfinder) and perform zone transfer
+
+--http2
+        test HTTP/2 (nghttp2)
 
 --ssl-bin <path>
         set path to the openssl bin
