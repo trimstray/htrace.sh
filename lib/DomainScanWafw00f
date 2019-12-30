@@ -36,7 +36,7 @@ function DomainScanWafw00f() {
   # local _waf_cmd="eval echo N | whatwaf -u \"$_host\" --ra --hide --threaded 10 | "
   #       _waf_cmd+="grep -v \"PROMPT\" | grep -e INFO -e WARN -e SUCCESS"
 
-  local _waf_cmd="eval wafw00f -v \"$_host\""
+  local _waf_cmd="eval wafw00f $WAFW00F_OPT \"$_host\""
 
   _msg_args+=(\
               "$_waf_desc")

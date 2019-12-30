@@ -32,7 +32,7 @@ function DomainScanObservatory() {
   local _observatory_desc="Analyze response headers:"
         _observatory_desc+="https://observatory.mozilla.org"
 
-  local _observatory_cmd="eval observatory \"$_host\" --format=report --rescan --zero --quiet"
+  local _observatory_cmd="eval observatory \"$_host\" $OBSERVATORY_OPT"
 
   _msg_args+=(\
               "$_observatory_desc")

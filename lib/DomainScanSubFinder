@@ -32,8 +32,7 @@ function DomainScanSubFinder() {
   local _subfinder_desc="Enumerate subdomains:"
         _subfinder_desc+="https://github.com/subfinder/subfinder"
 
-  local _subfinder_cmd="eval subfinder -d \"$_host\" --silent -t 10 -no-color | "
-        _subfinder_cmd+="grep -v \"canceled\|error\|warning\|fail\|timeout\|NOTE\""
+  local _subfinder_cmd="eval subfinder -d \"$_host\" $SUBFINDER_OPT"
 
   _msg_args+=(\
               "$_subfinder_desc")

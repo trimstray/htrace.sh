@@ -65,17 +65,24 @@ function DomainScanNmapNse() {
                            +whois-domain,\
                            +whois-ip"
 
+  if [[ -d "/usr/share/nmap/scripts/vulscan" ]] ; then
+
+    local _nmap_nse_scripts+=", +vulscan/vulscan.nse"
+
+  fi
+
   local _nmap_nse_scripts_args="dns-brute.domain=${_host},"
         _nmap_nse_scripts_args+="http-cross-domain-policy.domain-lookup=true,"
         _nmap_nse_scripts_args+="http-waf-detect.aggro,"
         _nmap_nse_scripts_args+="http-waf-detect.detectBodyChanges,"
         _nmap_nse_scripts_args+="http-waf-fingerprint.intensive=1"
+        _nmap_nse_scripts_args+="$NMAP_SCRIPT_ARGS"
 
   local _nmap_nse_desc="Scan with Nmap NSE library:"
         _nmap_nse_desc+="https://nmap.org/book/nse.html"
 
   # shellcheck disable=SC2034,SC2154
-  local _nmap_nse_cmd="eval nmap --script=\"$_nmap_nse_scripts\""
+  local _nmap_nse_cmd="eval nmap $NMAP_OPT --script=\"$_nmap_nse_scripts\""
         _nmap_nse_cmd+=" --script-args=\"$_nmap_nse_scripts_args\""
         _nmap_nse_cmd+=" -p \"$_port\" \"$_host\""
 

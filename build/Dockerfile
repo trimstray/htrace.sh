@@ -85,6 +85,10 @@ RUN \
   && rm -rf /var/cache/apk/*
 
 RUN \
+  git clone https://github.com/scipag/vulscan /opt/scipag_vulscan && \
+  ln -s /opt/scipag_vulscan /usr/share/nmap/scripts/vulscan
+
+RUN \
   apk add --no-cache php php7-curl php7-xml php7-dom && \
   rm -rf /var/cache/apk/*
 

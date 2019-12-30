@@ -47,3 +47,29 @@ DNS_SERVER="1.1.1.1"
 # shellcheck disable=SC2034
 #   - passive, active, off
 ZONE_TRANSFER_TYPE="passive"
+
+# Testssl options.
+TESTSSL_OPT="--color 0 --quiet --protocols --cipher-per-proto --server-preference --server-defaults"
+
+# Mozilla Observatory options.
+OBSERVATORY_OPT="--format=report --rescan --zero --quiet"
+
+# SSLLabs options.
+SSLLABS_OPT="-quiet -grade"
+
+# Mixed-content options.
+MIXEDCONTENT_OPT="--format no-ansi --no-check-certificate | grep \"MCS.[E|W]\""
+
+# Nmap options.
+#   Note: without '-sV' some NSE scripts not working properly.
+NMAP_OPT="-sV"
+NMAP_SCRIPT_ARGS=""
+
+# Wafw00f options.
+WAFW00F_OPT="-v"
+
+# Subfinder options.
+SUBFINDER_OPT="--silent -t 10 -no-color | grep -v \"canceled\|error\|warning\|fail\|timeout\|NOTE\""
+
+# Nghttp2 options.
+NGHTTP2_OPT="-nu -v"

@@ -32,8 +32,7 @@ function DomainScanTestssl() {
   local _testssl_desc="Test ssl protocols and ciphers:"
         _testssl_desc+="https://testssl.sh/"
 
-  local _testssl_cmd="eval testssl.sh --color 0 --quiet --protocols "
-        _testssl_cmd+="--cipher-per-proto --server-preference --server-defaults \"$_host\""
+  local _testssl_cmd="eval testssl.sh $TESTSSL_OPT \"$_host\""
 
   _msg_args+=(\
               "$_testssl_desc")

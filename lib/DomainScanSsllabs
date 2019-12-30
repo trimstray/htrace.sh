@@ -32,7 +32,7 @@ function DomainScanSsllabs() {
   local _ssllabs_desc="Deep analysis of the ssl configuration:"
         _ssllabs_desc+="https://www.ssllabs.com/ssltest/"
 
-  local _ssllabs_cmd="eval ssllabs-scan -quiet -grade \"$_host\""
+  local _ssllabs_cmd="eval ssllabs-scan $SSLLABS_OPT \"$_host\""
 
   _msg_args+=(\
               "$_ssllabs_desc")

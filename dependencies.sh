@@ -139,6 +139,9 @@ if [[ "$_os_name" == "darwin" ]] || \
   # For Nmap NSE Library.
   brew install nmap
 
+  git clone https://github.com/scipag/vulscan /opt/scipag_vulscan && \
+  ln -s /opt/scipag_vulscan /usr/share/nmap/scripts/vulscan
+
   # For WhatWaf.
   # git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
   # cd /opt/whatwaf
@@ -164,6 +167,14 @@ if [[ "$_os_name" == "darwin" ]] || \
 
   # For Nghttp2
   brew install nghttp2
+
+  if [[ -e "/usr/share/GeoIP/GeoLite2-Country.mmdb" ]] ; then
+
+    cd /usr/share/GeoIP
+    wget -c http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz
+    gzip -d GeoLite2-Country.mmdb.gz
+
+  fi
 
   geoipupdate
 
@@ -243,6 +254,9 @@ elif [[ "$_os_name" == "debian" ]] || \
   alien nmap-7.70-1.x86_64.rpm
   dpkg -i nmap_7.70-2_amd64.deb
 
+  git clone https://github.com/scipag/vulscan /opt/scipag_vulscan && \
+  ln -s /opt/scipag_vulscan /usr/share/nmap/scripts/vulscan
+
   # For WhatWaf.
   # git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
   # cd /opt/whatwaf
@@ -268,6 +282,14 @@ elif [[ "$_os_name" == "debian" ]] || \
 
   # For Nghttp2
   apt-get install nghttp2
+
+  if [[ -e "/usr/share/GeoIP/GeoLite2-Country.mmdb" ]] ; then
+
+    cd /usr/share/GeoIP
+    wget -c http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz
+    gzip -d GeoLite2-Country.mmdb.gz
+
+  fi
 
   geoipupdate
 
@@ -339,6 +361,9 @@ elif [[ "$_os_name" == "CentOS Linux" ]] || \
   wget https://nmap.org/dist/nmap-7.70-1.x86_64.rpm
   rpm -Uvh nmap-7.70-1.x86_64.rpm
 
+  git clone https://github.com/scipag/vulscan /opt/scipag_vulscan && \
+  ln -s /opt/scipag_vulscan /usr/share/nmap/scripts/vulscan
+
   # For WhatWaf.
   # git clone https://github.com/ekultek/whatwaf.git /opt/whatwaf
   # cd /opt/whatwaf
@@ -367,6 +392,14 @@ elif [[ "$_os_name" == "CentOS Linux" ]] || \
 
   # For Nghttp2
   yum install nghttp2
+
+  if [[ -e "/usr/share/GeoIP/GeoLite2-Country.mmdb" ]] ; then
+
+    cd /usr/share/GeoIP
+    wget -c http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz
+    gzip -d GeoLite2-Country.mmdb.gz
+
+  fi
 
   # geoipupdate
 

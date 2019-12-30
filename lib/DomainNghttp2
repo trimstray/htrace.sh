@@ -32,7 +32,7 @@ function DomainNghttp2() {
   local _nghttp_desc="Testing HTTP/2:"
         _nghttp_desc+="https://nghttp2.org/"
 
-  local _nghttp_cmd="eval nghttp -nu -v \"$_host\""
+  local _nghttp_cmd="eval nghttp $NGHTTP2_OPT \"$_host\""
 
   _msg_args+=(\
               "$_nghttp_desc")
