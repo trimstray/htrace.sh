@@ -31,12 +31,14 @@ function DomainScanNmapNse() {
   _destination_host="$_host"
 
   local _nmap_nse_scripts="+dns-brute,\
+                           +hostmap-crtsh,\
                            +http-auth-finder,\
                            +http-chrono,\
                            +http-cookie-flags,\
                            +http-cors,\
                            +http-cross-domain-policy,\
                            +http-csrf,\
+                           +http-default-accounts,\
                            +http-dombased-xss,\
                            +http-enum,\
                            +http-errors,\
@@ -49,11 +51,14 @@ function DomainScanNmapNse() {
                            +http-passwd,\
                            +http-phpself-xss,\
                            +http-php-version,\
+                           +http-referer-checker,\
                            +http-robots.txt,\
-                           +http-sitemap-generator,\
+                           +http-security-headers,\
                            +http-shellshock,\
+                           +http-sitemap-generator,\
                            +http-stored-xss,\
                            +http-title,\
+                           +http-traceroute,\
                            +http-unsafe-output-escaping,\
                            +http-useragent-tester,\
                            +http-vhosts,\
