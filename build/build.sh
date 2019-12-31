@@ -2,7 +2,6 @@
 
 set -eux
 
-ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
-cd $ROOT_DIR
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null && pwd )"
 
-docker build -t htrace.sh -f build/Dockerfile .
+docker build -t htrace.sh -f build/Dockerfile "${ROOT_DIR}"
