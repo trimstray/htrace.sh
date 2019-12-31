@@ -48,7 +48,7 @@ FROM golang:alpine AS golang
 RUN apk update && apk add --no-cache git
 RUN go get github.com/ssllabs/ssllabs-scan
 RUN go get github.com/maxmind/geoipupdate/cmd/geoipupdate
-RUN go get github.com/subfinder/subfinder
+RUN go get github.com/projectdiscovery/subfinder/cmd/subfinder
 
 FROM drwetter/testssl.sh:stable AS testssl
 
@@ -77,7 +77,7 @@ RUN \
   python \
   py-pip \
   rsync \
-  nghttp2
+  nghttp2 \
   && rm -rf /var/cache/apk/*
 
 RUN \
@@ -114,16 +114,18 @@ COPY --from=golang /go/bin/subfinder /usr/bin/subfinder
 COPY --from=testssl /usr/local/bin/testssl.sh /usr/bin/testssl.sh
 COPY --from=testssl /home/testssl/etc/ /etc/testssl/etc/
 
+ARG GEOIP_ACCOUNT=0
+ARG GEOIP_LICENSE=000000000000
 RUN \
   mkdir -p /usr/local/etc/ && \
-  echo -en "AccountID 0\\nLicenseKey 000000000000\\nEditionIDs GeoLite2-Country GeoLite2-City" > /usr/local/etc/GeoIP.conf
+  echo -en "AccountID ${GEOIP_ACCOUNT}\\nLicenseKey ${GEOIP_LICENSE}\\nEditionIDs GeoLite2-Country GeoLite2-City" > /usr/local/etc/GeoIP.conf
 
 RUN \
   mkdir -p /usr/local/share/GeoIP/ && \
-  geoipupdate
+  geoipupdate || true # skip error if fails due account
 
 RUN \
-  cp -R /usr/local/share/GeoIP /usr/share/
+  ln -s /usr/local/share/GeoIP /usr/share/
 
 ENV TESTSSL_INSTALL_DIR /etc/testssl
 
