@@ -158,6 +158,8 @@ if [[ "$_os_name" == "darwin" ]] || \
   # For Wafw00f.
   git clone https://github.com/EnableSecurity/wafw00f /opt/wafw00f
   cd /opt/wafw00f
+  # pip install --upgrade pip
+  # pip install --upgrade setuptools
   python setup.py install
 
   # For SubFinder
@@ -273,6 +275,8 @@ elif [[ "$_os_name" == "debian" ]] || \
   # For Wafw00f.
   git clone https://github.com/EnableSecurity/wafw00f /opt/wafw00f
   cd /opt/wafw00f
+  # pip install --upgrade pip
+  # pip install --upgrade setuptools
   python setup.py install
 
   # For SubFinder
@@ -380,6 +384,8 @@ elif [[ "$_os_name" == "CentOS Linux" ]] || \
   # For Wafw00f.
   git clone https://github.com/EnableSecurity/wafw00f /opt/wafw00f
   cd /opt/wafw00f
+  # pip install --upgrade pip
+  # pip install --upgrade setuptools
   python setup.py install
 
   # For SubFinder
