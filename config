@@ -13,10 +13,12 @@ MAX_WIDTH="auto"
 #   - /path/to/openssl
 HTRACE_SSL_BIN_PATH="$(command -v openssl)"
 
-# Set path to certificates.
+# Set path to certificates (see: https://serverfault.com/a/722646)
 # shellcheck disable=SC2034
 #   - /path/to/certs
-HTRACE_SSL_PATH="/etc/ssl/certs/"
+# Ubuntu/Debian: /etc/ssl/certs/ca-certificates.crt
+# RHEL/CentOS: /etc/pki/tls/certs/ca-bundle.crt
+HTRACE_SSL_CERT_PATH=""
 
 # Hide source ip addresses from output.
 # shellcheck disable=SC2034

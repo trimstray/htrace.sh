@@ -823,15 +823,46 @@ function _before_init() {
   fi
 
   # Path to ssl certificates (CA).
-  if [[ -z "$HTRACE_SSL_PATH" ]] ; then
+  if [[ -z "$HTRACE_SSL_CERT_PATH" ]] ; then
 
-    # shellcheck disable=SC2034
-    export _ssl_ca_path="/etc/ssl/certs/"
+    # Tasks for specific system version.
+    if [[ "$OSTYPE" == "linux-gnu" ]] ; then
+
+      command -v yum > /dev/null 2>&1      && _DIST_VERSION="rhel"
+      command -v apt-get > /dev/null 2>&1  && _DIST_VERSION="debian"
+
+    elif [[ "$OSTYPE" == *"bsd"* ]] ; then
+
+      command -v pkg > /dev/null 2>&1      && _DIST_VERSION="bsd"
+
+    fi
+
+    if [[ "$_DIST_VERSION" == "rhel" ]] ; then
+
+      # shellcheck disable=SC2034
+      export _ssl_ca_path="/etc/pki/tls/certs/ca-bundle.crt"
+
+    elif [[ "$_DIST_VERSION" == "debian" ]] ; then
+
+      # shellcheck disable=SC2034
+      export _ssl_ca_path="/etc/ssl/certs/ca-certificates.crt"
+
+    elif [[ "$_DIST_VERSION" == "bsd" ]] ; then
+
+      # shellcheck disable=SC2034
+      export _ssl_ca_path="/usr/local/share/certs"
+
+    else
+
+      # shellcheck disable=SC2034
+      export _ssl_ca_path="/etc/ssl/certs/"
+
+    fi
 
   else
 
     # shellcheck disable=SC2034
-    export _ssl_ca_path="$HTRACE_SSL_PATH"
+    export _ssl_ca_path="$HTRACE_SSL_CERT_PATH"
 
   fi
 
