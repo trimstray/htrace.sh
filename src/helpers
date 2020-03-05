@@ -841,28 +841,45 @@ function _before_init() {
 
       # shellcheck disable=SC2034
       export _ssl_ca_path="/etc/pki/tls/certs/ca-bundle.crt"
+      export SSL_CERT_FILE="/etc/pki/tls/certs/ca-bundle.crt"
 
     elif [[ "$_DIST_VERSION" == "debian" ]] ; then
 
       # shellcheck disable=SC2034
       export _ssl_ca_path="/etc/ssl/certs/ca-certificates.crt"
+      export SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
 
     elif [[ "$_DIST_VERSION" == "bsd" ]] ; then
 
       # shellcheck disable=SC2034
       export _ssl_ca_path="/usr/local/share/certs"
+      export SSL_CERT_DIR="/usr/local/share/certs"
 
     else
 
       # shellcheck disable=SC2034
-      export _ssl_ca_path="/etc/ssl/certs/"
+      export _ssl_ca_path="/etc/ssl/certs"
+      export SSL_CERT_DIR="/etc/ssl/certs"
 
     fi
 
   else
 
-    # shellcheck disable=SC2034
-    export _ssl_ca_path="$HTRACE_SSL_CERT_PATH"
+    _ca_fd=$(basename "${HTRACE_SSL_CERT_PATH}")
+    _ca_dir=$(dirname "${HTRACE_SSL_CERT_PATH}")
+
+    if [[ -z "$_ca_fd" ]] ; then
+
+      # shellcheck disable=SC2034
+      export _ssl_ca_path="$_ca_dir"
+      export SSL_CERT_DIR="$_ca_dir"
+
+    else
+
+      export SSL_CERT_FILE="$_ca_fd"
+
+    fi
+
 
   fi
 
