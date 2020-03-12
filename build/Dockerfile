@@ -50,7 +50,7 @@ RUN go get github.com/ssllabs/ssllabs-scan
 RUN go get github.com/maxmind/geoipupdate/cmd/geoipupdate
 RUN go get github.com/projectdiscovery/subfinder/cmd/subfinder
 
-FROM drwetter/testssl.sh:stable AS testssl
+FROM drwetter/testssl.sh:3.0 AS testssl
 
 FROM alpine:3.9
 
