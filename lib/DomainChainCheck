@@ -48,7 +48,9 @@ function DomainChainCheck() {
      [[ "$_openssl_version" == "1.1.1a" ]] || \
      [[ "$_openssl_version" == "1.1.1b" ]] || \
      [[ "$_openssl_version" == "1.1.1c" ]] || \
-     [[ "$_openssl_version" == "1.1.1d" ]] ; then
+     [[ "$_openssl_version" == "1.1.1d" ]] || \
+     [[ "$_openssl_version" == "1.1.1e" ]] || \
+     [[ "$_openssl_version" == "1.1.1f" ]] ; then
 
     _chain_verify_subjects=$(echo "$_ssl_domain_cert_chain" | \
                       grep -e "s:" | \
