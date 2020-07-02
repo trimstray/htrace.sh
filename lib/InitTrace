@@ -69,7 +69,7 @@ function InitTrace() {
 
     for _head in "${req_header_type_all[@]}" ; do
 
-      req_header_type_all_p=("$_head")
+      req_header_type_all_p+=("$_head")
 
     done
 
@@ -77,16 +77,37 @@ function InitTrace() {
 
   fi
 
+  if [[ "$debug_conn_state" -eq 1 ]] ; then
+
+    _ccmd+=("-v")
+
+  fi
+
   # shellcheck disable=SC2034,SC2154
   _http_output=$(eval "${_ccmd[@]}" -ks -m "$_timeout" \
-    -H "'Connection: keep-alive'" \
-    -H "'Upgrade-Insecure-Requests: 1'" \
     -H "'User-Agent: $_user_agent'" \
-    -H "'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'" \
-    -H "'Accept-Encoding: gzip, deflate, br'" \
-    -H "'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7'" \
     -w '%{time_total}:%{time_connect}:%{local_ip}:%{local_port}:%{remote_ip}:%{remote_port}:%{http_version}:%{http_code}:%{scheme}:%{redirect_url}' \
-    -D "${_tmp}/headers.dump" -o "${_tmp}/body.dump" --compressed)
+    -D "${_tmp}/headers.dump" -o "${_tmp}/body.dump" --compressed 2>"${_tmp}/stderr.dump")
+
+  if [[ "$debug_conn_state" -eq 1 ]] ; then
+
+    # shellcheck disable=SC2034,SC2154
+    _curl_conn_debug=$(echo "${_ccmd[@]}" -ks -m "$_timeout" \
+      -H "'User-Agent: $_user_agent'" \
+      -w '%{time_total}:%{time_connect}:%{local_ip}:%{local_port}:%{remote_ip}:%{remote_port}:%{http_version}:%{http_code}:%{scheme}:%{redirect_url}' \
+      -D "${_tmp}/headers.dump" -o "${_tmp}/body.dump" --compressed | sed 's/  */ /g')
+
+  fi
+
+  # _http_output=$(eval "${_ccmd[@]}" -ks -m "$_timeout" \
+    # -H "'Connection: keep-alive'" \
+    # -H "'Upgrade-Insecure-Requests: 1'" \
+    # -H "'User-Agent: $_user_agent'" \
+    # -H "'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'" \
+    # -H "'Accept-Encoding: gzip, deflate, br'" \
+    # -H "'Accept-Language: en-US,en;q=0.9,en-US;q=0.8,en;q=0.7'" \
+    # -w '%{time_total}:%{time_connect}:%{local_ip}:%{local_port}:%{remote_ip}:%{remote_port}:%{http_version}:%{http_code}:%{scheme}:%{redirect_url}' \
+    # -D "${_tmp}/headers.dump" -o "${_tmp}/body.dump" --compressed)
 
   if [[ -z "$_http_output" ]] ; then
 
@@ -378,6 +399,29 @@ function InitTrace() {
 
       # shellcheck disable=SC2086,SC2154
       printf '         ssl: \e['${trgb_3111}'m%s\e[m\n' "off"
+
+    fi
+
+    # shellcheck disable=SC2154
+    if [[ "$debug_conn_state" -eq 1 ]] ; then
+
+      echo
+
+      echo "$_curl_conn_debug" | sed -e 's/^[ \t]*/         › /' | \
+      sed 's/\r//' | grep "› ." | fmt -w "$MAX_WIDTH" -s
+
+      if [[ -e "${_tmp}/stderr.dump" ]] ; then
+
+        if [[ -s "${_tmp}/stderr.dump" ]] ; then
+
+          echo
+
+        fi
+
+        < "${_tmp}/stderr.dump" sed -e 's/^[ \t]*/         › /' | \
+        sed 's/\r//' | grep "› ." | fmt -w "$MAX_WIDTH" -s
+
+      fi
 
     fi
 

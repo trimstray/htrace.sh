@@ -182,6 +182,10 @@ function __main__() {
   # shellcheck disable=SC2034
   local _ssl_connect_debug=""
 
+  # shellcheck disable=SC2034
+  local debug_conn_state="0"
+  local _curl_conn_debug=""
+
   # Set default ciphers.
   # shellcheck disable=SC2034
   local ciphers_state="0"
@@ -377,9 +381,9 @@ function __main__() {
   local _long_opt="help,version,examples,url:,ssl,headers,body,"
         _long_opt+="req-method:,req-header:,proxy:,resolve:,iface:,"
         _long_opt+="all-scans,testssl,observatory,ssllabs,mixed-content,"
-        _long_opt+="nse,waf,dns,http2,ssl-bin:,ssl-debug,cache-bypass:,"
-        _long_opt+="user-agent:,referer:,auth:,tlsv:,ciph:,max-redirects:,"
-        _long_opt+="timeout:,hide-src-ip"
+        _long_opt+="nse,waf,dns,http2,conn-debug,ssl-bin:,ssl-debug,"
+        _long_opt+="cache-bypass:,user-agent:,referer:,auth:,tlsv:,ciph:,"
+        _long_opt+="max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
                    -n "${_init_name}" -- "${__script_params[@]}")
@@ -539,6 +543,12 @@ function __main__() {
       --http2)
 
         export nghttp2_state=1
+
+        shift ;;
+
+      --conn-debug)
+
+        export debug_conn_state=1
 
         shift ;;
 
@@ -1221,6 +1231,13 @@ function __main__() {
 
     printf '\n         » request-method: \e['${trgb_40631}'m%s\e[m\n' \
            "${req_method_type[@]}"
+
+  fi
+
+  if [[ "$debug_conn_state" -eq 1 ]] ; then
+
+    printf '         » conn-debug:     \e['${trgb_40337}'m%s\e[m\n' \
+           "on"
 
   fi
 

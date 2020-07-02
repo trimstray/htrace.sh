@@ -658,6 +658,7 @@ function _help_() {
 
     Extended:
 
+        --conn-debug                          debug curl connection
         --ssl-bin <path>                      set path to the openssl bin
         --ssl-debug                           debug ssl connection
         --cache-bypass <value>                try (proxy) cache bypass
