@@ -77,20 +77,15 @@ RUN \
   python \
   py-pip \
   rsync \
-  nghttp2 \
-  && rm -rf /var/cache/apk/*
+  nghttp2
 
-RUN \
-  apk add --no-cache nmap nmap-nselibs nmap-scripts \
-  && rm -rf /var/cache/apk/*
+RUN apk add --no-cache nmap nmap-nselibs nmap-scripts
 
 RUN \
   git clone https://github.com/scipag/vulscan /opt/scipag_vulscan && \
   ln -s /opt/scipag_vulscan /usr/share/nmap/scripts/vulscan
 
-RUN \
-  apk add --no-cache php php7-curl php7-xml php7-dom && \
-  rm -rf /var/cache/apk/*
+RUN apk add --no-cache php php7-curl php7-xml php7-dom
 
 RUN \
   apk add --no-cache composer && \
@@ -99,7 +94,6 @@ RUN \
 
 RUN \
   apk add --no-cache nodejs npm && \
-  rm -rf /var/cache/apk/* && \
   npm config set unsafe-perm true && \
   npm install -g observatory-cli
 
