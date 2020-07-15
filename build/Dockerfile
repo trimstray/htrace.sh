@@ -45,7 +45,7 @@
 ### END SCRIPT INFO
 
 FROM golang:alpine AS golang
-RUN apk update && apk add --no-cache git
+RUN apk add --no-cache git
 RUN go get github.com/ssllabs/ssllabs-scan
 RUN go get github.com/maxmind/geoipupdate/cmd/geoipupdate
 RUN go get github.com/projectdiscovery/subfinder/cmd/subfinder
