@@ -93,7 +93,7 @@ RUN \
   rm -rf /var/cache/apk/*
 
 RUN \
-  apk add composer && \
+  apk add --no-cache composer && \
   composer global require bramus/mixed-content-scan && \
   ln -s /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan /usr/bin/mixed-content-scan
 
