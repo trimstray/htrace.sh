@@ -82,7 +82,7 @@ RUN \
 RUN apk add --no-cache nmap nmap-nselibs nmap-scripts
 
 RUN \
-  git clone https://github.com/scipag/vulscan /opt/scipag_vulscan && \
+  git clone --depth 1 https://github.com/scipag/vulscan /opt/scipag_vulscan && \
   ln -s /opt/scipag_vulscan /usr/share/nmap/scripts/vulscan
 
 RUN apk add --no-cache php php7-curl php7-xml php7-dom
@@ -98,7 +98,7 @@ RUN \
   npm install -g observatory-cli
 
 RUN \
-  git clone https://github.com/EnableSecurity/wafw00f /opt/wafw00f && \
+  git clone --depth 1 https://github.com/EnableSecurity/wafw00f /opt/wafw00f && \
   cd /opt/wafw00f && \
   python setup.py install
 
