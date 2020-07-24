@@ -159,8 +159,10 @@ function DomainCertCheck() {
   _ssl_domain_not_after_expr="$_ssl_domain_not_after"
 
   if [[ "$_ssl_domain_public_key" == "4096 bit" ]] || \
-     [[ "$_ssl_domain_public_key" == "256 bit" ]] || \
      [[ "$_ssl_domain_public_key" == "2048 bit" ]] || \
+     [[ "$_ssl_domain_public_key" == "521 bit" ]] || \
+     [[ "$_ssl_domain_public_key" == "384 bit" ]] || \
+     [[ "$_ssl_domain_public_key" == "256 bit" ]] || \
      [[ "$_ssl_domain_public_key" == "224 bit" ]] ; then
 
     # shellcheck disable=SC2154
