@@ -184,6 +184,7 @@ function __main__() {
 
   # shellcheck disable=SC2034
   local debug_conn_state="0"
+  # shellcheck disable=SC2034
   local _curl_conn_debug=""
 
   # Set default ciphers.
