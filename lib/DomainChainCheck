@@ -206,11 +206,6 @@ function DomainChainCheck() {
                      cut -d "/" -f1 | \
                      awk '{$1=$1};1')
 
-          _key_issuer_hash=$(openssl x509 -noout -issuer_hash -in "$j")
-          _key_subject_hash=$(openssl x509 -noout -subject_hash -in "$j")
-
-          _cert_chain_hash+=("99:${_key_issuer_hash}:${_key_subject_hash}")
-
         else
 
           _root_in_local_store=0
@@ -224,7 +219,7 @@ function DomainChainCheck() {
       # shellcheck disable=SC2116
       _root_certificate_cn=$(echo "${_chain_verify_issuers_stack[$i]}")
 
-      _lstore_state=$(awk -v cmd='openssl x509 -noout -subject' '/BEGIN/{close(cmd)};{print | cmd}' < "$_ssl_ca_path")
+      _lstore_state=$(awk -v cmd='openssl x509 -noout -subject -text' '/BEGIN/{close(cmd)};{print | cmd}' < "$_ssl_ca_path")
       _lstore_state_c=$(echo "$_lstore_state" | grep "$_root_certificate_cn")
 
       # shellcheck disable=SC2154
@@ -237,11 +232,6 @@ function DomainChainCheck() {
                    cut -d "=" -f2- | \
                    cut -d "/" -f1 | \
                    awk '{$1=$1};1')
-
-        _key_issuer_hash=$(openssl x509 -noout -issuer_hash -in "$_ssl_ca_path")
-        _key_subject_hash=$(openssl x509 -noout -subject_hash -in "$_ssl_ca_path")
-
-        _cert_chain_hash+=("99:${_key_issuer_hash}:${_key_subject_hash}")
 
       else
 
@@ -257,6 +247,16 @@ function DomainChainCheck() {
 
   # shellcheck disable=SC2086,SC2154
   printf '         chain of trust:'
+
+  for i in "${_cert_chain_hash[@]}" ; do
+
+    _c_id_num=$(echo "${i}" | awk -v FS="(:|:)" '{print $1}')
+    _c_id_issuer=$(echo "${i}" | awk -v FS="(:|:)" '{print $2}')
+    _c_id_subject=$(echo "${i}" | awk -v FS="(:|:)" '{print $3}')
+
+    printf '\n          hash: %s(s:%s i:%s)' "$_c_id_num" "$_c_id_subject" "$_c_id_issuer"
+
+  done
 
   _last_subject_num=$((_chain_of_trust_num - 1))
 
