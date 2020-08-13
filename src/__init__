@@ -18,11 +18,11 @@ function __main__() {
   # to the better possibility of manipulation for the user.
   # shellcheck disable=SC2154
   readonly _log_file="${_init_name}.${_cdate}.log"
-  # shellcheck disable=SC2154
+  # shellcheck disable=SC2154,SC2034
   readonly _log_stdout="${_log}/stdout.log"
-  # shellcheck disable=SC2154
+  # shellcheck disable=SC2154,SC2034
   readonly _log_path="${_log}/${_log_file}"
-
+  # shellcheck disable=SC2154,SC2034
   readonly _scan_output="${_log}/scan.out"
 
   # shellcheck disable=SC2154

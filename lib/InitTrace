@@ -28,9 +28,10 @@ function InitTrace() {
 
   local req_header_type_all_p=()
 
-  # shellcheck disable=SC2034,SC2154
+  # shellcheck disable=SC2001,SC2034,SC2154
   # Add '\' to before a special chars pattern.
   _host_p=$(sed 's/&/\\&/g' <<<"$_host")
+  # shellcheck disable=SC2001,SC2034,SC2154
   _host_p=$(sed 's/?/\\?/g' <<<"$_host_p")
 
   # shellcheck disable=SC2154
@@ -77,7 +78,7 @@ function InitTrace() {
 
   fi
 
-  # shellcheck disable=SC2034
+  # shellcheck disable=SC2034,SC2154
   if [[ "$debug_conn_state" -eq 1 ]] ; then
 
     _ccmd+=("-v")

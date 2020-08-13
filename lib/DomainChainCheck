@@ -104,10 +104,30 @@ function DomainChainCheck() {
 
   for i in $(seq 1 "$_chain_verify_issuers_stack_num") ; do
 
+    echo | \
+    $_openssl s_client -showcerts -verify 5 -servername "$_ssl_domain_name" \
+    -connect "$_ssl_remote_socket" 2>&1 | \
+    awk '/BEGIN/,/END/{ if(/BEGIN/){a++}; out="../tmp/cert"a".crt"; print >out}'
+
     _chain_verify_issuers_first=$(echo "$_chain_verify_issuers" | \
                     sed -n "${i}p" | cut -d "/" -f2- | cut -d "=" -f2-)
 
     _chain_verify_issuers_stack+=("${_chain_verify_issuers_first}")
+
+  done
+
+  _cert_chain_hash=()
+  _c_h="0"
+
+  # shellcheck disable=SC2154
+  for _c_fd in "${_tmp}"/*.crt ; do
+
+    _key_issuer_hash=$(openssl x509 -noout -issuer_hash -in "$_c_fd")
+    _key_subject_hash=$(openssl x509 -noout -subject_hash -in "$_c_fd")
+
+    _cert_chain_hash+=("${_c_h}:${_key_issuer_hash}:${_key_subject_hash}")
+
+    _c_h=$((_c_h + 1))
 
   done
 
@@ -160,17 +180,23 @@ function DomainChainCheck() {
 
   if [[ "$i" -eq "$_last_subject" ]] ; then
 
-      # shellcheck disable=SC2034
-      _last_certificate_status=1
+    # shellcheck disable=SC2034
+    _last_certificate_status=1
+
+    # shellcheck disable=SC2154
+    if [[ -d "$_ssl_ca_path" ]] ; then
 
       # shellcheck disable=SC2044,SC2154
-      for j in $(find "$_ssl_ca_path" -name "*.pem") ; do
+      for j in $(find "$_ssl_ca_path" -name "*.pem" > /dev/null 2>&1) ; do
 
         # shellcheck disable=SC2116
         _root_certificate_cn=$(echo "${_chain_verify_issuers_stack[$i]}")
 
+        _lstore_state=$(awk -v cmd='openssl x509 -noout -subject' '/BEGIN/{close(cmd)};{print | cmd}' < "$j")
+        _lstore_state_c=$(echo "$_lstore_state" | grep "$_root_certificate_cn")
+
         # shellcheck disable=SC2154
-        if $_openssl x509 -noout -subject -in "$j" | grep -q "$_root_certificate_cn" ; then
+        if [[ -n "$_lstore_state_c" ]] ; then
 
           _root_in_local_store=1
 
@@ -180,7 +206,10 @@ function DomainChainCheck() {
                      cut -d "/" -f1 | \
                      awk '{$1=$1};1')
 
-          break
+          _key_issuer_hash=$(openssl x509 -noout -issuer_hash -in "$j")
+          _key_subject_hash=$(openssl x509 -noout -subject_hash -in "$j")
+
+          _cert_chain_hash+=("99:${_key_issuer_hash}:${_key_subject_hash}")
 
         else
 
@@ -190,7 +219,39 @@ function DomainChainCheck() {
 
       done
 
+    elif [[ -f "$_ssl_ca_path" ]] ; then
+
+      # shellcheck disable=SC2116
+      _root_certificate_cn=$(echo "${_chain_verify_issuers_stack[$i]}")
+
+      _lstore_state=$(awk -v cmd='openssl x509 -noout -subject' '/BEGIN/{close(cmd)};{print | cmd}' < "$_ssl_ca_path")
+      _lstore_state_c=$(echo "$_lstore_state" | grep "$_root_certificate_cn")
+
+      # shellcheck disable=SC2154
+      if [[ -n "$_lstore_state_c" ]] ; then
+
+        _root_in_local_store=1
+
+        _root_certificate_issuer=$($_openssl x509 -noout -issuer -in "$_ssl_ca_path" | \
+                   grep -o "CN =.*" | \
+                   cut -d "=" -f2- | \
+                   cut -d "/" -f1 | \
+                   awk '{$1=$1};1')
+
+        _key_issuer_hash=$(openssl x509 -noout -issuer_hash -in "$_ssl_ca_path")
+        _key_subject_hash=$(openssl x509 -noout -subject_hash -in "$_ssl_ca_path")
+
+        _cert_chain_hash+=("99:${_key_issuer_hash}:${_key_subject_hash}")
+
+      else
+
+        _root_in_local_store=0
+
+      fi
+
     fi
+
+  fi
 
   _chain_of_trust_num="${#_chain_complete[@]}"
 
@@ -207,7 +268,13 @@ function DomainChainCheck() {
 
   for k in $(seq 0 $((_chain_of_trust_num - 1))) ; do
 
+    _c_id_counter="$_c_counter"
     _c_counter=$((k + 1))
+
+    # shellcheck disable=SC2034
+    _c_id_num=$(echo "${_cert_chain_hash[$_c_id_counter]}" | awk -v FS="(:|:)" '{print $1}')
+    _c_id_issuer=$(echo "${_cert_chain_hash[$_c_id_counter]}" | awk -v FS="(:|:)" '{print $2}')
+    _c_id_subject=$(echo "${_cert_chain_hash[$_c_id_counter]}" | awk -v FS="(:|:)" '{print $3}')
 
     if [[ "$_root_in_local_store" -eq 0 ]] ; then
 
@@ -219,16 +286,16 @@ function DomainChainCheck() {
        [[ "$_root_in_local_store" -eq 1 ]] ; then
 
       # shellcheck disable=SC2086,SC2154
-      printf '\n%s         └─\e['${trgb_3021}'m%s:%s\e[m' \
-             "$_t_rst" "$k" "${_chain_complete[$k]}"
+      printf '\n%s         └─\e['${trgb_3021}'m%s:%s %s\e[m' \
+             "$_t_rst" "$k" "${_chain_complete[$k]}" "$_c_id_subject"
 
       _init_certificate=1
 
     elif [[ "$_root_certificate_issuer" == "${_chain_complete[$k]}" ]] ; then
 
       # shellcheck disable=SC2086
-      printf '\n%s         └─\e['${trgb_3021}'m%s:%s\e[m' \
-             "$_t_rst" "$k" "${_chain_complete[$k]}"
+      printf '\n%s         └─\e['${trgb_3021}'m%s:%s %s\e[m' \
+             "$_t_rst" "$k" "${_chain_complete[$k]}" "$_c_id_subject"
 
       _init_certificate=1
 
@@ -311,6 +378,16 @@ function DomainChainCheck() {
 
       fi
 
+      # if [[ "$_root_in_local_store" -eq 0 ]] && \
+      #    [[ "$_last_subject_num" -eq "$k" ]] && \
+      #    [[ "${#_cert_chain_hash[@]}" -eq "$k" ]] ; then
+      #
+      #   # shellcheck disable=SC2086
+      #   printf ' \e['${trgb_3100}'m%s\e[m' \
+      #          "(probably incomplete chain)"
+      #
+      # fi
+
     fi
 
     if [[ "${_chain_verify_subjects_stack[$k]}" != "${_chain_verify_issuers_stack[$k]}" ]] ; then
@@ -318,14 +395,14 @@ function DomainChainCheck() {
       if [[ "$_root_in_local_store" -eq 1 ]] ; then
 
         # shellcheck disable=SC2086,SC2154
-        printf '\n%s           ├   \e['${trgb_3812}'m%s\e[m' \
-               "$_t_rst" "${_chain_verify_issuers_stack[$k]}"
+        printf '\n%s           ├   \e['${trgb_3812}'m%s %s\e[m' \
+               "$_t_rst" "${_chain_verify_issuers_stack[$k]}" "$_c_id_issuer"
 
       elif [[ "$_root_in_local_store" -eq 0 ]] ; then
 
         # shellcheck disable=SC2086
-        printf '\n%s           ├   \e['${trgb_3812}'m%s\e[m' \
-               "$_t_rst" "${_chain_verify_issuers_stack[$k]}"
+        printf '\n%s           ├   \e['${trgb_3812}'m%s %s\e[m' \
+               "$_t_rst" "${_chain_verify_issuers_stack[$k]}" "$_c_id_issuer"
 
       fi
 

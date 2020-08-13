@@ -802,11 +802,11 @@ function _before_init() {
     if [[ -d "$i" ]] ; then
 
       rm -fr "$i" && \
-      mkdir "$i"
+      mkdir -p "$i"
 
     else
 
-      mkdir "$i"
+      mkdir -p "$i"
 
     fi
 

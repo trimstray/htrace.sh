@@ -54,7 +54,6 @@ function DomainSslCheck() {
 
   if [[ -z "$_ssl_params_proto" ]] ; then
 
-
     # shellcheck disable=SC2034
     _ssl_params_proto=$(echo "$_ssl_params_proto_stack" | cut -d ',' -f2)
 
