@@ -23,7 +23,7 @@ HTRACE_SSL_CERT_PATH=""
 # Check RootCA certificate in local CA store
 # shellcheck disable=SC2034
 #   - on, off
-HTRACE_SSL_CERT_CA_CHECK="on"
+HTRACE_SSL_CERT_CA_CHECK="off"
 
 # Hide source ip addresses from output.
 # shellcheck disable=SC2034
