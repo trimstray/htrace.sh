@@ -26,289 +26,105 @@ function DomainChainCheck() {
   # shellcheck disable=SC2154
   _ssl_domain_name="$_domain_name"
 
-  # shellcheck disable=SC2154
-  if [[ -z "$_ssl_version_openssl_curl" ]] ; then
-
-    _ssl_domain_cert_chain=$(echo | \
-                       $_openssl s_client -verify 5 -servername "$_ssl_domain_name" \
-                       -connect "$_ssl_remote_socket" 2>&1 | \
-                       sed -ne '/Certificate chain/,/---/p')
-
-  else
-
-    _ssl_domain_cert_chain=$(echo | \
-                       $_openssl s_client "$_ssl_version_openssl_curl" -verify 5 -servername "$_ssl_domain_name" \
-                       -connect "$_ssl_remote_socket" 2>&1 | \
-                       sed -ne '/Certificate chain/,/---/p')
-
-  fi
-
-  # shellcheck disable=SC2154
-  if [[ "$_openssl_version" == "1.1.1" ]] || \
-     [[ "$_openssl_version" == "1.1.1a" ]] || \
-     [[ "$_openssl_version" == "1.1.1b" ]] || \
-     [[ "$_openssl_version" == "1.1.1c" ]] || \
-     [[ "$_openssl_version" == "1.1.1d" ]] || \
-     [[ "$_openssl_version" == "1.1.1e" ]] || \
-     [[ "$_openssl_version" == "1.1.1f" ]] || \
-     [[ "$_openssl_version" == "1.1.1g" ]] ; then
-
-    _chain_verify_subjects=$(echo "$_ssl_domain_cert_chain" | \
-                      grep -e "s:" | \
-                      grep -o "CN =.*" | \
-                      cut -d "=" -f2- | \
-                      cut -d "," -f1 | \
-                      awk '{$1=$1};1')
-
-    _chain_verify_issuers=$(echo "$_ssl_domain_cert_chain" | \
-                      grep -e "i:" | \
-                      grep -o "CN =.*" | \
-                      cut -d "=" -f2- | \
-                      cut -d "," -f1 | \
-                      awk '{$1=$1};1')
-
-  else
-
-    _chain_verify_subjects=$(echo "$_ssl_domain_cert_chain" | \
-                      grep -e "s:/" | \
-                      grep -o "/CN=.*" | \
-                      cut -d "=" -f2- | \
-                      cut -d "/" -f1 | \
-                      awk '{$1=$1};1')
-
-    _chain_verify_issuers=$(echo "$_ssl_domain_cert_chain" | \
-                      grep -e "i:/" | \
-                      grep -o "/CN=.*" | \
-                      cut -d "=" -f2- | \
-                      cut -d "/" -f1 | \
-                      awk '{$1=$1};1')
-
-  fi
-
+  # shellcheck disable=SC2034
   _chain_complete=()
 
+  # shellcheck disable=SC2034
   _chain_verify_subjects_stack=()
+  # shellcheck disable=SC2034
   _chain_verify_issuers_stack=()
-
-  _chain_verify_subjects_stack_num=$(echo "$_chain_verify_subjects" | wc -l)
-  _chain_verify_issuers_stack_num=$(echo "$_chain_verify_issuers" | wc -l)
-
-  for i in $(seq 1 "$_chain_verify_subjects_stack_num") ; do
-
-    _chain_verify_subjects_first=$(echo "$_chain_verify_subjects" | \
-                    sed -n "${i}p" | cut -d "/" -f2- | cut -d "=" -f2-)
-
-    _chain_verify_subjects_stack+=("${_chain_verify_subjects_first}")
-
-  done
-
-  for i in $(seq 1 "$_chain_verify_issuers_stack_num") ; do
-
-    echo | \
-    $_openssl s_client -showcerts -verify 5 -servername "$_ssl_domain_name" \
-    -connect "$_ssl_remote_socket" 2>&1 | \
-    awk '/BEGIN/,/END/{ if(/BEGIN/){a++}; out="../tmp/cert"a".crt"; print >out}'
-
-    _chain_verify_issuers_first=$(echo "$_chain_verify_issuers" | \
-                    sed -n "${i}p" | cut -d "/" -f2- | cut -d "=" -f2-)
-
-    _chain_verify_issuers_stack+=("${_chain_verify_issuers_first}")
-
-  done
 
   _cert_chain_hash=()
   _c_h="0"
 
   # shellcheck disable=SC2154
+  echo | \
+  $_openssl s_client -showcerts -verify 5 -servername "$_ssl_domain_name" \
+  -connect "$_ssl_remote_socket" 2>&1 | \
+  awk '/BEGIN/,/END/{ if(/BEGIN/){a++}; out="../tmp/cert"a".crt"; print >out}'
+
+  # shellcheck disable=SC2154
   for _c_fd in "${_tmp}"/*.crt ; do
 
-    _key_issuer_hash=$(openssl x509 -noout -issuer_hash -in "$_c_fd")
-    _key_subject_hash=$(openssl x509 -noout -subject_hash -in "$_c_fd")
+    _chain_verify_subjects_t=$($_openssl x509 -noout -subject -in "$_c_fd")
+    _chain_verify_issuers_t=$($_openssl x509 -noout -issuer -in "$_c_fd")
+    _key_subject_hash=$($_openssl x509 -noout -subject_hash -in "$_c_fd")
+    _key_issuer_hash=$($_openssl x509 -noout -issuer_hash -in "$_c_fd")
 
-    _cert_chain_hash+=("${_c_h}:${_key_issuer_hash}:${_key_subject_hash}")
+    # shellcheck disable=SC2154
+    if [[ "$_openssl_version" == "1.1.1" ]] || \
+       [[ "$_openssl_version" == "1.1.1a" ]] || \
+       [[ "$_openssl_version" == "1.1.1b" ]] || \
+       [[ "$_openssl_version" == "1.1.1c" ]] || \
+       [[ "$_openssl_version" == "1.1.1d" ]] || \
+       [[ "$_openssl_version" == "1.1.1e" ]] || \
+       [[ "$_openssl_version" == "1.1.1f" ]] || \
+       [[ "$_openssl_version" == "1.1.1g" ]] ; then
+
+      _chain_verify_subjects=$(echo "$_chain_verify_subjects_t" | \
+                        grep -o "CN =.*" | \
+                        cut -d "=" -f2- | \
+                        cut -d "," -f1 | \
+                        awk '{$1=$1};1')
+
+      _chain_verify_issuers=$(echo "$_chain_verify_issuers_t" | \
+                        grep -o "CN =.*" | \
+                        cut -d "=" -f2- | \
+                        cut -d "," -f1 | \
+                        awk '{$1=$1};1')
+
+    else
+
+      _chain_verify_subjects=$(echo "$_chain_verify_subjects_t" | \
+                        grep -o "/CN=.*" | \
+                        cut -d "=" -f2- | \
+                        cut -d "/" -f1 | \
+                        awk '{$1=$1};1')
+
+      _chain_verify_issuers=$(echo "$_chain_verify_issuers_t" | \
+                        grep -o "/CN=.*" | \
+                        cut -d "=" -f2- | \
+                        cut -d "/" -f1 | \
+                        awk '{$1=$1};1')
+
+    fi
+
+    _cert_chain_hash+=("${_c_h}:${_chain_verify_subjects}:${_chain_verify_issuers}:${_key_subject_hash}:${_key_issuer_hash}")
 
     _c_h=$((_c_h + 1))
 
   done
 
-  _first_certificate_status=0
-  _last_certificate_status=0
-  _last_certificate_duplicate=0
-  _root_in_local_store=0
-
-  _last_subject=$((_chain_verify_subjects_stack_num - 1))
-
-  for i in $(seq 0 "$_last_subject") ; do
-
-    # Verify the first certificate.
-    if [[ "$i" -eq 0 ]] ; then
-
-      # shellcheck disable=SC2154
-      if [[ "${_chain_verify_subjects_stack[$i]}" == "$_ssl_domain_cn" ]] ; then
-
-        _chain_complete+=("${_chain_verify_subjects_stack[$i]}")
-
-        _first_certificate_status=1
-
-      else
-
-        _chain_complete+=("${_chain_verify_subjects_stack[$i]}")
-
-      fi
-
-    else
-
-      if [[ "${_chain_verify_subjects_stack[$i]}" == "${_chain_verify_issuers_stack[$i]}" ]] ; then
-
-        _last_certificate_duplicate=1
-
-      elif [[ "$i" -eq "$_last_subject" ]] ; then
-
-        _chain_complete+=("${_chain_verify_subjects_stack[$i]}")
-
-      else
-
-        _chain_complete+=("${_chain_verify_subjects_stack[$i]}")
-
-      fi
-
-    fi
-
-  done
-
-  _chain_complete+=("${_chain_verify_issuers_stack[$i]}")
-
-  if [[ "$i" -eq "$_last_subject" ]] ; then
-
-    # shellcheck disable=SC2034
-    _last_certificate_status=1
-
-    # shellcheck disable=SC2154
-    if [[ -d "$_ssl_ca_path" ]] ; then
-
-      # shellcheck disable=SC2044,SC2154
-      for j in $(find "$_ssl_ca_path" -name "*.pem" > /dev/null 2>&1) ; do
-
-        # shellcheck disable=SC2116
-        _root_certificate_cn=$(echo "${_chain_verify_issuers_stack[$i]}")
-
-        _lstore_state=$(awk -v cmd='openssl x509 -noout -subject' '/BEGIN/{close(cmd)};{print | cmd}' < "$j")
-        _lstore_state_c=$(echo "$_lstore_state" | grep "$_root_certificate_cn")
-
-        # shellcheck disable=SC2154
-        if [[ -n "$_lstore_state_c" ]] ; then
-
-          _root_in_local_store=1
-
-          _root_certificate_issuer=$($_openssl x509 -noout -issuer -in "$j" | \
-                     grep -o "CN =.*" | \
-                     cut -d "=" -f2- | \
-                     cut -d "/" -f1 | \
-                     awk '{$1=$1};1')
-
-        else
-
-          _root_in_local_store=0
-
-        fi
-
-      done
-
-    elif [[ -f "$_ssl_ca_path" ]] ; then
-
-      # shellcheck disable=SC2116
-      _root_certificate_cn=$(echo "${_chain_verify_issuers_stack[$i]}")
-
-      _lstore_state=$(awk -v cmd='openssl x509 -noout -subject -text' '/BEGIN/{close(cmd)};{print | cmd}' < "$_ssl_ca_path")
-      _lstore_state_c=$(echo "$_lstore_state" | grep "$_root_certificate_cn")
-
-      # shellcheck disable=SC2154
-      if [[ -n "$_lstore_state_c" ]] ; then
-
-        _root_in_local_store=1
-
-        _root_certificate_issuer=$($_openssl x509 -noout -issuer -in "$_ssl_ca_path" | \
-                   grep -o "CN =.*" | \
-                   cut -d "=" -f2- | \
-                   cut -d "/" -f1 | \
-                   awk '{$1=$1};1')
-
-      else
-
-        _root_in_local_store=0
-
-      fi
-
-    fi
-
-  fi
-
-  _chain_of_trust_num="${#_chain_complete[@]}"
-
-  # shellcheck disable=SC2086,SC2154
-  printf '         chain of trust:'
-
-  for i in "${_cert_chain_hash[@]}" ; do
-
-    _c_id_num=$(echo "${i}" | awk -v FS="(:|:)" '{print $1}')
-    _c_id_issuer=$(echo "${i}" | awk -v FS="(:|:)" '{print $2}')
-    _c_id_subject=$(echo "${i}" | awk -v FS="(:|:)" '{print $3}')
-
-    printf '\n          hash: %s(s:%s i:%s)' "$_c_id_num" "$_c_id_subject" "$_c_id_issuer"
-
-  done
-
-  _last_subject_num=$((_chain_of_trust_num - 1))
-
   _t_rst=' '
   _x_rst='  '
 
-  _c_counter="0"
-  _init_certificate=0
+  _c_id="1"
 
-  for k in $(seq 0 $((_chain_of_trust_num - 1))) ; do
+  for i in "${_cert_chain_hash[@]}" ; do
 
-    _c_id_counter="$_c_counter"
-    _c_counter=$((k + 1))
+    _id_num=$(echo "${i}" | awk -v FS="(:|:)" '{print $1}')
+    _id_subject=$(echo "${i}" | awk -v FS="(:|:)" '{print $2}')
+    _id_issuer=$(echo "${i}" | awk -v FS="(:|:)" '{print $3}')
+    _id_subject_hash=$(echo "${i}" | awk -v FS="(:|:)" '{print $4}')
+    _id_issuer_hash=$(echo "${i}" | awk -v FS="(:|:)" '{print $5}')
 
-    # shellcheck disable=SC2034
-    _c_id_num=$(echo "${_cert_chain_hash[$_c_id_counter]}" | awk -v FS="(:|:)" '{print $1}')
-    _c_id_issuer=$(echo "${_cert_chain_hash[$_c_id_counter]}" | awk -v FS="(:|:)" '{print $2}')
-    _c_id_subject=$(echo "${_cert_chain_hash[$_c_id_counter]}" | awk -v FS="(:|:)" '{print $3}')
+    # shellcheck disable=SC2086,SC2154
+    printf '%s         └─\e['${trgb_3021}'m%s:%s %s\e[m' \
+           "$_t_rst" "$_id_num" "${_id_subject}" "$_id_subject_hash"
 
-    if [[ "$_root_in_local_store" -eq 0 ]] ; then
+    if [[ "$_id_num" -eq 0 ]] ; then
 
-      _root_certificate_issuer="$_chain_fa"
+      if [[ "$_id_subject" == "$_ssl_domain_name" ]] ; then
 
-    fi
+        # shellcheck disable=SC2086,SC2154
+        printf ' \e['${trgb_3300}'m%s\e[m' \
+               "★"
 
-    if [[ "$_last_subject_num" -ne "$k" ]] || \
-       [[ "$_root_in_local_store" -eq 1 ]] ; then
+      else
 
-      # shellcheck disable=SC2086,SC2154
-      printf '\n%s         └─\e['${trgb_3021}'m%s:%s %s\e[m' \
-             "$_t_rst" "$k" "${_chain_complete[$k]}" "$_c_id_subject"
-
-      _init_certificate=1
-
-    elif [[ "$_root_certificate_issuer" == "${_chain_complete[$k]}" ]] ; then
-
-      # shellcheck disable=SC2086
-      printf '\n%s         └─\e['${trgb_3021}'m%s:%s %s\e[m' \
-             "$_t_rst" "$k" "${_chain_complete[$k]}" "$_c_id_subject"
-
-      _init_certificate=1
-
-    else
-
-      _init_certificate=0
-
-    fi
-
-    if [[ "$_init_certificate" -eq 1 ]] ; then
-
-      if [[ "$_first_certificate_status" -eq 1 ]] && \
-         [[ "$k" -eq 0 ]] ; then
+        # shellcheck disable=SC2086
+        # printf ' \e['${trgb_3100}'m%s\e[m' \
+        #        "!"
 
         # shellcheck disable=SC2086,SC2154
         printf ' \e['${trgb_3300}'m%s\e[m' \
@@ -316,113 +132,113 @@ function DomainChainCheck() {
 
       fi
 
-      if [[ "${_chain_verify_subjects_stack[$k]}" == "$_ssl_domain_cn" ]] ; then
+    fi
+
+    if [[ "$_id_num" -ne 0 ]] && \
+       [[ "$_id_issuer_hash_last" == "$_id_subject_hash" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf ' \e['${trgb_3200}'m%s\e[m' \
+             "✓"
+
+    elif [[ "$_id_num" -ne 0 ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf ' \e['${trgb_3100}'m%s\e[m' \
+             "×"
+
+    fi
+
+    if [[ "$_id_subject_hash" == "$_id_issuer_hash" ]] ; then
+
+      # shellcheck disable=SC2086
+      printf ' \e['${trgb_3300}'m%s\e[m' \
+               "2x"
+
+    fi
+
+    if [[ "${#_cert_chain_hash[@]}" -eq "$_c_id" ]] ; then
+
+      # shellcheck disable=SC2086,SC2154
+      printf '\n%s           └ \e['${trgb_3812}'m%s %s\e[m' \
+             "$_t_rst" "$_id_issuer" "$_id_issuer_hash"
+
+      if [[ "$HTRACE_SSL_CERT_CA_CHECK" == "on" ]] ; then
 
         # shellcheck disable=SC2154
-        if [[ "$_validity_state" -eq 0 ]] ; then
+        if [[ -d "$_ssl_ca_path" ]] ; then
 
-          # shellcheck disable=SC2086,SC2154
-          printf ' \e['${trgb_3200}'m%s\e[m' \
-                 "✓"
+          # shellcheck disable=SC2044,SC2154
+          for j in $(find "$_ssl_ca_path" -name "*.pem" > /dev/null 2>&1) ; do
 
-        else
+            _lstore_state=$(awk -v cmd='openssl x509 -noout -subject' '/BEGIN/{close(cmd)};{print | cmd}' < "$j")
+            _lstore_state_c=$(echo "$_lstore_state" | grep "$_id_issuer")
 
-          # shellcheck disable=SC2086
-          printf ' \e['${trgb_3100}'m%s\e[m' \
-                 "!"
+            # shellcheck disable=SC2154
+            if [[ -n "$_lstore_state_c" ]] ; then
+
+              _root_certificate_issuer=$(echo "$_lstore_state_c" | \
+                         grep -o "CN =.*" | \
+                         cut -d "=" -f2- | \
+                         cut -d "/" -f1 | \
+                         awk '{$1=$1};1')
+
+              # shellcheck disable=SC2086
+              printf ' \e['${trgb_3200}'m%s\e[m' \
+                     "(in a local trust store)"
+
+            else
+
+              # shellcheck disable=SC2086
+              printf ' \e['${trgb_3100}'m%s\e[m' \
+                     "(not in a local trust store)"
+
+            fi
+
+          done
+
+        elif [[ -f "$_ssl_ca_path" ]] ; then
+
+          _lstore_state=$(awk -v cmd='openssl x509 -noout -subject' '/BEGIN/{close(cmd)};{print | cmd}' < "$_ssl_ca_path")
+          _lstore_state_c=$(echo "$_lstore_state" | grep "$_id_issuer")
+
+          # shellcheck disable=SC2154
+          if [[ -n "$_lstore_state_c" ]] ; then
+
+            # shellcheck disable=SC2034
+            _root_certificate_issuer=$(echo "$_lstore_state_c" | \
+                       grep -o "CN =.*" | \
+                       cut -d "=" -f2- | \
+                       cut -d "/" -f1 | \
+                       awk '{$1=$1};1')
+
+            # shellcheck disable=SC2086
+            printf ' \e['${trgb_3200}'m%s\e[m' \
+                   "⊙"
+
+          else
+
+            # shellcheck disable=SC2086
+            printf ' \e['${trgb_3100}'m%s\e[m' \
+                   "⊙"
+
+          fi
 
         fi
 
-      elif [[ "$_chain_fa" == "$_chain_fb" ]] ; then
-
-        # shellcheck disable=SC2086
-        printf ' \e['${trgb_3200}'m%s\e[m' \
-               "✓"
-
-      elif [[ "$_root_certificate_issuer" == "$_chain_fb" ]] ; then
-
-        # shellcheck disable=SC2086
-        printf ' \e['${trgb_3200}'m%s\e[m' \
-               "✓"
-
-      else
-
-        # shellcheck disable=SC2086
-        printf ' \e['${trgb_3100}'m%s\e[m' \
-               "×"
-
       fi
 
-      if [[ "$_root_in_local_store" -eq 1 ]] && \
-         [[ "$_last_subject_num" -eq "$k" ]] ; then
+    else
 
-        # shellcheck disable=SC2086
-        printf ' \e['${trgb_3300}'m%s\e[m' \
-               "⊙"
-
-      elif [[ "$_root_in_local_store" -eq 0 ]] && \
-           [[ "$_last_subject_num" -eq "$k" ]] ; then
-
-        # shellcheck disable=SC2086
-        printf ' \e['${trgb_3100}'m%s\e[m' \
-               "⊙"
-
-      fi
-
-      if [[ "$_last_certificate_duplicate" -eq 1 ]] && \
-         [[ "$_last_subject_num" -eq "$k" ]] ; then
-
-        # shellcheck disable=SC2086
-        printf ' \e['${trgb_3300}'m%s\e[m' \
-                 "2x"
-
-      fi
-
-      # if [[ "$_root_in_local_store" -eq 0 ]] && \
-      #    [[ "$_last_subject_num" -eq "$k" ]] && \
-      #    [[ "${#_cert_chain_hash[@]}" -eq "$k" ]] ; then
-      #
-      #   # shellcheck disable=SC2086
-      #   printf ' \e['${trgb_3100}'m%s\e[m' \
-      #          "(probably incomplete chain)"
-      #
-      # fi
+      # shellcheck disable=SC2086,SC2154
+      printf '\n%s           ├   \e['${trgb_3812}'m%s %s\e[m\n' \
+             "$_t_rst" "$_id_issuer" "$_id_issuer_hash"
 
     fi
 
-    if [[ "${_chain_verify_subjects_stack[$k]}" != "${_chain_verify_issuers_stack[$k]}" ]] ; then
+    _id_issuer_hash_last="$_id_issuer_hash"
 
-      if [[ "$_root_in_local_store" -eq 1 ]] ; then
-
-        # shellcheck disable=SC2086,SC2154
-        printf '\n%s           ├   \e['${trgb_3812}'m%s %s\e[m' \
-               "$_t_rst" "${_chain_verify_issuers_stack[$k]}" "$_c_id_issuer"
-
-      elif [[ "$_root_in_local_store" -eq 0 ]] ; then
-
-        # shellcheck disable=SC2086
-        printf '\n%s           ├   \e['${trgb_3812}'m%s %s\e[m' \
-               "$_t_rst" "${_chain_verify_issuers_stack[$k]}" "$_c_id_issuer"
-
-      fi
-
-    elif [[ "$_root_certificate_issuer" == "${_chain_complete[$k]}" ]] ; then
-
-      # shellcheck disable=SC2086
-      printf '\n%s           └ \e['${trgb_3812}'m%s\e[m' \
-             "$_t_rst" "${_chain_complete[$k]}"
-
-    elif [[ "$_root_in_local_store" -eq 1 ]] ; then
-
-      # shellcheck disable=SC2086
-      printf '\n%s           └ \e['${trgb_3812}'m%s\e[m' \
-             "$_t_rst" "${_chain_complete[$k]}"
-
-    fi
-
-    _chain_fa="${_chain_complete[$_c_counter]}"
-    _chain_fb="${_chain_verify_issuers_stack[$k]}"
-
+    _c_id=$((_c_id + 1))
     _t_rst+="$_x_rst"
 
   done
