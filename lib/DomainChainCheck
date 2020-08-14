@@ -52,14 +52,14 @@ function DomainChainCheck() {
     _key_issuer_hash=$($_openssl x509 -noout -issuer_hash -in "$_c_fd")
 
     # shellcheck disable=SC2154
-    if [[ "$_openssl_version" == "1.1.1" ]] || \
-       [[ "$_openssl_version" == "1.1.1a" ]] || \
-       [[ "$_openssl_version" == "1.1.1b" ]] || \
-       [[ "$_openssl_version" == "1.1.1c" ]] || \
-       [[ "$_openssl_version" == "1.1.1d" ]] || \
-       [[ "$_openssl_version" == "1.1.1e" ]] || \
-       [[ "$_openssl_version" == "1.1.1f" ]] || \
-       [[ "$_openssl_version" == "1.1.1g" ]] ; then
+    # if [[ "$_openssl_version" == "1.1.1" ]] || \
+    #    [[ "$_openssl_version" == "1.1.1a" ]] || \
+    #    [[ "$_openssl_version" == "1.1.1b" ]] || \
+    #    [[ "$_openssl_version" == "1.1.1c" ]] || \
+    #    [[ "$_openssl_version" == "1.1.1d" ]] || \
+    #    [[ "$_openssl_version" == "1.1.1e" ]] || \
+    #    [[ "$_openssl_version" == "1.1.1f" ]] || \
+    #    [[ "$_openssl_version" == "1.1.1g" ]] ; then
 
       _chain_verify_subjects=$(echo "$_chain_verify_subjects_t" | \
                         grep -o "CN =.*" | \
@@ -73,21 +73,21 @@ function DomainChainCheck() {
                         cut -d "," -f1 | \
                         awk '{$1=$1};1')
 
-    else
-
-      _chain_verify_subjects=$(echo "$_chain_verify_subjects_t" | \
-                        grep -o "/CN=.*" | \
-                        cut -d "=" -f2- | \
-                        cut -d "/" -f1 | \
-                        awk '{$1=$1};1')
-
-      _chain_verify_issuers=$(echo "$_chain_verify_issuers_t" | \
-                        grep -o "/CN=.*" | \
-                        cut -d "=" -f2- | \
-                        cut -d "/" -f1 | \
-                        awk '{$1=$1};1')
-
-    fi
+    # else
+    #
+    #   _chain_verify_subjects=$(echo "$_chain_verify_subjects_t" | \
+    #                     grep -o "/CN=.*" | \
+    #                     cut -d "=" -f2- | \
+    #                     cut -d "/" -f1 | \
+    #                     awk '{$1=$1};1')
+    #
+    #   _chain_verify_issuers=$(echo "$_chain_verify_issuers_t" | \
+    #                     grep -o "/CN=.*" | \
+    #                     cut -d "=" -f2- | \
+    #                     cut -d "/" -f1 | \
+    #                     awk '{$1=$1};1')
+    #
+    # fi
 
     _cert_chain_hash+=("${_c_h}:${_chain_verify_subjects}:${_chain_verify_issuers}:${_key_subject_hash}:${_key_issuer_hash}")
 
