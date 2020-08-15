@@ -45,7 +45,7 @@
 ### END SCRIPT INFO
 
 FROM golang:alpine AS golang
-RUN apk update && apk add --no-cache git
+RUN apk add --no-cache git
 RUN go get github.com/ssllabs/ssllabs-scan
 RUN go get github.com/maxmind/geoipupdate/cmd/geoipupdate
 RUN go get github.com/projectdiscovery/subfinder/cmd/subfinder
@@ -77,34 +77,28 @@ RUN \
   python \
   py-pip \
   rsync \
-  nghttp2 \
-  && rm -rf /var/cache/apk/*
+  nghttp2
+
+RUN apk add --no-cache nmap nmap-nselibs nmap-scripts
 
 RUN \
-  apk add --no-cache nmap nmap-nselibs nmap-scripts \
-  && rm -rf /var/cache/apk/*
-
-RUN \
-  git clone https://github.com/scipag/vulscan /opt/scipag_vulscan && \
+  git clone --depth 1 https://github.com/scipag/vulscan /opt/scipag_vulscan && \
   ln -s /opt/scipag_vulscan /usr/share/nmap/scripts/vulscan
 
-RUN \
-  apk add --no-cache php php7-curl php7-xml php7-dom && \
-  rm -rf /var/cache/apk/*
+RUN apk add --no-cache php php7-curl php7-xml php7-dom
 
 RUN \
-  apk add composer && \
+  apk add --no-cache composer && \
   composer global require bramus/mixed-content-scan && \
   ln -s /root/.composer/vendor/bramus/mixed-content-scan/bin/mixed-content-scan /usr/bin/mixed-content-scan
 
 RUN \
   apk add --no-cache nodejs npm && \
-  rm -rf /var/cache/apk/* && \
   npm config set unsafe-perm true && \
   npm install -g observatory-cli
 
 RUN \
-  git clone https://github.com/EnableSecurity/wafw00f /opt/wafw00f && \
+  git clone --depth 1 https://github.com/EnableSecurity/wafw00f /opt/wafw00f && \
   cd /opt/wafw00f && \
   python setup.py install
 
