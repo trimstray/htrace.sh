@@ -3,7 +3,7 @@
 # Tasks for specific system version.
 if [[ "$OSTYPE" == "darwin"* ]] ; then
 
-  [ ! -z "$(brew --prefix)" ] && PATH=$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
+  [ -n "$(brew --prefix)" ] && PATH=$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
 
   readonly _dir=$(dirname "$(readlink "$0" || echo "$(echo "$0" | sed -e 's,\\,/,g')")")
 
