@@ -41,7 +41,7 @@ function DomainChainCheck() {
   echo | \
   $_openssl s_client -showcerts -verify 5 -servername "$_ssl_domain_name" \
   -connect "$_ssl_remote_socket" 2>&1 | \
-  awk '/BEGIN/,/END/{ if(/BEGIN/){a++}; out="../tmp/cert"a".crt"; print >out}'
+  awk '/BEGIN CERTIFICATE/,/END CERTIFICATE/{ if(/BEGIN CERTIFICATE/){a++}; out="../tmp/cert"a".crt"; print >out}'
 
   # shellcheck disable=SC2154
   for _c_fd in "${_tmp}"/*.crt ; do
