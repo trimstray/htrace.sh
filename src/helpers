@@ -816,8 +816,7 @@ function _before_init() {
 
     export HTRACE_COLORS="on"
 
-  elif [[ "$HTRACE_COLORS" != "on" ]] || \
-       [[ "$HTRACE_COLORS" != "off" ]] ; then
+  elif [[ "$HTRACE_COLORS" != "off" ]] ; then
 
     export HTRACE_COLORS="on"
 
@@ -905,8 +904,7 @@ function _before_init() {
 
     export HIDE_SRC_IP="off"
 
-  elif [[ "$HIDE_SRC_IP" != "on" ]] || \
-       [[ "$HIDE_SRC_IP" != "off" ]] ; then
+  elif [[ "$HIDE_SRC_IP" != "on" ]] ; then
 
     export HIDE_SRC_IP="off"
 
