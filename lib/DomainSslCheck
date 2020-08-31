@@ -30,7 +30,7 @@ function DomainSslCheck() {
   _ssl_params_default=$(echo | \
                         $_openssl s_client $_ssl_version_openssl_curl $_ciphers_openssl_curl \
                         -servername "$_ssl_domain_name" \
-                        -connect "$_ssl_remote_socket" -showcerts -tlsextdebug -status 2>/dev/null)
+                        -connect "$_ssl_remote_socket" -showcerts -tlsextdebug -debug -msg -status 2>/dev/null)
 
   _ssl_params_default_state="$?"
 
