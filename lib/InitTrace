@@ -384,10 +384,10 @@ function InitTrace() {
     if [[ "$CURL_TIMERS" == "on" ]] ; then
 
       printf '
-         Request Size          %s bytes
-         Response Size         %s bytes
-         Headers Size          %s bytes
-         ——————————————————————————————
+         Request Size             %s bytes
+         Response Size            %s bytes
+         Headers Size             %s bytes
+         —————————————————————————————————
          [0.000000]
             DNS Lookup            %s
          [%s]
@@ -397,9 +397,10 @@ function InitTrace() {
          [%s]
             Pre-Transfer          %s
               Server Processing   %s
+         [%s]
             Start-Transfer (TTFB) %s
             Data Transfer         %s
-         ——————————————————————————————
+         —————————————————————————————————
             Time Total            %s
 
 ' \
@@ -415,6 +416,7 @@ function InitTrace() {
       "$_time_pretransfer" \
       "$_data_g" \
       "$_time_starttransfer" \
+      "$_ttfb" \
       "$_data_t" \
       "$_time_total"
 
