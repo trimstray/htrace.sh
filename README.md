@@ -139,6 +139,7 @@ Provides the following options:
         --user-agent <value>                  set 'User-Agent' header
         --referer <value>                     set 'Referer' header
         --auth <value>                        set authentication method
+        --httpv <value>                       set http version
         --tlsv <value>                        set tls version
         --ciph <value>                        set of cryptographic algorithm
         --max-redirects <num>                 set max redirects (default: 10)

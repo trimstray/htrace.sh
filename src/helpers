@@ -665,6 +665,7 @@ function _help_() {
         --user-agent <value>                  set 'User-Agent' header
         --referer <value>                     set 'Referer' header
         --auth <value>                        set authentication method
+        --httpv <value>                       set http version
         --tlsv <value>                        set tls version
         --ciph <value>                        set of cryptographic algorithm
         --max-redirects <num>                 set max redirects (default: 10)
@@ -752,6 +753,9 @@ function _examples_() {
     › htrace.sh -u https://example.com -h --auth \"proxy:foo:bar\"
    # Cookie authentication
     › htrace.sh -u https://example.com -h --auth \"cookie:/tmp/example.com.cookie\"
+
+  Set specific HTTP version
+    › htrace.sh -u https://example.com --httpv 1.1
 
   Set specific TLS version and Ciphersuite
     › htrace.sh -u https://example.com -s --tlsv 1.1 --ciph \"TLS_DHE_RSA_WITH_AES_256_CBC_SHA\"

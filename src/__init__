@@ -167,6 +167,16 @@ function __main__() {
   local _auth_type=""
   local _auth_type_curl=""
 
+  # Set default http version.
+  # shellcheck disable=SC2034
+  local http_version_state="0"
+  local _http_version=""
+  local _http_version_type_sep="--"
+  local _http_version_type=""
+  local _http_version_msg=""
+
+  local _http_version_type_curl=""
+
   # Set default ssl/tls.
   # shellcheck disable=SC2034
   local ssl_version_state="0"
@@ -383,7 +393,7 @@ function __main__() {
         _long_opt+="req-method:,req-header:,proxy:,resolve:,iface:,"
         _long_opt+="all-scans,testssl,observatory,ssllabs,mixed-content,"
         _long_opt+="nse,waf,dns,http2,conn-debug,ssl-bin:,ssl-debug,"
-        _long_opt+="cache-bypass:,user-agent:,referer:,auth:,tlsv:,ciph:,"
+        _long_opt+="cache-bypass:,user-agent:,referer:,auth:,httpv:,tlsv:,ciph:,"
         _long_opt+="max-redirects:,timeout:,hide-src-ip"
 
   _GETOPT_PARAMS=$(getopt -o "${_short_opt}" --long "${_long_opt}" \
@@ -600,6 +610,14 @@ function __main__() {
         export auth_state=1
 
         export _auth_type="${2}"
+
+        shift 2 ;;
+
+      --httpv)
+
+        export _http_version_state=1
+
+        export _http_version="${2}"
 
         shift 2 ;;
 
@@ -1107,6 +1125,28 @@ function __main__() {
 
   fi
 
+  if [[ "$_http_version_state" -eq 1 ]] ; then
+
+    if [[ "$_http_version" == "1.0" ]] || \
+       [[ "$_http_version" == "1.1" ]] || \
+       [[ "$_http_version" == "2" ]] || \
+       [[ "$_http_version" == "3" ]] ; then
+
+      _http_version_type="http${_http_version}"
+      _http_version_msg="$_http_version"
+
+    else
+
+      _http_version_type_sep=""
+      _http_version_type=""
+      _http_version_msg="not supported"
+
+    fi
+
+    _http_version_type_curl="${_http_version_type_sep}${_http_version_type}"
+
+  fi
+
   if [[ "$_ssl_version_state" -eq 1 ]] ; then
 
     if [[ "$_ssl_version" == "ssl2" ]] || \
@@ -1202,6 +1242,10 @@ function __main__() {
   _curl_base+=("$_auth_type_curl")
   _curl_base_remote+=("$_auth_type_curl")
 
+  # For --http:
+  _curl_base+=("$_http_version_type_curl")
+  _curl_base_remote+=("$_http_version_type_curl")
+
   # For --tlsv:
   _curl_base+=("$_ssl_version_type_curl")
   _curl_base_remote+=("$_ssl_version_type_curl")
@@ -1232,6 +1276,18 @@ function __main__() {
 
     printf '\n         » request-method: \e['${trgb_40631}'m%s\e[m\n' \
            "${req_method_type[@]}"
+
+  fi
+
+  if [[ "$_http_version_state" -eq 1 ]] ; then
+
+    if [[ -n "$_http_version_type" ]] || \
+       [[ "$_ssl_version_msg" == "not supported" ]] ; then
+
+      printf '         » http-version:   \e['${trgb_40337}'m%s\e[m\n' \
+             "$_http_version_msg"
+
+    fi
 
   fi
 

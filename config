@@ -30,6 +30,11 @@ HTRACE_SSL_CERT_CA_CHECK="off"
 #   - on, off
 HIDE_SRC_IP="off"
 
+# Set CURL timers.
+# shellcheck disable=SC2034
+#   - on, off
+CURL_TIMERS="off"
+
 # Set random http user-agent.
 # shellcheck disable=SC2034
 #   - on, off
