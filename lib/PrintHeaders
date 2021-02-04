@@ -24,8 +24,8 @@ function PrintHeaders() {
   # shellcheck disable=SC2086,SC2154
   printf '\n\e['${trgb_3612}'m    %-4.6s %-12.10s %-15.12s %-22.22s %-16.22s %-21.22s %-5.7s %-7.7s %-5.5s %-8.10s %s\e[m' \
          "req" \
+         "full_time" \
          "time_total" \
-         "time_connect" \
          "local_socket" \
          "via" \
          "remote_socket" \
@@ -37,8 +37,8 @@ function PrintHeaders() {
 
   printf '\n    %-4.6s %-12.10s %-15.12s %-22.22s %-16.22s %-21.22s %-5.7s %-7.7s %-5.5s %-8.10s %s\e[m\n' \
          "---" \
+         "---------" \
          "----------" \
-         "------------" \
          "------------" \
          "---" \
          "-------------" \

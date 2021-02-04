@@ -88,7 +88,7 @@ function InitTrace() {
   # shellcheck disable=SC2034,SC2154
   _http_output=$(eval "${_ccmd[@]}" -ks -m "$_timeout" \
     -H "'User-Agent: $_user_agent'" \
-    -w '%{time_total}:%{time_connect}:%{local_ip}:%{local_port}:%{remote_ip}:%{remote_port}:%{http_version}:%{http_code}:%{scheme}:%{redirect_url}' \
+    -w '%{time_total}:%{time_connect}:%{time_namelookup}:%{time_appconnect}:%{time_pretransfer}:%{time_starttransfer}:%{local_ip}:%{local_port}:%{remote_ip}:%{remote_port}:%{http_version}:%{http_code}:%{scheme}:%{redirect_url}' \
     -D "${_tmp}/headers.dump" -o "${_tmp}/body.dump" --compressed 2>"${_tmp}/stderr.dump")
 
   if [[ "$debug_conn_state" -eq 1 ]] ; then
@@ -96,7 +96,7 @@ function InitTrace() {
     # shellcheck disable=SC2034,SC2154
     _curl_conn_debug=$(echo "${_ccmd[@]}" -ks -m "$_timeout" \
       -H "'User-Agent: $_user_agent'" \
-      -w '%{time_total}:%{time_connect}:%{local_ip}:%{local_port}:%{remote_ip}:%{remote_port}:%{http_version}:%{http_code}:%{scheme}:%{redirect_url}' \
+      -w '%{time_total}:%{time_connect}:%{time_namelookup}:%{time_appconnect}:%{time_pretransfer}:%{time_starttransfer}:%{local_ip}:%{local_port}:%{remote_ip}:%{remote_port}:%{http_version}:%{http_code}:%{scheme}:%{redirect_url}' \
       -D "${_tmp}/headers.dump" -o "${_tmp}/body.dump" --compressed | sed 's/  */ /g')
 
   fi
@@ -122,16 +122,35 @@ function InitTrace() {
 
   else
 
+    # lookup:
+    #   The time, in seconds, it took from the start until the name resolving was completed.
+    # connect:
+    #   The time, in seconds, it took from the start until the TCP connect to the remote host (or proxy) was completed.
+    # appconnect:
+    #   The time, in seconds, it took from the start until the SSL/SSH/etc connect/handshake to the remote host was completed.
+    # pretransfer:
+    #   The time, in seconds, it took from the start until the file transfer was just about to begin.
+    #   This includes all pre-transfer commands and negotiations that are specific to the particular protocol(s) involved.
+    # starttransfer:
+    #   The time, in seconds, it took from the start until the first byte was just about to be transferred.
+    #   This includes time_pretransfer and also the time the server needed to calculate the result.
+    # total:
+    #   The total time, in seconds, that the full operation lasted. The time will be displayed with millisecond resolution.
+
     _time_total=$(echo "$_http_output" | cut -d ":" -f1)
     _time_connect=$(echo "$_http_output" | cut -d ":" -f2)
-    _local_ip=$(echo "$_http_output" | cut -d ":" -f3)
-    _local_port=$(echo "$_http_output" | cut -d ":" -f4)
-    _remote_ip=$(echo "$_http_output" | cut -d ":" -f5)
-    _remote_port=$(echo "$_http_output" | cut -d ":" -f6)
-    _http_version=$(echo "$_http_output" | cut -d ":" -f7)
-    _http_code=$(echo "$_http_output" | cut -d ":" -f8)
-    _http_scheme=$(echo "$_http_output" | cut -d ":" -f9 | tr '[:upper:]' '[:lower:]')
-    _http_redirect=$(echo "$_http_output" | cut -d ":" -f10-)
+    _time_namelookup=$(echo "$_http_output" | cut -d ":" -f3)
+    _time_appconnect=$(echo "$_http_output" | cut -d ":" -f4)
+    _time_pretransfer=$(echo "$_http_output" | cut -d ":" -f5)
+    _time_starttransfer=$(echo "$_http_output" | cut -d ":" -f6)
+    _local_ip=$(echo "$_http_output" | cut -d ":" -f7)
+    _local_port=$(echo "$_http_output" | cut -d ":" -f8)
+    _remote_ip=$(echo "$_http_output" | cut -d ":" -f9)
+    _remote_port=$(echo "$_http_output" | cut -d ":" -f10)
+    _http_version=$(echo "$_http_output" | cut -d ":" -f11)
+    _http_code=$(echo "$_http_output" | cut -d ":" -f12)
+    _http_scheme=$(echo "$_http_output" | cut -d ":" -f13 | tr '[:upper:]' '[:lower:]')
+    _http_redirect=$(echo "$_http_output" | cut -d ":" -f14-)
 
     if [[ -z "$_http_code" ]] || \
        [[ "$_http_code" == "000" ]] ; then
@@ -266,6 +285,10 @@ function InitTrace() {
     # Convert times.
     _time_total=$(echo "$_time_total" | tr ',' '.')
     _time_connect=$(echo "$_time_connect" | tr ',' '.')
+    _time_namelookup=$(echo "$_time_namelookup" | tr ',' '.')
+    _time_appconnect=$(echo "$_time_appconnect" | tr ',' '.')
+    _time_pretransfer=$(echo "$_time_pretransfer" | tr ',' '.')
+    _time_starttransfer=$(echo "$_time_starttransfer" | tr ',' '.')
 
     # Set properly total time.
     # shellcheck disable=SC2154
@@ -340,6 +363,11 @@ function InitTrace() {
            "$_http_version" \
            "$_http_code" \
            "$_http_redirect"
+
+    # shellcheck disable=SC2059,SC2154,SC2086
+    printf '                       \e['${trgb_3812}'m˪ '
+    printf 'DNS: %s, TCP: %s, TLS: %s, PreTransfer: %s, TTFB: %s, TTFB+Conn: %s\e[m\n' \
+    "$_time_namelookup" "$_time_connect" "$_time_appconnect" "$_time_pretransfer" $(echo $_time_starttransfer - $_time_appconnect | bc | awk '{printf "%f", $0}') "$_time_starttransfer"
 
     if [[ "$proxy_state" -eq 1 ]] ; then
 
