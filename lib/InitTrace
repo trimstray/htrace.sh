@@ -296,16 +296,18 @@ function InitTrace() {
     _dns_t="$_time_namelookup"
     _tcp_t=$(echo "$_time_connect" - "$_time_namelookup" | bc | awk '{printf "%f", $0}')
     _tls_t=$(echo "$_time_appconnect" - "$_time_connect" | bc | awk '{printf "%f", $0}')
+    _http_t=$(echo "$_time_pretransfer" - "$_time_appconnect" | bc | awk '{printf "%f", $0}')
 
     if [[ "$_time_appconnect" == "0.000000" ]] ; then
       _tls_t="0.000000"
+      _time_appconnect="$_time_connect"
     fi
 
     _data_g=$(echo "$_time_starttransfer" - "$_time_pretransfer" | bc | awk '{printf "%f", $0}')
     _data_t=$(echo "$_time_total" - "$_time_starttransfer" | bc | awk '{printf "%f", $0}')
 
     # shellcheck disable=SC2034
-    _ttfb="$_time_starttransfer"
+    _ttfb="$_data_g"
 
     # Set properly total time.
     # shellcheck disable=SC2154
@@ -389,17 +391,25 @@ function InitTrace() {
          Headers Size             %s bytes
          —————————————————————————————————
          [0.000000]
-            DNS Lookup            %s
+            › DNS Request
+            ‹ DNS Response
+              DNS Lookup          %s
          [%s]
-            TCP Handshake         %s
+            › TCP SYN
+            › TCP ACK
+              TCP Handshake       %s
          [%s]
-            TLS Handshake         %s
+            › TLS ClientHello
+            ‹ TLS Finished
+              TLS Handshake       %s
          [%s]
-            Pre-Transfer          %s
-              Server Processing   %s
+              TLS › HTTP          %s
          [%s]
-            Start-Transfer (TTFB) %s
-            Data Transfer         %s
+            › HTTP Request
+            ‹ HTTP Response
+              Waiting (TTFB)      %s
+         [%s]
+              Data Transfer       %s
          —————————————————————————————————
             Time Total            %s
 
@@ -408,15 +418,15 @@ function InitTrace() {
       "$_size_download" \
       "$_size_header" \
       "$_dns_t" \
-      "$_dns_t" \
+      "$_time_namelookup" \
       "$_tcp_t" \
       "$_time_connect" \
       "$_tls_t" \
       "$_time_appconnect" \
+      "$_http_t" \
       "$_time_pretransfer" \
-      "$_data_g" \
-      "$_time_starttransfer" \
       "$_ttfb" \
+      "$_time_starttransfer" \
       "$_data_t" \
       "$_time_total"
 
