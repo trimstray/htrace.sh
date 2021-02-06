@@ -298,9 +298,12 @@ function InitTrace() {
     _tls_t=$(echo "$_time_appconnect" - "$_time_connect" | bc | awk '{printf "%f", $0}')
     _http_t=$(echo "$_time_pretransfer" - "$_time_appconnect" | bc | awk '{printf "%f", $0}')
 
+    _http_t_msg="TLS"
     if [[ "$_time_appconnect" == "0.000000" ]] ; then
+      _http_t_msg="TCP"
       _tls_t="0.000000"
       _time_appconnect="$_time_connect"
+      _http_t=$(echo "$_time_pretransfer" - "$_time_appconnect" | bc | awk '{printf "%f", $0}')
     fi
 
     _data_g=$(echo "$_time_starttransfer" - "$_time_pretransfer" | bc | awk '{printf "%f", $0}')
@@ -386,49 +389,50 @@ function InitTrace() {
     if [[ "$CURL_TIMERS" == "on" ]] ; then
 
       printf '
-         Request Size             %s bytes
-         Response Size            %s bytes
-         Headers Size             %s bytes
-         —————————————————————————————————
-         [0.000000]
-            › DNS Request
+             Request Size         %s bytes
+             Response Size        %s bytes
+             Headers Size         %s bytes
+         ————————————————————————————————————
+         [0ms]
+            › DNS Query
             ‹ DNS Response
-              DNS Lookup          %s
-         [%s]
+              DNS Lookup          %sms
+         [%sms]
             › TCP SYN
             › TCP ACK
-              TCP Handshake       %s
-         [%s]
+              TCP Handshake (RTT) %sms
+         [%sms]
             › TLS ClientHello
             ‹ TLS Finished
-              TLS Handshake       %s
-         [%s]
-              TLS › HTTP          %s
-         [%s]
+              TLS Handshake       %sms
+         [%sms]
+              %s › HTTP          %sms
+         [%sms]
             › HTTP Request
             ‹ HTTP Response
-              Waiting (TTFB)      %s
-         [%s]
-              Data Transfer       %s
-         —————————————————————————————————
-            Time Total            %s
+              Waiting (TTFB)      %sms
+         [%sms]
+              Data Transfer       %sms
+         ————————————————————————————————————
+              Time Total          %sms
 
 ' \
       "$_size_request" \
       "$_size_download" \
       "$_size_header" \
-      "$_dns_t" \
-      "$_time_namelookup" \
-      "$_tcp_t" \
-      "$_time_connect" \
-      "$_tls_t" \
-      "$_time_appconnect" \
-      "$_http_t" \
-      "$_time_pretransfer" \
-      "$_ttfb" \
-      "$_time_starttransfer" \
-      "$_data_t" \
-      "$_time_total"
+      $(echo "$_dns_t * 1000" | bc | awk '{printf "%.2f", $0}') \
+      $(echo "$_time_namelookup * 1000" | bc | awk '{printf "%.2f", $0}') \
+      $(echo "$_tcp_t * 1000" | bc | awk '{printf "%.2f", $0}') \
+      $(echo "$_time_connect * 1000" | bc | awk '{printf "%.2f", $0}') \
+      $(echo "$_tls_t * 1000" | bc | awk '{printf "%.2f", $0}') \
+      $(echo "$_time_appconnect * 1000" | bc | awk '{printf "%.2f", $0}') \
+      "$_http_t_msg" \
+      $(echo "$_http_t * 1000" | bc | awk '{printf "%.2f", $0}') \
+      $(echo "$_time_pretransfer * 1000" | bc | awk '{printf "%.2f", $0}') \
+      $(echo "$_ttfb * 1000" | bc | awk '{printf "%.2f", $0}') \
+      $(echo "$_time_starttransfer * 1000" | bc | awk '{printf "%.2f", $0}') \
+      $(echo "$_data_t * 1000" | bc | awk '{printf "%.2f", $0}') \
+      $(echo "$_time_total * 1000" | bc | awk '{printf "%.2f", $0}')
 
     fi
 
