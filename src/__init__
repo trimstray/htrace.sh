@@ -72,6 +72,9 @@ function __main__() {
   # shellcheck disable=SC2034
   local _destination_host=""
 
+  # Default `curl timers` variables.
+  local _curl_timers="0"
+
   # Default 'ssl' variables.
   local ssl_state="0"
 
@@ -388,9 +391,9 @@ function __main__() {
 
   # Specifies the call parameters of the script, the exact description
   # can be found in _help_ and file README.md.
-  local _short_opt="u:shbM:H:p:r:i:a"
+  local _short_opt="u:shbM:H:p:r:i:ta"
   local _long_opt="help,version,examples,url:,ssl,headers,body,"
-        _long_opt+="req-method:,req-header:,proxy:,resolve:,iface:,"
+        _long_opt+="req-method:,req-header:,proxy:,resolve:,iface:,timers,"
         _long_opt+="all-scans,testssl,observatory,ssllabs,mixed-content,"
         _long_opt+="nse,waf,dns,http2,conn-debug,ssl-bin:,ssl-debug,"
         _long_opt+="cache-bypass:,user-agent:,referer:,auth:,httpv:,tlsv:,ciph:,"
@@ -502,6 +505,12 @@ function __main__() {
         export iface_type="${2}"
 
         shift 2 ;;
+
+      -t|--timers)
+
+        export _curl_timers=1
+
+        shift ;;
 
       -a|--all-scans)
 
@@ -1043,6 +1052,12 @@ function __main__() {
   else
 
     _interface_type_curl=""
+
+  fi
+
+  if [[ "$_curl_timers" -eq 1 ]] ; then
+
+    CURL_TIMERS="on"
 
   fi
 
