@@ -420,19 +420,19 @@ function InitTrace() {
       "$_size_request" \
       "$_size_download" \
       "$_size_header" \
-      $(echo "$_dns_t * 1000" | bc | awk '{printf "%.2f", $0}') \
-      $(echo "$_time_namelookup * 1000" | bc | awk '{printf "%.2f", $0}') \
-      $(echo "$_tcp_t * 1000" | bc | awk '{printf "%.2f", $0}') \
-      $(echo "$_time_connect * 1000" | bc | awk '{printf "%.2f", $0}') \
-      $(echo "$_tls_t * 1000" | bc | awk '{printf "%.2f", $0}') \
-      $(echo "$_time_appconnect * 1000" | bc | awk '{printf "%.2f", $0}') \
+      "$(echo "$_dns_t * 1000" | bc | awk '{printf "%.2f", $0}')" \
+      "$(echo "$_time_namelookup * 1000" | bc | awk '{printf "%.2f", $0}')" \
+      "$(echo "$_tcp_t * 1000" | bc | awk '{printf "%.2f", $0}')" \
+      "$(echo "$_time_connect * 1000" | bc | awk '{printf "%.2f", $0}')" \
+      "$(echo "$_tls_t * 1000" | bc | awk '{printf "%.2f", $0}')" \
+      "$(echo "$_time_appconnect * 1000" | bc | awk '{printf "%.2f", $0}')" \
       "$_http_t_msg" \
-      $(echo "$_http_t * 1000" | bc | awk '{printf "%.2f", $0}') \
-      $(echo "$_time_pretransfer * 1000" | bc | awk '{printf "%.2f", $0}') \
-      $(echo "$_ttfb * 1000" | bc | awk '{printf "%.2f", $0}') \
-      $(echo "$_time_starttransfer * 1000" | bc | awk '{printf "%.2f", $0}') \
-      $(echo "$_data_t * 1000" | bc | awk '{printf "%.2f", $0}') \
-      $(echo "$_time_total * 1000" | bc | awk '{printf "%.2f", $0}')
+      "$(echo "$_http_t * 1000" | bc | awk '{printf "%.2f", $0}')" \
+      "$(echo "$_time_pretransfer * 1000" | bc | awk '{printf "%.2f", $0}')" \
+      "$(echo "$_ttfb * 1000" | bc | awk '{printf "%.2f", $0}')" \
+      "$(echo "$_time_starttransfer * 1000" | bc | awk '{printf "%.2f", $0}')" \
+      "$(echo "$_data_t * 1000" | bc | awk '{printf "%.2f", $0}')" \
+      "$(echo "$_time_total * 1000" | bc | awk '{printf "%.2f", $0}')"
 
     fi
 
