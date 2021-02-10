@@ -1057,6 +1057,7 @@ function __main__() {
 
   if [[ "$_curl_timers" -eq 1 ]] ; then
 
+    # shellcheck disable=SC2034
     CURL_TIMERS="on"
 
   fi
