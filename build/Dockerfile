@@ -52,7 +52,7 @@ RUN go get github.com/projectdiscovery/subfinder/v2/cmd/subfinder
 
 FROM drwetter/testssl.sh:3.0 AS testssl
 
-FROM alpine:3.9
+FROM alpine:3.14
 
 MAINTAINER trimstray "trimstray@gmail.com"
 
