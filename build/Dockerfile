@@ -74,8 +74,8 @@ RUN \
   wget \
   jq \
   libmaxminddb \
-  python \
-  py-pip \
+  python3 \
+  py3-pip \
   rsync \
   nghttp2
 
@@ -100,7 +100,7 @@ RUN \
 RUN \
   git clone --depth 1 https://github.com/EnableSecurity/wafw00f /opt/wafw00f && \
   cd /opt/wafw00f && \
-  python setup.py install
+  python3 setup.py install
 
 COPY --from=golang /go/bin/ssllabs-scan /usr/bin/ssllabs-scan
 COPY --from=golang /go/bin/geoipupdate /usr/bin/geoipupdate
