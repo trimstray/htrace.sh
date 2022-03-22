@@ -46,15 +46,15 @@
 
 FROM golang:alpine AS golang
 RUN apk add --no-cache git
-RUN go get github.com/ssllabs/ssllabs-scan
-RUN go get github.com/maxmind/geoipupdate/cmd/geoipupdate
-RUN go get github.com/projectdiscovery/subfinder/v2/cmd/subfinder
+RUN go install github.com/ssllabs/ssllabs-scan@latest
+RUN go install github.com/maxmind/geoipupdate/cmd/geoipupdate@latest
+RUN go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
 
 FROM drwetter/testssl.sh:3.0 AS testssl
 
 FROM alpine:3.14
 
-MAINTAINER trimstray "trimstray@gmail.com"
+LABEL org.opencontainers.image.authors="trimstray@gmail.com"
 
 RUN \
   apk add --no-cache \
