@@ -236,48 +236,48 @@ function DomainCertCheck() {
         # Less then 1h
         if [[ "$_expiry_epoch_to_end" -lt 3600 ]] ; then
 
-          _expr_time_msg="$_time_to_expire to expired"
+          _expr_time_msg="expires in $_time_to_expire"
           _expr_timtrgb="$trgb_3310"
 
         # Less then 3h
         elif [[ "$_expiry_epoch_to_end" -lt 10800 ]] ; then
 
-          _expr_time_msg="$_time_to_expire to expired"
+          _expr_time_msg="expires in $_time_to_expire"
           _expr_timtrgb="$trgb_3310"
 
         # Less then 6h
         elif [[ "$_expiry_epoch_to_end" -lt 21600 ]] ; then
 
-          _expr_time_msg="$_time_to_expire to expired"
+          _expr_time_msg="expires in $_time_to_expire"
           _expr_timtrgb="$trgb_3310"
 
         # Less then 12h
         elif [[ "$_expiry_epoch_to_end" -lt 43200 ]] ; then
 
-          _expr_time_msg="$_time_to_expire to expired"
+          _expr_time_msg="expires in $_time_to_expire"
           _expr_timtrgb="$trgb_3310"
 
         # Less then 24h
         else
 
-          _expr_time_msg="$_time_to_expire to expired"
+          _expr_time_msg="expires in $_time_to_expire"
           _expr_timtrgb="$trgb_3310"
 
         fi
 
       elif [[ "$_expiry_epoch_to_end_days" -le 7 ]] ; then
 
-        _expr_time_msg="$_expiry_epoch_to_end_days days to expired"
+        _expr_time_msg="expires in $_expiry_epoch_to_end_days days"
         _expr_timtrgb="$trgb_3310"
 
       elif [[ "$_expiry_epoch_to_end_days" -le 14 ]] ; then
 
-        _expr_time_msg="$_expiry_epoch_to_end_days days to expired"
+        _expr_time_msg="expires in $_expiry_epoch_to_end_days days"
         _expr_timtrgb="$trgb_3300"
 
       else
 
-        _expr_time_msg="$_expiry_epoch_to_end_days days to expired"
+        _expr_time_msg="expires in $_expiry_epoch_to_end_days days"
         _expr_timtrgb="$trgb_3200"
 
       fi
