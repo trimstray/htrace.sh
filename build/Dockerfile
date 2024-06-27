@@ -47,7 +47,7 @@
 FROM golang:alpine AS golang
 RUN apk add --no-cache git
 RUN go install github.com/ssllabs/ssllabs-scan@latest
-RUN go install github.com/maxmind/geoipupdate/cmd/geoipupdate@latest
+RUN go install github.com/maxmind/geoipupdate/v7/cmd/geoipupdate@latest
 RUN go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
 
 FROM drwetter/testssl.sh:3.0 AS testssl
