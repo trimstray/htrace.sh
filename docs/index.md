@@ -57,5 +57,4 @@ The postings on this domain are my own and don't necessarily represent my employ
 
 If you wish to contact me:
 
-- hit me on [Twitter](https://twitter.com/trimstray), [Keybase](https://keybase.io/trimstray) or [Github](https://github.com/trimstray)
 - via e-mail (base64): `dHJpbXN0cmF5QGdtYWlsLmNvbQo=`
