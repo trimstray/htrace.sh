@@ -17,13 +17,6 @@
 
 <br>
 
-<div align="center">
-  <sub>Created by
-  <a href="https://github.com/trimstray/htrace.sh/graphs/contributors">contributors</a>
-</div>
-
-<br>
-
 ## Description
 
 `htrace.sh` is a shell script for http/https troubleshooting and profiling. It's also a simple wrapper around several open source security tools.
