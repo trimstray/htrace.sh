@@ -52,7 +52,7 @@ RUN go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
 
 FROM drwetter/testssl.sh:3.0 AS testssl
 
-FROM alpine:3.14
+FROM alpine:3.15
 
 LABEL org.opencontainers.image.authors="trimstray@gmail.com"
 
